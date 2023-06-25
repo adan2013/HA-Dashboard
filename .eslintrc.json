@@ -19,14 +19,25 @@
     "plugin:import/recommended",
     "plugin:jest/recommended",
     "plugin:jsx-a11y/recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
+    "requireConfigFile": false,
     "ecmaFeatures": {
-      "jsx": true
+      "jsx": true,
+      "modules": true
     },
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
+    "babelOptions": {
+      "presets": ["@babel/preset-react"],
+      "parserOpts": {
+        "plugins": ["jsx"]
+      }
+    }
   },
   "overrides": [
     {
@@ -72,6 +83,7 @@
     }
   ],
   "rules": {
+    "import/extensions": "off",
     "jsx-a11y/click-events-have-key-events": "warn",
     "jsx-a11y/label-has-associated-control": "warn",
     "jsx-a11y/no-noninteractive-element-interactions": "warn",
@@ -82,7 +94,13 @@
     "no-unused-vars": "warn",
     "react/function-component-definition": "off",
     "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": "off",
     "react/prop-types": "warn",
-    "semi": "error"
+    "react/jsx-props-no-spreading": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
   }
 }
