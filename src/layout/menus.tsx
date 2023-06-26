@@ -8,6 +8,7 @@ import SettingsRemoteOutlinedIcon from '@mui/icons-material/SettingsRemoteOutlin
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined'
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined'
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
+import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined'
 
 type PageMetadata = {
   path: string
@@ -33,6 +34,7 @@ export const pageMetadata: PageMetadata[] = [
   { path: '/', title: 'Dashboard' },
   { path: '/weather', title: 'Weather' },
   { path: '/notifications', title: 'Notifications' },
+  { path: '/customization', title: 'Customization' },
   { path: '/section/lights', title: 'Lights' },
   { path: '/section/temperatures', title: 'Temperatures' },
   { path: '/section/automations', title: 'Automations' },
@@ -48,6 +50,11 @@ export const mobileMenu: MenuItem[] = [
     name: 'Notifications',
     path: '/notifications',
     icon: <NotificationsNoneOutlinedIcon />
+  },
+  {
+    name: 'More',
+    path: '/customization',
+    icon: <MoreHorizOutlinedIcon />
   }
 ]
 

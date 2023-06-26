@@ -1,3 +1,3 @@
-const Notifications = () => <h1>content</h1>
+const Notifications = () => <h1>list of notifications</h1>
 
 export default Notifications

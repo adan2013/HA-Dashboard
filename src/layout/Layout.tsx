@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react'
 import MobileLayout from './MobileLayout'
 
 type LayoutType = 'mobile' | 'desktop'
-const MOBILE_LAYOUT_BREAKPOINT = 1050
+const MOBILE_LAYOUT_BREAKPOINT = 1024
 const getLayoutType = (): LayoutType =>
   window.innerWidth < MOBILE_LAYOUT_BREAKPOINT ? 'mobile' : 'desktop'
 
-export default () => {
+const Layout = () => {
   const [layoutMode, setLayoutMode] = useState<LayoutType>(getLayoutType())
 
   useEffect(() => {
@@ -20,3 +20,5 @@ export default () => {
 
   return <div>DESKTOP LAYOUT WIP (TODO)</div>
 }
+
+export default Layout

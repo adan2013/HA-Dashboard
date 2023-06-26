@@ -1,3 +1,3 @@
-const Weather = () => <h1>content</h1>
+const Weather = () => <h1>weather forecast</h1>
 
 export default Weather

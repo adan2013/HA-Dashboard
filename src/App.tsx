@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Dashboard from './views/Dashboard'
 import Notifications from './views/Notifications'
 import Weather from './views/Weather'
+import Customization from './views/Customization'
 import Error404 from './views/Error404'
 import Layout from './layout/Layout'
 import SectionDrawer from './views/SectionDrawer'
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: '/notifications',
         element: <Notifications />
+      },
+      {
+        path: '/customization',
+        element: <Customization />
       },
       {
         path: '/section/:sectionId',

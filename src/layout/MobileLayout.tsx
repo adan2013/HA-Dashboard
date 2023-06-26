@@ -4,7 +4,7 @@ import { useLocation, Link, Outlet } from 'react-router-dom'
 import { mobileMenu, pageMetadata } from './menus'
 import { OutletContextType } from './outletContext'
 
-export default () => {
+const MobileLayout = () => {
   const location = useLocation()
   const pageTitle = pageMetadata.find(
     page => page.path === location.pathname
@@ -30,16 +30,16 @@ export default () => {
             <div
               key={name}
               className={clsx(
-                'w-1/3 transition-colors duration-500',
+                'w-1/4 transition-colors duration-500',
                 (location.pathname === path ||
                   (path === '/' && !anythingIsSelected)) &&
-                  'bg-blue-800'
+                  'bg-sky-800'
               )}
             >
               <Link to={path}>
                 <div className="flex h-full cursor-pointer flex-col items-center justify-center">
                   <div>{icon}</div>
-                  <div className="pt-1 text-sm">{name}</div>
+                  <div className="pt-2 text-xs">{name}</div>
                 </div>
               </Link>
             </div>
@@ -49,3 +49,5 @@ export default () => {
     </div>
   )
 }
+
+export default MobileLayout
