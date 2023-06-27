@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { useLocation, Link, Outlet } from 'react-router-dom'
 
 import { mobileMenu, pageMetadata } from './menus'
-import { OutletContextType } from './outletContext'
+import { OutletContextType } from '../contexts/OutletContext'
 
 const MobileLayout = () => {
   const location = useLocation()

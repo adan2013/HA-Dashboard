@@ -6,7 +6,9 @@ import Weather from './views/Weather'
 import Customization from './views/Customization'
 import Error404 from './views/Error404'
 import Layout from './layout/Layout'
-import SectionDrawer from './views/SectionDrawer'
+import SectionIndex from './views/section/SectionIndex'
+import { GlobalContextProvider } from './contexts/GlobalContext'
+import { HomeAssistantContextProvider } from './contexts/HomeAssistantContext'
 
 const router = createBrowserRouter([
   {
@@ -31,7 +33,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/section/:sectionId',
-        element: <SectionDrawer />
+        element: <SectionIndex />
       },
       {
         path: '*',
@@ -42,7 +44,13 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-  return <RouterProvider router={router} />
+  return (
+    <HomeAssistantContextProvider>
+      <GlobalContextProvider>
+        <RouterProvider router={router} />
+      </GlobalContextProvider>
+    </HomeAssistantContextProvider>
+  )
 }
 
 export default App

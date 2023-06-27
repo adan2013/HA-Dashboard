@@ -58,7 +58,7 @@ export const mobileMenu: MenuItem[] = [
   }
 ]
 
-export const dashboardTiles: MenuTile[] = [
+export const sectionTiles: MenuTile[] = [
   {
     name: 'Lights',
     path: '/section/lights',

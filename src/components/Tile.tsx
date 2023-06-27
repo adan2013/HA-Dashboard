@@ -1,12 +1,30 @@
 import clsx from 'clsx'
-import { cloneElement } from 'react'
-import { TileMetadata, TileValue } from '../configs/configTypes'
+import { cloneElement, ReactElement } from 'react'
 
-type TileProps = {
-  tile: TileMetadata
+export type TileSize = 'standard' | 'horizontal' | 'big'
+
+export type TileValue = {
+  main: string | number
+  decimal?: string | number
+  unit?: string
 }
 
-const Tile = ({ tile: propsTile }: TileProps) => {
+export type TileProps = {
+  title: string
+  subtitle?: string
+  metadata?: string[]
+  value?: string | number | TileValue
+  tileColor?: string
+  iconClassnames?: string
+  icon?: ReactElement
+  size?: TileSize
+  turnedOff?: boolean
+  disabled?: boolean
+  onClick?: () => void
+  customBody?: ReactElement
+}
+
+const Tile = (propsTile: TileProps) => {
   const tile = {
     size: 'standard',
     ...propsTile
@@ -32,7 +50,9 @@ const Tile = ({ tile: propsTile }: TileProps) => {
           <div className="text-6xl">{data.main}</div>
           {(data.decimal || data.unit) && (
             <div className="ml-1">
-              <div className="text-lg text-gray-300">{data.unit || ''}</div>
+              <div className="text-right text-sm text-gray-300">
+                {data.unit || ''}
+              </div>
               <div className="text-2xl">{data.decimal || ''}</div>
             </div>
           )}
@@ -44,7 +64,6 @@ const Tile = ({ tile: propsTile }: TileProps) => {
 
   return (
     <div
-      key={tile.title}
       className={clsx(
         'relative h-full w-full rounded-lg border-2 border-transparent transition-colors duration-500',
         tile.size === 'standard' && 'aspect-square',
