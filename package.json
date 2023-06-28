@@ -14,7 +14,7 @@
     "template"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build --emptyOutDir",
     "serve": "vite preview",
     "lint": "eslint . --ext .js,.ts,.tsx",

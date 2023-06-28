@@ -50,10 +50,10 @@ const ConnectionStatusMessage = () => {
   const { color, label } = getStyle(status)
 
   return (
-    <div className="fixed right-1/2 top-0 translate-x-1/2 rounded-b-lg bg-black px-3 py-2 text-white">
+    <div className="fixed right-1/2 top-0 z-10 translate-x-1/2 rounded-b-lg bg-black px-3 py-2 text-sm text-white">
       <div
         className={clsx(
-          'mr-1 inline-block h-3 w-3 animate-pulse rounded-full',
+          'mr-2 inline-block h-3 w-3 animate-pulse rounded-full',
           color
         )}
       />

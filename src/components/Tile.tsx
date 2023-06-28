@@ -47,13 +47,13 @@ const Tile = (propsTile: TileProps) => {
             }
       return (
         <div className="absolute bottom-0 right-0 flex flex-row items-end px-3 py-2">
-          <div className="text-6xl">{data.main}</div>
+          <div className="text-5xl">{data.main}</div>
           {(data.decimal || data.unit) && (
             <div className="ml-1">
               <div className="text-right text-sm text-gray-300">
                 {data.unit || ''}
               </div>
-              <div className="text-2xl">{data.decimal || ''}</div>
+              <div className="text-lg">{data.decimal || ''}</div>
             </div>
           )}
         </div>
@@ -80,7 +80,7 @@ const Tile = (propsTile: TileProps) => {
         {tile.subtitle && <div className="font-light">{tile.subtitle}</div>}
       </div>
       {tile.metadata && (
-        <div className="text-md absolute bottom-0 left-0 px-3 py-2 text-gray-200">
+        <div className="absolute bottom-0 left-0 px-3 py-2 text-sm text-gray-200">
           {tile.metadata.map(meta => (
             <div key={meta}>{meta}</div>
           ))}
@@ -90,7 +90,7 @@ const Tile = (propsTile: TileProps) => {
       {tile.icon &&
         cloneElement(tile.icon, {
           className: clsx(
-            '!text-[5rem] absolute bottom-2 right-1',
+            '!text-[4rem] absolute bottom-2 right-1',
             tile.iconClassnames
           )
         })}

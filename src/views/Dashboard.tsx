@@ -13,21 +13,16 @@ const Dashboard = () => {
         {sectionTiles.map(
           ({ name, path, background, iconColor, iconClass, icon }) => (
             <Link key={name} to={path}>
-              <div className={clsx('')}>
+              <div>
                 <div
                   className={clsx(
-                    'relative aspect-square w-44 overflow-hidden rounded-lg border-2 border-transparent transition-colors duration-500 hover:border-white',
+                    'flex aspect-square w-36 items-center justify-center overflow-hidden rounded-lg border-2 border-transparent transition-colors duration-500 hover:border-white',
                     background
                   )}
                 >
-                  <div
-                    className={clsx(
-                      'absolute left-0 top-0 flex aspect-square w-44 items-center justify-center',
-                      iconColor
-                    )}
-                  >
+                  <div className={clsx('aspect-square', iconColor)}>
                     {cloneElement(icon, {
-                      className: clsx('!text-[8rem]', iconClass)
+                      className: clsx('!text-[6rem]', iconClass)
                     })}
                   </div>
                 </div>
@@ -40,7 +35,23 @@ const Dashboard = () => {
     )
   }
 
-  return <div>TODO desktop dashboard</div>
+  return (
+    <div className="grid grid-cols-2">
+      <div className="col-span-2 flex h-24 flex-row gap-4 border-b-2 border-gray-500 p-1">
+        <div className="text-7xl">12:00</div>
+        <div className="flex flex-col text-gray-200">
+          <div className="text-xl">Monday</div>
+          <div className="text-xl">01 Jan 2023</div>
+        </div>
+      </div>
+      <div className="p-3">
+        <h2>Weather</h2>
+      </div>
+      <div className="border-l-2 border-gray-500 p-3">
+        <h2>Notifications</h2>
+      </div>
+    </div>
+  )
 }
 
 export default Dashboard

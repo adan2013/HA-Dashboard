@@ -18,13 +18,13 @@ const MobileLayout = () => {
 
   return (
     <div className="text-white">
-      <div className="min-h-screen overflow-x-hidden bg-gray-800 p-4 pb-32">
+      <div className="min-h-screen overflow-x-hidden bg-gray-800 p-4 pb-24">
         {pageTitle && (
-          <div className="my-6 text-5xl font-bold">{pageTitle}</div>
+          <div className="my-4 text-3xl font-bold">{pageTitle}</div>
         )}
         <Outlet context={context} />
       </div>
-      <div className="fixed bottom-0 h-20 w-full border-t-2 border-blue-800 bg-gray-900">
+      <div className="fixed bottom-0 h-16 w-full border-t-2 border-blue-800 bg-gray-900">
         <div className="flex h-full flex-row">
           {mobileMenu.map(({ name, path, icon }) => (
             <div

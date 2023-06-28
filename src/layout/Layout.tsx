@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import MobileLayout from './MobileLayout'
+import DesktopLayout from './DesktopLayout'
 
 type LayoutType = 'mobile' | 'desktop'
 const MOBILE_LAYOUT_BREAKPOINT = 1024
@@ -18,7 +19,7 @@ const Layout = () => {
     return <MobileLayout />
   }
 
-  return <div>DESKTOP LAYOUT WIP (TODO)</div>
+  return <DesktopLayout />
 }
 
 export default Layout
