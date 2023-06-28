@@ -1,0 +1,65 @@
+import { useEffect, useState } from 'react'
+import clsx from 'clsx'
+import { ConnectionStatus } from '../ha/utils'
+import { useHomeAssistantStatus } from '../ha/hooks'
+
+type StyleType = {
+  color: string
+  label: string
+}
+
+const getStyle = (status: ConnectionStatus): StyleType => {
+  switch (status) {
+    case 'authorized':
+      return {
+        color: 'bg-green-500',
+        label: 'Connected'
+      }
+    case 'connected':
+      return {
+        color: 'bg-yellow-600',
+        label: 'Connecting'
+      }
+    case 'authError':
+      return {
+        color: 'bg-red-600',
+        label: 'Unauthorized'
+      }
+    default:
+      return {
+        color: 'bg-red-600',
+        label: 'Disconnected'
+      }
+  }
+}
+
+const VISIBILITY_TIMEOUT = 2000
+
+const ConnectionStatusMessage = () => {
+  const [visible, setVisible] = useState<boolean>(true)
+  const status = useHomeAssistantStatus()
+
+  useEffect(() => {
+    setVisible(true)
+    if (status === 'authorized') {
+      setTimeout(() => setVisible(false), VISIBILITY_TIMEOUT)
+    }
+  }, [status])
+
+  if (!visible) return null
+  const { color, label } = getStyle(status)
+
+  return (
+    <div className="fixed right-1/2 top-0 translate-x-1/2 rounded-b-lg bg-black px-3 py-2 text-white">
+      <div
+        className={clsx(
+          'mr-1 inline-block h-3 w-3 animate-pulse rounded-full',
+          color
+        )}
+      />
+      {label}
+    </div>
+  )
+}
+
+export default ConnectionStatusMessage

@@ -5,8 +5,8 @@ import {
   useMemo,
   useEffect
 } from 'react'
-import clsx from 'clsx'
 import HomeAssistantWebSocketAPI from '../ha/HomeAssistantWebSocketAPI'
+import ConnectionStatusMessage from '../components/ConnectionStatusMessage'
 
 type ProviderProps = {
   children: ReactElement
@@ -29,15 +29,7 @@ export const HomeAssistantContextProvider = ({ children }: ProviderProps) => {
 
   return (
     <homeAssistantContext.Provider value={ha}>
-      <div className="fixed right-1/2 top-0 translate-x-1/2 rounded-b-lg bg-black px-3 py-2 text-white">
-        <div
-          className={clsx(
-            'mr-1 inline-block h-3 w-3 animate-pulse rounded-full',
-            'bg-red-600'
-          )}
-        />
-        Disconnected
-      </div>
+      <ConnectionStatusMessage />
       {children}
     </homeAssistantContext.Provider>
   )

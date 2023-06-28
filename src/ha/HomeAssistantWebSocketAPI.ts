@@ -1,55 +1,78 @@
-interface SocketMessageInterface {
-  type: string
-  id?: number
-}
-
-interface EntityAttributeInterface {
-  friendly_name: string
-}
-
-type MessageOptions = {
-  includeId: boolean
-  resultCallback: (result: any) => void
-  eventCallback: (event: any) => void
-}
-
-type SocketListener = {
-  msgId: number
-  callback?: (callbackData: any) => void
-}
-
-type EntityState = {
-  id: string
-  state: string
-  lastChanged: string
-  lastUpdated: string
-  attributes: EntityAttributeInterface
-}
-
-export type ConnectionStatus =
-  | 'authorized'
-  | 'connected'
-  | 'disconnected'
-  | 'authError'
-
-const getEnvVar = (name: string): string =>
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  import.meta.env[name] || ''
+import {
+  ConnectionStatus,
+  EntityState,
+  getEnvVar,
+  mapEntityState,
+  MessageOptions,
+  SocketListener,
+  SocketMessageInterface,
+  ListenerRemover,
+  UpdateListener,
+  UpdateListenerCallback
+} from './utils'
 
 class HomeAssistantWebSocketAPI {
   private socket: WebSocket
   private token: string
+  private _status: ConnectionStatus = 'disconnected'
 
   host: string
-  status: ConnectionStatus = 'disconnected'
+  msgId: number
   resultListeners: SocketListener[] = []
   eventListeners: SocketListener[] = []
-  msgId: number
-
+  updateListeners: UpdateListener[] = []
   entities: EntityState[] = []
 
-  sendMsg(
+  public get status(): ConnectionStatus {
+    return this._status
+  }
+
+  public set status(status: ConnectionStatus) {
+    this._status = status
+    this.emitConnectionStatusUpdate(status)
+  }
+
+  private subscribe(
+    id: string,
+    callback: UpdateListenerCallback
+  ): ListenerRemover {
+    this.updateListeners.push({ id, callback })
+    return () => {
+      this.updateListeners = this.updateListeners.filter(
+        l => l.callback !== callback
+      )
+    }
+  }
+
+  subscribeToEntity(
+    entityId: string,
+    callback: UpdateListenerCallback
+  ): ListenerRemover {
+    const unsubscribe = this.subscribe(entityId, callback)
+    const currentState = this.entities.find(e => e.id === entityId)
+    callback(currentState, this.status)
+    return unsubscribe
+  }
+
+  subscribeToStatus(callback: UpdateListenerCallback): ListenerRemover {
+    const unsubscribe = this.subscribe('connectionStatus', callback)
+    callback(null, this.status)
+    return unsubscribe
+  }
+
+  private emitEntityUpdate(entityId: string, state: EntityState) {
+    const listeners = this.updateListeners.filter(l => l.id === entityId)
+    listeners.forEach(l => l.callback(state, this.status))
+  }
+
+  private emitConnectionStatusUpdate(status: ConnectionStatus) {
+    const listeners = this.updateListeners.filter(
+      l => l.id === 'connectionStatus'
+    )
+    listeners.forEach(l => l.callback(null, status))
+  }
+
+  private sendMsg(
     type: string,
     payload: object = {},
     options: Partial<MessageOptions> = {}
@@ -86,21 +109,13 @@ class HomeAssistantWebSocketAPI {
     this.socket.send(JSON.stringify(msg))
   }
 
-  initializeAfterAuthentication() {
+  private initializeAfterAuthentication() {
     this.sendMsg(
       'get_states',
       {},
       {
         resultCallback: result => {
-          this.entities = result.map(
-            (entity): EntityState => ({
-              id: entity.entity_id,
-              state: entity.state,
-              lastChanged: entity.last_changed,
-              lastUpdated: entity.last_updated,
-              attributes: entity.attributes
-            })
-          )
+          this.entities = result.map(mapEntityState)
           console.log(
             `entity states fetched successfully! Count: ${this.entities.length}`
           )
@@ -116,15 +131,15 @@ class HomeAssistantWebSocketAPI {
         },
         eventCallback: event => {
           const newState = event.data.new_state
-          const changedEntity = this.entities.find(
+          const changedEntityIndex = this.entities.findIndex(
             e => e.id === newState.entity_id
           )
-          if (changedEntity) {
-            changedEntity.id = newState.entity_id
-            changedEntity.state = newState.state
-            changedEntity.lastChanged = newState.last_changed
-            changedEntity.lastUpdated = newState.last_updated
-            changedEntity.attributes = newState.attributes
+          if (changedEntityIndex >= 0) {
+            this.entities[changedEntityIndex] = mapEntityState(newState)
+            this.emitEntityUpdate(
+              this.entities[changedEntityIndex].id,
+              this.entities[changedEntityIndex]
+            )
           } else {
             console.warn(`changed entity not found! ID: ${newState.entity_id}`)
           }
@@ -133,7 +148,7 @@ class HomeAssistantWebSocketAPI {
     )
   }
 
-  onReceive(event: MessageEvent) {
+  private onReceive(event: MessageEvent) {
     const msg = JSON.parse(event.data)
     if (getEnvVar('DEV')) {
       console.log('[HA]', msg)
@@ -190,6 +205,7 @@ class HomeAssistantWebSocketAPI {
   }
 
   connect() {
+    this.status = 'disconnected'
     this.msgId = 1
     this.host = getEnvVar('VITE_HA_HOST')
     this.token = getEnvVar('VITE_HA_TOKEN')
