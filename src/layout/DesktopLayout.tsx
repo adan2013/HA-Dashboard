@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { useLocation, Link, Outlet } from 'react-router-dom'
 import { cloneElement } from 'react'
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined'
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
 import { pageMetadata, sectionTiles } from './menus'
 import { OutletContextType } from '../contexts/OutletContext'
@@ -27,20 +27,20 @@ const DesktopLayout = () => {
       <div
         className={clsx(
           'fixed bottom-0 w-full border-t-2 border-blue-800 bg-gray-900 transition-all duration-500',
-          collapsed ? 'h-24' : 'h-56'
+          collapsed ? 'h-20' : 'h-56'
         )}
       >
         {collapsed && (
-          <div className="fixed bottom-4 left-4 text-gray-300">
+          <div className="fixed bottom-5 left-5 text-gray-300">
             <Link to="/">
-              <HomeOutlinedIcon className="!text-6xl" />
+              <ArrowBackOutlinedIcon className="!text-4xl" />
             </Link>
           </div>
         )}
         <div
           className={clsx(
             'mx-auto flex h-full flex-row justify-between gap-5',
-            collapsed ? 'max-w-xl p-3' : 'max-w-7xl p-5'
+            collapsed ? 'max-w-lg p-3' : 'max-w-6xl p-5'
           )}
         >
           {sectionTiles.map(tile => (
@@ -51,13 +51,13 @@ const DesktopLayout = () => {
                     'relative flex aspect-square items-center justify-center rounded-lg border-4 border-transparent hover:border-white',
                     tile.background,
                     tile.path === location.pathname && 'border-white',
-                    collapsed ? 'w-16' : 'w-36'
+                    collapsed ? 'w-14' : 'w-36'
                   )}
                 >
                   <div className={clsx('aspect-square', tile.iconColor)}>
                     {cloneElement(tile.icon, {
                       className: clsx(
-                        collapsed ? '!text-[3rem]' : '!text-[7rem]',
+                        collapsed ? '!text-[2rem]' : '!text-[7rem]',
                         tile.iconClass
                       )
                     })}
@@ -71,9 +71,9 @@ const DesktopLayout = () => {
           ))}
         </div>
         {collapsed && (
-          <div className="fixed bottom-4 right-4 text-gray-300">
+          <div className="fixed bottom-5 right-5 text-gray-300">
             <Link to="/notifications">
-              <NotificationsNoneOutlinedIcon className="!text-6xl" />
+              <NotificationsNoneOutlinedIcon className="!text-4xl" />
             </Link>
           </div>
         )}
