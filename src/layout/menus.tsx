@@ -19,6 +19,7 @@ type MenuItem = {
   name: string
   path: string
   icon: ReactElement
+  notificationDot?: boolean
 }
 
 type MenuTile = {
@@ -49,7 +50,8 @@ export const mobileMenu: MenuItem[] = [
   {
     name: 'Notifications',
     path: '/notifications',
-    icon: <NotificationsNoneOutlinedIcon />
+    icon: <NotificationsNoneOutlinedIcon />,
+    notificationDot: true
   },
   {
     name: 'More',

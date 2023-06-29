@@ -3,6 +3,7 @@ import { useLocation, Link, Outlet } from 'react-router-dom'
 
 import { mobileMenu, pageMetadata } from './menus'
 import { OutletContextType } from '../contexts/OutletContext'
+import NotificationDot from '../components/NotificationDot'
 
 const MobileLayout = () => {
   const location = useLocation()
@@ -26,19 +27,22 @@ const MobileLayout = () => {
       </div>
       <div className="fixed bottom-0 h-16 w-full border-t-2 border-blue-800 bg-gray-900">
         <div className="flex h-full flex-row">
-          {mobileMenu.map(({ name, path, icon }) => (
+          {mobileMenu.map(({ name, path, icon, notificationDot }) => (
             <div
               key={name}
               className={clsx(
                 'w-1/4 transition-colors duration-500',
                 (location.pathname === path ||
                   (path === '/' && !anythingIsSelected)) &&
-                  'bg-sky-800'
+                  'bg-blue-800'
               )}
             >
               <Link to={path}>
                 <div className="flex h-full cursor-pointer flex-col items-center justify-center">
-                  <div>{icon}</div>
+                  <div className="relative px-1">
+                    {notificationDot && <NotificationDot />}
+                    {icon}
+                  </div>
                   <div className="pt-2 text-xs">{name}</div>
                 </div>
               </Link>

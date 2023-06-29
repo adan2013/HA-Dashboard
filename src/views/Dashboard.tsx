@@ -1,8 +1,72 @@
 import clsx from 'clsx'
 import { Link } from 'react-router-dom'
-import { cloneElement } from 'react'
+import { cloneElement, useEffect, useState } from 'react'
+import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined'
 import { sectionTiles } from '../layout/menus'
 import { useLayoutContext } from '../contexts/OutletContext'
+import Weather from './Weather'
+import Notifications from './Notifications'
+
+const dayNames = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday'
+]
+
+const monthNames = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+]
+
+const getTime = (now: Date) => {
+  const h = now.getHours() < 10 ? `0${now.getHours()}` : now.getHours()
+  const m = now.getMinutes() < 10 ? `0${now.getMinutes()}` : now.getMinutes()
+  return `${h}:${m}`
+}
+
+const getDay = (now: Date) => dayNames[now.getDay()]
+
+const getDate = (now: Date) => {
+  const day = now.getDate() < 10 ? `0${now.getDate()}` : now.getDate()
+  const month = monthNames[now.getMonth()]
+  const year = now.getFullYear()
+  return `${day} ${month} ${year}`
+}
+
+const TimeAndDate = () => {
+  const [now, setNow] = useState(new Date())
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(new Date())
+    }, 60000)
+    return () => clearInterval(timer)
+  }, [])
+
+  return (
+    <>
+      <div className="text-7xl">{getTime(now)}</div>
+      <div className="flex flex-col justify-center text-gray-200">
+        <div className="text-xl">{getDay(now)}</div>
+        <div className="text-xl">{getDate(now)}</div>
+      </div>
+    </>
+  )
+}
 
 const Dashboard = () => {
   const layout = useLayoutContext()
@@ -36,19 +100,20 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="grid grid-cols-2">
-      <div className="col-span-2 flex h-24 flex-row gap-4 border-b-2 border-gray-500 p-1">
-        <div className="text-7xl">12:00</div>
-        <div className="flex flex-col text-gray-200">
-          <div className="text-xl">Monday</div>
-          <div className="text-xl">01 Jan 2023</div>
+    <div className="relative grid grid-cols-2">
+      <div className="col-span-2 flex h-24 flex-row gap-4 border-b-2 border-gray-500 p-3">
+        <TimeAndDate />
+        <div className="absolute right-5 top-6 flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border-2 border-transparent transition-colors hover:border-gray-200">
+          <Link to="/customization">
+            <MoreHorizOutlinedIcon className="!text-[2rem]" />
+          </Link>
         </div>
       </div>
-      <div className="p-3">
-        <h2>Weather</h2>
+      <div className="h-[calc(100vh-20rem)] p-3">
+        <Weather />
       </div>
       <div className="border-l-2 border-gray-500 p-3">
-        <h2>Notifications</h2>
+        <Notifications />
       </div>
     </div>
   )

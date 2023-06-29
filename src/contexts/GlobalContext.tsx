@@ -7,10 +7,12 @@ type ProviderProps = {
 
 export type GlobalContextType = {
   theme: ActiveTheme
+  notifications: string[] // TODO change to custom type
 }
 
 const globalContext = createContext<GlobalContextType>({
-  theme: 'Blue'
+  theme: 'Blue',
+  notifications: []
 })
 
 export const useGlobalContext = () => useContext(globalContext)
@@ -18,7 +20,8 @@ export const useGlobalContext = () => useContext(globalContext)
 export const GlobalContextProvider = ({ children }: ProviderProps) => {
   const value = useMemo<GlobalContextType>(
     () => ({
-      theme: 'Blue'
+      theme: 'Blue',
+      notifications: ['1', '2', '3']
     }),
     []
   )

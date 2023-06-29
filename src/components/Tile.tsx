@@ -75,12 +75,14 @@ const Tile = (propsTile: TileProps) => {
       )}
       onClick={tile.disabled ? undefined : tile.onClick}
     >
-      <div className="px-3 py-2 text-lg">
+      <div className="text-md px-3 py-2">
         <div className="font-bold">{tile.title}</div>
-        {tile.subtitle && <div className="font-light">{tile.subtitle}</div>}
+        {tile.subtitle && (
+          <div className="text-sm font-light">{tile.subtitle}</div>
+        )}
       </div>
       {tile.metadata && (
-        <div className="absolute bottom-0 left-0 px-3 py-2 text-sm text-gray-200">
+        <div className="absolute bottom-0 left-0 px-3 py-2 text-xs text-gray-200">
           {tile.metadata.map(meta => (
             <div key={meta}>{meta}</div>
           ))}

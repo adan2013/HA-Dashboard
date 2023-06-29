@@ -1,3 +1,3 @@
-const Notifications = () => <h1>customization settings</h1>
+const Customization = () => <h1>customization settings</h1>
 
-export default Notifications
+export default Customization
