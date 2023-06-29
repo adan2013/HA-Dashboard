@@ -30,6 +30,14 @@ const Light = () => (
       />
       <Tile title="Table light" size="horizontal" />
       <Tile title="Door lamp" size="big" />
+      <Tile title="Table light" size="horizontal" />
+      <Tile title="Door lamp" size="big" />
+      <Tile title="Table light" size="horizontal" />
+      <Tile title="Table light" size="horizontal" />
+      <Tile title="Table light" size="horizontal" />
+      <Tile title="Table light" />
+      <Tile title="Door lamp" size="big" />
+      <Tile title="Door lamp" size="big" />
       <Tile
         title="TV light"
         subtitle="On"

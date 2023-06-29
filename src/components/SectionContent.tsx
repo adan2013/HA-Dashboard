@@ -5,7 +5,9 @@ type SectionContentProps = {
 }
 
 const SectionContent = ({ children }: SectionContentProps) => (
-  <div className="flex flex-col lg:flex-row">{children}</div>
+  <div className="flex flex-col lg:h-[calc(100vh-12rem)] lg:flex-row lg:overflow-y-hidden lg:overflow-x-scroll lg:px-5">
+    {children}
+  </div>
 )
 
 export default SectionContent

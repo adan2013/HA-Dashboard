@@ -18,9 +18,9 @@ const DesktopLayout = () => {
 
   return (
     <div className="text-white">
-      <div className="min-h-screen overflow-x-hidden bg-gray-800 p-4">
+      <div className="min-h-screen overflow-hidden bg-gray-800 p-4 lg:p-0">
         {pageTitle && collapsed && (
-          <div className="my-6 text-3xl font-bold">{pageTitle}</div>
+          <div className="my-6 text-3xl font-bold lg:pl-5">{pageTitle}</div>
         )}
         <Outlet context={context} />
       </div>
