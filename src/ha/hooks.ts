@@ -16,11 +16,11 @@ export const useHomeAssistantStatus = (): ConnectionStatus => {
   return status
 }
 
-export const useHomeAssistantEntity = (id: string): EntityState => {
+export const useHomeAssistantEntity = (entityName: string): EntityState => {
   const [state, setState] = useState<EntityState>(null)
   const ha = useHomeAssistant()
 
-  useEffect(() => ha.subscribeToEntity(id, setState), [id, ha])
+  useEffect(() => ha.subscribeToEntity(entityName, setState), [entityName, ha])
 
   return state
 }

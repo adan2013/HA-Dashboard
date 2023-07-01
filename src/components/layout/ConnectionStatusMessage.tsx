@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import clsx from 'clsx'
-import { ConnectionStatus } from '../ha/utils'
-import { useHomeAssistantStatus } from '../ha/hooks'
+import { ConnectionStatus } from '../../ha/utils'
+import { useHomeAssistantStatus } from '../../ha/hooks'
 
 type StyleType = {
   color: string
@@ -10,6 +10,7 @@ type StyleType = {
 
 const getStyle = (status: ConnectionStatus): StyleType => {
   switch (status) {
+    case 'synced':
     case 'authorized':
       return {
         color: 'bg-green-500',

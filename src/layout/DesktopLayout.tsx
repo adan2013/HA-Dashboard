@@ -5,7 +5,7 @@ import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined'
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
 import { pageMetadata, sectionTiles } from './menus'
 import { OutletContextType } from '../contexts/OutletContext'
-import NotificationDot from '../components/NotificationDot'
+import NotificationDot from '../components/layout/NotificationDot'
 
 const DesktopLayout = () => {
   const location = useLocation()

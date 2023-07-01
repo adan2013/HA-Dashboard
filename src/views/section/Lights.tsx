@@ -1,18 +1,36 @@
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
-import SectionContent from '../../components/SectionContent'
-import TileGroup from '../../components/TileGroup'
+import TileSection from '../../components/layout/TileSection'
+import TileGroup from '../../components/layout/TileGroup'
 import Tile from '../../components/Tile'
+import LightTile from '../../components/entityTiles/LightTile'
 
 const Light = () => (
-  <SectionContent>
+  <TileSection>
     <TileGroup name="Living room">
+      <LightTile
+        title="Table light"
+        entityName="tableLight"
+        lightType="ceiling"
+      />
+      <LightTile
+        title="Front ambient light"
+        entityName="kitchen-node Ambient front"
+        lightType="ceiling"
+      />
+      <LightTile
+        title="Back ambient light"
+        entityName="kitchen-node Ambient back"
+        lightType="ceiling"
+      />
+    </TileGroup>
+    <TileGroup name="Test 1">
       <Tile
         title="Lamp"
         subtitle="Off"
         icon={<LightbulbOutlinedIcon />}
         onClick={() => console.log('click')}
-        turnedOff
+        isTurnedOff
       />
       <Tile
         title="Temperature"
@@ -48,13 +66,13 @@ const Light = () => (
       />
     </TileGroup>
 
-    <TileGroup name="Kitchen">
+    <TileGroup name="Test 2">
       <Tile
         title="Lamp"
         subtitle="Off"
         icon={<LightbulbOutlinedIcon />}
         onClick={() => console.log('click')}
-        turnedOff
+        isTurnedOff
       />
       <Tile
         title="Temperature"
@@ -82,13 +100,13 @@ const Light = () => (
       />
     </TileGroup>
 
-    <TileGroup name="Bathroom">
+    <TileGroup name="Test 3">
       <Tile
         title="Lamp"
         subtitle="Off"
         icon={<LightbulbOutlinedIcon />}
         onClick={() => console.log('click')}
-        turnedOff
+        isTurnedOff
       />
       <Tile
         title="Temperature"
@@ -115,7 +133,7 @@ const Light = () => (
         onClick={() => console.log('click')}
       />
     </TileGroup>
-  </SectionContent>
+  </TileSection>
 )
 
 export default Light

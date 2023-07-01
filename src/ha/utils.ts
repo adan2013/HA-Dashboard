@@ -5,6 +5,7 @@ export interface SocketMessageInterface {
 
 export interface EntityAttributeInterface {
   friendly_name: string
+  linkquality: number
 }
 
 export type MessageOptions = {
@@ -27,6 +28,7 @@ export type EntityState = {
 }
 
 export type ConnectionStatus =
+  | 'synced'
   | 'authorized'
   | 'connected'
   | 'disconnected'

@@ -1,5 +1,5 @@
 import { ReactNode, useRef, useEffect, useState } from 'react'
-import { useLayoutContext } from '../contexts/OutletContext'
+import { useLayoutContext } from '../../contexts/OutletContext'
 
 type TilesGroupProps = {
   name: string

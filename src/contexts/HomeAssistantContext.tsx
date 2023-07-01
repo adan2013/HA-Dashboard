@@ -6,7 +6,7 @@ import {
   useEffect
 } from 'react'
 import HomeAssistantWebSocketAPI from '../ha/HomeAssistantWebSocketAPI'
-import ConnectionStatusMessage from '../components/ConnectionStatusMessage'
+import ConnectionStatusMessage from '../components/layout/ConnectionStatusMessage'
 
 type ProviderProps = {
   children: ReactElement

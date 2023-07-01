@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import { cloneElement, ReactElement } from 'react'
+import PowerOffOutlinedIcon from '@mui/icons-material/PowerOffOutlined'
 
 export type TileSize = 'standard' | 'horizontal' | 'big'
 
@@ -18,9 +19,10 @@ export type TileProps = {
   iconClassnames?: string
   icon?: ReactElement
   size?: TileSize
-  turnedOff?: boolean
-  disabled?: boolean
+  isTurnedOff?: boolean
+  isUnavailable?: boolean
   onClick?: () => void
+  onHold?: () => void // TODO implement
   customBody?: ReactElement
 }
 
@@ -31,7 +33,7 @@ const Tile = (propsTile: TileProps) => {
   }
 
   let backgroundColor = tile.tileColor || 'bg-blue-900'
-  if (tile.disabled) {
+  if (tile.isUnavailable) {
     backgroundColor = 'bg-gray-600'
   }
 
@@ -69,11 +71,13 @@ const Tile = (propsTile: TileProps) => {
         tile.size === 'standard' && 'aspect-square',
         tile.size === 'horizontal' && 'col-span-2 aspect-[2/1]',
         tile.size === 'big' && 'col-span-2 row-span-2 aspect-square',
-        (tile.turnedOff || tile.disabled) && 'opacity-50',
-        tile.onClick && !tile.disabled && 'cursor-pointer hover:border-white',
+        (tile.isTurnedOff || tile.isUnavailable) && 'opacity-50',
+        tile.onClick &&
+          !tile.isUnavailable &&
+          'cursor-pointer hover:border-white',
         backgroundColor
       )}
-      onClick={tile.disabled ? undefined : tile.onClick}
+      onClick={tile.isUnavailable ? undefined : tile.onClick}
     >
       <div className="text-md px-3 py-2">
         <div className="font-bold">{tile.title}</div>
@@ -81,11 +85,16 @@ const Tile = (propsTile: TileProps) => {
           <div className="text-sm font-light">{tile.subtitle}</div>
         )}
       </div>
-      {tile.metadata && (
+      {tile.metadata && !tile.isUnavailable && (
         <div className="absolute bottom-0 left-0 px-3 py-2 text-xs text-gray-200">
           {tile.metadata.map(meta => (
             <div key={meta}>{meta}</div>
           ))}
+        </div>
+      )}
+      {tile.isUnavailable && (
+        <div className="absolute bottom-2 left-2 text-red-500">
+          <PowerOffOutlinedIcon />
         </div>
       )}
       {renderValue()}

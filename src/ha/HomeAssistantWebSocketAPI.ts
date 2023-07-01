@@ -32,6 +32,10 @@ class HomeAssistantWebSocketAPI {
     this.emitConnectionStatusUpdate(status)
   }
 
+  private getEntity(entityName: string): EntityState {
+    return this.entities.find(e => e.attributes.friendly_name === entityName)
+  }
+
   private subscribe(
     id: string,
     callback: UpdateListenerCallback
@@ -45,13 +49,19 @@ class HomeAssistantWebSocketAPI {
   }
 
   subscribeToEntity(
-    entityId: string,
+    entityName: string,
     callback: UpdateListenerCallback
   ): ListenerRemover {
-    const unsubscribe = this.subscribe(entityId, callback)
-    const currentState = this.entities.find(e => e.id === entityId)
-    callback(currentState, this.status)
-    return unsubscribe
+    const currentState = this.getEntity(entityName)
+    if (currentState) {
+      const unsubscribe = this.subscribe(entityName, callback)
+      callback(currentState, this.status)
+      return unsubscribe
+    }
+    console.warn(
+      `Failed to subscribe to the entity "${entityName}" - entity not found!`
+    )
+    return undefined
   }
 
   subscribeToStatus(callback: UpdateListenerCallback): ListenerRemover {
@@ -60,8 +70,8 @@ class HomeAssistantWebSocketAPI {
     return unsubscribe
   }
 
-  private emitEntityUpdate(entityId: string, state: EntityState) {
-    const listeners = this.updateListeners.filter(l => l.id === entityId)
+  private emitEntityUpdate(entityName: string, state: EntityState) {
+    const listeners = this.updateListeners.filter(l => l.id === entityName)
     listeners.forEach(l => l.callback(state, this.status))
   }
 
@@ -70,6 +80,34 @@ class HomeAssistantWebSocketAPI {
       l => l.id === 'connectionStatus'
     )
     listeners.forEach(l => l.callback(null, status))
+  }
+
+  public callService(
+    entityId: string,
+    domain: string,
+    service: string,
+    data: object = {}
+  ) {
+    this.sendMsg(
+      'call_service',
+      {
+        domain,
+        service,
+        service_data: data,
+        target: {
+          entity_id: entityId
+        }
+      },
+      {
+        resultCallback: resp => {
+          if (!resp.success) {
+            console.error(
+              `Failed to call service ${domain}.${service} for entity ${entityId}!`
+            )
+          }
+        }
+      }
+    )
   }
 
   private sendMsg(
@@ -119,6 +157,7 @@ class HomeAssistantWebSocketAPI {
           console.log(
             `entity states fetched successfully! Count: ${this.entities.length}`
           )
+          this.status = 'synced'
         }
       }
     )
@@ -137,11 +176,13 @@ class HomeAssistantWebSocketAPI {
           if (changedEntityIndex >= 0) {
             this.entities[changedEntityIndex] = mapEntityState(newState)
             this.emitEntityUpdate(
-              this.entities[changedEntityIndex].id,
+              this.entities[changedEntityIndex].attributes.friendly_name,
               this.entities[changedEntityIndex]
             )
           } else {
-            console.warn(`changed entity not found! ID: ${newState.entity_id}`)
+            console.warn(
+              `changed entity not found! ID: ${newState.attributes.friendly_name}`
+            )
           }
         }
       }

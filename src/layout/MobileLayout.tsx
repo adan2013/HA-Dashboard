@@ -3,7 +3,7 @@ import { useLocation, Link, Outlet } from 'react-router-dom'
 
 import { mobileMenu, pageMetadata } from './menus'
 import { OutletContextType } from '../contexts/OutletContext'
-import NotificationDot from '../components/NotificationDot'
+import NotificationDot from '../components/layout/NotificationDot'
 
 const MobileLayout = () => {
   const location = useLocation()
