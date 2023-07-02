@@ -4,25 +4,53 @@ import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import Tile from '../../components/Tile'
 import LightTile from '../../components/entityTiles/LightTile'
+import PlaceholderTile from '../../PlaceholderTile'
 
-const Light = () => (
+const Lights = () => (
   <TileSection>
     <TileGroup name="Living room">
+      <PlaceholderTile title="Ambient light" size="big" />
+      <PlaceholderTile title="TV light" size="standard" />
       <LightTile
         title="Table light"
         entityName="tableLight"
         lightType="ceiling"
+        lockColorTemperature
       />
       <LightTile
-        title="Front ambient light"
+        title="Front ambient section"
         entityName="kitchen-node Ambient front"
         lightType="ceiling"
       />
       <LightTile
-        title="Back ambient light"
+        title="Back ambient section"
         entityName="kitchen-node Ambient back"
         lightType="ceiling"
       />
+      <PlaceholderTile title="Cabinet lights" size="standard" />
+      <PlaceholderTile title="Auto cabinet light control" size="standard" />
+      <PlaceholderTile title="Turn off all lights" size="standard" />
+    </TileGroup>
+    <TileGroup name="Kitchen">
+      <LightTile
+        title="Left side lamp"
+        entityName="kitchen-node Left kitchen"
+      />
+      <LightTile
+        title="Right side lamp"
+        entityName="kitchen-node Right kitchen"
+      />
+      <PlaceholderTile title="Movement detection" size="standard" />
+      <PlaceholderTile title="Light detection" size="standard" />
+      <PlaceholderTile title="Turn off all lights" size="standard" />
+    </TileGroup>
+    <TileGroup name="Others">
+      <LightTile
+        title="Bathroom light"
+        entityName="bathroomLight"
+        lightType="ceiling"
+      />
+      <LightTile title="WC light" entityName="wcLight" lightType="ceiling" />
     </TileGroup>
     <TileGroup name="Test 1">
       <Tile
@@ -136,4 +164,4 @@ const Light = () => (
   </TileSection>
 )
 
-export default Light
+export default Lights

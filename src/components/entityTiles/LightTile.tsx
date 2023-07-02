@@ -33,6 +33,7 @@ type LightTileProps = {
   lightType?: LightType
   disableToggle?: boolean
   allowManualControl?: boolean // TODO implement
+  lockColorTemperature?: boolean // TODO implement
 }
 
 const getStatusSubtitle = (isUnavailable: boolean, isActive: boolean) => {
@@ -51,6 +52,7 @@ const getIcon = (lightType: LightType, isActive: boolean) => {
 
 const getMetadata = (
   isActive,
+  lockColorTemperature,
   attributes: EntityAttributeInterface
 ): string[] => {
   if (isActive) {
@@ -62,7 +64,7 @@ const getMetadata = (
       const brightnessPercentage = Math.round((brightness / 255) * 100)
       lines.push(`${brightnessPercentage}%`)
     }
-    if (colorTemp) lines.push(`${colorTemp}K`)
+    if (colorTemp && !lockColorTemperature) lines.push(`${colorTemp}K`)
     return lines
   }
   return undefined
@@ -72,7 +74,8 @@ const LightTile = ({
   title,
   entityName,
   lightType,
-  disableToggle
+  disableToggle,
+  lockColorTemperature
 }: LightTileProps) => {
   const haEntity = useHomeAssistantEntity(entityName)
   const ha = useHomeAssistant()
@@ -91,7 +94,7 @@ const LightTile = ({
     icon: getIcon(lightType, isActive),
     isTurnedOff: !isActive,
     iconClassnames: isActive ? 'text-yellow-500' : undefined,
-    metadata: getMetadata(isActive, haEntity?.attributes),
+    metadata: getMetadata(isActive, lockColorTemperature, haEntity?.attributes),
     onClick: disableToggle ? undefined : toggleLight,
     isUnavailable
   }
@@ -101,7 +104,8 @@ const LightTile = ({
 LightTile.defaultProps = {
   lightType: 'bulb',
   disableToggle: false,
-  allowManualControl: false
+  allowManualControl: false,
+  lockColorTemperature: false
 }
 
 export default LightTile

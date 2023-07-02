@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { cloneElement, ReactElement } from 'react'
 import PowerOffOutlinedIcon from '@mui/icons-material/PowerOffOutlined'
 
-export type TileSize = 'standard' | 'horizontal' | 'big'
+export type TileSize = 'standard' | 'horizontal' | 'big' | 'fullHeight'
 
 export type TileValue = {
   main: string | number
@@ -71,6 +71,8 @@ const Tile = (propsTile: TileProps) => {
         tile.size === 'standard' && 'aspect-square',
         tile.size === 'horizontal' && 'col-span-2 aspect-[2/1]',
         tile.size === 'big' && 'col-span-2 row-span-2 aspect-square',
+        tile.size === 'fullHeight' &&
+          'col-span-2 row-span-full min-h-[450px] min-w-[300px]',
         (tile.isTurnedOff || tile.isUnavailable) && 'opacity-50',
         tile.onClick &&
           !tile.isUnavailable &&
