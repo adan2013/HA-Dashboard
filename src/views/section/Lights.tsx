@@ -1,10 +1,12 @@
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
+import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
-import LightTile from '../../components/entityTiles/LightTile'
+import LightTile from '../../components/entityTiles/lights/LightTile'
 import PlaceholderTile from '../../PlaceholderTile'
-import ToggleHelperTile from '../../components/entityTiles/ToggleHelperTile'
+import ToggleHelperTile from '../../components/entityTiles/toggleHelper/ToggleHelperTile'
+import CallRemoteControlTile from '../../components/entityTiles/services/CallRemoteControlTile'
 
 const Lights = () => (
   <TileSection>
@@ -12,7 +14,12 @@ const Lights = () => (
       <PlaceholderTile title="Ambient light scenes" size="big" />
       <PlaceholderTile title="Table light scenes" size="horizontal" />
       <PlaceholderTile title="TV light scenes" size="horizontal" />
-      <PlaceholderTile title="TV light" size="standard" />
+      <LightTile
+        title="TV light"
+        entityName="tvLight"
+        lightType="ceiling"
+        lockColorTemperature
+      />
       <LightTile
         title="Table light"
         entityName="tableLight"
@@ -31,7 +38,12 @@ const Lights = () => (
       />
       <PlaceholderTile title="Cabinet lights" size="standard" />
       <PlaceholderTile title="Auto cabinet light control" size="standard" />
-      <PlaceholderTile title="Turn off all lights" size="standard" />
+      <CallRemoteControlTile
+        title="Turn off all lights"
+        icon={<PowerSettingsNewOutlinedIcon />}
+        rcName="livingRoom"
+        button="button_6_single"
+      />
     </TileGroup>
     <TileGroup name="Kitchen">
       <ToggleHelperTile
@@ -57,7 +69,12 @@ const Lights = () => (
         entityName="kitchenIgnoreSunPosition"
         reverseState
       />
-      <PlaceholderTile title="Turn off all lights" size="standard" />
+      <CallRemoteControlTile
+        title="Turn off all lights"
+        icon={<PowerSettingsNewOutlinedIcon />}
+        rcName="kitchen"
+        button="button_3_single"
+      />
     </TileGroup>
     <TileGroup name="Others">
       <LightTile
