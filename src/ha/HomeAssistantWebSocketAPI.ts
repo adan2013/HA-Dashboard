@@ -152,8 +152,8 @@ class HomeAssistantWebSocketAPI {
       'get_states',
       {},
       {
-        resultCallback: result => {
-          this.entities = result.map(mapEntityState)
+        resultCallback: resp => {
+          this.entities = resp.result.map(mapEntityState)
           console.log(
             `entity states fetched successfully! Count: ${this.entities.length}`
           )
@@ -217,7 +217,7 @@ class HomeAssistantWebSocketAPI {
             l => l.msgId === msg.id
           )
           if (resultListener) {
-            resultListener.callback(msg.result)
+            resultListener.callback(msg)
             this.resultListeners = this.resultListeners.filter(
               l => l.msgId !== msg.id
             )
