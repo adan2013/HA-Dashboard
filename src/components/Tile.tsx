@@ -55,7 +55,9 @@ const Tile = (propsTile: TileProps) => {
               <div className="text-right text-sm text-gray-300">
                 {data.unit || ''}
               </div>
-              <div className="text-lg">{data.decimal || ''}</div>
+              {data.decimal !== undefined && (
+                <div className="text-lg">.{data.decimal}</div>
+              )}
             </div>
           )}
         </div>
