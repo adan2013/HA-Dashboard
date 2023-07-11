@@ -16,9 +16,9 @@ export const getStatusSubtitle = (
 export const getIcon = (lightType: LightType, isActive: boolean) => {
   switch (lightType) {
     case 'ceiling':
-      return isActive ? <LightOutlinedIcon /> : <LightIcon />
+      return isActive ? <LightIcon /> : <LightOutlinedIcon />
     default:
-      return isActive ? <LightbulbIcon /> : <LightbulbOutlinedIcon />
+      return isActive ? <LightbulbOutlinedIcon /> : <LightbulbIcon />
   }
 }
 

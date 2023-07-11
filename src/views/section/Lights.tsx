@@ -7,13 +7,37 @@ import LightTile from '../../components/entityTiles/lights/LightTile'
 import PlaceholderTile from '../../PlaceholderTile'
 import ToggleHelperTile from '../../components/entityTiles/toggleHelper/ToggleHelperTile'
 import CallRemoteControlTile from '../../components/entityTiles/services/CallRemoteControlTile'
+import LightSceneSwitcher from '../../components/entityTiles/lights/LightSceneSwitcher'
 
 const Lights = () => (
   <TileSection>
     <TileGroup name="Living room">
-      <PlaceholderTile title="Ambient light scenes" size="big" />
-      <PlaceholderTile title="Table light scenes" size="horizontal" />
-      <PlaceholderTile title="TV light scenes" size="horizontal" />
+      <LightSceneSwitcher
+        title="Ambient light scenes"
+        options={[
+          { msg: 'daily', name: 'Daily' },
+          { msg: 'photography', name: 'Photography' },
+          { msg: 'ambient', name: 'Ambient' },
+          { msg: 'cinema', name: 'Cinema' },
+          { msg: 'off', name: 'Off', extended: true }
+        ]}
+      />
+      <LightSceneSwitcher
+        title="Table light scenes"
+        options={[
+          { msg: 'daily', name: 'Daily' },
+          { msg: 'max', name: 'Max' },
+          { msg: 'off', name: 'Off' }
+        ]}
+      />
+      <LightSceneSwitcher
+        title="TV light scenes"
+        options={[
+          { msg: 'max', name: 'Max' },
+          { msg: 'ambient', name: 'Ambient' },
+          { msg: 'off', name: 'Off' }
+        ]}
+      />
       <LightTile
         title="TV light"
         entityName="tvLight"
