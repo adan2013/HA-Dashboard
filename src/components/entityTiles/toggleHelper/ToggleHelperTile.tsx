@@ -26,21 +26,20 @@ const ToggleHelperTile = ({
   onIcon,
   offIcon
 }: ToggleHelperTileProps) => {
-  const haEntity = useHomeAssistantEntity(entityName)
+  const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
   const ha = useHomeAssistant()
 
-  const isUnavailable = !haEntity
-  const entityIsActive = haEntity?.state === 'on'
+  const entityIsActive = entityState?.state === 'on'
   const isActive = reverseState ? !entityIsActive : entityIsActive
   const toggleLight = () => {
     if (isUnavailable) return
     const action = entityIsActive ? 'turn_off' : 'turn_on'
-    ha.callService(haEntity.id, 'input_boolean', action)
+    ha.callService(entityState.id, 'input_boolean', action)
   }
 
   const tileData: TileProps = {
     title,
-    subtitle: haEntity?.state,
+    subtitle: entityState?.state,
     icon: isActive ? onIcon : offIcon,
     isTurnedOff: !isActive,
     iconClassnames: isActive ? onColor : offColor,

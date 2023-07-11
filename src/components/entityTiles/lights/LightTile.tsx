@@ -20,16 +20,15 @@ const LightTile = ({
   disableToggle,
   lockColorTemperature
 }: LightTileProps) => {
-  const haEntity = useHomeAssistantEntity(entityName)
+  const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
   const ha = useHomeAssistant()
 
-  const isUnavailable = !haEntity
-  const isActive = haEntity?.state === 'on'
+  const isActive = entityState?.state === 'on'
 
   const toggleLight = () => {
     if (isUnavailable) return
     const action = isActive ? 'turn_off' : 'turn_on'
-    ha.callService(haEntity.id, 'light', action)
+    ha.callService(entityState.id, 'light', action)
   }
 
   const tileData: TileProps = {
@@ -38,7 +37,11 @@ const LightTile = ({
     icon: getIcon(lightType, isActive),
     isTurnedOff: !isActive,
     iconClassnames: isActive ? 'text-yellow-500' : undefined,
-    metadata: getMetadata(isActive, lockColorTemperature, haEntity?.attributes),
+    metadata: getMetadata(
+      isActive,
+      lockColorTemperature,
+      entityState?.attributes
+    ),
     onClick: disableToggle ? undefined : toggleLight,
     isUnavailable
   }
