@@ -102,7 +102,7 @@ class WebSocketConnector {
 
   onReceive(event: MessageEvent) {
     const msg = JSON.parse(event.data)
-    if (getEnvVar('DEV')) {
+    if (msg.type !== 'event' && getEnvVar('DEV')) {
       console.log('[WS]', msg)
     }
     if (msg.type === 'ping') {
