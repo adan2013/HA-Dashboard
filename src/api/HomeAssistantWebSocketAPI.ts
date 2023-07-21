@@ -1,61 +1,56 @@
+import EventEmitter from 'eventemitter3'
 import {
-  ConnectionStatus,
+  HomeAssistantConnectionState,
   EntityState,
-  getEnvVar,
   mapEntityState,
   MessageOptions,
-  SocketListener,
   SocketMessageInterface,
   ListenerRemover,
-  UpdateListener,
-  UpdateListenerCallback
+  EntityListenerCallback,
+  getEnvVar,
+  ConnectionStatusListenerCallback
 } from './utils'
+import WebSocketConnector from './WebSocketConnector'
 
-class HomeAssistantWebSocketAPI {
-  private socket: WebSocket
-  private token: string
-  private _status: ConnectionStatus = 'disconnected'
+class HomeAssistantWebSocketAPI extends WebSocketConnector {
+  private readonly token: string
+  private _status: HomeAssistantConnectionState = 'disconnected'
 
-  host: string
+  private resultEmitter: EventEmitter<string, object>
+  private eventEmitter: EventEmitter<string, object>
+  private statusEmitter: EventEmitter<string, HomeAssistantConnectionState>
+  private entityEmitter: EventEmitter<string, EntityState>
+
   msgId: number
-  resultListeners: SocketListener[] = []
-  eventListeners: SocketListener[] = []
-  updateListeners: UpdateListener[] = []
   entities: EntityState[] = []
 
-  public get status(): ConnectionStatus {
+  public get status(): HomeAssistantConnectionState {
     return this._status
   }
 
-  public set status(status: ConnectionStatus) {
+  private changeStatus(status: HomeAssistantConnectionState) {
     this._status = status
-    this.emitConnectionStatusUpdate(status)
+    this.statusEmitter?.emit('api-status', status)
   }
 
   private getEntity(entityName: string): EntityState {
     return this.entities.find(e => e.attributes.friendly_name === entityName)
   }
 
-  private subscribe(
-    id: string,
-    callback: UpdateListenerCallback
-  ): ListenerRemover {
-    this.updateListeners.push({ id, callback })
-    return () => {
-      this.updateListeners = this.updateListeners.filter(
-        l => l.callback !== callback
-      )
-    }
-  }
-
   subscribeToEntity(
     entityName: string,
-    callback: UpdateListenerCallback
+    callback: EntityListenerCallback
   ): ListenerRemover {
     const currentState = this.getEntity(entityName)
     if (currentState) {
-      const unsubscribe = this.subscribe(entityName, callback)
-      callback(currentState, this.status)
+      const eventHandler = (state: EntityState) => {
+        callback(state, this.status)
+      }
+      this.entityEmitter.on(entityName, eventHandler)
+      const unsubscribe = () => {
+        this.entityEmitter.off(entityName, eventHandler)
+      }
+      eventHandler(currentState)
       return unsubscribe
     }
     console.warn(
@@ -64,22 +59,19 @@ class HomeAssistantWebSocketAPI {
     return undefined
   }
 
-  subscribeToStatus(callback: UpdateListenerCallback): ListenerRemover {
-    const unsubscribe = this.subscribe('connectionStatus', callback)
-    callback(null, this.status)
+  subscribeToConnectionState(
+    callback: ConnectionStatusListenerCallback
+  ): ListenerRemover {
+    this.statusEmitter.on('api-status', callback)
+    const unsubscribe = () => {
+      this.statusEmitter.off('api-status', callback)
+    }
+    callback(this.status)
     return unsubscribe
   }
 
   private emitEntityUpdate(entityName: string, state: EntityState) {
-    const listeners = this.updateListeners.filter(l => l.id === entityName)
-    listeners.forEach(l => l.callback(state, this.status))
-  }
-
-  private emitConnectionStatusUpdate(status: ConnectionStatus) {
-    const listeners = this.updateListeners.filter(
-      l => l.id === 'connectionStatus'
-    )
-    listeners.forEach(l => l.callback(null, status))
+    this.entityEmitter.emit(entityName, state)
   }
 
   public callService(
@@ -130,21 +122,12 @@ class HomeAssistantWebSocketAPI {
       this.msgId += 1
     }
     if (msgOptions.resultCallback) {
-      this.resultListeners.push({
-        msgId: msg.id,
-        callback: msgOptions.resultCallback
-      })
+      this.resultEmitter.once(`result/${msg.id}`, msgOptions.resultCallback)
     }
     if (msgOptions.eventCallback) {
-      this.eventListeners.push({
-        msgId: msg.id,
-        callback: msgOptions.eventCallback
-      })
+      this.eventEmitter.on(`event/${msg.id}`, msgOptions.eventCallback)
     }
-    if (getEnvVar('DEV')) {
-      console.log('[PC]', msg)
-    }
-    this.socket.send(JSON.stringify(msg))
+    this.send(msg)
   }
 
   private initializeAfterAuthentication() {
@@ -157,7 +140,7 @@ class HomeAssistantWebSocketAPI {
           console.log(
             `entity states fetched successfully! Count: ${this.entities.length}`
           )
-          this.status = 'synced'
+          this.changeStatus('synced')
         }
       }
     )
@@ -189,11 +172,9 @@ class HomeAssistantWebSocketAPI {
     )
   }
 
-  private onReceive(event: MessageEvent) {
+  override onReceive(event: MessageEvent) {
+    super.onReceive(event)
     const msg = JSON.parse(event.data)
-    if (getEnvVar('DEV')) {
-      console.log('[HA]', msg)
-    }
     switch (msg.type) {
       case 'auth_required':
         this.sendMsg(
@@ -205,76 +186,52 @@ class HomeAssistantWebSocketAPI {
         )
         return
       case 'auth_invalid':
-        this.status = 'authError'
+        this.changeStatus('authError')
         return
       case 'auth_ok':
-        this.status = 'authorized'
+        this.changeStatus('authorized')
         this.initializeAfterAuthentication()
         return
       case 'result':
         if (msg.success) {
-          const resultListener = this.resultListeners.find(
-            l => l.msgId === msg.id
-          )
-          if (resultListener) {
-            resultListener.callback(msg)
-            this.resultListeners = this.resultListeners.filter(
-              l => l.msgId !== msg.id
-            )
-          } else {
-            console.warn(`no result listener found for ID: ${msg.id}`)
-          }
+          this.resultEmitter.emit(`result/${msg.id}`, msg)
         } else {
           console.warn('result message not successful', msg.error)
         }
         break
       case 'event':
-        {
-          const eventListener = this.eventListeners.find(
-            l => l.msgId === msg.id
-          )
-          if (eventListener) {
-            eventListener.callback(msg.event)
-          } else {
-            console.warn(`no event listener found for ID: ${msg.id}`)
-          }
-        }
+        this.eventEmitter.emit(`event/${msg.id}`, msg.event)
         break
       default:
         console.warn('unhandled event type called', msg)
     }
   }
 
-  connect() {
-    this.status = 'disconnected'
-    this.msgId = 1
-    this.host = getEnvVar('VITE_HA_HOST')
-    this.token = getEnvVar('VITE_HA_TOKEN')
-    if (this.host === '' || this.token === '') {
+  override onConnectionStateChange(state: boolean) {
+    super.onConnectionStateChange(state)
+    this.changeStatus(state ? 'connected' : 'disconnected')
+  }
+
+  constructor() {
+    const host = getEnvVar('VITE_HA_HOST')
+    const token = getEnvVar('VITE_HA_TOKEN')
+    if (host === '' || token === '') {
       console.error(
         'Home Assistant VITE_HA_HOST and VITE_HA_TOKEN must be provided!'
       )
       return
     }
-    console.log('connecting to host', this.host)
-    this.socket = new WebSocket(`ws://${this.host}/api/websocket`)
-    this.socket.onmessage = e => this.onReceive(e)
-    this.socket.onopen = () => {
-      this.status = 'connected'
-    }
-    this.socket.onclose = () => {
-      this.status = 'disconnected'
-    }
-    this.socket.onerror = err => {
-      console.error('websocket error', err)
-    }
-  }
-
-  disconnect() {
-    if (this.socket) {
-      console.log('closing the connection...')
-      this.socket.close()
-    }
+    super(`${host}/api/websocket`)
+    this.changeStatus('disconnected')
+    this.msgId = 1
+    this.token = token
+    this.resultEmitter = new EventEmitter<string, object>()
+    this.eventEmitter = new EventEmitter<string, object>()
+    this.statusEmitter = new EventEmitter<
+      string,
+      HomeAssistantConnectionState
+    >()
+    this.entityEmitter = new EventEmitter<string, EntityState>()
   }
 }
 

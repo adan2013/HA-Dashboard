@@ -2,7 +2,7 @@ import LightOutlinedIcon from '@mui/icons-material/LightOutlined'
 import LightIcon from '@mui/icons-material/Light'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined'
-import { EntityAttributeInterface } from '../../../ha/utils'
+import { EntityAttributeInterface } from '../../../api/utils'
 import { LightAttributesInterface, LightType } from './lightTypes'
 
 export const getStatusSubtitle = (

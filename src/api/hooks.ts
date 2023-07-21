@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react'
-import { ConnectionStatus, EntityState } from './utils'
+import { HomeAssistantConnectionState, EntityState } from './utils'
 import { useHomeAssistant } from '../contexts/HomeAssistantContext'
 
-export const useHomeAssistantStatus = (): ConnectionStatus => {
-  const [status, setStatus] = useState<ConnectionStatus>('disconnected')
+export const useHomeAssistantStatus = (): HomeAssistantConnectionState => {
+  const [status, setStatus] =
+    useState<HomeAssistantConnectionState>('disconnected')
   const ha = useHomeAssistant()
 
-  useEffect(
-    () => ha.subscribeToStatus((_, newStatus) => setStatus(newStatus)),
-    [ha]
-  )
+  useEffect(() => ha?.subscribeToConnectionState(setStatus), [ha])
 
   return status
 }
@@ -30,7 +28,7 @@ export const useHomeAssistantEntity = (
 
   useEffect(
     () =>
-      ha.subscribeToEntity(entityName, data => {
+      ha?.subscribeToEntity(entityName, data => {
         setState({
           entityState: data,
           isUnavailable:

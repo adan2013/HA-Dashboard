@@ -1,5 +1,5 @@
 import Tile, { TileProps, TileValue } from '../../Tile'
-import { useHomeAssistantEntity } from '../../../ha/hooks'
+import { useHomeAssistantEntity } from '../../../api/hooks'
 
 type ClimateValueTileProps = {
   title: string
@@ -16,7 +16,7 @@ const ClimateValueTile = ({
 
   const getValue = (): TileValue | string => {
     const main = Math.floor(Number.parseFloat(entityState?.state))
-    const decimal = Math.round((Number.parseFloat(entityState?.state) % 1) * 10)
+    const decimal = Math.floor((Number.parseFloat(entityState?.state) % 1) * 10)
     switch (valueType) {
       case 'temperature':
         return {

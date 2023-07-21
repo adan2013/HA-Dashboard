@@ -14,11 +14,6 @@ export type MessageOptions = {
   eventCallback: (event: any) => void
 }
 
-export type SocketListener = {
-  msgId: number
-  callback?: (callbackData: any) => void
-}
-
 export type EntityState = {
   id: string
   state: string
@@ -27,7 +22,7 @@ export type EntityState = {
   attributes: EntityAttributeInterface
 }
 
-export type ConnectionStatus =
+export type HomeAssistantConnectionState =
   | 'synced'
   | 'authorized'
   | 'connected'
@@ -36,15 +31,14 @@ export type ConnectionStatus =
 
 export type ListenerRemover = () => void
 
-export type UpdateListenerCallback = (
+export type EntityListenerCallback = (
   entity: EntityState,
-  connection: ConnectionStatus
+  connection: HomeAssistantConnectionState
 ) => void
 
-export type UpdateListener = {
-  id: 'connectionStatus' | string
-  callback: UpdateListenerCallback
-}
+export type ConnectionStatusListenerCallback = (
+  state: HomeAssistantConnectionState
+) => void
 
 export const getEnvVar = (name: string): string =>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

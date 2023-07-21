@@ -1,5 +1,5 @@
 import Tile, { TileProps } from '../../Tile'
-import { useHomeAssistantEntity } from '../../../ha/hooks'
+import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
 import { LightType } from './lightTypes'
 import { getIcon, getMetadata, getStatusSubtitle } from './lightUtils'

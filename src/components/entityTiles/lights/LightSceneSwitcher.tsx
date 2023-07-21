@@ -52,7 +52,7 @@ const LightSceneSwitcher = ({ title, options }: LightSceneSwitcherProps) => {
   const size: TileSize = options.length > 4 ? 'big' : 'horizontal'
 
   const sendEventMessage = () => {
-    // ha.callService(entityState.id, 'light', action)
+    // api.callService(entityState.id, 'light', action)
   }
 
   const tileData: TileProps = {

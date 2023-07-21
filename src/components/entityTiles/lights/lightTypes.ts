@@ -1,4 +1,4 @@
-import { EntityAttributeInterface } from '../../../ha/utils'
+import { EntityAttributeInterface } from '../../../api/utils'
 
 export type ColorMode =
   | 'onoff'

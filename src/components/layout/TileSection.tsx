@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { useHomeAssistantStatus } from '../../ha/hooks'
+import { useHomeAssistantStatus } from '../../api/hooks'
 
 type SectionContentProps = {
   children: ReactNode
