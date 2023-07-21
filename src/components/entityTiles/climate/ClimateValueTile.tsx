@@ -15,8 +15,9 @@ const ClimateValueTile = ({
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
 
   const getValue = (): TileValue | string => {
-    const main = Math.floor(Number.parseFloat(entityState?.state))
-    const decimal = Math.floor((Number.parseFloat(entityState?.state) % 1) * 10)
+    const main = Math.floor(Number.parseFloat(entityState?.state)) || 0
+    const decimal =
+      Math.floor((Number.parseFloat(entityState?.state) % 1) * 10) || 0
     switch (valueType) {
       case 'temperature':
         return {

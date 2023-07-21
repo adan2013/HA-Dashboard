@@ -15,11 +15,7 @@ import WebSocketConnector from './WebSocketConnector'
 class HomeAssistantWebSocketAPI extends WebSocketConnector {
   private readonly token: string
   private _status: HomeAssistantConnectionState = 'disconnected'
-
-  private resultEmitter: EventEmitter<string, object>
-  private eventEmitter: EventEmitter<string, object>
-  private statusEmitter: EventEmitter<string, HomeAssistantConnectionState>
-  private entityEmitter: EventEmitter<string, EntityState>
+  private readonly events: EventEmitter
 
   msgId: number
   entities: EntityState[] = []
@@ -30,7 +26,7 @@ class HomeAssistantWebSocketAPI extends WebSocketConnector {
 
   private changeStatus(status: HomeAssistantConnectionState) {
     this._status = status
-    this.statusEmitter?.emit('api-status', status)
+    this.events?.emit('api-status', status)
   }
 
   private getEntity(entityName: string): EntityState {
@@ -46,9 +42,9 @@ class HomeAssistantWebSocketAPI extends WebSocketConnector {
       const eventHandler = (state: EntityState) => {
         callback(state, this.status)
       }
-      this.entityEmitter.on(entityName, eventHandler)
+      this.events.on(entityName, eventHandler)
       const unsubscribe = () => {
-        this.entityEmitter.off(entityName, eventHandler)
+        this.events.off(entityName, eventHandler)
       }
       eventHandler(currentState)
       return unsubscribe
@@ -62,16 +58,12 @@ class HomeAssistantWebSocketAPI extends WebSocketConnector {
   subscribeToConnectionState(
     callback: ConnectionStatusListenerCallback
   ): ListenerRemover {
-    this.statusEmitter.on('api-status', callback)
+    this.events.on('api-status', callback)
     const unsubscribe = () => {
-      this.statusEmitter.off('api-status', callback)
+      this.events.off('api-status', callback)
     }
     callback(this.status)
     return unsubscribe
-  }
-
-  private emitEntityUpdate(entityName: string, state: EntityState) {
-    this.entityEmitter.emit(entityName, state)
   }
 
   public callService(
@@ -122,12 +114,16 @@ class HomeAssistantWebSocketAPI extends WebSocketConnector {
       this.msgId += 1
     }
     if (msgOptions.resultCallback) {
-      this.resultEmitter.once(`result/${msg.id}`, msgOptions.resultCallback)
+      this.events.once(`result/${msg.id}`, msgOptions.resultCallback)
     }
     if (msgOptions.eventCallback) {
-      this.eventEmitter.on(`event/${msg.id}`, msgOptions.eventCallback)
+      this.events.on(`event/${msg.id}`, msgOptions.eventCallback)
     }
     this.send(msg)
+  }
+
+  override sendPingMessage() {
+    this.sendMsg('ping')
   }
 
   private initializeAfterAuthentication() {
@@ -158,7 +154,7 @@ class HomeAssistantWebSocketAPI extends WebSocketConnector {
           )
           if (changedEntityIndex >= 0) {
             this.entities[changedEntityIndex] = mapEntityState(newState)
-            this.emitEntityUpdate(
+            this.events.emit(
               this.entities[changedEntityIndex].attributes.friendly_name,
               this.entities[changedEntityIndex]
             )
@@ -194,13 +190,16 @@ class HomeAssistantWebSocketAPI extends WebSocketConnector {
         return
       case 'result':
         if (msg.success) {
-          this.resultEmitter.emit(`result/${msg.id}`, msg)
+          this.events.emit(`result/${msg.id}`, msg)
         } else {
           console.warn('result message not successful', msg.error)
         }
         break
       case 'event':
-        this.eventEmitter.emit(`event/${msg.id}`, msg.event)
+        this.events.emit(`event/${msg.id}`, msg.event)
+        break
+      case 'ping':
+      case 'pong':
         break
       default:
         console.warn('unhandled event type called', msg)
@@ -225,13 +224,7 @@ class HomeAssistantWebSocketAPI extends WebSocketConnector {
     this.changeStatus('disconnected')
     this.msgId = 1
     this.token = token
-    this.resultEmitter = new EventEmitter<string, object>()
-    this.eventEmitter = new EventEmitter<string, object>()
-    this.statusEmitter = new EventEmitter<
-      string,
-      HomeAssistantConnectionState
-    >()
-    this.entityEmitter = new EventEmitter<string, EntityState>()
+    this.events = new EventEmitter()
   }
 }
 
