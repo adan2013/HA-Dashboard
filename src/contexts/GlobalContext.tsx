@@ -1,35 +1,60 @@
-import { createContext, ReactElement, useContext, useMemo } from 'react'
-import { ActiveTheme } from '../themes'
+import {
+  createContext,
+  ReactElement,
+  useContext,
+  useState,
+  useMemo
+} from 'react'
+import {
+  CustomizationConfig,
+  readCustomizationConfig,
+  saveCustomizationConfig
+} from './utils'
+import { themes } from '../themes'
+import { backgrounds } from '../backgrounds'
 
 type ProviderProps = {
   children: ReactElement
 }
 
 export type GlobalContextType = {
-  theme: ActiveTheme
-  background: number
-  notifications: string[] // TODO change to custom type
-  sound?: boolean
+  notifications: string[] // TODO change to custom type and move to different context
+  settings: CustomizationConfig
+  updateSettings: (settings: Partial<CustomizationConfig>) => void
 }
 
-const globalContext = createContext<GlobalContextType>({
-  theme: 'Blue',
-  background: 0,
-  notifications: [],
-  sound: false
-})
+const globalContext = createContext<GlobalContextType>(null)
 
 export const useGlobalContext = () => useContext(globalContext)
 
+export const useTheme = () => {
+  const context = useGlobalContext()
+  return themes.find(t => t.id === context.settings.theme)
+}
+
+export const useBackground = () => {
+  const context = useGlobalContext()
+  return backgrounds.find(bg => bg.id === context.settings.background)
+}
+
 export const GlobalContextProvider = ({ children }: ProviderProps) => {
-  const value = useMemo<GlobalContextType>(
+  const [settings, setSettings] = useState<CustomizationConfig>(
+    readCustomizationConfig()
+  )
+
+  const value = useMemo(
     () => ({
-      theme: 'Blue',
-      background: 0,
-      notifications: ['1', '2', '3'],
-      sound: false
+      notifications: [],
+      settings,
+      updateSettings: newSettings => {
+        setSettings(current => {
+          const updatedSettings = { ...current, ...newSettings }
+          saveCustomizationConfig(updatedSettings)
+          return updatedSettings
+        })
+      }
     }),
-    []
+    [settings]
   )
 
   return (

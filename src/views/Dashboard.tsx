@@ -6,6 +6,7 @@ import { sectionTiles } from '../layout/menus'
 import { useLayoutContext } from '../contexts/OutletContext'
 import Weather from './Weather'
 import Notifications from './Notifications'
+import { useTheme } from '../contexts/GlobalContext'
 
 const dayNames = [
   'Sunday',
@@ -60,7 +61,7 @@ const TimeAndDate = () => {
   return (
     <>
       <div className="text-7xl">{getTime(now)}</div>
-      <div className="flex flex-col justify-center text-gray-200">
+      <div className="flex flex-col justify-center">
         <div className="text-xl">{getDay(now)}</div>
         <div className="text-xl">{getDate(now)}</div>
       </div>
@@ -70,6 +71,7 @@ const TimeAndDate = () => {
 
 const Dashboard = () => {
   const layout = useLayoutContext()
+  const theme = useTheme()
 
   if (layout?.isMobile) {
     return (
@@ -101,9 +103,14 @@ const Dashboard = () => {
 
   return (
     <div className="relative grid grid-cols-2">
-      <div className="col-span-2 flex h-24 flex-row gap-4 border-b-2 border-gray-500 p-3">
+      <div
+        className={clsx(
+          'col-span-2 flex h-24 flex-row gap-4 border-b-2 p-3',
+          theme.border
+        )}
+      >
         <TimeAndDate />
-        <div className="absolute right-5 top-6 flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border-2 border-transparent transition-colors hover:border-gray-200">
+        <div className="absolute right-5 top-6 flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border-2 border-transparent transition-colors hover:border-gray-500">
           <Link to="/customization">
             <MoreHorizOutlinedIcon className="!text-[2rem]" />
           </Link>
@@ -112,7 +119,7 @@ const Dashboard = () => {
       <div className="h-[calc(100vh-20rem)] p-3">
         <Weather />
       </div>
-      <div className="border-l-2 border-gray-500 p-3">
+      <div className={clsx('border-l-2 p-3', theme.border)}>
         <Notifications />
       </div>
     </div>
