@@ -70,7 +70,8 @@ const Automations = () => (
         title="Plug temperature"
         entityName="washingMachinePlug device temperature"
         customProps={{
-          valueRange: undefined
+          valueRange: undefined,
+          showDecimal: false
         }}
       />
     </TileGroup>

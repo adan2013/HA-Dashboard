@@ -4,7 +4,7 @@ import PlaceholderTile from '../../PlaceholderTile'
 
 const Messages = () => (
   <TileSection>
-    <TileGroup name="Sensors">
+    <TileGroup name="Security">
       <PlaceholderTile title="Filter water leak" size="standard" />
       <PlaceholderTile title="Washing machine water leak" size="standard" />
       <PlaceholderTile title="Bathroom water leak" size="standard" />

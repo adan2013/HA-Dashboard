@@ -18,7 +18,7 @@ export const themes: Theme[] = [
   },
   {
     id: 2,
-    name: 'Gray',
+    name: 'Dark gray',
     text: 'text-white',
     primary: 'bg-gray-900',
     secondary: 'bg-gray-600',
