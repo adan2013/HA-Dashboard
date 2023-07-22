@@ -76,7 +76,7 @@ const Tile = (propsTile: TileProps, ref: MutableRefObject<HTMLDivElement>) => {
         tile.size === 'horizontal' && 'col-span-2 aspect-[2/1]',
         tile.size === 'big' && 'col-span-2 row-span-2 aspect-square',
         (tile.isTurnedOff || tile.isUnavailable) && 'opacity-50',
-        tile.onClick &&
+        (tile.onClick || tile.onHold) &&
           !tile.isUnavailable &&
           'cursor-pointer hover:border-white',
         backgroundColor,

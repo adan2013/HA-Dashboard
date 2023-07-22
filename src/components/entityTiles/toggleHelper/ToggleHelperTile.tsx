@@ -41,9 +41,7 @@ const ToggleHelperTile = ({
 
   const tileData: TileProps = {
     title,
-    subtitle: stateNames
-      ? stateNames[entityIsActive ? 1 : 0]
-      : entityState?.state,
+    subtitle: stateNames ? stateNames[isActive ? 1 : 0] : entityState?.state,
     icon: isActive ? onIcon : offIcon,
     isTurnedOff: !isActive,
     iconClassnames: isActive ? onColor : offColor,

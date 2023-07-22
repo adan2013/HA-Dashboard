@@ -6,12 +6,25 @@ import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
 import ToggleHelperTile from '../../components/entityTiles/toggleHelper/ToggleHelperTile'
+import DateCountdownHelperTile from '../../components/entityTiles/toggleHelper/DateCountdownHelperTile'
 
 const Automations = () => (
   <TileSection>
     <TileGroup name="Kitchen">
-      <PlaceholderTile title="Water filter" size="horizontal" />
-      <PlaceholderTile title="Water membrane filter" size="horizontal" />
+      <DateCountdownHelperTile
+        title="Water filter"
+        entityName="kitchenFilterService"
+        interval={120}
+        warningThreshold={21}
+        criticalThreshold={7}
+      />
+      <DateCountdownHelperTile
+        title="Water membrane filter"
+        entityName="kitchenMembraneFilterService"
+        interval={365}
+        warningThreshold={21}
+        criticalThreshold={7}
+      />
       <ToggleHelperTile
         title="Motion sensor"
         entityName="kitchen-node Motion in kitchen"
