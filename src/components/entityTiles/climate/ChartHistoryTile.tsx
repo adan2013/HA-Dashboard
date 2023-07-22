@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import Tile, { TileProps, TileValue } from '../../Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
-import BackgroundHistoryChart, { ChartData } from './BackgroundHistoryChart'
+import BackgroundHistoryChart, { ChartData } from '../../charts/BackgroundHistoryChart'
 import HomeAssistantRestAPI from '../../../api/HomeAssistantRestAPI'
 import { getHistoryStats, NumberRange } from './utils'
 

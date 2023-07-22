@@ -45,6 +45,7 @@ const BackgroundHistoryChart = ({
             stroke="#ffffff"
             strokeWidth="2"
             fill="#ababab"
+            connectNulls
           />
           <YAxis type="number" domain={[minValue, maxValue]} hide />
         </AreaChart>

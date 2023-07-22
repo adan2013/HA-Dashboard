@@ -5,13 +5,13 @@ import PlaceholderTile from '../../PlaceholderTile'
 const RemoteControl = () => (
   <TileSection>
     <TileGroup name="Living room">
-      <PlaceholderTile title="Living room remote" size="fullHeight" />
+      <PlaceholderTile title="Living room remote" size="big" />
     </TileGroup>
     <TileGroup name="Kitchen">
-      <PlaceholderTile title="Kitchen room remote" size="fullHeight" />
+      <PlaceholderTile title="Kitchen room remote" size="big" />
     </TileGroup>
     <TileGroup name="Daniel">
-      <PlaceholderTile title="Daniel remote" size="fullHeight" />
+      <PlaceholderTile title="Daniel remote" size="big" />
     </TileGroup>
   </TileSection>
 )

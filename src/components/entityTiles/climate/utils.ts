@@ -1,4 +1,4 @@
-import { ChartData } from './BackgroundHistoryChart'
+import { ChartData } from '../../charts/BackgroundHistoryChart'
 
 export type NumberRange = [number, number]
 

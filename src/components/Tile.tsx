@@ -3,7 +3,7 @@ import { cloneElement, forwardRef, MutableRefObject, ReactElement } from 'react'
 import PowerOffOutlinedIcon from '@mui/icons-material/PowerOffOutlined'
 import { useTheme } from '../contexts/GlobalContext'
 
-export type TileSize = 'standard' | 'horizontal' | 'big' | 'fullHeight'
+export type TileSize = 'standard' | 'horizontal' | 'big'
 
 export type TileValue = {
   main: string | number
@@ -56,9 +56,7 @@ const Tile = (propsTile: TileProps, ref: MutableRefObject<HTMLDivElement>) => {
           <div className="text-5xl">{data.main}</div>
           {(data.decimal || data.unit) && (
             <div className="ml-1">
-              <div className="text-right text-sm text-gray-300">
-                {data.unit || ''}
-              </div>
+              <div className="text-right text-sm">{data.unit || ''}</div>
               {data.decimal !== undefined && (
                 <div className="text-lg">.{data.decimal}</div>
               )}
@@ -77,8 +75,6 @@ const Tile = (propsTile: TileProps, ref: MutableRefObject<HTMLDivElement>) => {
         tile.size === 'standard' && 'aspect-square',
         tile.size === 'horizontal' && 'col-span-2 aspect-[2/1]',
         tile.size === 'big' && 'col-span-2 row-span-2 aspect-square',
-        tile.size === 'fullHeight' &&
-          'col-span-2 row-span-full min-h-[450px] min-w-[300px]',
         (tile.isTurnedOff || tile.isUnavailable) && 'opacity-50',
         tile.onClick &&
           !tile.isUnavailable &&
