@@ -14,6 +14,7 @@ type ToggleHelperTileProps = {
   offColor?: string
   onIcon?: ReactElement
   offIcon?: ReactElement
+  stateNames?: [string, string]
 }
 
 const ToggleHelperTile = ({
@@ -24,7 +25,8 @@ const ToggleHelperTile = ({
   onColor,
   offColor,
   onIcon,
-  offIcon
+  offIcon,
+  stateNames
 }: ToggleHelperTileProps) => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
   const ha = useHomeAssistant()
@@ -39,7 +41,9 @@ const ToggleHelperTile = ({
 
   const tileData: TileProps = {
     title,
-    subtitle: entityState?.state,
+    subtitle: stateNames
+      ? stateNames[entityIsActive ? 1 : 0]
+      : entityState?.state,
     icon: isActive ? onIcon : offIcon,
     isTurnedOff: !isActive,
     iconClassnames: isActive ? onColor : offColor,

@@ -10,7 +10,7 @@ export const getStatusSubtitle = (
   isActive: boolean
 ) => {
   if (isUnavailable) return undefined
-  return isActive ? 'On' : 'Off'
+  return isActive ? 'on' : 'off'
 }
 
 export const getIcon = (lightType: LightType, isActive: boolean) => {
