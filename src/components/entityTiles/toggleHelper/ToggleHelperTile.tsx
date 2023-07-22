@@ -50,8 +50,6 @@ const ToggleHelperTile = ({
 }
 
 ToggleHelperTile.defaultProps = {
-  readonly: false,
-  reverseState: false,
   onColor: 'text-green-500',
   offColor: undefined,
   onIcon: <ToggleOnOutlinedIcon />,

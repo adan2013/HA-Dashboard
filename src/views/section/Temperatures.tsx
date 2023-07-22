@@ -1,44 +1,41 @@
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
-import ClimateValueTile from '../../components/entityTiles/climate/ClimateValueTile'
+import {
+  HumidityChartTile,
+  TemperatureChartTile
+} from '../../components/entityTiles/climate/ChartHistoryTile'
 
 const Temperatures = () => (
   <TileSection>
     <TileGroup name="Living room">
-      <ClimateValueTile
+      <TemperatureChartTile
         title="Temperature"
         entityName="livingRoomTempSensor temperature"
-        valueType="temperature"
       />
-      <ClimateValueTile
+      <HumidityChartTile
         title="Humidity"
         entityName="livingRoomTempSensor humidity"
-        valueType="humidity"
       />
     </TileGroup>
     <TileGroup name="Daniel">
-      <ClimateValueTile
+      <TemperatureChartTile
         title="Temperature"
         entityName="danielTempSensor temperature"
-        valueType="temperature"
       />
-      <ClimateValueTile
+      <HumidityChartTile
         title="Humidity"
         entityName="danielTempSensor humidity"
-        valueType="humidity"
       />
     </TileGroup>
     <TileGroup name="Ania">
-      <ClimateValueTile
+      <TemperatureChartTile
         title="Temperature"
         entityName="aniaTempSensor temperature"
-        valueType="temperature"
       />
-      <ClimateValueTile
+      <HumidityChartTile
         title="Humidity"
         entityName="aniaTempSensor humidity"
-        valueType="humidity"
       />
       <PlaceholderTile title="Air humidifier" size="standard" />
       <PlaceholderTile title="Automatic moisturizing" size="standard" />
@@ -46,10 +43,13 @@ const Temperatures = () => (
     <TileGroup name="Server rack">
       <PlaceholderTile title="Temperature" size="horizontal" />
       <PlaceholderTile title="Humidity" size="horizontal" />
-      <ClimateValueTile
+      <TemperatureChartTile
         title="NAS temperature"
         entityName="SynologyNAS Temperature"
-        valueType="temperature"
+        customProps={{
+          valueRange: [40, 50],
+          hideChart: true
+        }}
       />
     </TileGroup>
   </TileSection>

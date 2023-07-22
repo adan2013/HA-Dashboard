@@ -49,10 +49,7 @@ const LightTile = ({
 }
 
 LightTile.defaultProps = {
-  lightType: 'bulb',
-  disableToggle: false,
-  allowManualControl: false,
-  lockColorTemperature: false
+  lightType: 'bulb'
 }
 
 export default LightTile

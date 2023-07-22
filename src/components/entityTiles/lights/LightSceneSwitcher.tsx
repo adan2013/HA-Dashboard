@@ -65,6 +65,4 @@ const LightSceneSwitcher = ({ title, options }: LightSceneSwitcherProps) => {
   return <Tile {...tileData} />
 }
 
-LightSceneSwitcher.defaultProps = {}
-
 export default LightSceneSwitcher

@@ -36,9 +36,4 @@ const CallServiceTile = ({
   return <Tile {...tileData} />
 }
 
-CallServiceTile.defaultProps = {
-  icon: undefined,
-  payload: undefined
-}
-
 export default CallServiceTile

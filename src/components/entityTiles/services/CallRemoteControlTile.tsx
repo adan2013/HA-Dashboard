@@ -26,8 +26,4 @@ const CallRemoteControlTile = ({
   />
 )
 
-CallRemoteControlTile.defaultProps = {
-  icon: undefined
-}
-
 export default CallRemoteControlTile

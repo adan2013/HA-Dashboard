@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { cloneElement, ReactElement } from 'react'
+import { cloneElement, forwardRef, MutableRefObject, ReactElement } from 'react'
 import PowerOffOutlinedIcon from '@mui/icons-material/PowerOffOutlined'
 
 export type TileSize = 'standard' | 'horizontal' | 'big' | 'fullHeight'
@@ -26,7 +26,7 @@ export type TileProps = {
   customBody?: ReactElement
 }
 
-const Tile = (propsTile: TileProps) => {
+const Tile = (propsTile: TileProps, ref: MutableRefObject<HTMLDivElement>) => {
   const tile = {
     size: 'standard',
     ...propsTile
@@ -48,7 +48,7 @@ const Tile = (propsTile: TileProps) => {
               unit: ''
             }
       return (
-        <div className="absolute bottom-0 right-0 flex flex-row items-end px-3 py-2">
+        <div className="absolute bottom-0 right-0 z-10 flex flex-row items-end px-3 py-2">
           <div className="text-5xl">{data.main}</div>
           {(data.decimal || data.unit) && (
             <div className="ml-1">
@@ -82,6 +82,7 @@ const Tile = (propsTile: TileProps) => {
         backgroundColor
       )}
       onClick={tile.isUnavailable ? undefined : tile.onClick}
+      ref={ref}
     >
       <div className="text-md px-3 py-2">
         <div className="font-bold">{tile.title}</div>
@@ -90,7 +91,7 @@ const Tile = (propsTile: TileProps) => {
         )}
       </div>
       {tile.metadata && !tile.isUnavailable && (
-        <div className="absolute bottom-0 left-0 px-3 py-2 text-xs text-gray-200">
+        <div className="absolute bottom-0 left-0 z-10 px-3 py-2 text-xs text-gray-200">
           {tile.metadata.map(meta => (
             <div key={meta}>{meta}</div>
           ))}
@@ -114,4 +115,4 @@ const Tile = (propsTile: TileProps) => {
   )
 }
 
-export default Tile
+export default forwardRef(Tile)
