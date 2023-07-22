@@ -4,7 +4,7 @@ import PlaceholderTile from '../../PlaceholderTile'
 import {
   HumidityChartTile,
   TemperatureChartTile
-} from '../../components/entityTiles/climate/ChartHistoryTile'
+} from '../../components/entityTiles/climate/ClimateTile'
 
 const Temperatures = () => (
   <TileSection>

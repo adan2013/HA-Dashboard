@@ -7,6 +7,12 @@ import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
 import ToggleHelperTile from '../../components/entityTiles/toggleHelper/ToggleHelperTile'
 import DateCountdownHelperTile from '../../components/entityTiles/toggleHelper/DateCountdownHelperTile'
+import SwitchTile from '../../components/entityTiles/switch/SwitchTile'
+import {
+  EnergyConsumptionChartTile,
+  PowerChartTile
+} from '../../components/entityTiles/switch/PlugTile'
+import { TemperatureChartTile } from '../../components/entityTiles/climate/ClimateTile'
 
 const Automations = () => (
   <TileSection>
@@ -44,12 +50,29 @@ const Automations = () => (
       />
     </TileGroup>
     <TileGroup name="Bathroom">
-      <PlaceholderTile
+      <PowerChartTile
         title="Washing machine power consumption"
-        size="horizontal"
+        entityName="washingMachinePlug power"
+        customProps={{
+          valueRange: [0, 400]
+        }}
       />
-      <PlaceholderTile title="Washing machine plug" size="standard" />
+      <SwitchTile
+        title="Washing machine plug"
+        entityName="washingMachinePlug"
+      />
       <PlaceholderTile title="Washing machine status" size="standard" />
+      <EnergyConsumptionChartTile
+        title="Washing machine energy consumption"
+        entityName="washingMachinePlug energy"
+      />
+      <TemperatureChartTile
+        title="Plug temperature"
+        entityName="washingMachinePlug device temperature"
+        customProps={{
+          valueRange: undefined
+        }}
+      />
     </TileGroup>
     <TileGroup name="Daniel">
       <PlaceholderTile title="Sunrise" size="horizontal" />

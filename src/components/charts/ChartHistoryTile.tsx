@@ -1,11 +1,11 @@
-import { useState, useEffect, useMemo } from 'react'
-import Tile, { TileProps, TileValue } from '../../Tile'
-import { useHomeAssistantEntity } from '../../../api/hooks'
-import BackgroundHistoryChart, { ChartData } from '../../charts/BackgroundHistoryChart'
-import HomeAssistantRestAPI from '../../../api/HomeAssistantRestAPI'
-import { getHistoryStats, NumberRange } from './utils'
+import { useEffect, useMemo, useState } from 'react'
+import { getHistoryStats, NumberRange } from '../entityTiles/climate/utils'
+import { useHomeAssistantEntity } from '../../api/hooks'
+import BackgroundHistoryChart, { ChartData } from './BackgroundHistoryChart'
+import HomeAssistantRestAPI from '../../api/HomeAssistantRestAPI'
+import Tile, { TileProps, TileValue } from '../Tile'
 
-type ChartHistoryTileProps = {
+export type ChartHistoryTileProps = {
   title: string
   entityName: string
   unit: string
@@ -51,8 +51,8 @@ const ChartHistoryTile = ({
     }
   }
 
-  const chartMinValue = valueRange ? valueRange[0] : null
-  const chartMaxValue = valueRange ? valueRange[1] : null
+  const chartMinValue = valueRange ? valueRange[0] : undefined
+  const chartMaxValue = valueRange ? valueRange[1] : undefined
 
   const tileData: TileProps = {
     title,
@@ -79,38 +79,3 @@ const ChartHistoryTile = ({
 }
 
 export default ChartHistoryTile
-
-type TypedChartHistoryTileProps = {
-  title: string
-  entityName: string
-  customProps?: Partial<ChartHistoryTileProps>
-}
-
-export const TemperatureChartTile = ({
-  title,
-  entityName,
-  customProps
-}: TypedChartHistoryTileProps) => (
-  <ChartHistoryTile
-    title={title}
-    entityName={entityName}
-    valueRange={[22, 27]}
-    unit="°C"
-    showDecimal
-    {...customProps}
-  />
-)
-
-export const HumidityChartTile = ({
-  title,
-  entityName,
-  customProps
-}: TypedChartHistoryTileProps) => (
-  <ChartHistoryTile
-    title={title}
-    entityName={entityName}
-    valueRange={[30, 70]}
-    unit="%"
-    {...customProps}
-  />
-)

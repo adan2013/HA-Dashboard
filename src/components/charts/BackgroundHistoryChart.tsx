@@ -47,7 +47,9 @@ const BackgroundHistoryChart = ({
             fill="#ababab"
             connectNulls
           />
-          <YAxis type="number" domain={[minValue, maxValue]} hide />
+          {minValue && maxValue && (
+            <YAxis type="number" domain={[minValue, maxValue]} hide />
+          )}
         </AreaChart>
       </ResponsiveContainer>
     </div>
