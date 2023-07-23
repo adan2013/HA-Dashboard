@@ -16,19 +16,11 @@ export type ClickHoldLogicOptions = {
   delay?: number
 }
 
-export type ClickHoldEvents = {
-  onMouseDown: (event: MouseEvent) => void
-  onTouchStart: (event: TouchEvent) => void
-  onMouseUp: (event: MouseEvent) => void
-  onMouseLeave: (event: MouseEvent) => void
-  onTouchEnd: (event: TouchEvent) => void
-}
-
 const useClickHoldLogic = (
   onClick: () => void,
   onLongPress: () => void,
   options: ClickHoldLogicOptions = {}
-): ClickHoldEvents => {
+) => {
   const [holdTriggered, setHoldTriggered] = useState(false)
   const timeout = useRef<number>()
   const target = useRef<HTMLDivElement>()

@@ -1,4 +1,5 @@
 import { PieChart, Pie, ResponsiveContainer } from 'recharts'
+import { toast } from 'react-toastify'
 import Tile, { TileProps } from '../../Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
@@ -61,7 +62,7 @@ const DateCountdownHelperTile = ({
   const deadline = new Date(entityState?.state)
   deadline.setDate(deadline.getDate() + interval)
   const daysLeft = Math.ceil((deadline.getTime() - today.getTime()) / 86400000)
-  const durability = Math.ceil((daysLeft * 100) / interval)
+  const durability = Math.max(Math.ceil((daysLeft * 100) / interval), 0)
 
   let chartColor = '#16a34a'
   if (warningThreshold && durability < warningThreshold) {
@@ -72,7 +73,7 @@ const DateCountdownHelperTile = ({
   }
 
   const displayToast = () => {
-    // TODO display toast - hold to reset the countdown
+    toast.info('Hold the tile to reset the countdown value')
   }
 
   const resetCountdown = () => {
@@ -81,6 +82,7 @@ const DateCountdownHelperTile = ({
     ha.callService(entityState.id, 'input_datetime', 'set_datetime', {
       datetime: new Date().toISOString()
     })
+    toast.success('The countdown has been reset')
   }
 
   const tileData: TileProps = {

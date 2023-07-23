@@ -13,6 +13,7 @@ export type ChartHistoryTileProps = {
   valueRange?: NumberRange
   hideMinMax?: boolean
   hideChart?: boolean
+  customTileProps?: Partial<TileProps>
 }
 
 const ChartHistoryTile = ({
@@ -22,7 +23,8 @@ const ChartHistoryTile = ({
   showDecimal,
   valueRange,
   hideMinMax,
-  hideChart
+  hideChart,
+  customTileProps
 }: ChartHistoryTileProps) => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
   const [history, setHistory] = useState<ChartData[]>(null)
@@ -58,7 +60,8 @@ const ChartHistoryTile = ({
     title,
     value: getValue(),
     size: 'horizontal',
-    isUnavailable
+    isUnavailable,
+    ...customTileProps
   }
 
   if (!hideChart && history) {

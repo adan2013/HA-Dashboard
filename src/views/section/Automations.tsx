@@ -57,21 +57,29 @@ const Automations = () => (
           valueRange: [0, 400]
         }}
       />
-      <SwitchTile
-        title="Washing machine plug"
-        entityName="washingMachinePlug"
-      />
-      <PlaceholderTile title="Washing machine status" size="standard" />
+      <SwitchTile title="WM plug" entityName="washingMachinePlug" />
+      <PlaceholderTile title="WM status" size="standard" />
       <EnergyConsumptionChartTile
-        title="Washing machine energy consumption"
+        title="WM energy consumption"
         entityName="washingMachinePlug energy"
+        customProps={{
+          hideMinMax: true,
+          hideChart: true,
+          customTileProps: {
+            size: 'standard'
+          }
+        }}
       />
       <TemperatureChartTile
-        title="Plug temperature"
+        title="WM plug temperature"
         entityName="washingMachinePlug device temperature"
         customProps={{
           valueRange: undefined,
-          showDecimal: false
+          showDecimal: false,
+          hideChart: true,
+          customTileProps: {
+            size: 'standard'
+          }
         }}
       />
     </TileGroup>
