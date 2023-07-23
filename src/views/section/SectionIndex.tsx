@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 import Lights from './Lights'
 import Temperatures from './Temperatures'
 import Automations from './Automations'
-import Messages from './Messages'
+import Alerts from './Alerts'
 import System from './System'
 import RemoteControl from './RemoteControl'
 
@@ -16,8 +16,8 @@ const SectionIndex = () => {
       return <Temperatures />
     case 'automations':
       return <Automations />
-    case 'messages':
-      return <Messages />
+    case 'alerts':
+      return <Alerts />
     case 'system':
       return <System />
     case 'remote-control':

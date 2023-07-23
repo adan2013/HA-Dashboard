@@ -39,7 +39,7 @@ export const pageMetadata: PageMetadata[] = [
   { path: '/section/lights', title: 'Lights' },
   { path: '/section/temperatures', title: 'Temperatures' },
   { path: '/section/automations', title: 'Automations' },
-  { path: '/section/messages', title: 'Messages' },
+  { path: '/section/alerts', title: 'Alerts' },
   { path: '/section/system', title: 'System' },
   { path: '/section/remote-control', title: 'Remote control' }
 ]
@@ -83,8 +83,8 @@ export const sectionTiles: MenuTile[] = [
     icon: <MemoryOutlinedIcon />
   },
   {
-    name: 'Messages',
-    path: '/section/messages',
+    name: 'Alerts',
+    path: '/section/alerts',
     background: 'bg-green-500',
     iconColor: 'text-green-300',
     icon: <ForumOutlinedIcon />

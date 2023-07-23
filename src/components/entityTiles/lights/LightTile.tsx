@@ -43,6 +43,7 @@ const LightTile = ({
       entityState?.attributes
     ),
     onClick: disableToggle ? undefined : toggleLight,
+    onHold: disableToggle ? undefined : () => console.log('HOLD'), // TODO implement modal
     isUnavailable
   }
   return <Tile {...tileData} />

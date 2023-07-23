@@ -2,7 +2,7 @@ import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
 
-const Messages = () => (
+const Alerts = () => (
   <TileSection>
     <TileGroup name="Security">
       <PlaceholderTile title="Filter water leak" size="standard" />
@@ -25,4 +25,4 @@ const Messages = () => (
   </TileSection>
 )
 
-export default Messages
+export default Alerts
