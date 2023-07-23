@@ -10,6 +10,7 @@ import Layout from './layout/Layout'
 import SectionIndex from './views/section/SectionIndex'
 import { GlobalContextProvider } from './contexts/GlobalContext'
 import { HomeAssistantContextProvider } from './contexts/HomeAssistantContext'
+import { ModalContextProvider } from './components/modals/ModalContext'
 
 const router = createBrowserRouter([
   {
@@ -48,7 +49,9 @@ function App() {
   return (
     <HomeAssistantContextProvider>
       <GlobalContextProvider>
-        <RouterProvider router={router} />
+        <ModalContextProvider>
+          <RouterProvider router={router} />
+        </ModalContextProvider>
       </GlobalContextProvider>
     </HomeAssistantContextProvider>
   )

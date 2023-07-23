@@ -3,6 +3,7 @@ import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
 import { LightType } from './lightTypes'
 import { getIcon, getMetadata, getStatusSubtitle } from './lightUtils'
+import { useModalContext } from '../../modals/ModalContext'
 
 type LightTileProps = {
   title: string
@@ -22,6 +23,7 @@ const LightTile = ({
 }: LightTileProps) => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
   const ha = useHomeAssistant()
+  const modal = useModalContext()
 
   const isActive = entityState?.state === 'on'
 
@@ -29,6 +31,14 @@ const LightTile = ({
     if (isUnavailable) return
     const action = isActive ? 'turn_off' : 'turn_on'
     ha.callService(entityState.id, 'light', action)
+  }
+
+  const openModal = () => {
+    modal.openModal('lightControl', {
+      title,
+      entityName,
+      lockColorTemperature
+    })
   }
 
   const tileData: TileProps = {
@@ -43,7 +53,7 @@ const LightTile = ({
       entityState?.attributes
     ),
     onClick: disableToggle ? undefined : toggleLight,
-    onHold: disableToggle ? undefined : () => console.log('HOLD'), // TODO implement modal
+    onHold: disableToggle ? undefined : openModal,
     isUnavailable
   }
   return <Tile {...tileData} />
