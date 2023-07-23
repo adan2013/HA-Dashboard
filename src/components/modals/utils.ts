@@ -1,6 +1,6 @@
 import { Styles } from 'react-modal'
 
-export type ModalType = 'confirmation' | 'lightControl'
+export type ModalType = 'confirmation' | 'lightControl' | 'historyChart'
 
 export type ConfirmationModalParams = {
   message?: string
@@ -14,7 +14,15 @@ export type LightControlModalParams = {
   lockColorTemperature?: boolean
 }
 
-export type ModalParams = ConfirmationModalParams | LightControlModalParams
+export type HistoryChartModalParams = {
+  title: string
+  entityName: string
+}
+
+export type ModalParams =
+  | ConfirmationModalParams
+  | LightControlModalParams
+  | HistoryChartModalParams
 
 export type ModalState = {
   isOpen: boolean

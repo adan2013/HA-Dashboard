@@ -33,7 +33,7 @@ const LightControlBody = () => {
           name={isTurnedOn ? 'Turn off' : 'Turn on'}
           onClick={toggleLight}
         />
-        <ModalButton name="Cancel" onClick={() => modal.closeModal()} />
+        <ModalButton name="Close" onClick={() => modal.closeModal()} />
       </ModalFooter>
     </ModalBody>
   )

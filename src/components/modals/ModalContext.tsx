@@ -9,6 +9,7 @@ import Modal from 'react-modal'
 import { getModalStyles, ModalParams, ModalState, ModalType } from './utils'
 import ConfirmationBody from './bodies/ConfirmationBody'
 import LightControlBody from './bodies/LightControlBody'
+import HistoryChartBody from './bodies/HistoryChartBody'
 
 type ProviderProps = {
   children: ReactElement
@@ -33,10 +34,6 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
     params: null
   })
 
-  const closeModal = () => {
-    setModalState(c => ({ ...c, isOpen: false }))
-  }
-
   const value: ModalContextType = useMemo(
     () => ({
       state: modalState,
@@ -47,7 +44,9 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
           params
         })
       },
-      closeModal
+      closeModal: () => {
+        setModalState(c => ({ ...c, isOpen: false }))
+      }
     }),
     [modalState]
   )
@@ -69,6 +68,8 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
         return <LightControlBody />
       case 'confirmation':
         return <ConfirmationBody />
+      case 'historyChart':
+        return <HistoryChartBody />
       default:
         return null
     }
@@ -80,7 +81,7 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
         {children}
         <Modal
           isOpen={modalState.isOpen}
-          onRequestClose={closeModal}
+          onRequestClose={value.closeModal}
           style={getModalStyles(getModalWidth())}
           closeTimeoutMS={300}
         >

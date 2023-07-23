@@ -4,6 +4,8 @@ import { useHomeAssistantEntity } from '../../api/hooks'
 import BackgroundHistoryChart, { ChartData } from './BackgroundHistoryChart'
 import HomeAssistantRestAPI from '../../api/HomeAssistantRestAPI'
 import Tile, { TileProps, TileValue } from '../Tile'
+import { useModalContext } from '../modals/ModalContext'
+import { HistoryChartModalParams } from '../modals/utils'
 
 export type ChartHistoryTileProps = {
   title: string
@@ -26,6 +28,7 @@ const ChartHistoryTile = ({
   hideChart,
   customTileProps
 }: ChartHistoryTileProps) => {
+  const modal = useModalContext()
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
   const [history, setHistory] = useState<ChartData[]>(null)
 
@@ -41,6 +44,14 @@ const ChartHistoryTile = ({
       })
     }
   }, [entityState])
+
+  const openHistoryModal = () => {
+    const params: HistoryChartModalParams = {
+      title,
+      entityName
+    }
+    modal.openModal('historyChart', params)
+  }
 
   const getValue = (): TileValue | string => {
     const main = Math.floor(Number.parseFloat(entityState?.state)) || 0
@@ -62,6 +73,7 @@ const ChartHistoryTile = ({
     title,
     value: getValue(),
     size: 'horizontal',
+    onClick: openHistoryModal,
     isUnavailable,
     ...customTileProps
   }
