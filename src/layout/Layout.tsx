@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ToastContainer } from 'react-toastify'
+import { Flip, ToastContainer } from 'react-toastify'
 import MobileLayout from './MobileLayout'
 import DesktopLayout from './DesktopLayout'
 import 'react-toastify/dist/ReactToastify.css'
@@ -28,6 +28,7 @@ const Layout = () => {
         draggable
         pauseOnHover
         theme="dark"
+        transition={Flip}
         limit={isMobile ? 2 : 4}
       />
     </>
