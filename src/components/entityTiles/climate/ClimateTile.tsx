@@ -18,7 +18,7 @@ export const TemperatureChartTile = ({
     entityName={entityName}
     valueRange={[22, 27]}
     unit="°C"
-    showDecimal
+    showDecimals={1}
     {...customProps}
   />
 )

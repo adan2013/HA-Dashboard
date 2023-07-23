@@ -17,7 +17,7 @@ export const PowerChartTile = ({
     title={title}
     entityName={entityName}
     unit="W"
-    showDecimal
+    showDecimals={1}
     {...customProps}
   />
 )
@@ -31,7 +31,7 @@ export const EnergyConsumptionChartTile = ({
     title={title}
     entityName={entityName}
     unit="kWh"
-    showDecimal
+    showDecimals={2}
     {...customProps}
   />
 )

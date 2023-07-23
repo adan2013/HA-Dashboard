@@ -81,8 +81,8 @@ const Automations = () => (
         entityName="washingMachinePlug device temperature"
         customProps={{
           valueRange: undefined,
-          showDecimal: false,
           hideChart: true,
+          showDecimals: 0,
           customTileProps: {
             size: 'standard'
           }

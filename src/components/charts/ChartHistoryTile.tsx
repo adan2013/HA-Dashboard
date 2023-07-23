@@ -9,7 +9,7 @@ export type ChartHistoryTileProps = {
   title: string
   entityName: string
   unit: string
-  showDecimal?: boolean
+  showDecimals?: number
   valueRange?: NumberRange
   hideMinMax?: boolean
   hideChart?: boolean
@@ -20,7 +20,7 @@ const ChartHistoryTile = ({
   title,
   entityName,
   unit,
-  showDecimal,
+  showDecimals,
   valueRange,
   hideMinMax,
   hideChart,
@@ -30,8 +30,8 @@ const ChartHistoryTile = ({
   const [history, setHistory] = useState<ChartData[]>(null)
 
   const historyStats = useMemo(
-    () => getHistoryStats(history, showDecimal ? 1 : 0),
-    [history, showDecimal]
+    () => getHistoryStats(history, showDecimals),
+    [history, showDecimals]
   )
 
   useEffect(() => {
@@ -45,10 +45,12 @@ const ChartHistoryTile = ({
   const getValue = (): TileValue | string => {
     const main = Math.floor(Number.parseFloat(entityState?.state)) || 0
     const decimal =
-      Math.floor((Number.parseFloat(entityState?.state) % 1) * 10) || 0
+      (Number.parseFloat(entityState?.state) % 1)
+        .toFixed(showDecimals)
+        .substring(2) || 0
     return {
       main,
-      decimal: showDecimal ? decimal : undefined,
+      decimal: showDecimals ? decimal : undefined,
       unit
     }
   }
@@ -79,6 +81,10 @@ const ChartHistoryTile = ({
   }
 
   return <Tile {...tileData} />
+}
+
+ChartHistoryTile.defaultProps = {
+  showDecimals: 0
 }
 
 export default ChartHistoryTile
