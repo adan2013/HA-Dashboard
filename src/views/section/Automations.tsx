@@ -2,6 +2,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import NightsStayIcon from '@mui/icons-material/NightsStay'
+import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
@@ -13,6 +14,7 @@ import {
   PowerChartTile
 } from '../../components/entityTiles/switch/PlugTile'
 import { TemperatureChartTile } from '../../components/entityTiles/climate/ClimateTile'
+import StateDropdownHelperTile from '../../components/entityTiles/toggleHelper/StateDropdownHelperTile'
 
 const Automations = () => (
   <TileSection>
@@ -58,7 +60,11 @@ const Automations = () => (
         }}
       />
       <SwitchTile title="WM plug" entityName="washingMachinePlug" />
-      <PlaceholderTile title="WM status" size="standard" />
+      <StateDropdownHelperTile
+        title="WM status"
+        entityName="washingMachineState"
+        icon={<LocalLaundryServiceIcon />}
+      />
       <EnergyConsumptionChartTile
         title="WM energy consumption"
         entityName="washingMachinePlug energy"
