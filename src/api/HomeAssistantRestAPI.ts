@@ -27,11 +27,21 @@ class HomeAssistantWebSocketAPI {
     }
   }
 
-  static getSensorHistory = (entityId: string): Promise<SensorHistoryItem[]> => {
+  static getSensorHistory = (
+    entityId: string,
+    historyLength = 0
+  ): Promise<SensorHistoryItem[]> => {
     const { entryPoint, axiosConfig } = this.getApiConfig()
+    let timestamp = ''
+    if (historyLength > 0) {
+      const date = new Date()
+      date.setMinutes(date.getMinutes() - historyLength)
+      timestamp = `/${date.toISOString()}`
+    }
+    const currentTimestamp = new Date().toISOString()
     return axios
       .get(
-        `${entryPoint}/history/period?filter_entity_id=${entityId}&no_attributes`,
+        `${entryPoint}/history/period${timestamp}?filter_entity_id=${entityId}&no_attributes&end_time=${currentTimestamp}`,
         axiosConfig
       )
       .then(response => {

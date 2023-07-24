@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getHistoryStats, NumberRange } from '../entityTiles/climate/utils'
 import { useHomeAssistantEntity } from '../../api/hooks'
-import BackgroundHistoryChart, { ChartData } from './BackgroundHistoryChart'
+import BackgroundHistoryChart from './BackgroundHistoryChart'
 import HomeAssistantRestAPI from '../../api/HomeAssistantRestAPI'
 import Tile, { TileProps, TileValue } from '../Tile'
 import { useModalContext } from '../modals/ModalContext'
 import { HistoryChartModalParams } from '../modals/utils'
+import { ChartData } from './utils'
 
 export type ChartHistoryTileProps = {
   title: string
@@ -40,7 +41,13 @@ const ChartHistoryTile = ({
   useEffect(() => {
     if (entityState?.id) {
       HomeAssistantRestAPI.getSensorHistory(entityState.id).then(data => {
-        setHistory(data.map(item => ({ id: item.time, value: item.value })))
+        setHistory(
+          data.map(item => ({
+            id: item.time,
+            name: item.time,
+            value: item.value
+          }))
+        )
       })
     }
   }, [entityState])
@@ -48,7 +55,8 @@ const ChartHistoryTile = ({
   const openHistoryModal = () => {
     const params: HistoryChartModalParams = {
       title,
-      entityName
+      entityName,
+      entityId: entityState?.id
     }
     modal.openModal('historyChart', params)
   }

@@ -17,6 +17,7 @@ export type LightControlModalParams = {
 export type HistoryChartModalParams = {
   title: string
   entityName: string
+  entityId: string
 }
 
 export type ModalParams =

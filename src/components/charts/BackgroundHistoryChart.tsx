@@ -1,11 +1,6 @@
 import { Area, AreaChart, ResponsiveContainer, YAxis } from 'recharts'
 import { useMemo } from 'react'
-import { valueInRange } from './utils'
-
-export type ChartData = {
-  id: string
-  value: number
-}
+import { ChartData, valueInRange } from './utils'
 
 export type BackgroundHistoryChartProps = {
   data: ChartData[]

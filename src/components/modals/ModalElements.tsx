@@ -17,6 +17,7 @@ type ButtonProps = {
   name: string
   onClick: () => void
   isDanger?: boolean
+  isDisabled?: boolean
 }
 
 export const ModalBody = ({ children }: ModalBodyProps) => (
@@ -33,13 +34,19 @@ export const ModalFooter = ({ children }: FooterProps) => (
   </div>
 )
 
-export const ModalButton = ({ name, onClick, isDanger }: ButtonProps) => (
+export const ModalButton = ({
+  name,
+  onClick,
+  isDanger,
+  isDisabled
+}: ButtonProps) => (
   <div
     className={clsx(
-      'flex-center flex-1 cursor-pointer border-r-2 border-t-2 border-gray-600 bg-gray-800 py-4 transition-colors last:border-r-0 hover:bg-gray-600',
-      isDanger && 'bg-red-900 hover:bg-red-700'
+      'flex-center flex-1 border-r-2 border-t-2 border-gray-600 bg-gray-800 py-4 transition-colors last:border-r-0',
+      isDanger && 'bg-red-900 hover:bg-red-700',
+      isDisabled ? 'text-gray-600' : 'cursor-pointer hover:bg-gray-600'
     )}
-    onClick={onClick}
+    onClick={isDisabled ? undefined : onClick}
   >
     {name}
   </div>
