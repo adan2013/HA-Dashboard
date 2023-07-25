@@ -1,4 +1,5 @@
 import { Styles } from 'react-modal'
+import { ValueThreshold } from '../charts/utils'
 
 export type ModalType = 'confirmation' | 'lightControl' | 'historyChart'
 
@@ -18,6 +19,7 @@ export type HistoryChartModalParams = {
   title: string
   entityName: string
   entityId: string
+  graphValueThresholds?: ValueThreshold[]
 }
 
 export type ModalParams =

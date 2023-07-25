@@ -17,6 +17,9 @@ export const PowerChartTile = ({
     title={title}
     entityName={entityName}
     unit="W"
+    historyGraphThresholds={[
+      { label: 'Power load limit', value: 2300, color: 'red' }
+    ]}
     showDecimals={1}
     {...customProps}
   />

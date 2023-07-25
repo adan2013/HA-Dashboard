@@ -1,6 +1,4 @@
-import { ChartData } from '../../charts/BackgroundHistoryChart'
-
-export type NumberRange = [number, number]
+import { ChartData } from '../../charts/utils'
 
 export type MinMaxValue = {
   min: string

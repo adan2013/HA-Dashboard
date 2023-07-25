@@ -1,6 +1,4 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
-import { ToastContainer } from 'react-toastify'
 import Dashboard from './views/Dashboard'
 import Notifications from './views/Notifications'
 import Weather from './views/Weather'

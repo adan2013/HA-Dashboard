@@ -55,7 +55,15 @@ const HistoryChartBody = () => {
     <ModalBody>
       <ModalTitle>{params.title}</ModalTitle>
       <div className="h-[550px] max-h-[calc(100vh-170px)] pb-16 text-center">
-        {history ? <HistoryChart data={history} /> : <>Loading...</>}
+        {history ? (
+          <HistoryChart
+            data={history}
+            thresholds={params.graphValueThresholds}
+          />
+        ) : (
+          <>Loading...</>
+        )}
+        {/* TODO add spinner */}
       </div>
       <ModalFooter>
         <ModalButton

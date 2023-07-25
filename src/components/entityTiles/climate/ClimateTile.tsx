@@ -16,7 +16,6 @@ export const TemperatureChartTile = ({
   <ChartHistoryTile
     title={title}
     entityName={entityName}
-    valueRange={[22, 27]}
     unit="°C"
     showDecimals={1}
     {...customProps}
@@ -31,8 +30,11 @@ export const HumidityChartTile = ({
   <ChartHistoryTile
     title={title}
     entityName={entityName}
-    valueRange={[30, 70]}
     unit="%"
+    historyGraphThresholds={[
+      { label: 'Min', value: 40, color: 'green' },
+      { label: 'Max', value: 60, color: 'red' }
+    ]}
     {...customProps}
   />
 )

@@ -55,9 +55,6 @@ const Automations = () => (
       <PowerChartTile
         title="Washing machine power consumption"
         entityName="washingMachinePlug power"
-        customProps={{
-          valueRange: [0, 400]
-        }}
       />
       <SwitchTile title="WM plug" entityName="washingMachinePlug" />
       <StateDropdownHelperTile
@@ -71,6 +68,7 @@ const Automations = () => (
         customProps={{
           hideMinMax: true,
           hideChart: true,
+          disableModalHistory: true,
           customTileProps: {
             size: 'standard'
           }
@@ -80,8 +78,8 @@ const Automations = () => (
         title="WM plug temperature"
         entityName="washingMachinePlug device temperature"
         customProps={{
-          valueRange: undefined,
           hideChart: true,
+          disableModalHistory: true,
           showDecimals: 0,
           customTileProps: {
             size: 'standard'

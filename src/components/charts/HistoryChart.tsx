@@ -8,51 +8,51 @@ import {
   XAxis,
   YAxis
 } from 'recharts'
-import { useMemo } from 'react'
-import { ChartData } from './utils'
-import { getHistoryStats } from '../entityTiles/climate/utils'
+import { ChartData, ValueThreshold } from './utils'
 
 export type BackgroundHistoryChartProps = {
   data: ChartData[]
+  thresholds?: ValueThreshold[]
 }
 
-const HistoryChart = ({ data }: BackgroundHistoryChartProps) => {
-  const stats = useMemo(() => getHistoryStats(data), [data])
+const HistoryChart = ({ data, thresholds }: BackgroundHistoryChartProps) => (
+  <ResponsiveContainer>
+    <LineChart
+      data={data}
+      margin={{
+        top: 0,
+        right: 10,
+        left: 10,
+        bottom: 10
+      }}
+    >
+      <CartesianGrid strokeDasharray="3 3" stroke="#787878" />
+      <XAxis dataKey="name" stroke="#ffffff" />
+      <YAxis
+        dataKey="value"
+        type="number"
+        padding={{ top: 40, bottom: 40 }}
+        domain={['dataMin', 'dataMax']}
+        stroke="#ffffff"
+      />
+      <Tooltip wrapperClassName="text-black" />
+      <Line
+        connectNulls
+        type="monotone"
+        dataKey="value"
+        stroke="#ffffff"
+        strokeWidth="2"
+        fill="#cccccc"
+      />
+      {thresholds.map(({ label, color, value }) => (
+        <ReferenceLine key={label} y={value} label={label} stroke={color} />
+      ))}
+    </LineChart>
+  </ResponsiveContainer>
+)
 
-  return (
-    <ResponsiveContainer>
-      <LineChart
-        data={data}
-        margin={{
-          top: 0,
-          right: 10,
-          left: 10,
-          bottom: 10
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" stroke="#787878" />
-        <XAxis dataKey="name" stroke="#ffffff" />
-        <YAxis
-          dataKey="value"
-          type="number"
-          padding={{ top: 40, bottom: 40 }}
-          domain={[stats?.min, stats?.max]}
-          stroke="#ffffff"
-        />
-        <Tooltip wrapperClassName="text-black" />
-        <Line
-          connectNulls
-          type="monotone"
-          dataKey="value"
-          stroke="#ffffff"
-          strokeWidth="2"
-          fill="#cccccc"
-        />
-        <ReferenceLine y={40} label="Min" stroke="green" />
-        <ReferenceLine y={60} label="Max" stroke="red" />
-      </LineChart>
-    </ResponsiveContainer>
-  )
+HistoryChart.defaultProps = {
+  thresholds: []
 }
 
 export default HistoryChart

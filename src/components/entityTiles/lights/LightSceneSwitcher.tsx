@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import Tile, { TileProps, TileSize } from '../../Tile'
-import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
 
 type SceneOption = {
   msg: string
@@ -47,13 +46,7 @@ const Switcher = ({ options, threeColumns }: SwitcherProps) => (
 )
 
 const LightSceneSwitcher = ({ title, options }: LightSceneSwitcherProps) => {
-  const ha = useHomeAssistant()
-
   const size: TileSize = options.length > 4 ? 'big' : 'horizontal'
-
-  const sendEventMessage = () => {
-    // api.callService(entityState.id, 'light', action)
-  }
 
   const tileData: TileProps = {
     title,

@@ -47,7 +47,6 @@ const Temperatures = () => (
         title="NAS temperature"
         entityName="SynologyNAS Temperature"
         customProps={{
-          valueRange: [40, 50],
           hideChart: true
         }}
       />

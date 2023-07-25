@@ -1,21 +1,22 @@
 import { useEffect, useMemo, useState } from 'react'
-import { getHistoryStats, NumberRange } from '../entityTiles/climate/utils'
+import { getHistoryStats } from '../entityTiles/climate/utils'
 import { useHomeAssistantEntity } from '../../api/hooks'
 import BackgroundHistoryChart from './BackgroundHistoryChart'
 import HomeAssistantRestAPI from '../../api/HomeAssistantRestAPI'
 import Tile, { TileProps, TileValue } from '../Tile'
 import { useModalContext } from '../modals/ModalContext'
 import { HistoryChartModalParams } from '../modals/utils'
-import { ChartData } from './utils'
+import { ChartData, ValueThreshold } from './utils'
 
 export type ChartHistoryTileProps = {
   title: string
   entityName: string
   unit: string
   showDecimals?: number
-  valueRange?: NumberRange
   hideMinMax?: boolean
   hideChart?: boolean
+  disableModalHistory?: boolean
+  historyGraphThresholds?: ValueThreshold[]
   customTileProps?: Partial<TileProps>
 }
 
@@ -24,9 +25,10 @@ const ChartHistoryTile = ({
   entityName,
   unit,
   showDecimals,
-  valueRange,
   hideMinMax,
   hideChart,
+  disableModalHistory,
+  historyGraphThresholds,
   customTileProps
 }: ChartHistoryTileProps) => {
   const modal = useModalContext()
@@ -56,7 +58,8 @@ const ChartHistoryTile = ({
     const params: HistoryChartModalParams = {
       title,
       entityName,
-      entityId: entityState?.id
+      entityId: entityState?.id,
+      graphValueThresholds: historyGraphThresholds
     }
     modal.openModal('historyChart', params)
   }
@@ -74,26 +77,17 @@ const ChartHistoryTile = ({
     }
   }
 
-  const chartMinValue = valueRange ? valueRange[0] : undefined
-  const chartMaxValue = valueRange ? valueRange[1] : undefined
-
   const tileData: TileProps = {
     title,
     value: getValue(),
     size: 'horizontal',
-    onClick: openHistoryModal,
+    onClick: disableModalHistory ? undefined : openHistoryModal,
     isUnavailable,
     ...customTileProps
   }
 
   if (!hideChart && history) {
-    tileData.customBody = (
-      <BackgroundHistoryChart
-        minValue={chartMinValue}
-        maxValue={chartMaxValue}
-        data={history}
-      />
-    )
+    tileData.customBody = <BackgroundHistoryChart data={history} />
   }
 
   if (!hideMinMax && historyStats) {
