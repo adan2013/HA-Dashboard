@@ -40,7 +40,7 @@ const MobileLayout = () => {
         )}
         <Outlet context={context} />
       </div>
-      <div className="fixed bottom-0 h-16 w-full border-t-2 border-blue-800 bg-gray-900">
+      <div className="fixed bottom-0 z-20 h-16 w-full border-t-2 border-blue-800 bg-gray-900">
         <div className="flex h-full flex-row">
           {mobileMenu.map(({ name, path, icon, notificationDot }) => (
             <div
