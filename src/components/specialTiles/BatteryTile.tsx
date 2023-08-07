@@ -2,11 +2,9 @@ import { Fragment, ReactElement } from 'react'
 import Battery1BarIcon from '@mui/icons-material/Battery1Bar'
 import Tile, { TileProps } from '../Tile'
 import { useHomeAssistantBatteryEntities } from '../../api/hooks'
+import { BatteryState } from '../../api/utils'
 
-export type BatteryState = {
-  friendlyName: string
-  value: number
-}
+const COUNT_OF_BATTERY_ENTITIES = 5
 
 const ListSeparator = () => (
   <div className="mx-2 h-[1px] bg-gray-200 opacity-50" />
@@ -14,13 +12,13 @@ const ListSeparator = () => (
 
 const getListOfBatteryStates = (list: BatteryState[]): ReactElement => {
   if (!list) return undefined
-  const top5 = list.slice(0, 5)
-  const moreCount = list.length - top5.length
+  const topList = list.slice(0, COUNT_OF_BATTERY_ENTITIES)
+  const moreCount = list.length - topList.length
   return (
-    <div className="absolute bottom-0 left-0 h-60 w-full">
-      {top5.map(({ friendlyName, value }, idx) => (
+    <div className="absolute bottom-0 left-0 flex h-60 w-full flex-col justify-end">
+      {topList.map(({ friendlyName, value }, idx) => (
         <Fragment key={friendlyName}>
-          {idx < top5.length && <ListSeparator />}
+          {idx < topList.length && <ListSeparator />}
           <div className="relative mx-2 py-2">
             {friendlyName}
             <div className="absolute right-0 top-0 py-2">
