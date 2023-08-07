@@ -56,11 +56,31 @@ const Automations = () => (
         title="Washing machine power consumption"
         entityName="washingMachinePlug power"
       />
-      <SwitchTile title="WM plug" entityName="washingMachinePlug" />
+      <SwitchTile
+        title="WM plug"
+        entityName="washingMachinePlug"
+        confirmationRequired
+      />
       <StateDropdownHelperTile
         title="WM status"
         entityName="washingMachineState"
         icon={<LocalLaundryServiceIcon />}
+        customStateParams={[
+          {
+            state: 'LOADED',
+            iconClassnames: 'text-orange-400'
+          },
+          {
+            state: 'WORKING',
+            iconClassnames: 'text-sky-400'
+          }
+        ]}
+        holdAction={{
+          state: 'EMPTY',
+          confirmationRequired: true,
+          message:
+            'Are you sure you want to reset the state of the washing machine?'
+        }}
       />
       <EnergyConsumptionChartTile
         title="WM energy consumption"

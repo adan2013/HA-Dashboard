@@ -1,6 +1,10 @@
 import { ReactElement } from 'react'
+import { toast } from 'react-toastify'
 import Tile, { TileProps } from '../../Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
+import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
+import { ConfirmationModalParams } from '../../modals/utils'
+import { useModalContext } from '../../modals/ModalContext'
 
 type CustomStateParams = {
   state: string
@@ -9,12 +13,21 @@ type CustomStateParams = {
   iconClassnames?: string
 }
 
+type StateChangeOption = {
+  state: string
+  confirmationRequired?: boolean
+  message?: string
+  isDanger?: boolean
+}
+
 type StateDropdownHelperTileProps = {
   title: string
   entityName: string
   icon?: ReactElement
   customStateParams?: CustomStateParams[]
   customTileProps?: Partial<TileProps>
+  clickAction?: StateChangeOption
+  holdAction?: StateChangeOption
 }
 
 const StateDropdownHelperTile = ({
@@ -22,10 +35,36 @@ const StateDropdownHelperTile = ({
   entityName,
   icon,
   customStateParams,
-  customTileProps
+  customTileProps,
+  clickAction,
+  holdAction
 }: StateDropdownHelperTileProps) => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
-  // TODO implement click and hold events + modal confirmation
+  const ha = useHomeAssistant()
+  const modal = useModalContext()
+
+  const changeState = (value: string) => {
+    ha.callService(entityState.id, 'input_select', 'select_option', {
+      option: value
+    })
+    toast.success('The state has been changed')
+  }
+
+  const onAction = (action: StateChangeOption) => {
+    if (isUnavailable) return
+    if (action.confirmationRequired) {
+      const params: ConfirmationModalParams = {
+        isDanger: action.isDanger,
+        message:
+          action.message ||
+          `Are you sure you want to change the state to ${action.state}?`,
+        onConfirm: () => changeState(action.state)
+      }
+      modal.openModal('confirmation', params)
+    } else {
+      changeState(action.state)
+    }
+  }
 
   const customParams = customStateParams.find(
     s => s.state === entityState?.state
@@ -36,6 +75,8 @@ const StateDropdownHelperTile = ({
     subtitle: customParams?.name || entityState?.state?.toLowerCase(),
     icon: customParams?.icon || icon,
     iconClassnames: customParams?.iconClassnames,
+    onClick: clickAction ? () => onAction(clickAction) : undefined,
+    onHold: holdAction ? () => onAction(holdAction) : undefined,
     isUnavailable,
     ...customTileProps
   }

@@ -1,6 +1,6 @@
 import { Area, AreaChart, ResponsiveContainer, YAxis } from 'recharts'
 import { useMemo } from 'react'
-import { ChartData, valueInRange } from './utils'
+import { ChartData, clampValue } from './utils'
 
 export type BackgroundHistoryChartProps = {
   data: ChartData[]
@@ -19,7 +19,7 @@ const BackgroundHistoryChart = ({
     }
     return data.map(item => ({
       ...item,
-      value: valueInRange(item.value, minValue, maxValue)
+      value: clampValue(item.value, minValue, maxValue)
     }))
   }, [data, minValue, maxValue])
 
