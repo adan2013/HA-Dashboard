@@ -15,6 +15,23 @@ export type BackgroundHistoryChartProps = {
   thresholds?: ValueThreshold[]
 }
 
+const TooltipContent = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="rounded bg-gray-100 p-2 text-left text-sm text-black">
+        Time difference: {label}
+        <br />
+        Date: {new Date(payload[0].payload.id).toLocaleString()}
+        <br />
+        Value: {payload[0].value}
+        <br />
+      </div>
+    )
+  }
+
+  return null
+}
+
 const HistoryChart = ({ data, thresholds }: BackgroundHistoryChartProps) => (
   <ResponsiveContainer>
     <LineChart
@@ -35,7 +52,7 @@ const HistoryChart = ({ data, thresholds }: BackgroundHistoryChartProps) => (
         domain={['dataMin', 'dataMax']}
         stroke="#ffffff"
       />
-      <Tooltip wrapperClassName="text-black" />
+      <Tooltip wrapperClassName="text-black" content={<TooltipContent />} />
       <Line
         connectNulls
         type="monotone"
