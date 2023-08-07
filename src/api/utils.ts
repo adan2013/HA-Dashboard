@@ -4,6 +4,7 @@ export interface SocketMessageInterface {
 }
 
 export interface EntityAttributeInterface {
+  battery?: number
   friendly_name: string
   linkquality: number
 }
@@ -20,6 +21,11 @@ export type EntityState = {
   lastChanged: string
   lastUpdated: string
   attributes: EntityAttributeInterface
+}
+
+export type BatteryState = {
+  friendlyName: string
+  value: number
 }
 
 export type HomeAssistantConnectionState =
@@ -52,3 +58,10 @@ export const mapEntityState = (haEntity: any): EntityState => ({
   lastUpdated: haEntity.last_updated,
   attributes: haEntity.attributes
 })
+
+export const extractDeviceNameFromFriendlyName = (name: string): string => {
+  if (!name) return ''
+  const parts = name.split(' ')
+  if (parts.length > 0) return parts[0]
+  return name
+}

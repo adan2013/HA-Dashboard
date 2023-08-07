@@ -1,9 +1,13 @@
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
+import { BatteryTile } from '../../components/specialTiles/BatteryTile'
 
 const Alerts = () => (
   <TileSection>
+    <TileGroup name="Devices">
+      <BatteryTile />
+    </TileGroup>
     <TileGroup name="Security">
       <PlaceholderTile title="Filter water leak" size="standard" />
       <PlaceholderTile title="Washing machine water leak" size="standard" />

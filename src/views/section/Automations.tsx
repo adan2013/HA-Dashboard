@@ -5,7 +5,6 @@ import NightsStayIcon from '@mui/icons-material/NightsStay'
 import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
-import PlaceholderTile from '../../PlaceholderTile'
 import ToggleHelperTile from '../../components/entityTiles/toggleHelper/ToggleHelperTile'
 import DateCountdownHelperTile from '../../components/entityTiles/toggleHelper/DateCountdownHelperTile'
 import SwitchTile from '../../components/entityTiles/switch/SwitchTile'
@@ -106,11 +105,6 @@ const Automations = () => (
           }
         }}
       />
-    </TileGroup>
-    <TileGroup name="Daniel">
-      <PlaceholderTile title="Sunrise" size="horizontal" />
-      <PlaceholderTile title="Auto blind" size="standard" />
-      <PlaceholderTile title="PC plug" size="standard" />
     </TileGroup>
   </TileSection>
 )

@@ -59,7 +59,7 @@ const useClickHoldLogic = (
         target.current = event.target
       }
       timeout.current = window.setTimeout(() => {
-        onLongPress()
+        if (onLongPress) onLongPress()
         setHoldTriggered(true)
       }, delay)
     },
@@ -70,7 +70,9 @@ const useClickHoldLogic = (
     (event, shouldTriggerClick = true) => {
       if (disableInteractions) return
       if (timeout.current) clearTimeout(timeout.current)
-      if (shouldTriggerClick && !holdTriggered && target.current) onClick()
+      if (shouldTriggerClick && !holdTriggered && target.current && onClick) {
+        onClick()
+      }
       setHoldTriggered(false)
       if (shouldPreventDefault && target.current) {
         target.current.removeEventListener('touchend', preventDefault)

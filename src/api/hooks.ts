@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react'
-import { HomeAssistantConnectionState, EntityState } from './utils'
+import {
+  HomeAssistantConnectionState,
+  EntityState,
+  BatteryState,
+  extractDeviceNameFromFriendlyName
+} from './utils'
 import { useHomeAssistant } from '../contexts/HomeAssistantContext'
 
 export const useHomeAssistantStatus = (): HomeAssistantConnectionState => {
@@ -37,6 +42,32 @@ export const useHomeAssistantEntity = (
       }),
     [entityName, ha]
   )
+
+  return state
+}
+
+export const useHomeAssistantBatteryEntities = () => {
+  const [state, setState] = useState<BatteryState[]>(null)
+  const ha = useHomeAssistant()
+
+  useEffect(() => {
+    const batteryPoweredEntities = ha.entities
+      .filter(entity => entity.attributes.battery > 0)
+      .map(entity => ({
+        friendlyName: extractDeviceNameFromFriendlyName(
+          entity.attributes.friendly_name
+        ),
+        value: entity.attributes.battery
+      }))
+      .sort((a, b) => a.value - b.value)
+    const uniqueEntities = []
+    batteryPoweredEntities.forEach(entity => {
+      if (!uniqueEntities.some(ue => ue.friendlyName === entity.friendlyName)) {
+        uniqueEntities.push(entity)
+      }
+    })
+    setState(uniqueEntities)
+  }, [ha])
 
   return state
 }
