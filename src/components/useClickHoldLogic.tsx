@@ -13,6 +13,7 @@ const preventDefault = event => {
 export type ClickHoldLogicOptions = {
   disableInteractions?: boolean
   shouldPreventDefault?: boolean
+  holdOnRightClick?: boolean
   delay?: number
 }
 
@@ -46,6 +47,7 @@ const useClickHoldLogic = (
   const {
     disableInteractions = false,
     shouldPreventDefault = true,
+    holdOnRightClick = true,
     delay = 1000
   } = options
 
@@ -80,6 +82,17 @@ const useClickHoldLogic = (
       target.current = null
     },
     [shouldPreventDefault, onClick, holdTriggered, disableInteractions, target]
+  )
+
+  const rightClick = useCallback(
+    event => {
+      if (holdOnRightClick) {
+        event.preventDefault()
+        if (onLongPress) onLongPress()
+        setHoldTriggered(true)
+      }
+    },
+    [onLongPress, holdOnRightClick]
   )
 
   const watchMovement = useCallback(
@@ -119,7 +132,8 @@ const useClickHoldLogic = (
     onTouchMove: e => watchMovement(e),
     onMouseUp: e => clear(e),
     onTouchEnd: e => clear(e),
-    onMouseLeave: e => clear(e, false)
+    onMouseLeave: e => clear(e, false),
+    onContextMenu: e => rightClick(e)
   }
 }
 
