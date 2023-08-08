@@ -62,7 +62,7 @@ export const LightSlider = ({
   }
 
   return (
-    <div className="my-1">
+    <div className="mx-3 my-1">
       <div className="my-2 text-center">{title}</div>
       <div
         className="relative h-14 w-full overflow-hidden rounded-lg bg-black"

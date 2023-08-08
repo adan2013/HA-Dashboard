@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import { ReactElement, useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 
 type ModalBodyProps = {
@@ -15,6 +15,7 @@ type FooterProps = {
 
 type ButtonProps = {
   name: string
+  icon: ReactElement
   onClick: () => void
   isDanger?: boolean
   isDisabled?: boolean
@@ -36,18 +37,33 @@ export const ModalFooter = ({ children }: FooterProps) => (
 
 export const ModalButton = ({
   name,
+  icon,
   onClick,
   isDanger,
   isDisabled
-}: ButtonProps) => (
-  <div
-    className={clsx(
-      'flex-center flex-1 border-r-2 border-t-2 border-gray-600 bg-gray-800 py-4 transition-colors last:border-r-0',
-      isDanger && 'bg-red-900 hover:bg-red-700',
-      isDisabled ? 'text-gray-600' : 'cursor-pointer hover:bg-gray-600'
-    )}
-    onClick={isDisabled ? undefined : onClick}
-  >
-    {name}
-  </div>
-)
+}: ButtonProps) => {
+  const [isMobile, setIsMobile] = useState<boolean>(false)
+  const divRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const onResize = () => {
+      setIsMobile(divRef.current?.offsetWidth < 250)
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [divRef])
+
+  return (
+    <div
+      ref={divRef}
+      className={clsx(
+        'flex-center flex-1 border-r-2 border-t-2 border-gray-600 bg-gray-800 py-4 transition-colors last:border-r-0',
+        isDanger && 'bg-red-900 hover:bg-red-700',
+        isDisabled ? 'text-gray-600' : 'cursor-pointer hover:bg-gray-600'
+      )}
+      onClick={isDisabled ? undefined : onClick}
+    >
+      {isMobile ? icon : name}
+    </div>
+  )
+}

@@ -4,6 +4,9 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb'
 import AcUnitIcon from '@mui/icons-material/AcUnit'
 import Brightness6Icon from '@mui/icons-material/Brightness6'
 import Brightness5Icon from '@mui/icons-material/Brightness5'
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
+import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined'
+import ToggleOnIcon from '@mui/icons-material/ToggleOn'
 import { useModalContext } from '../ModalContext'
 import {
   ModalBody,
@@ -134,9 +137,14 @@ const LightControlBody = () => {
       <ModalFooter>
         <ModalButton
           name={isTurnedOn ? 'Turn off' : 'Turn on'}
+          icon={isTurnedOn ? <ToggleOnIcon /> : <ToggleOffOutlinedIcon />}
           onClick={toggleLight}
         />
-        <ModalButton name="Close" onClick={() => modal.closeModal()} />
+        <ModalButton
+          name="Close"
+          icon={<CloseOutlinedIcon />}
+          onClick={() => modal.closeModal()}
+        />
       </ModalFooter>
     </ModalBody>
   )

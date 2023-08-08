@@ -1,3 +1,5 @@
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
 import { useModalContext } from '../ModalContext'
 import {
   ModalBody,
@@ -19,13 +21,18 @@ const ConfirmationBody = () => {
       <ModalFooter>
         <ModalButton
           name="Confirm"
+          icon={<CheckOutlinedIcon />}
           isDanger={params.isDanger}
           onClick={() => {
             params.onConfirm()
             modal.closeModal()
           }}
         />
-        <ModalButton name="Cancel" onClick={() => modal.closeModal()} />
+        <ModalButton
+          name="Cancel"
+          icon={<CloseOutlinedIcon />}
+          onClick={() => modal.closeModal()}
+        />
       </ModalFooter>
     </ModalBody>
   )

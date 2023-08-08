@@ -1,4 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
+import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined'
+import ZoomOutOutlinedIcon from '@mui/icons-material/ZoomOutOutlined'
+import ZoomInOutlinedIcon from '@mui/icons-material/ZoomInOutlined'
 import { useModalContext } from '../ModalContext'
 import {
   ModalBody,
@@ -68,16 +72,26 @@ const HistoryChartBody = () => {
       <ModalFooter>
         <ModalButton
           name="Zoom out"
+          icon={<ZoomOutOutlinedIcon />}
           isDisabled={zoomOutDisabled}
           onClick={zoomOut}
         />
         <ModalButton
           name="Zoom in"
+          icon={<ZoomInOutlinedIcon />}
           isDisabled={zoomInDisabled}
           onClick={zoomIn}
         />
-        <ModalButton name="Refresh" onClick={loadHistory} />
-        <ModalButton name="Close" onClick={() => modal.closeModal()} />
+        <ModalButton
+          name="Refresh"
+          icon={<CachedOutlinedIcon />}
+          onClick={loadHistory}
+        />
+        <ModalButton
+          name="Close"
+          icon={<CloseOutlinedIcon />}
+          onClick={() => modal.closeModal()}
+        />
       </ModalFooter>
     </ModalBody>
   )
