@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  HTMLAttributes,
+  MouseEventHandler,
+  TouchEventHandler
+} from 'react'
 import { useModalContext } from '../ModalContext'
 import {
   ModalBody,
@@ -9,6 +16,7 @@ import {
 import { LightControlModalParams } from '../utils'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
+import { clampValue } from '../../charts/utils'
 
 type SliderProps = {
   title: string
@@ -30,34 +38,54 @@ const Slider = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const percentage = value ? ((value - min) / (max - min)) * 100 : 0
 
-  const onMove = e => {
+  const onMove = (clientX: number) => {
+    const startPoint = containerRef.current.getBoundingClientRect().left
+    const endPoint = containerRef.current.getBoundingClientRect().right
+    const newPercentage = clampValue(
+      Math.ceil(((clientX - startPoint) / (endPoint - startPoint)) * 100),
+      0,
+      100
+    )
+    onChange(Math.ceil((newPercentage / 100) * (max - min) + min))
+  }
+
+  const onMouseMove: MouseEventHandler<HTMLDivElement> = e => {
+    if (e.buttons) onMove(e.clientX)
+  }
+
+  const onTouchMove: TouchEventHandler<HTMLDivElement> = e => {
+    if (e.touches.length) onMove(e.touches[0].clientX)
+  }
+
+  const onLeave: MouseEventHandler<HTMLDivElement> = e => {
     if (e.buttons) {
-      const startPoint = containerRef.current.getBoundingClientRect().left
-      const endPoint = containerRef.current.getBoundingClientRect().right
-      const newPercentage = Math.ceil(
-        ((e.clientX - startPoint) / (endPoint - startPoint)) * 100
-      )
-      onChange(Math.ceil((newPercentage / 100) * (max - min) + min))
+      onConfirm()
     }
   }
 
-  const events = {
-    onMouseMove: onMove,
-    onMouseDown: onMove,
-    onMouseUp: onConfirm
+  const events: Partial<HTMLAttributes<HTMLDivElement>> = {
+    onMouseDown: onMouseMove,
+    onTouchStart: onTouchMove,
+    onMouseMove,
+    onTouchMove,
+    onMouseUp: onConfirm,
+    onTouchEnd: onConfirm,
+    onMouseLeave: onLeave
   }
 
   return (
     <div className="my-1">
       <div className="my-2 text-center">{title}</div>
       <div
-        className="h-14 w-full cursor-pointer overflow-hidden rounded-lg bg-black"
+        className="relative h-14 w-full overflow-hidden rounded-lg bg-black"
         ref={containerRef}
-        {...events}
       >
         <div
-          className="h-full bg-yellow-400"
+          className="absolute z-10 h-full bg-yellow-400"
           style={{ width: `${percentage}%` }}
+        />
+        <div
+          className="absolute z-20 h-full w-full cursor-pointer"
           {...events}
         />
       </div>
