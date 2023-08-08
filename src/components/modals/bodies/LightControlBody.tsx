@@ -135,13 +135,20 @@ const LightControlBody = () => {
     ha.callService(entityState.id, 'light', action)
   }
 
-  const setLight = (payload: object) => {
+  const updateBrightness = () => {
     if (isUnavailable) return
     if (brightness > 0) {
-      ha.callService(entityState.id, 'light', 'turn_on', payload)
+      ha.callService(entityState.id, 'light', 'turn_on', { brightness })
     } else {
       ha.callService(entityState.id, 'light', 'turn_off')
     }
+  }
+
+  const updateColorTemp = () => {
+    if (isUnavailable) return
+    ha.callService(entityState.id, 'light', 'turn_on', {
+      kelvin: colorTemp
+    })
   }
 
   return (
@@ -154,7 +161,7 @@ const LightControlBody = () => {
           min={0}
           max={255}
           onChange={setBrightness}
-          onConfirm={() => setLight({ brightness })}
+          onConfirm={updateBrightness}
         />
         {colorTempAvailable && (
           <Slider
@@ -163,7 +170,7 @@ const LightControlBody = () => {
             min={colorTempRange[0]}
             max={colorTempRange[1]}
             onChange={setColorTemp}
-            onConfirm={() => setLight({ kelvin: colorTemp })}
+            onConfirm={updateColorTemp}
           />
         )}
       </div>
