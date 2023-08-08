@@ -54,7 +54,7 @@ const HistoryChartBody = () => {
   return (
     <ModalBody>
       <ModalTitle>{params.title}</ModalTitle>
-      <div className="h-[550px] max-h-[calc(100vh-170px)] pb-16 text-center">
+      <div className="mx-4 h-[550px] max-h-[calc(100vh-170px)] text-center">
         {history ? (
           <HistoryChart
             data={history}

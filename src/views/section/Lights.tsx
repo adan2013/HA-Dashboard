@@ -42,7 +42,7 @@ const Lights = () => (
         title="TV light"
         entityName="tvLight"
         lightType="ceiling"
-        lockColorTemperature
+        // lockColorTemperature TODO restore
       />
       <LightTile
         title="Table light"

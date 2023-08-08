@@ -21,7 +21,7 @@ type ButtonProps = {
 }
 
 export const ModalBody = ({ children }: ModalBodyProps) => (
-  <div className="w-full bg-gray-800 text-white">{children}</div>
+  <div className="w-full bg-gray-800 pb-16 text-white">{children}</div>
 )
 
 export const ModalTitle = ({ children }: ModalTitleProps) => (

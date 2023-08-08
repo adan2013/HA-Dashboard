@@ -10,8 +10,8 @@ type LightTileProps = {
   entityName: string
   lightType?: LightType
   disableToggle?: boolean
-  allowManualControl?: boolean // TODO implement
-  lockColorTemperature?: boolean // TODO implement
+  disableManualControl?: boolean
+  lockColorTemperature?: boolean
 }
 
 const LightTile = ({
@@ -19,6 +19,7 @@ const LightTile = ({
   entityName,
   lightType,
   disableToggle,
+  disableManualControl,
   lockColorTemperature
 }: LightTileProps) => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
@@ -53,7 +54,7 @@ const LightTile = ({
       entityState?.attributes
     ),
     onClick: disableToggle ? undefined : toggleLight,
-    onHold: disableToggle ? undefined : openModal,
+    onHold: disableManualControl ? undefined : openModal,
     isUnavailable
   }
   return <Tile {...tileData} />
