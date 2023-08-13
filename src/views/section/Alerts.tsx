@@ -11,7 +11,7 @@ import PlaceholderTile from '../../PlaceholderTile'
 import { BatteryTile } from '../../components/specialTiles/ZigbeeTiles'
 import ToggleHelperTile, {
   ToggleHelperTileProps
-} from '../../components/entityTiles/toggleHelper/ToggleHelperTile'
+} from '../../components/entityTiles/helpers/ToggleHelperTile'
 
 const alertToggleProps: Partial<ToggleHelperTileProps> = {
   stateNames: ['DISABLED', 'enabled'],

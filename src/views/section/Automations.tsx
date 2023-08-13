@@ -5,15 +5,15 @@ import NightsStayIcon from '@mui/icons-material/NightsStay'
 import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
-import ToggleHelperTile from '../../components/entityTiles/toggleHelper/ToggleHelperTile'
-import DateCountdownHelperTile from '../../components/entityTiles/toggleHelper/DateCountdownHelperTile'
+import ToggleHelperTile from '../../components/entityTiles/helpers/ToggleHelperTile'
+import DateCountdownHelperTile from '../../components/entityTiles/helpers/DateCountdownHelperTile'
 import SwitchTile from '../../components/entityTiles/switch/SwitchTile'
 import {
   EnergyConsumptionChartTile,
   PowerChartTile
 } from '../../components/entityTiles/switch/PlugTile'
 import { TemperatureChartTile } from '../../components/entityTiles/climate/ClimateTile'
-import StateDropdownHelperTile from '../../components/entityTiles/toggleHelper/StateDropdownHelperTile'
+import StateDropdownHelperTile from '../../components/entityTiles/helpers/StateDropdownHelperTile'
 
 const Automations = () => (
   <TileSection>

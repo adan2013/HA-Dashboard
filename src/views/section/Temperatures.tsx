@@ -37,8 +37,6 @@ const Temperatures = () => (
         title="Humidity"
         entityName="aniaTempSensor humidity"
       />
-      <PlaceholderTile title="Air humidifier" size="standard" />
-      <PlaceholderTile title="Automatic moisturizing" size="standard" />
     </TileGroup>
     <TileGroup name="Server rack">
       <PlaceholderTile title="Temperature" size="horizontal" />

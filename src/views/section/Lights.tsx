@@ -5,7 +5,7 @@ import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import LightTile from '../../components/entityTiles/lights/LightTile'
 import PlaceholderTile from '../../PlaceholderTile'
-import ToggleHelperTile from '../../components/entityTiles/toggleHelper/ToggleHelperTile'
+import ToggleHelperTile from '../../components/entityTiles/helpers/ToggleHelperTile'
 import CallRemoteControlTile from '../../components/entityTiles/services/CallRemoteControlTile'
 import LightSceneSwitcher from '../../components/entityTiles/lights/LightSceneSwitcher'
 
@@ -42,7 +42,7 @@ const Lights = () => (
         title="TV light"
         entityName="tvLight"
         lightType="ceiling"
-        // lockColorTemperature TODO restore
+        lockColorTemperature
       />
       <LightTile
         title="Table light"
