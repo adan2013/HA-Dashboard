@@ -5,7 +5,7 @@ import Tile, { TileProps } from '../../Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
 
-type ToggleHelperTileProps = {
+export type ToggleHelperTileProps = {
   title: string
   entityName: string
   readonly?: boolean
@@ -39,12 +39,20 @@ const ToggleHelperTile = ({
     ha.callService(entityState.id, 'input_boolean', action)
   }
 
+  let subtitle = entityState?.state
+  if (stateNames) {
+    subtitle = stateNames[isActive ? 1 : 0]
+  }
+  if (isUnavailable) {
+    subtitle = 'unknown'
+  }
+
   const tileData: TileProps = {
     title,
-    subtitle: stateNames ? stateNames[isActive ? 1 : 0] : entityState?.state,
+    subtitle,
     icon: isActive ? onIcon : offIcon,
     isTurnedOff: !isActive,
-    iconClassnames: isActive ? onColor : offColor,
+    iconClassnames: !isUnavailable && isActive ? onColor : offColor,
     onClick: readonly ? undefined : toggleLight,
     isUnavailable
   }
