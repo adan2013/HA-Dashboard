@@ -1,10 +1,12 @@
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
+import { SignalTile } from '../../components/specialTiles/ZigbeeTiles'
 
 const System = () => (
   <TileSection>
     <TileGroup name="Status">
+      <SignalTile />
       <PlaceholderTile title="Zigbee network map" size="standard" />
       <PlaceholderTile title="ESPhome devices" size="standard" />
       <PlaceholderTile title="HA services" size="standard" />

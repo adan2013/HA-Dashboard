@@ -1,7 +1,7 @@
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
-import { BatteryTile } from '../../components/specialTiles/BatteryTile'
+import { BatteryTile } from '../../components/specialTiles/ZigbeeTiles'
 
 const Alerts = () => (
   <TileSection>

@@ -27,9 +27,11 @@ export type EntityState = {
   attributes: EntityAttributeInterface
 }
 
-export type BatteryState = {
+export type ZigbeeEntityState = {
+  entity: EntityState
   friendlyName: string
-  value: number
+  battery: number
+  signal: number
 }
 
 export type HomeAssistantConnectionState =
