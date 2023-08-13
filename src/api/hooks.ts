@@ -48,7 +48,7 @@ export const useHomeAssistantEntity = (
 
 export type SortMethod = 'battery' | 'signal' | 'name'
 
-export const useHomeAssistantZigBeeEntities = (
+export const useHomeAssistantZigbeeEntities = (
   sortBy: SortMethod = 'name'
 ): ZigbeeEntityState[] => {
   const [state, setState] = useState<ZigbeeEntityState[]>(null)
@@ -59,13 +59,13 @@ export const useHomeAssistantZigBeeEntities = (
       .filter(entity => {
         switch (sortBy) {
           case 'battery':
-            return entity.attributes.battery > 0
+            return (
+              entity.attributes.battery > 0 && entity.attributes.linkquality > 0
+            )
           case 'signal':
             return entity.attributes.linkquality > 0
           default:
-            return (
-              entity.attributes.battery > 0 || entity.attributes.linkquality > 0
-            )
+            return entity.attributes.linkquality > 0
         }
       })
       .map(entity => ({

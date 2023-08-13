@@ -10,7 +10,6 @@ const System = () => (
       <PlaceholderTile title="Zigbee network map" size="standard" />
       <PlaceholderTile title="ESPhome devices" size="standard" />
       <PlaceholderTile title="HA services" size="standard" />
-      <PlaceholderTile title="Batteries" size="big" />
     </TileGroup>
     <TileGroup name="Backups">
       <PlaceholderTile title="Backup service status" size="big" />

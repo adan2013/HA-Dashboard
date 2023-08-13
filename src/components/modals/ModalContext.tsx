@@ -10,6 +10,7 @@ import { getModalStyles, ModalParams, ModalState, ModalType } from './utils'
 import ConfirmationBody from './bodies/ConfirmationBody'
 import LightControlBody from './bodies/LightControlBody'
 import HistoryChartBody from './bodies/HistoryChartBody'
+import ZigbeeNetworkBody from './bodies/ZigbeeNetworkBody'
 
 type ProviderProps = {
   children: ReactElement
@@ -70,6 +71,8 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
         return <ConfirmationBody />
       case 'historyChart':
         return <HistoryChartBody />
+      case 'zigbeeNetwork':
+        return <ZigbeeNetworkBody />
       default:
         return null
     }

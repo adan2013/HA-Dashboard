@@ -10,7 +10,7 @@ type ModalTitleProps = {
 }
 
 type FooterProps = {
-  children: ReactElement[]
+  children: ReactElement | ReactElement[]
 }
 
 type ButtonProps = {

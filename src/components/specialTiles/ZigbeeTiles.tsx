@@ -2,10 +2,14 @@ import { Fragment, ReactElement } from 'react'
 import Battery1BarIcon from '@mui/icons-material/Battery1Bar'
 import WifiIcon from '@mui/icons-material/Wifi'
 import Tile, { TileProps } from '../Tile'
-import { useHomeAssistantZigBeeEntities } from '../../api/hooks'
+import { useHomeAssistantZigbeeEntities } from '../../api/hooks'
 import { ZigbeeEntityState } from '../../api/utils'
+import { useModalContext } from '../modals/ModalContext'
+import { ZigbeeNetworkModalParams } from '../modals/utils'
 
 const COUNT_OF_TILE_ENTITIES = 5
+export const BATTERY_WARNING_THRESHOLD = 30
+export const SIGNAL_WARNING_THRESHOLD = 30
 
 const ListSeparator = () => (
   <div className="mx-2 h-[1px] bg-gray-200 opacity-50" />
@@ -44,33 +48,49 @@ const getListOfEntities = (
 }
 
 export const BatteryTile = () => {
-  const entities = useHomeAssistantZigBeeEntities('battery')
+  const entities = useHomeAssistantZigbeeEntities('battery')
+  const modal = useModalContext()
   const tileProps: TileProps = {
     title: 'Batteries',
     size: 'big',
     customBody: getListOfEntities(entities, ({ battery }) => (
       <>
-        {battery < 30 && (
+        {battery < BATTERY_WARNING_THRESHOLD && (
           <Battery1BarIcon className="mx-1 mt-[-4px] rotate-90 text-red-500" />
         )}
         {battery}%
       </>
-    ))
+    )),
+    onClick: () => {
+      const params: ZigbeeNetworkModalParams = {
+        tab: 'battery'
+      }
+      modal.openModal('zigbeeNetwork', params)
+    }
   }
   return <Tile {...tileProps} />
 }
 
 export const SignalTile = () => {
-  const entities = useHomeAssistantZigBeeEntities('signal')
+  const entities = useHomeAssistantZigbeeEntities('signal')
+  const modal = useModalContext()
   const tileProps: TileProps = {
     title: 'ZigBee signals',
     size: 'big',
     customBody: getListOfEntities(entities, ({ signal }) => (
       <>
-        {signal < 30 && <WifiIcon className="mx-1 mt-[-6px] text-red-500" />}
+        {signal < SIGNAL_WARNING_THRESHOLD && (
+          <WifiIcon className="mx-1 mt-[-6px] text-red-500" />
+        )}
         {signal} LQ
       </>
-    ))
+    )),
+    onClick: () => {
+      const params: ZigbeeNetworkModalParams = {
+        tab: 'signal'
+      }
+      modal.openModal('zigbeeNetwork', params)
+    }
   }
   return <Tile {...tileProps} />
 }

@@ -1,7 +1,11 @@
 import { Styles } from 'react-modal'
 import { ValueThreshold } from '../charts/utils'
 
-export type ModalType = 'confirmation' | 'lightControl' | 'historyChart'
+export type ModalType =
+  | 'confirmation'
+  | 'lightControl'
+  | 'historyChart'
+  | 'zigbeeNetwork'
 
 export type ConfirmationModalParams = {
   message?: string
@@ -22,10 +26,15 @@ export type HistoryChartModalParams = {
   graphValueThresholds?: ValueThreshold[]
 }
 
+export type ZigbeeNetworkModalParams = {
+  tab: 'all' | 'battery' | 'signal'
+}
+
 export type ModalParams =
   | ConfirmationModalParams
   | LightControlModalParams
   | HistoryChartModalParams
+  | ZigbeeNetworkModalParams
 
 export type ModalState = {
   isOpen: boolean
