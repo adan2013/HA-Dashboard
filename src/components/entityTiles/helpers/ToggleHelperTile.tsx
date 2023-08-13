@@ -15,6 +15,7 @@ export type ToggleHelperTileProps = {
   onIcon?: ReactElement
   offIcon?: ReactElement
   stateNames?: [string, string]
+  tileProps?: Partial<TileProps>
 }
 
 const ToggleHelperTile = ({
@@ -26,7 +27,8 @@ const ToggleHelperTile = ({
   offColor,
   onIcon,
   offIcon,
-  stateNames
+  stateNames,
+  tileProps
 }: ToggleHelperTileProps) => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
   const ha = useHomeAssistant()
@@ -54,7 +56,8 @@ const ToggleHelperTile = ({
     isTurnedOff: !isActive,
     iconClassnames: !isUnavailable && isActive ? onColor : offColor,
     onClick: readonly ? undefined : toggleLight,
-    isUnavailable
+    isUnavailable,
+    ...tileProps
   }
   return <Tile {...tileData} />
 }

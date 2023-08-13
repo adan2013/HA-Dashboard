@@ -5,6 +5,8 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import NotificationsPausedIcon from '@mui/icons-material/NotificationsPaused'
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined'
 import AnnouncementIcon from '@mui/icons-material/Announcement'
+import WaterDropOutlinedIcon from '@mui/icons-material/WaterDropOutlined'
+import WaterDropIcon from '@mui/icons-material/WaterDrop'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
@@ -18,6 +20,17 @@ const alertToggleProps: Partial<ToggleHelperTileProps> = {
   offColor: 'text-red-500',
   onIcon: <ChatOutlinedIcon />,
   offIcon: <AnnouncementIcon />
+}
+
+const waterLeakSensorProps: Partial<ToggleHelperTileProps> = {
+  stateNames: ['ready', 'ALARM'],
+  onColor: 'text-red-600',
+  onIcon: <WaterDropIcon />,
+  offIcon: <WaterDropOutlinedIcon />,
+  readonly: true,
+  tileProps: {
+    isTurnedOff: false
+  }
 }
 
 const Alerts = () => (
@@ -61,8 +74,9 @@ const Alerts = () => (
         entityName="mainDoorDeadboltSensor contact"
         onIcon={<LockIcon />}
         offIcon={<LockOpenIcon />}
-        offColor="text-red-500"
+        offColor="text-red-600"
         stateNames={['open', 'closed']}
+        tileProps={{ isTurnedOff: false }}
         reverseState
         readonly
       />
@@ -73,7 +87,11 @@ const Alerts = () => (
       />
     </TileGroup>
     <TileGroup name="Water leak monitoring">
-      <PlaceholderTile title="Filter sensor" size="standard" />
+      <ToggleHelperTile
+        title="Filter sensor"
+        entityName="waterFilterLeakSensor water leak"
+        {...waterLeakSensorProps}
+      />
       <PlaceholderTile title="Washing machine sensor" size="standard" />
       <PlaceholderTile title="Bathroom sensor" size="standard" />
       <ToggleHelperTile
