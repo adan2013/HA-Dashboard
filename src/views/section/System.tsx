@@ -1,5 +1,6 @@
 import ReplayIcon from '@mui/icons-material/Replay'
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew'
+import LogoutIcon from '@mui/icons-material/Logout'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
@@ -15,6 +16,8 @@ import {
   SynologySecurityStatus
 } from '../../components/specialTiles/SynologyNasServer'
 import CallServiceTile from '../../components/entityTiles/services/CallServiceTile'
+import Tile from '../../components/Tile'
+import { getEnvVar } from '../../api/utils'
 
 const System = () => (
   <TileSection>
@@ -31,8 +34,8 @@ const System = () => (
     <TileGroup name="NAS server">
       <SynologyDsmUpdate />
       <SynologySecurityStatus />
-      <OccupiedDiskSpace />
       <PlaceholderTile title="Volumen status" size="standard" />
+      <OccupiedDiskSpace />
       <CallServiceTile
         title="Reboot NAS"
         domain="synology_dsm"
@@ -49,9 +52,27 @@ const System = () => (
       />
     </TileGroup>
     <TileGroup name="Home Assistant">
-      <PlaceholderTile title="Restart HA" size="standard" />
-      <PlaceholderTile title="Shutdown HA" size="standard" />
-      <PlaceholderTile title="Go to HA Dashboard" size="standard" />
+      <CallServiceTile
+        title="Reboot HA"
+        domain="hassio"
+        service="host_reboot"
+        icon={<ReplayIcon />}
+        confirmationRequired
+      />
+      <CallServiceTile
+        title="Shutdown HA"
+        domain="hassio"
+        service="host_shutdown"
+        icon={<PowerSettingsNewIcon />}
+        confirmationRequired
+      />
+      <Tile
+        title="Go to HA Dashboard"
+        icon={<LogoutIcon />}
+        onClick={() =>
+          window.open(`http://${getEnvVar('VITE_HA_HOST')}`, '_self')
+        }
+      />
     </TileGroup>
   </TileSection>
 )
