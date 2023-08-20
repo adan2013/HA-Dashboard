@@ -1,3 +1,5 @@
+import ReplayIcon from '@mui/icons-material/Replay'
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
@@ -12,6 +14,7 @@ import {
   SynologyDsmUpdate,
   SynologySecurityStatus
 } from '../../components/specialTiles/SynologyNasServer'
+import CallServiceTile from '../../components/entityTiles/services/CallServiceTile'
 
 const System = () => (
   <TileSection>
@@ -29,9 +32,21 @@ const System = () => (
       <SynologyDsmUpdate />
       <SynologySecurityStatus />
       <OccupiedDiskSpace />
-      <PlaceholderTile title="Occupied disk space" size="standard" />
       <PlaceholderTile title="Volumen status" size="standard" />
-      <PlaceholderTile title="Shutdown NAS" size="standard" />
+      <CallServiceTile
+        title="Reboot NAS"
+        domain="synology_dsm"
+        service="reboot"
+        icon={<ReplayIcon />}
+        confirmationRequired
+      />
+      <CallServiceTile
+        title="Shutdown NAS"
+        domain="synology_dsm"
+        service="shutdown"
+        icon={<PowerSettingsNewIcon />}
+        confirmationRequired
+      />
     </TileGroup>
     <TileGroup name="Home Assistant">
       <PlaceholderTile title="Restart HA" size="standard" />
