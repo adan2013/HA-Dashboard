@@ -30,6 +30,11 @@ const waterLeakSensorProps: Partial<ToggleHelperTileProps> = {
   readonly: true,
   tileProps: {
     isTurnedOff: false
+  },
+  metadataRenderer: entityState => {
+    if (!entityState || !entityState.attributes) return undefined
+    const { battery, linkquality } = entityState.attributes
+    return [`${battery}%`, `${linkquality} LQI`]
   }
 }
 

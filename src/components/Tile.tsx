@@ -96,7 +96,7 @@ const Tile = (propsTile: TileProps, ref: MutableRefObject<HTMLDivElement>) => {
         )}
       </div>
       {tile.metadata && !tile.isUnavailable && (
-        <div className="absolute bottom-0 left-0 z-10 px-3 py-2 text-xs">
+        <div className="absolute bottom-0 left-0 z-10 px-3 py-2 text-xs text-gray-200">
           {tile.metadata.map(meta => (
             <div key={meta}>{meta}</div>
           ))}

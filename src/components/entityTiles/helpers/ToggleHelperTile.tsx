@@ -4,6 +4,7 @@ import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined'
 import Tile, { TileProps } from '../../Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
+import { EntityState } from '../../../api/utils'
 
 export type ToggleHelperTileProps = {
   title: string
@@ -15,6 +16,7 @@ export type ToggleHelperTileProps = {
   onIcon?: ReactElement
   offIcon?: ReactElement
   stateNames?: [string, string]
+  metadataRenderer?: (entity: EntityState) => string[]
   tileProps?: Partial<TileProps>
 }
 
@@ -28,6 +30,7 @@ const ToggleHelperTile = ({
   onIcon,
   offIcon,
   stateNames,
+  metadataRenderer,
   tileProps
 }: ToggleHelperTileProps) => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
@@ -52,6 +55,7 @@ const ToggleHelperTile = ({
   const tileData: TileProps = {
     title,
     subtitle,
+    metadata: metadataRenderer ? metadataRenderer(entityState) : undefined,
     icon: isActive ? onIcon : offIcon,
     isTurnedOff: !isActive,
     iconClassnames: !isUnavailable && isActive ? onColor : offColor,
