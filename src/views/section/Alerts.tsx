@@ -59,6 +59,8 @@ const Alerts = () => (
         onIcon={<NotificationsPausedIcon />}
         offIcon={<NotificationsPausedIcon />}
       />
+      <PlaceholderTile title="SMS alerts" size="standard" />
+      <PlaceholderTile title="Send test SMS" size="standard" />
     </TileGroup>
     <TileGroup name="System and devices">
       <BatteryTile />
@@ -79,6 +81,7 @@ const Alerts = () => (
         entityName="mainDoorDeadboltSensor contact"
         onIcon={<LockIcon />}
         offIcon={<LockOpenIcon />}
+        onColor="text-white"
         offColor="text-red-600"
         stateNames={['open', 'closed']}
         tileProps={{ isTurnedOff: false }}
