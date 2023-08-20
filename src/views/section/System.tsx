@@ -11,9 +11,12 @@ import {
   SambaBackupStatus
 } from '../../components/specialTiles/SambaBackup'
 import {
+  NasTemperature,
   OccupiedDiskSpace,
   SynologyDsmUpdate,
-  SynologySecurityStatus
+  SynologySecurityStatus,
+  SynologyVolumeStatus,
+  VolumeTemperature
 } from '../../components/specialTiles/SynologyNasServer'
 import CallServiceTile from '../../components/entityTiles/services/CallServiceTile'
 import Tile from '../../components/Tile'
@@ -34,8 +37,10 @@ const System = () => (
     <TileGroup name="NAS server">
       <SynologyDsmUpdate />
       <SynologySecurityStatus />
-      <PlaceholderTile title="Volumen status" size="standard" />
+      <SynologyVolumeStatus />
       <OccupiedDiskSpace />
+      <VolumeTemperature />
+      <NasTemperature />
       <CallServiceTile
         title="Reboot NAS"
         domain="synology_dsm"

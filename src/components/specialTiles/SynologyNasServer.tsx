@@ -1,8 +1,12 @@
 import CheckIcon from '@mui/icons-material/Check'
 import UpdateIcon from '@mui/icons-material/Update'
+import StorageIcon from '@mui/icons-material/Storage'
+import DiscFullIcon from '@mui/icons-material/DiscFull'
 import { useHomeAssistantEntity } from '../../api/hooks'
 import Tile, { TileProps } from '../Tile'
 import ChartHistoryTile from '../charts/ChartHistoryTile'
+import StateDropdownHelperTile from '../entityTiles/helpers/StateDropdownHelperTile'
+import { TemperatureChartTile } from '../entityTiles/climate/ClimateTile'
 
 interface SynologyDsmAttributes {
   installed_version: string
@@ -70,6 +74,22 @@ export const SynologySecurityStatus = () => {
   return <Tile {...tileProps} />
 }
 
+export const SynologyVolumeStatus = () => (
+  <StateDropdownHelperTile
+    title="Volume status"
+    entityName="SynologyNAS (Volume 1) Status"
+    icon={<DiscFullIcon />}
+    iconClassnames="text-red-600"
+    customStateParams={[
+      {
+        state: 'normal',
+        icon: <StorageIcon />,
+        iconClassnames: 'text-white'
+      }
+    ]}
+  />
+)
+
 export const OccupiedDiskSpace = () => (
   <ChartHistoryTile
     title="Occupied disk space"
@@ -81,6 +101,34 @@ export const OccupiedDiskSpace = () => (
     disableModalHistory
     customTileProps={{
       size: 'standard'
+    }}
+  />
+)
+
+export const VolumeTemperature = () => (
+  <TemperatureChartTile
+    title="Volume disk AVG temp"
+    entityName="SynologyNAS (Volume 1) Average disk temp"
+    customProps={{
+      hideChart: true,
+      hideMinMax: true,
+      customTileProps: {
+        size: 'standard'
+      }
+    }}
+  />
+)
+
+export const NasTemperature = () => (
+  <TemperatureChartTile
+    title="NAS temp"
+    entityName="SynologyNAS Temperature"
+    customProps={{
+      hideChart: true,
+      hideMinMax: true,
+      customTileProps: {
+        size: 'standard'
+      }
     }}
   />
 )

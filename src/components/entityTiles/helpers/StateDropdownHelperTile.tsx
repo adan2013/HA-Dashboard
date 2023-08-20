@@ -24,6 +24,7 @@ type StateDropdownHelperTileProps = {
   title: string
   entityName: string
   icon?: ReactElement
+  iconClassnames?: string
   customStateParams?: CustomStateParams[]
   customTileProps?: Partial<TileProps>
   clickAction?: StateChangeOption
@@ -34,6 +35,7 @@ const StateDropdownHelperTile = ({
   title,
   entityName,
   icon,
+  iconClassnames,
   customStateParams,
   customTileProps,
   clickAction,
@@ -74,7 +76,7 @@ const StateDropdownHelperTile = ({
     title,
     subtitle: customParams?.name || entityState?.state?.toLowerCase(),
     icon: customParams?.icon || icon,
-    iconClassnames: customParams?.iconClassnames,
+    iconClassnames: customParams?.iconClassnames || iconClassnames,
     onClick: clickAction ? () => onAction(clickAction) : undefined,
     onHold: holdAction ? () => onAction(holdAction) : undefined,
     isUnavailable,
