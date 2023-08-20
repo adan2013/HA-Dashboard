@@ -111,7 +111,7 @@ const Tile = (propsTile: TileProps, ref: MutableRefObject<HTMLDivElement>) => {
       {tile.icon &&
         cloneElement(tile.icon, {
           className: clsx(
-            '!text-[4rem] absolute bottom-2 right-1',
+            '!text-[4rem] absolute bottom-2 right-2',
             tile.iconClassnames
           )
         })}

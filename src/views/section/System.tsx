@@ -2,19 +2,23 @@ import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
 import { SignalTile } from '../../components/specialTiles/ZigbeeTiles'
+import {
+  CallManualBackup,
+  BackupStats,
+  SambaBackupStatus
+} from '../../components/specialTiles/SambaBackup'
 
 const System = () => (
   <TileSection>
     <TileGroup name="Status">
       <SignalTile />
-      <PlaceholderTile title="Zigbee network map" size="standard" />
       <PlaceholderTile title="ESPhome devices" size="standard" />
       <PlaceholderTile title="HA services" size="standard" />
     </TileGroup>
     <TileGroup name="Backups">
-      <PlaceholderTile title="Backup service status" size="big" />
-      <PlaceholderTile title="Trigger manual backup" size="standard" />
-      <PlaceholderTile title="History of backups" size="standard" />
+      <SambaBackupStatus />
+      <CallManualBackup />
+      <BackupStats />
     </TileGroup>
     <TileGroup name="NAS server">
       <PlaceholderTile title="DSM update" size="standard" />
