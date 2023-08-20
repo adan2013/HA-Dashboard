@@ -7,6 +7,11 @@ import {
   BackupStats,
   SambaBackupStatus
 } from '../../components/specialTiles/SambaBackup'
+import {
+  OccupiedDiskSpace,
+  SynologyDsmUpdate,
+  SynologySecurityStatus
+} from '../../components/specialTiles/SynologyNasServer'
 
 const System = () => (
   <TileSection>
@@ -21,9 +26,10 @@ const System = () => (
       <BackupStats />
     </TileGroup>
     <TileGroup name="NAS server">
-      <PlaceholderTile title="DSM update" size="standard" />
-      <PlaceholderTile title="Plugins update" size="standard" />
-      <PlaceholderTile title="Occupied disk space" size="horizontal" />
+      <SynologyDsmUpdate />
+      <SynologySecurityStatus />
+      <OccupiedDiskSpace />
+      <PlaceholderTile title="Occupied disk space" size="standard" />
       <PlaceholderTile title="Volumen status" size="standard" />
       <PlaceholderTile title="Shutdown NAS" size="standard" />
     </TileGroup>
