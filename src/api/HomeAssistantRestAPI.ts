@@ -11,7 +11,7 @@ class HomeAssistantWebSocketAPI {
   private static getApiConfig = () => {
     const host = getHomeAssistantHost()
     const token = getHomeAssistantToken()
-    if (host === '' || token === '') {
+    if (!host || !token) {
       console.error(
         'Home Assistant VITE_HA_HOST and VITE_HA_TOKEN must be provided!'
       )

@@ -21,7 +21,9 @@
     "lint-fix": "eslint --fix  . --ext .js,.ts,.tsx",
     "lint:stylelint": "stylelint **/*.{css,scss,tsx}",
     "fix:stylelint": "stylelint --fix  ./src/**/*.{css, scss,tsx}",
-    "test": "jest"
+    "test": "jest",
+    "docker-build": "docker build -t ha-dashboard .",
+    "docker-run": "docker run -d -p 3000:80 ha-dashboard"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",

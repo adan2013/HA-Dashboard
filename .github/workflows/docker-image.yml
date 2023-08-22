@@ -19,3 +19,6 @@ jobs:
       with:
         push: true
         tags: adan2013/ha-dashboard:latest
+        build-args: |
+          VITE_HA_HOST=${{ secrets.VITE_HA_HOST }}
+          VITE_HA_TOKEN=${{ secrets.VITE_HA_TOKEN }}
