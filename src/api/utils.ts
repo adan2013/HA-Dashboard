@@ -52,10 +52,17 @@ export type ConnectionStatusListenerCallback = (
   state: HomeAssistantConnectionState
 ) => void
 
-export const getEnvVar = (name: string): string =>
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  import.meta.env[name] || ''
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+export const getHomeAssistantHost = (): string => import.meta.env.VITE_HA_HOST
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+export const getHomeAssistantToken = (): string => import.meta.env.VITE_HA_TOKEN
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+export const isDevEnv = (): boolean => import.meta.env.DEV
 
 export const mapEntityState = (haEntity: any): EntityState => ({
   id: haEntity.entity_id,

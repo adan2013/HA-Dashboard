@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getEnvVar } from './utils'
+import { getHomeAssistantHost, getHomeAssistantToken } from './utils'
 
 type SensorHistoryItem = {
   id: string | number
@@ -9,8 +9,8 @@ type SensorHistoryItem = {
 
 class HomeAssistantWebSocketAPI {
   private static getApiConfig = () => {
-    const host = getEnvVar('VITE_HA_HOST')
-    const token = getEnvVar('VITE_HA_TOKEN')
+    const host = getHomeAssistantHost()
+    const token = getHomeAssistantToken()
     if (host === '' || token === '') {
       console.error(
         'Home Assistant VITE_HA_HOST and VITE_HA_TOKEN must be provided!'

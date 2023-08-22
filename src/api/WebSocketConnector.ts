@@ -1,4 +1,4 @@
-import { getEnvVar } from './utils'
+import { isDevEnv } from './utils'
 
 export interface WebSocketConnectionOptions {
   pingInterval?: number
@@ -102,7 +102,7 @@ class WebSocketConnector {
 
   onReceive(event: MessageEvent) {
     const msg = JSON.parse(event.data)
-    if (msg.type !== 'event' && getEnvVar('DEV')) {
+    if (msg.type !== 'event' && isDevEnv()) {
       console.log('[WS]', msg)
     }
     if (msg.type === 'ping') {
@@ -118,7 +118,7 @@ class WebSocketConnector {
     if (!this._connected) {
       return
     }
-    if (getEnvVar('DEV')) {
+    if (isDevEnv()) {
       console.log('[PC]', msg)
     }
     this.socket.send(JSON.stringify(msg))

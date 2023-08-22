@@ -20,7 +20,7 @@ import {
 } from '../../components/specialTiles/SynologyNasServer'
 import CallServiceTile from '../../components/entityTiles/services/CallServiceTile'
 import Tile from '../../components/Tile'
-import { getEnvVar } from '../../api/utils'
+import { getHomeAssistantHost } from '../../api/utils'
 
 const System = () => (
   <TileSection>
@@ -74,9 +74,7 @@ const System = () => (
       <Tile
         title="Go to HA Dashboard"
         icon={<LogoutIcon />}
-        onClick={() =>
-          window.open(`http://${getEnvVar('VITE_HA_HOST')}`, '_self')
-        }
+        onClick={() => window.open(`http://${getHomeAssistantHost()}`, '_self')}
       />
     </TileGroup>
   </TileSection>

@@ -7,8 +7,9 @@ import {
   SocketMessageInterface,
   ListenerRemover,
   EntityListenerCallback,
-  getEnvVar,
-  ConnectionStatusListenerCallback
+  ConnectionStatusListenerCallback,
+  getHomeAssistantHost,
+  getHomeAssistantToken
 } from './utils'
 import WebSocketConnector from './WebSocketConnector'
 
@@ -212,8 +213,8 @@ class HomeAssistantWebSocketAPI extends WebSocketConnector {
   }
 
   constructor() {
-    const host = getEnvVar('VITE_HA_HOST')
-    const token = getEnvVar('VITE_HA_TOKEN')
+    const host = getHomeAssistantHost()
+    const token = getHomeAssistantToken()
     if (host === '' || token === '') {
       console.error(
         'Home Assistant VITE_HA_HOST and VITE_HA_TOKEN must be provided!'
