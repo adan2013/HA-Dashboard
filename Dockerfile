@@ -3,6 +3,9 @@ FROM node:18-alpine as builder
 ARG VITE_HA_HOST
 ARG VITE_HA_TOKEN
 
+ENV VITE_HA_HOST=$VITE_HA_HOST
+ENV VITE_HA_TOKEN=$VITE_HA_TOKEN
+
 COPY package.json yarn.lock ./
 COPY package.json ./
 COPY yarn.lock ./

@@ -219,6 +219,8 @@ class HomeAssistantWebSocketAPI extends WebSocketConnector {
       console.error(
         'Home Assistant VITE_HA_HOST and VITE_HA_TOKEN must be provided!'
       )
+      console.error('HOST', host)
+      console.error('TOKEN', token)
       return
     }
     super(`${host}/api/websocket`)
