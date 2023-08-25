@@ -77,6 +77,18 @@ const System = () => (
         onClick={() => window.open(`http://${getHomeAssistantHost()}`, '_self')}
       />
     </TileGroup>
+    <TileGroup name="Server">
+      <Tile
+        title="Open Proxmox dashboard"
+        icon={<LogoutIcon />}
+        onClick={() => window.open(`http://192.168.1.10:8006`, '_self')}
+      />
+      <Tile
+        title="Open Portainer dashboard"
+        icon={<LogoutIcon />}
+        onClick={() => window.open(`http://192.168.1.11:9000`, '_self')}
+      />
+    </TileGroup>
   </TileSection>
 )
 

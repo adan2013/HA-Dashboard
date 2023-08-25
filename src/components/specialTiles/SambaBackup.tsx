@@ -32,6 +32,12 @@ export const SambaBackupStatus = () => (
         iconClassnames: 'animate-pulse text-orange-500'
       },
       {
+        state: 'SUCCEEDED',
+        name: 'Completed',
+        icon: <CloudSyncIcon />,
+        iconClassnames: 'animate-pulse text-green-500'
+      },
+      {
         state: 'FAILED',
         name: 'FAILURE',
         icon: <WarningAmberIcon />,
