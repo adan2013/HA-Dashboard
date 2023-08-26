@@ -65,11 +65,17 @@ const ChartHistoryTile = ({
   }
 
   const getValue = (): TileValue | string => {
-    const main = Math.floor(Number.parseFloat(entityState?.state)) || 0
-    const decimal =
-      (Number.parseFloat(entityState?.state) % 1)
-        .toFixed(showDecimals)
-        .substring(2) || 0
+    const value = Number.parseFloat(entityState?.state) || 0
+    if (value === 0) {
+      return {
+        main: 0,
+        decimal: showDecimals ? 0 : undefined,
+        unit
+      }
+    }
+    const main = Math.floor(value)
+    const decimalPart = value.toString().split('.')[1] || '00000'
+    const decimal = decimalPart.substring(0, showDecimals)
     return {
       main,
       decimal: showDecimals ? decimal : undefined,
