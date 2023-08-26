@@ -8,35 +8,30 @@ import {
 
 const Temperatures = () => (
   <TileSection>
-    <TileGroup name="Living room">
+    <TileGroup name="Temperature">
       <TemperatureChartTile
-        title="Temperature"
+        title="Living room"
         entityName="livingRoomTempSensor temperature"
       />
-      <HumidityChartTile
-        title="Humidity"
-        entityName="livingRoomTempSensor humidity"
-      />
-    </TileGroup>
-    <TileGroup name="Daniel">
       <TemperatureChartTile
-        title="Temperature"
+        title="Daniel"
         entityName="danielTempSensor temperature"
       />
-      <HumidityChartTile
-        title="Humidity"
-        entityName="danielTempSensor humidity"
-      />
-    </TileGroup>
-    <TileGroup name="Ania">
       <TemperatureChartTile
-        title="Temperature"
+        title="Ania"
         entityName="aniaTempSensor temperature"
       />
+    </TileGroup>
+    <TileGroup name="Humidity">
       <HumidityChartTile
-        title="Humidity"
-        entityName="aniaTempSensor humidity"
+        title="Living room"
+        entityName="livingRoomTempSensor humidity"
       />
+      <HumidityChartTile
+        title="Daniel"
+        entityName="danielTempSensor humidity"
+      />
+      <HumidityChartTile title="Ania" entityName="aniaTempSensor humidity" />
     </TileGroup>
     <TileGroup name="Server rack">
       <PlaceholderTile title="Temperature" size="horizontal" />
