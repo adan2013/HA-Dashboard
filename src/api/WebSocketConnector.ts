@@ -4,7 +4,6 @@ export interface WebSocketConnectionOptions {
   pingInterval?: number
   pongTimeout?: number
   reconnectInterval?: number
-  reconnectAttempts?: number
 }
 
 class WebSocketConnector {
@@ -13,21 +12,15 @@ class WebSocketConnector {
   private pongTimeout: number
   private reconnectTimeout: number
   private socket: WebSocket
-  private failedReconnectAttempts = 0
 
   readonly options: WebSocketConnectionOptions
   readonly host: string
-
-  public get connected(): boolean {
-    return this._connected
-  }
 
   constructor(url: string, options?: WebSocketConnectionOptions) {
     this.options = {
       pingInterval: 1000 * 60 * 2,
       pongTimeout: 1000 * 10,
       reconnectInterval: 1000 * 10,
-      reconnectAttempts: 10,
       ...options
     }
     this.host = `ws://${url}`
@@ -46,7 +39,6 @@ class WebSocketConnector {
     this.socket.onclose = () => this.onConnectionStateChange(false)
     this.socket.onerror = err => {
       console.error('websocket error', err)
-      this.failedReconnectAttempts += 1
     }
   }
 
@@ -70,33 +62,21 @@ class WebSocketConnector {
           this.sendPingMessage()
           this.pongTimeout = window.setTimeout(() => {
             console.warn('websocket PONG timeout!')
-            this.failedReconnectAttempts += 1
             this.disconnect()
             this.onConnectionStateChange(false)
           }, this.options.pongTimeout)
         }, this.options.pingInterval)
       }
     }
-    if (this.options.reconnectInterval) {
-      if (state) {
-        this.failedReconnectAttempts = 0
-      } else if (
-        this.options.reconnectAttempts > 0 &&
-        this.failedReconnectAttempts >= this.options.reconnectAttempts
-      ) {
-        console.error(
-          `websocket connection lost! Reconnect attempts limit reached`
-        )
-      } else {
-        console.warn(
-          `websocket connection lost! Reconnecting in ${this.options.reconnectInterval}ms (Attempt #${this.failedReconnectAttempts})`
-        )
-        window.clearTimeout(this.reconnectTimeout)
-        this.reconnectTimeout = window.setTimeout(() => {
-          console.log('trying to reconnect...')
-          this.connect()
-        }, this.options.reconnectInterval)
-      }
+    if (!state && this.options.reconnectInterval) {
+      console.warn(
+        `websocket connection lost! Reconnecting in ${this.options.reconnectInterval}ms`
+      )
+      window.clearTimeout(this.reconnectTimeout)
+      this.reconnectTimeout = window.setTimeout(() => {
+        console.log('trying to reconnect...')
+        this.connect()
+      }, this.options.reconnectInterval)
     }
   }
 

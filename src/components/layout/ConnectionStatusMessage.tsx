@@ -42,7 +42,7 @@ const ConnectionStatusMessage = () => {
 
   useEffect(() => {
     setVisible(true)
-    if (status === 'authorized') {
+    if (status === 'authorized' || status === 'synced') {
       setTimeout(() => setVisible(false), VISIBILITY_TIMEOUT)
     }
   }, [status])
