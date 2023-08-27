@@ -49,6 +49,7 @@ export const ModalButton = ({
     const onResize = () => {
       setIsMobile(divRef.current?.offsetWidth < 250)
     }
+    onResize()
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
   }, [divRef])
