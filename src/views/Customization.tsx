@@ -6,6 +6,7 @@ import { themes } from '../themes'
 import Tile from '../components/Tile'
 import { useGlobalContext } from '../contexts/GlobalContext'
 import { Background, backgrounds } from '../backgrounds'
+import { getPackageVersion } from '../api/utils'
 
 const getSubtitle = (bg: Background) => {
   switch (bg.type) {
@@ -82,6 +83,20 @@ const Customization = () => {
           title="Sounds off"
           icon={context.settings.sound ? undefined : <CheckIcon />}
           onClick={() => changeSettings({ sound: false })}
+        />
+      </TileGroup>
+      <TileGroup name="Dev">
+        <Tile
+          title="Version"
+          customBody={
+            <div className="absolute bottom-1 right-2 text-4xl">
+              {getPackageVersion()}
+            </div>
+          }
+        />
+        <Tile
+          title="Fully Kiosk API"
+          value={Object.hasOwn(window, 'fully') ? 'Yes' : 'No'}
         />
       </TileGroup>
     </TileSection>
