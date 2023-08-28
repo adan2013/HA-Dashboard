@@ -18,7 +18,7 @@ class WebSocketConnector {
 
   constructor(url: string, options?: WebSocketConnectionOptions) {
     this.options = {
-      pingInterval: 1000 * 60 * 2,
+      pingInterval: isDevEnv() ? 1000 * 10 : 1000 * 60 * 2,
       pongTimeout: 1000 * 10,
       reconnectInterval: 1000 * 10,
       ...options
@@ -29,6 +29,13 @@ class WebSocketConnector {
 
   sendPingMessage() {
     this.socket.send(JSON.stringify({ type: 'ping' }))
+  }
+
+  disconnect() {
+    this.socket?.close()
+    window.clearInterval(this.pingInterval)
+    window.clearTimeout(this.pongTimeout)
+    window.clearTimeout(this.reconnectTimeout)
   }
 
   connect() {
@@ -42,15 +49,8 @@ class WebSocketConnector {
     }
   }
 
-  disconnect() {
-    if (this.socket) {
-      this.socket.close()
-      window.clearInterval(this.pingInterval)
-      window.clearTimeout(this.pongTimeout)
-    }
-  }
-
   onConnectionStateChange(state: boolean) {
+    window.clearTimeout(this.reconnectTimeout)
     this._connected = state
     if (state) {
       if (this.options.pingInterval && this.options.pongTimeout) {
@@ -72,7 +72,6 @@ class WebSocketConnector {
       console.warn(
         `websocket connection lost! Reconnecting in ${this.options.reconnectInterval}ms`
       )
-      window.clearTimeout(this.reconnectTimeout)
       this.reconnectTimeout = window.setTimeout(() => {
         console.log('trying to reconnect...')
         this.connect()
