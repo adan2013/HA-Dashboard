@@ -87,11 +87,17 @@ const Customization = () => {
       </TileGroup>
       <TileGroup name="Dev">
         <Tile
-          title="Version"
+          title="Dashboard version"
           customBody={
             <div className="absolute bottom-1 right-2 text-4xl">
               {getPackageVersion()}
             </div>
+          }
+        />
+        <Tile
+          title="Backend version"
+          customBody={
+            <div className="absolute bottom-1 right-2 text-4xl">-.-.-</div>
           }
         />
         <Tile
