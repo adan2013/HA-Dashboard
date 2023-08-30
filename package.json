@@ -22,6 +22,7 @@
     "lint:stylelint": "stylelint **/*.{css,scss,tsx}",
     "fix:stylelint": "stylelint --fix  ./src/**/*.{css, scss,tsx}",
     "test": "jest",
+    "coverage": "jest --coverage --collectCoverageFrom=src/**/*.{ts,tsx}",
     "docker-build": "docker build -t ha-dashboard .",
     "docker-run": "docker run -d -p 3000:80 ha-dashboard"
   },
