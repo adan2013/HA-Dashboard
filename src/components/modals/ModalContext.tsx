@@ -55,7 +55,6 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
   const getModalWidth = () => {
     switch (modalState.modalType) {
       case 'confirmation':
-        return '400px'
       case 'lightControl':
         return '600px'
       default:
