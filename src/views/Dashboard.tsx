@@ -6,7 +6,6 @@ import { sectionTiles } from '../layout/menus'
 import { useLayoutContext } from '../contexts/OutletContext'
 import Weather from './Weather'
 import Notifications from './Notifications'
-import { useTheme } from '../contexts/GlobalContext'
 
 const dayNames = [
   'Sunday',
@@ -71,7 +70,6 @@ const TimeAndDate = () => {
 
 const Dashboard = () => {
   const layout = useLayoutContext()
-  const theme = useTheme()
 
   if (layout?.isMobile) {
     return (
@@ -105,8 +103,7 @@ const Dashboard = () => {
     <div className="relative grid grid-cols-2">
       <div
         className={clsx(
-          'col-span-2 flex h-24 flex-row gap-4 border-b-2 p-3',
-          theme.border
+          'col-span-2 flex h-24 flex-row gap-4 border-b-2 border-blue-600 p-3'
         )}
       >
         <TimeAndDate />
@@ -119,7 +116,7 @@ const Dashboard = () => {
       <div className="h-[calc(100vh-20rem)] p-3">
         <Weather />
       </div>
-      <div className={clsx('border-l-2 p-3', theme.border)}>
+      <div className={clsx('border-l-2 border-blue-600 p-3')}>
         <Notifications />
       </div>
     </div>

@@ -1,13 +1,10 @@
 import clsx from 'clsx'
 import { useLocation, Link, Outlet } from 'react-router-dom'
-
 import { mobileMenu, pageMetadata } from './menus'
 import { OutletContextType } from '../contexts/OutletContext'
 import NotificationDot from '../components/layout/NotificationDot'
-import { useBackground } from '../contexts/GlobalContext'
 
 const MobileLayout = () => {
-  const background = useBackground()
   const location = useLocation()
   const pageTitle = pageMetadata.find(
     page => page.path === location.pathname
@@ -24,16 +21,8 @@ const MobileLayout = () => {
       <div
         className={clsx(
           'min-h-screen overflow-x-hidden p-4 pb-24',
-          background.type === 'color' && background.value,
-          background.type === 'gradient' && background.value,
-          background.type === 'image' && `bg-cover`,
-          background.textColor
+          'bg-black text-white'
         )}
-        style={
-          background.type === 'image'
-            ? { backgroundImage: `url('/backgrounds/${background.value}')` }
-            : {}
-        }
       >
         {pageTitle && (
           <div className="my-4 text-3xl font-bold">{pageTitle}</div>

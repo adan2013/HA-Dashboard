@@ -6,11 +6,8 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import { pageMetadata, sectionTiles } from './menus'
 import { OutletContextType } from '../contexts/OutletContext'
 import NotificationDot from '../components/layout/NotificationDot'
-import { useBackground, useTheme } from '../contexts/GlobalContext'
 
 const DesktopLayout = () => {
-  const theme = useTheme()
-  const background = useBackground()
   const location = useLocation()
   const pageTitle = pageMetadata.find(
     page => page.path === location.pathname
@@ -25,16 +22,8 @@ const DesktopLayout = () => {
       <div
         className={clsx(
           'min-h-screen overflow-hidden p-4 lg:p-0',
-          background.type === 'color' && background.value,
-          background.type === 'gradient' && background.value,
-          background.type === 'image' && `bg-cover`,
-          background.textColor
+          'bg-black text-white'
         )}
-        style={
-          background.type === 'image'
-            ? { backgroundImage: `url('/backgrounds/${background.value}')` }
-            : {}
-        }
       >
         {pageTitle && collapsed && (
           <div className="my-6 text-3xl font-bold lg:pl-5">{pageTitle}</div>
@@ -43,8 +32,7 @@ const DesktopLayout = () => {
       </div>
       <div
         className={clsx(
-          'fixed bottom-0 z-20 w-full border-t-2 bg-gray-900 transition-all duration-500',
-          theme.border,
+          'fixed bottom-0 z-20 w-full border-t-2 border-blue-600 bg-gray-900 transition-all duration-500',
           collapsed ? 'h-20' : 'h-56'
         )}
       >

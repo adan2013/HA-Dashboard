@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import { cloneElement, forwardRef, MutableRefObject, ReactElement } from 'react'
 import PowerOffOutlinedIcon from '@mui/icons-material/PowerOffOutlined'
-import { useTheme } from '../../contexts/GlobalContext'
 import useClickHoldLogic from '../../hooks/useClickHoldLogic'
 
 export type TileSize = 'standard' | 'horizontal' | 'big'
@@ -34,15 +33,14 @@ const Tile = (propsTile: TileProps, ref: MutableRefObject<HTMLDivElement>) => {
     size: 'standard',
     ...propsTile
   }
-  const theme = useTheme()
   const holdEvents = useClickHoldLogic(tile.onClick, tile.onHold, {
     disableInteractions: tile.isUnavailable
   })
 
-  const textColor = tile.textColor || theme.text || 'text-white'
-  let backgroundColor = tile.tileColor || theme.primary || 'bg-blue-900'
+  const textColor = tile.textColor || 'text-white'
+  let backgroundColor = tile.tileColor || 'bg-blue-900'
   if (tile.isUnavailable) {
-    backgroundColor = theme.secondary || 'bg-gray-600'
+    backgroundColor = 'bg-blue-600'
   }
 
   const renderValue = () => {
