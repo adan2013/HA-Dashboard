@@ -7,6 +7,7 @@ const RemoteControl = () => (
     <TileGroup name="">
       <RemoteControlTile
         title="Living room"
+        rcName="livingRoom"
         buttons={[
           ['Back ambient', 'Min / Normal'],
           ['Full ambient', 'Normal / Max'],
@@ -18,9 +19,10 @@ const RemoteControl = () => (
       />
       <RemoteControlTile
         title="Kitchen"
+        rcName="kitchen"
         buttons={[
-          'Left side',
           'Right side',
+          'Left side',
           'Turn off',
           ['Light sensor', 'on/off auto (hold)']
         ]}

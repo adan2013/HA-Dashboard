@@ -18,7 +18,7 @@ class WebSocketConnector {
 
   constructor(url: string, options?: WebSocketConnectionOptions) {
     this.options = {
-      pingInterval: isDevEnv() ? 1000 * 10 : 1000 * 60 * 2,
+      pingInterval: isDevEnv() ? 1000 * 40 : 1000 * 60 * 2,
       pongTimeout: 1000 * 10,
       reconnectInterval: 1000 * 10,
       ...options

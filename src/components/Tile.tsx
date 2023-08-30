@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { cloneElement, forwardRef, MutableRefObject, ReactElement } from 'react'
 import PowerOffOutlinedIcon from '@mui/icons-material/PowerOffOutlined'
 import { useTheme } from '../contexts/GlobalContext'
-import useClickHoldLogic from './useClickHoldLogic'
+import useClickHoldLogic from '../hooks/useClickHoldLogic'
 
 export type TileSize = 'standard' | 'horizontal' | 'big'
 

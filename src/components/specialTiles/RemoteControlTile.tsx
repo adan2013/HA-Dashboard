@@ -1,15 +1,20 @@
 import clsx from 'clsx'
 import Tile, { TileProps } from '../Tile'
+import useAqaraOppleLogic from '../../hooks/useAqaraOppleLogic'
 
 type Button = string | [string, string]
 
 type SwitchButtonProps = {
   button: Button
+  rcName: string
+  num: number
 }
 
-const SwitchButton = ({ button }: SwitchButtonProps) => {
-  let main = ''
-  let sub = ''
+const SwitchButton = ({ button, rcName, num }: SwitchButtonProps) => {
+  const interactionEvents = useAqaraOppleLogic(rcName, num)
+
+  let main: string
+  let sub: string
   if (Array.isArray(button)) {
     ;[main, sub] = button
   } else {
@@ -22,6 +27,7 @@ const SwitchButton = ({ button }: SwitchButtonProps) => {
         'border-gray-400 bg-transparent text-white',
         'transition-colors hover:border-white hover:bg-white hover:text-black'
       )}
+      {...interactionEvents}
     >
       <div>
         <div>{main}</div>
@@ -32,10 +38,11 @@ const SwitchButton = ({ button }: SwitchButtonProps) => {
 }
 
 type SwitcherProps = {
+  rcName: string
   buttons: Button[]
 }
 
-const Switcher = ({ buttons }: SwitcherProps) => (
+const Switcher = ({ rcName, buttons }: SwitcherProps) => (
   <div className="absolute bottom-0 left-0 h-64 w-full p-2">
     <div className={clsx('grid h-full auto-rows-fr grid-cols-2 gap-2')}>
       {buttons.map((btn, idx) => {
@@ -44,7 +51,9 @@ const Switcher = ({ buttons }: SwitcherProps) => (
           return <div key={`disabled-btn-${idx}`} />
         }
         const key = Array.isArray(btn) ? btn[0] : btn
-        return <SwitchButton button={btn} key={key} />
+        return (
+          <SwitchButton key={key} rcName={rcName} num={idx + 1} button={btn} />
+        )
       })}
     </div>
   </div>
@@ -52,14 +61,19 @@ const Switcher = ({ buttons }: SwitcherProps) => (
 
 type RemoteControlTileProps = {
   title: string
+  rcName: string
   buttons: Button[]
 }
 
-const RemoteControlTile = ({ title, buttons }: RemoteControlTileProps) => {
+const RemoteControlTile = ({
+  title,
+  rcName,
+  buttons
+}: RemoteControlTileProps) => {
   const tileData: TileProps = {
     title,
     size: 'big',
-    customBody: <Switcher buttons={buttons} />
+    customBody: <Switcher rcName={rcName} buttons={buttons} />
   }
   return <Tile {...tileData} />
 }
