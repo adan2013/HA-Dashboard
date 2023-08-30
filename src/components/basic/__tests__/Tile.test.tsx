@@ -1,5 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { fireEvent, render, screen } from '@testing-library/react'
 import Tile, { TileProps } from '../Tile'
 import TestWrapper from '../../../utils/testUtils'
 
@@ -96,6 +95,23 @@ describe('Tile', () => {
     expect(screen.getByTestId('tile-bg')).toHaveClass('bg-red-500')
   })
 
-  // TODO click and hold tests
-  // TODO disable click and hold if tile is unavailable
+  it('should trigger onClick event and disable event if tile is unavailable', () => {
+    const onClick = jest.fn()
+    const { rerender } = render(
+      <TestWrapper>
+        <Tile {...testProps} onClick={onClick} />
+      </TestWrapper>
+    )
+    fireEvent.mouseDown(screen.getByTestId('tile-bg'))
+    fireEvent.mouseUp(screen.getByTestId('tile-bg'))
+    expect(onClick).toHaveBeenCalledTimes(1)
+    rerender(
+      <TestWrapper>
+        <Tile {...testProps} onClick={onClick} isUnavailable />
+      </TestWrapper>
+    )
+    fireEvent.mouseDown(screen.getByTestId('tile-bg'))
+    fireEvent.mouseUp(screen.getByTestId('tile-bg'))
+    expect(onClick).toHaveBeenCalledTimes(1)
+  })
 })
