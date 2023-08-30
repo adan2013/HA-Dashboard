@@ -7,11 +7,10 @@ import {
   SocketMessageInterface,
   ListenerRemover,
   EntityListenerCallback,
-  ConnectionStatusListenerCallback,
-  getHomeAssistantHost,
-  getHomeAssistantToken
+  ConnectionStatusListenerCallback
 } from './utils'
 import WebSocketConnector from './WebSocketConnector'
+import { getHomeAssistantHost, getHomeAssistantToken } from '../utils/viteUtils'
 
 class HomeAssistantWebSocketAPI extends WebSocketConnector {
   private readonly token: string

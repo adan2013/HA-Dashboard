@@ -36,7 +36,7 @@ const mouseEvents = [
 
 const useClickHoldLogic = (
   onClick: () => void,
-  onLongPress: () => void,
+  onHold: () => void,
   options: ClickHoldLogicOptions = {}
 ) => {
   const [holdTriggered, setHoldTriggered] = useState(false)
@@ -61,11 +61,11 @@ const useClickHoldLogic = (
         target.current = event.target
       }
       timeout.current = window.setTimeout(() => {
-        if (onLongPress) onLongPress()
+        if (onHold) onHold()
         setHoldTriggered(true)
       }, delay)
     },
-    [onLongPress, delay, shouldPreventDefault, disableInteractions]
+    [onHold, delay, shouldPreventDefault, disableInteractions]
   )
 
   const clear = useCallback(
@@ -88,11 +88,11 @@ const useClickHoldLogic = (
     event => {
       if (holdOnRightClick) {
         event.preventDefault()
-        if (onLongPress) onLongPress()
+        if (onHold) onHold()
         setHoldTriggered(true)
       }
     },
-    [onLongPress, holdOnRightClick]
+    [onHold, holdOnRightClick]
   )
 
   const watchMovement = useCallback(

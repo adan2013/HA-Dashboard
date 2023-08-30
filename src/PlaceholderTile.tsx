@@ -1,5 +1,5 @@
 import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined'
-import Tile, { TileSize } from './components/Tile'
+import Tile, { TileSize } from './components/basic/Tile'
 
 type TilePlaceholderProps = {
   title: string

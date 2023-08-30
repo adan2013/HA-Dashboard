@@ -1,17 +1,32 @@
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
-import PlaceholderTile from '../../PlaceholderTile'
+import RemoteControlTile from '../../components/specialTiles/RemoteControlTile'
 
 const RemoteControl = () => (
   <TileSection>
-    <TileGroup name="Living room">
-      <PlaceholderTile title="Living room remote" size="big" />
-    </TileGroup>
-    <TileGroup name="Kitchen">
-      <PlaceholderTile title="Kitchen room remote" size="big" />
-    </TileGroup>
-    <TileGroup name="Daniel">
-      <PlaceholderTile title="Daniel remote" size="big" />
+    <TileGroup name="">
+      <RemoteControlTile
+        title="Living room"
+        rcName="livingRoom"
+        buttons={[
+          ['Back ambient', 'Min / Normal'],
+          ['Full ambient', 'Normal / Max'],
+          'TV light',
+          ['Table light', 'Normal / Max'],
+          undefined,
+          'Turn off'
+        ]}
+      />
+      <RemoteControlTile
+        title="Kitchen"
+        rcName="kitchen"
+        buttons={[
+          'Right side',
+          'Left side',
+          'Turn off',
+          ['Light sensor', 'on/off auto (hold)']
+        ]}
+      />
     </TileGroup>
   </TileSection>
 )

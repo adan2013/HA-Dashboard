@@ -1,6 +1,6 @@
 import PowerIcon from '@mui/icons-material/Power'
 import PowerOffIcon from '@mui/icons-material/PowerOff'
-import Tile, { TileProps } from '../../Tile'
+import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
 import { ConfirmationModalParams } from '../../modals/utils'

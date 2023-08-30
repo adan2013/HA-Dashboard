@@ -3,9 +3,10 @@ import clsx from 'clsx'
 import TileSection from '../components/layout/TileSection'
 import TileGroup from '../components/layout/TileGroup'
 import { themes } from '../themes'
-import Tile from '../components/Tile'
+import Tile from '../components/basic/Tile'
 import { useGlobalContext } from '../contexts/GlobalContext'
 import { Background, backgrounds } from '../backgrounds'
+import { getPackageVersion } from '../utils/viteUtils'
 
 const getSubtitle = (bg: Background) => {
   switch (bg.type) {
@@ -82,6 +83,26 @@ const Customization = () => {
           title="Sounds off"
           icon={context.settings.sound ? undefined : <CheckIcon />}
           onClick={() => changeSettings({ sound: false })}
+        />
+      </TileGroup>
+      <TileGroup name="Dev">
+        <Tile
+          title="Dashboard version"
+          customBody={
+            <div className="absolute bottom-1 right-2 text-4xl">
+              {getPackageVersion()}
+            </div>
+          }
+        />
+        <Tile
+          title="Backend version"
+          customBody={
+            <div className="absolute bottom-1 right-2 text-4xl">-.-.-</div>
+          }
+        />
+        <Tile
+          title="Fully Kiosk API"
+          value={Object.hasOwn(window, 'fully') ? 'Yes' : 'No'}
         />
       </TileGroup>
     </TileSection>
