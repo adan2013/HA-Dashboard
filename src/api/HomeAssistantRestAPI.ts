@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getHomeAssistantHost, getHomeAssistantToken } from './utils'
+import { getHomeAssistantHost, getHomeAssistantToken } from '../utils/viteUtils'
 
 type SensorHistoryItem = {
   id: string | number

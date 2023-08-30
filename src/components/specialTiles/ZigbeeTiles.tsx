@@ -1,7 +1,7 @@
 import { Fragment, ReactElement } from 'react'
 import Battery1BarIcon from '@mui/icons-material/Battery1Bar'
 import WifiIcon from '@mui/icons-material/Wifi'
-import Tile, { TileProps } from '../Tile'
+import Tile, { TileProps } from '../basic/Tile'
 import { useHomeAssistantZigbeeEntities } from '../../api/hooks'
 import { ZigbeeEntityState } from '../../api/utils'
 import { useModalContext } from '../modals/ModalContext'

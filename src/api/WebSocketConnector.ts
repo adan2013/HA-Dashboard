@@ -1,4 +1,4 @@
-import { isDevEnv } from './utils'
+import { isDevEnv } from '../utils/viteUtils'
 
 export interface WebSocketConnectionOptions {
   pingInterval?: number

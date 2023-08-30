@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 import { toast } from 'react-toastify'
-import Tile, { TileProps } from '../../Tile'
+import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
 import { ConfirmationModalParams } from '../../modals/utils'

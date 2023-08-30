@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined'
 import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined'
-import Tile, { TileProps } from '../../Tile'
+import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
 import { EntityState } from '../../../api/utils'

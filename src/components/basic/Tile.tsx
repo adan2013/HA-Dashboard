@@ -1,8 +1,8 @@
 import clsx from 'clsx'
 import { cloneElement, forwardRef, MutableRefObject, ReactElement } from 'react'
 import PowerOffOutlinedIcon from '@mui/icons-material/PowerOffOutlined'
-import { useTheme } from '../contexts/GlobalContext'
-import useClickHoldLogic from '../hooks/useClickHoldLogic'
+import { useTheme } from '../../contexts/GlobalContext'
+import useClickHoldLogic from '../../hooks/useClickHoldLogic'
 
 export type TileSize = 'standard' | 'horizontal' | 'big'
 
@@ -88,6 +88,7 @@ const Tile = (propsTile: TileProps, ref: MutableRefObject<HTMLDivElement>) => {
       )}
       {...holdEvents}
       ref={ref}
+      data-testid="tile-bg"
     >
       <div className="text-md px-3 py-2">
         <div className="font-bold">{tile.title}</div>
@@ -103,7 +104,10 @@ const Tile = (propsTile: TileProps, ref: MutableRefObject<HTMLDivElement>) => {
         </div>
       )}
       {tile.isUnavailable && (
-        <div className="absolute bottom-2 left-2 text-red-500">
+        <div
+          className="absolute bottom-2 left-2 text-red-500"
+          data-testid="unavailable-tile"
+        >
           <PowerOffOutlinedIcon />
         </div>
       )}

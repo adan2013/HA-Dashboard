@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react'
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined'
-import Tile, { TileProps } from '../../Tile'
+import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
 import { useModalContext } from '../../modals/ModalContext'
 import { ConfirmationModalParams } from '../../modals/utils'

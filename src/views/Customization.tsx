@@ -3,10 +3,10 @@ import clsx from 'clsx'
 import TileSection from '../components/layout/TileSection'
 import TileGroup from '../components/layout/TileGroup'
 import { themes } from '../themes'
-import Tile from '../components/Tile'
+import Tile from '../components/basic/Tile'
 import { useGlobalContext } from '../contexts/GlobalContext'
 import { Background, backgrounds } from '../backgrounds'
-import { getPackageVersion } from '../api/utils'
+import { getPackageVersion } from '../utils/viteUtils'
 
 const getSubtitle = (bg: Background) => {
   switch (bg.type) {

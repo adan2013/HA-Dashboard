@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import Tile, { TileProps } from '../Tile'
+import Tile, { TileProps } from '../basic/Tile'
 import useAqaraOppleLogic from '../../hooks/useAqaraOppleLogic'
 
 type Button = string | [string, string]

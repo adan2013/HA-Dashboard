@@ -19,8 +19,8 @@ import {
   VolumeTemperature
 } from '../../components/specialTiles/SynologyNasServer'
 import CallServiceTile from '../../components/entityTiles/services/CallServiceTile'
-import Tile from '../../components/Tile'
-import { getHomeAssistantHost } from '../../api/utils'
+import Tile from '../../components/basic/Tile'
+import { getHomeAssistantHost } from '../../utils/viteUtils'
 
 const System = () => (
   <TileSection>

@@ -11,7 +11,7 @@ import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred'
 import StateDropdownHelperTile from '../entityTiles/helpers/StateDropdownHelperTile'
 import CallServiceTile from '../entityTiles/services/CallServiceTile'
 import { useHomeAssistantEntity } from '../../api/hooks'
-import Tile, { TileProps } from '../Tile'
+import Tile, { TileProps } from '../basic/Tile'
 
 export const SambaBackupStatus = () => (
   <StateDropdownHelperTile
