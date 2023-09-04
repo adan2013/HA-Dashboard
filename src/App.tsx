@@ -7,7 +7,7 @@ import Error404 from './views/Error404'
 import Layout from './layout/Layout'
 import SectionIndex from './views/section/SectionIndex'
 import { HomeAssistantContextProvider } from './contexts/HomeAssistantContext'
-import { ModalContextProvider } from './components/modals/ModalContext'
+import { ModalContextProvider } from './contexts/ModalContext'
 
 const router = createBrowserRouter([
   {

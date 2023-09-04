@@ -3,7 +3,7 @@ import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
 import { LightType } from './lightTypes'
 import { getIcon, getMetadata, getStatusSubtitle } from './lightUtils'
-import { useModalContext } from '../../modals/ModalContext'
+import { useModalContext } from '../../../contexts/ModalContext'
 
 type LightTileProps = {
   title: string

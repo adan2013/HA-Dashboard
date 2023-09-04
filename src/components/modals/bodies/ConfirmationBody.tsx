@@ -1,13 +1,13 @@
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined'
-import { useModalContext } from '../ModalContext'
+import { useModalContext } from '../../../contexts/ModalContext'
 import {
   ModalBody,
   ModalButton,
   ModalFooter,
   ModalTitle
 } from '../ModalElements'
-import { ConfirmationModalParams } from '../utils'
+import { ConfirmationModalParams } from '../../../contexts/modalUtils'
 
 const ConfirmationBody = () => {
   const modal = useModalContext()

@@ -3,6 +3,19 @@ import { MemoryRouter } from 'react-router-dom'
 import Layout from '../Layout'
 import { defineWindowWidth } from '../../utils/testUtils'
 
+const closeModalMock = jest.fn()
+jest.mock('../../contexts/ModalContext', () => {
+  const originalModule = jest.requireActual('../../contexts/ModalContext')
+
+  return {
+    __esModule: true,
+    ...originalModule,
+    useModalContext: () => ({
+      closeModal: closeModalMock
+    })
+  }
+})
+
 // eslint-disable-next-line react/display-name
 jest.mock('../DesktopLayout', () => () => <div>DesktopLayout</div>)
 // eslint-disable-next-line react/display-name
@@ -46,5 +59,17 @@ describe('Layout', () => {
     expect(window.onFullyScreenOn).toBeDefined()
     expect(window.onFullyScreenOff).toBeDefined()
     expect(bindMock).toHaveBeenCalledTimes(2)
+  })
+
+  it('should return to home page when Fully Kiosk turn off the screen', () => {
+    render(
+      <MemoryRouter initialEntries={['/test']}>
+        <Layout />
+      </MemoryRouter>
+    )
+    expect(window.onFullyScreenOff).toBeDefined()
+    window.onFullyScreenOff()
+    expect(window.location.pathname).toBe('/')
+    expect(closeModalMock).toHaveBeenCalledTimes(1)
   })
 })

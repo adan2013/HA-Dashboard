@@ -4,8 +4,8 @@ import WifiIcon from '@mui/icons-material/Wifi'
 import Tile, { TileProps } from '../basic/Tile'
 import { useHomeAssistantZigbeeEntities } from '../../api/hooks'
 import { ZigbeeEntityState } from '../../api/utils'
-import { useModalContext } from '../modals/ModalContext'
-import { ZigbeeNetworkModalParams } from '../modals/utils'
+import { useModalContext } from '../../contexts/ModalContext'
+import { ZigbeeNetworkModalParams } from '../../contexts/modalUtils'
 
 const COUNT_OF_TILE_ENTITIES = 5
 export const BATTERY_WARNING_THRESHOLD = 30

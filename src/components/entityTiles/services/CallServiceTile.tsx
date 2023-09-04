@@ -2,8 +2,8 @@ import { ReactElement, useState } from 'react'
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined'
 import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
-import { useModalContext } from '../../modals/ModalContext'
-import { ConfirmationModalParams } from '../../modals/utils'
+import { useModalContext } from '../../../contexts/ModalContext'
+import { ConfirmationModalParams } from '../../../contexts/modalUtils'
 
 type ToggleHelperTileProps = {
   title: string

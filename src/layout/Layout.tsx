@@ -6,6 +6,7 @@ import DesktopLayout from './DesktopLayout'
 import 'react-toastify/dist/ReactToastify.css'
 import { useHomeAssistantStatus } from '../api/hooks'
 import { useHomeAssistant } from '../contexts/HomeAssistantContext'
+import { useModalContext } from '../contexts/ModalContext'
 
 type LayoutType = 'mobile' | 'desktop'
 const MOBILE_LAYOUT_BREAKPOINT = 1024
@@ -16,6 +17,7 @@ const Layout = () => {
   const [layoutMode, setLayoutMode] = useState<LayoutType>(getLayoutType())
   const status = useHomeAssistantStatus()
   const ha = useHomeAssistant()
+  const modal = useModalContext()
   const navigate = useNavigate()
   const isMobile = layoutMode === 'mobile'
 
@@ -26,9 +28,10 @@ const Layout = () => {
       }
     }
     window.onFullyScreenOff = () => {
+      modal.closeModal()
       navigate('/')
     }
-  }, [navigate, status, ha])
+  }, [navigate, status, ha, modal])
 
   useEffect(() => {
     if (Object.hasOwn(window, 'fully')) {

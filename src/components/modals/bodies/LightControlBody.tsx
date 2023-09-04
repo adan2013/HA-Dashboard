@@ -7,14 +7,14 @@ import Brightness5Icon from '@mui/icons-material/Brightness5'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined'
 import ToggleOnIcon from '@mui/icons-material/ToggleOn'
-import { useModalContext } from '../ModalContext'
+import { useModalContext } from '../../../contexts/ModalContext'
 import {
   ModalBody,
   ModalButton,
   ModalFooter,
   ModalTitle
 } from '../ModalElements'
-import { LightControlModalParams } from '../utils'
+import { LightControlModalParams } from '../../../contexts/modalUtils'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
 import { PresetButton } from '../../entityTiles/lights/PresetButton'

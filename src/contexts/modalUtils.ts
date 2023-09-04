@@ -1,5 +1,5 @@
 import { Styles } from 'react-modal'
-import { ValueThreshold } from '../charts/utils'
+import { ValueThreshold } from '../components/charts/utils'
 
 export type ModalType =
   | 'confirmation'

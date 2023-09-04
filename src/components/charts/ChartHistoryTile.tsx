@@ -4,8 +4,8 @@ import { useHomeAssistantEntity } from '../../api/hooks'
 import BackgroundHistoryChart from './BackgroundHistoryChart'
 import HomeAssistantRestAPI from '../../api/HomeAssistantRestAPI'
 import Tile, { TileProps, TileValue } from '../basic/Tile'
-import { useModalContext } from '../modals/ModalContext'
-import { HistoryChartModalParams } from '../modals/utils'
+import { useModalContext } from '../../contexts/ModalContext'
+import { HistoryChartModalParams } from '../../contexts/modalUtils'
 import { ChartData, ValueThreshold } from './utils'
 
 export type ChartHistoryTileProps = {
