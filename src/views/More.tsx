@@ -4,7 +4,7 @@ import Tile from '../components/basic/Tile'
 import { getPackageVersion } from '../utils/viteUtils'
 import PlaceholderTile from '../PlaceholderTile'
 
-const Customization = () => (
+const More = () => (
   <TileSection waitForHomeAssistantSync={false}>
     <TileGroup name="Language">
       <PlaceholderTile title="Polish" size="standard" />
@@ -33,4 +33,4 @@ const Customization = () => (
   </TileSection>
 )
 
-export default Customization
+export default More

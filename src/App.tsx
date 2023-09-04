@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Dashboard from './views/Dashboard'
 import Notifications from './views/Notifications'
 import Weather from './views/Weather'
-import Customization from './views/Customization'
+import More from './views/More'
 import Error404 from './views/Error404'
 import Layout from './layout/Layout'
 import SectionIndex from './views/section/SectionIndex'
@@ -27,8 +27,8 @@ const router = createBrowserRouter([
         element: <Notifications />
       },
       {
-        path: '/customization',
-        element: <Customization />
+        path: '/more',
+        element: <More />
       },
       {
         path: '/section/:sectionId',

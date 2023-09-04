@@ -35,7 +35,7 @@ export const pageMetadata: PageMetadata[] = [
   { path: '/', title: 'Dashboard' },
   { path: '/weather', title: 'Weather' },
   { path: '/notifications', title: 'Notifications' },
-  { path: '/customization', title: 'Customization' },
+  { path: '/more', title: 'More' },
   { path: '/section/lights', title: 'Lights' },
   { path: '/section/temperatures', title: 'Temperatures' },
   { path: '/section/automations', title: 'Automations' },
@@ -55,7 +55,7 @@ export const mobileMenu: MenuItem[] = [
   },
   {
     name: 'More',
-    path: '/customization',
+    path: '/more',
     icon: <MoreHorizOutlinedIcon />
   }
 ]
