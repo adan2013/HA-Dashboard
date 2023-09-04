@@ -37,7 +37,10 @@ const DesktopLayout = () => {
         )}
       >
         {collapsed && (
-          <div className="fixed bottom-5 left-5 text-gray-300">
+          <div
+            className="fixed bottom-5 left-5 text-gray-300"
+            data-testid="back-button"
+          >
             <Link to="/">
               <ArrowBackOutlinedIcon className="!text-4xl" />
             </Link>
@@ -77,7 +80,10 @@ const DesktopLayout = () => {
           ))}
         </div>
         {collapsed && (
-          <div className="fixed bottom-5 right-5 text-gray-300">
+          <div
+            className="fixed bottom-5 right-5 text-gray-300"
+            data-testid="notification-button"
+          >
             <Link to="/notifications">
               <NotificationDot />
               <NotificationsNoneOutlinedIcon className="!text-4xl" />
