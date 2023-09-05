@@ -60,7 +60,9 @@ const Tile = (propsTile: TileProps, ref: MutableRefObject<HTMLDivElement>) => {
             <div className="ml-1">
               <div className="text-right text-sm">{data.unit || ''}</div>
               {data.decimal !== undefined && (
-                <div className="text-lg">.{data.decimal}</div>
+                <div className="text-lg" data-testid="decimal-value">
+                  .{data.decimal}
+                </div>
               )}
             </div>
           )}

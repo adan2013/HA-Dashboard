@@ -10,7 +10,7 @@ export interface EntityAttributeInterface {
   max_color_temp_kelvin?: number
   battery?: number
   friendly_name: string
-  linkquality: number
+  linkquality?: number
 }
 
 export type MessageOptions = {
