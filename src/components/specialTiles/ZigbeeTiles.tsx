@@ -27,7 +27,10 @@ const getListOfEntities = (
       {topList.map((entity, idx) => (
         <Fragment key={entity.friendlyName}>
           {idx < topList.length && <ListSeparator />}
-          <div className="relative mx-2 py-2">
+          <div
+            className="relative mx-2 py-2"
+            data-testid={`${entity.friendlyName}-${idx}`}
+          >
             {entity.friendlyName}
             <div className="absolute right-0 top-0 py-2">
               {valueRenderer(entity)}
@@ -53,10 +56,13 @@ export const BatteryTile = () => {
   const tileProps: TileProps = {
     title: 'Batteries',
     size: 'big',
-    customBody: getListOfEntities(entities, ({ battery }) => (
+    customBody: getListOfEntities(entities, ({ battery, friendlyName }) => (
       <>
         {battery < BATTERY_WARNING_THRESHOLD && (
-          <Battery1BarIcon className="mx-1 mt-[-4px] rotate-90 text-red-500" />
+          <Battery1BarIcon
+            className="mx-1 mt-[-4px] rotate-90 text-red-500"
+            data-testid={`${friendlyName}-low-battery`}
+          />
         )}
         {battery}%
       </>
@@ -75,12 +81,15 @@ export const SignalTile = () => {
   const entities = useHomeAssistantZigbeeEntities('signal')
   const modal = useModalContext()
   const tileProps: TileProps = {
-    title: 'ZigBee signals',
+    title: 'Zigbee signals',
     size: 'big',
-    customBody: getListOfEntities(entities, ({ signal }) => (
+    customBody: getListOfEntities(entities, ({ signal, friendlyName }) => (
       <>
         {signal < SIGNAL_WARNING_THRESHOLD && (
-          <WifiIcon className="mx-1 mt-[-6px] text-red-500" />
+          <WifiIcon
+            className="mx-1 mt-[-6px] text-red-500"
+            data-testid={`${friendlyName}-low-signal`}
+          />
         )}
         {signal} LQ
       </>
