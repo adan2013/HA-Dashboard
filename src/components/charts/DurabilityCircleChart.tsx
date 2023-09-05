@@ -1,5 +1,5 @@
 import { Pie, PieChart, ResponsiveContainer } from 'recharts'
-import { clampValue } from './utils'
+import { clampValue } from '../../utils/numberUtils'
 
 type DurabilityChartProps = {
   durability: number

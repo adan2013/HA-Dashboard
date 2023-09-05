@@ -4,7 +4,7 @@ import {
   TouchEventHandler,
   useRef
 } from 'react'
-import { clampValue } from '../../charts/utils'
+import { clampValue } from '../../../utils/numberUtils'
 
 export type LightSliderProps = {
   title: string
