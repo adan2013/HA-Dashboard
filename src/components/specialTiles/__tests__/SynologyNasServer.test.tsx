@@ -150,7 +150,7 @@ describe('SynologyNasServer', () => {
 
   it('should render the NAS temperature tile', () => {
     render(<NasTemperature />)
-    expect(screen.getByText('NAS temp')).toBeInTheDocument()
+    expect(screen.getByText('NAS system temperature')).toBeInTheDocument()
     expect(screen.getByText('43')).toBeInTheDocument()
     expect(screen.getByText('.7')).toBeInTheDocument()
     expect(screen.getByText('°C')).toBeInTheDocument()

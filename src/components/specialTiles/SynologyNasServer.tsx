@@ -121,7 +121,7 @@ export const VolumeTemperature = () => (
 
 export const NasTemperature = () => (
   <TemperatureChartTile
-    title="NAS temp"
+    title="NAS system temperature"
     entityName="SynologyNAS Temperature"
     customProps={{
       hideChart: true,
