@@ -13,5 +13,7 @@ describe('api/utils', () => {
     expect(
       extractDeviceNameFromFriendlyName('livingRoomTemperatureSensor')
     ).toBe('livingRoomTemperatureSensor')
+    expect(extractDeviceNameFromFriendlyName(undefined)).toBe('')
+    expect(extractDeviceNameFromFriendlyName('')).toBe('')
   })
 })
