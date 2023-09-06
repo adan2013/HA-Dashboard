@@ -27,7 +27,7 @@ export const generateEntityHistory = (values: number[]) => [
 export const getMockedEntityState = (
   name: string,
   state: string,
-  attributes: Partial<EntityAttributeInterface> = {}
+  attributes: object = {}
 ): HomeAssistantEntityData => ({
   entityState: {
     id: `${name}_id`,

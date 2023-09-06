@@ -8,7 +8,7 @@ import ChartHistoryTile from '../charts/ChartHistoryTile'
 import StateDropdownHelperTile from '../entityTiles/helpers/StateDropdownHelperTile'
 import { TemperatureChartTile } from '../entityTiles/climate/ClimateTile'
 
-interface SynologyDsmAttributes {
+export interface SynologyDsmAttributes {
   installed_version: string
   latest_version: string
 }
@@ -30,7 +30,7 @@ export const SynologyDsmUpdate = () => {
   return <Tile {...tileProps} />
 }
 
-interface SynologySecurityStatusAttributes {
+export interface SynologySecurityStatusAttributes {
   malware: string
   network: string
   securitySetting: string
