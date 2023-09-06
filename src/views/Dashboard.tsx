@@ -108,7 +108,7 @@ const Dashboard = () => {
       >
         <TimeAndDate />
         <div className="absolute right-5 top-6 flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border-2 border-transparent transition-colors hover:border-gray-500">
-          <Link to="/customization">
+          <Link to="/more">
             <MoreHorizOutlinedIcon className="!text-[2rem]" />
           </Link>
         </div>
