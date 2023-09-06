@@ -2,6 +2,7 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
+  clearMocks: true,
   setupFiles: ['./testSetup.js'],
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
   moduleNameMapper: {
