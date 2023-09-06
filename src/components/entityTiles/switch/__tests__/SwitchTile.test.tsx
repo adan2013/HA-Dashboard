@@ -69,7 +69,7 @@ describe('SwitchTile', () => {
     expect(screen.getByText('title')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
-    await holdTest(1200)
+    await holdTest(500)
     expect(callService).not.toHaveBeenCalled()
   })
 
