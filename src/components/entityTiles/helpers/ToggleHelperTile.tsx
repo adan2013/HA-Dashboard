@@ -38,7 +38,7 @@ const ToggleHelperTile = ({
 
   const entityIsActive = entityState?.state === 'on'
   const isActive = reverseState ? !entityIsActive : entityIsActive
-  const toggleLight = () => {
+  const toggleEntity = () => {
     if (isUnavailable) return
     const action = entityIsActive ? 'turn_off' : 'turn_on'
     ha.callService(entityState.id, 'input_boolean', action)
@@ -59,7 +59,7 @@ const ToggleHelperTile = ({
     icon: isActive ? onIcon : offIcon,
     isTurnedOff: !isActive,
     iconClassnames: !isUnavailable && isActive ? onColor : offColor,
-    onClick: readonly ? undefined : toggleLight,
+    onClick: readonly ? undefined : toggleEntity,
     isUnavailable,
     ...tileProps
   }
