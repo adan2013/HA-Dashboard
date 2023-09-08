@@ -6,7 +6,7 @@ import DurabilityCircleChart from '../../charts/DurabilityCircleChart'
 import { useModalContext } from '../../../contexts/ModalContext'
 import { ConfirmationModalParams } from '../../../contexts/modalUtils'
 
-type DateCountdownHelperTileProps = {
+export type DateCountdownHelperTileProps = {
   title: string
   entityName: string
   interval: number
