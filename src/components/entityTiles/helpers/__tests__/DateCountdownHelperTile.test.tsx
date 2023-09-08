@@ -34,18 +34,6 @@ jest.mock('recharts', () => {
   }
 })
 
-// jest.mock('../../../../api/hooks', () => {
-//   const originalModule = jest.requireActual('../../../../api/hooks')
-//
-//   return {
-//     __esModule: true,
-//     ...originalModule,
-//     useHomeAssistantEntity: jest.fn(() =>
-//       getMockedEntityState('entityName', '2023-04-01')
-//     )
-//   }
-// })
-
 jest.mock('../../../../api/hooks', () => ({
   useHomeAssistantEntity: jest.fn(() =>
     getMockedEntityState('entityName', '2023-04-01')
