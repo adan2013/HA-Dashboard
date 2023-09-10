@@ -63,6 +63,7 @@ export const ModalButton = ({
         isDisabled ? 'text-gray-600' : 'cursor-pointer hover:bg-gray-600'
       )}
       onClick={isDisabled ? undefined : onClick}
+      data-testid={`modal-button-${name}`}
     >
       {isMobile ? icon : name}
     </div>
