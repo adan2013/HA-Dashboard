@@ -1,23 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { BatteryTile, SignalTile } from '../ZigbeeTiles'
 import { ZigbeeEntityState } from '../../../api/utils'
-
-const getZigbeeEntity = (name: string, battery: number, signal: number) => ({
-  entity: {
-    id: `${name}_id`,
-    state: 'something',
-    lastChanged: '',
-    lastUpdated: '',
-    attributes: {
-      friendly_name: name,
-      battery,
-      linkquality: signal
-    }
-  },
-  friendlyName: name,
-  battery,
-  signal
-})
+import { getZigbeeEntity } from '../../../utils/testUtils'
 
 const testEntities: ZigbeeEntityState[] = [
   getZigbeeEntity('device1', 10, 100),

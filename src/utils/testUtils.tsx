@@ -27,6 +27,27 @@ export const generateEntityHistory = (values: number[]) => [
   }))
 ]
 
+export const getZigbeeEntity = (
+  name: string,
+  battery: number,
+  signal: number
+) => ({
+  entity: {
+    id: `${name}_id`,
+    state: 'something',
+    lastChanged: '',
+    lastUpdated: '',
+    attributes: {
+      friendly_name: name,
+      battery,
+      linkquality: signal
+    }
+  },
+  friendlyName: name,
+  battery,
+  signal
+})
+
 export const getMockedEntityState = (
   name: string,
   state: string,
