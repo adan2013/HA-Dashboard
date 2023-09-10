@@ -20,7 +20,7 @@ type StateChangeOption = {
   isDanger?: boolean
 }
 
-type StateDropdownHelperTileProps = {
+export type StateDropdownHelperTileProps = {
   title: string
   entityName: string
   icon?: ReactElement
