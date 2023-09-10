@@ -23,15 +23,18 @@ import { LightSlider } from '../../entityTiles/lights/LightSlider'
 const LightControlBody = () => {
   const [brightness, setBrightness] = useState<number>(0)
   const [colorTemp, setColorTemp] = useState<number>(0)
-  const [colorTempRange, setColorTempRange] = useState<[number, number]>(null)
   const modal = useModalContext()
   const ha = useHomeAssistant()
   const params = modal.state.params as LightControlModalParams
   const { entityState, isUnavailable } = useHomeAssistantEntity(
     params.entityName
   )
+  const minColorTemp = entityState?.attributes?.min_color_temp_kelvin
+  const maxColorTemp = entityState?.attributes?.max_color_temp_kelvin
+  const colorTempRangeExists = minColorTemp && maxColorTemp
   const isTurnedOn = entityState?.state === 'on'
-  const colorTempAvailable = !params.lockColorTemperature && colorTempRange
+  const colorTempAvailable =
+    !params.lockColorTemperature && colorTempRangeExists
 
   let status = 'Off'
   if (isUnavailable) {
@@ -46,14 +49,7 @@ const LightControlBody = () => {
 
   useEffect(() => {
     setBrightness(entityState?.attributes?.brightness || 0)
-    const minColorTemp = entityState?.attributes?.min_color_temp_kelvin
-    const maxColorTemp = entityState?.attributes?.max_color_temp_kelvin
-    if (minColorTemp && maxColorTemp) {
-      setColorTempRange([minColorTemp, maxColorTemp])
-      setColorTemp(entityState?.attributes?.color_temp_kelvin)
-    } else {
-      setColorTempRange(null)
-    }
+    setColorTemp(entityState?.attributes?.color_temp_kelvin || null)
   }, [entityState])
 
   const toggleLight = () => {
@@ -94,8 +90,8 @@ const LightControlBody = () => {
           <LightSlider
             title="Color temperature"
             value={colorTemp}
-            min={colorTempRange[0]}
-            max={colorTempRange[1]}
+            min={minColorTemp}
+            max={maxColorTemp}
             onChange={setColorTemp}
             onConfirm={updateColorTemp}
           />
@@ -119,17 +115,17 @@ const LightControlBody = () => {
             <PresetButton
               icon={<AcUnitIcon />}
               id={entityState?.id}
-              colorTemp={colorTempRange[0]}
+              colorTemp={minColorTemp}
             />
             <PresetButton
               icon={<Brightness6Icon />}
               id={entityState?.id}
-              colorTemp={(colorTempRange[0] + colorTempRange[1]) / 2}
+              colorTemp={(minColorTemp + maxColorTemp) / 2}
             />
             <PresetButton
               icon={<Brightness5Icon />}
               id={entityState?.id}
-              colorTemp={colorTempRange[1]}
+              colorTemp={maxColorTemp}
             />
           </>
         )}

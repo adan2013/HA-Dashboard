@@ -74,6 +74,7 @@ export const LightSlider = ({
         />
         <div
           className="absolute z-20 h-full w-full cursor-pointer"
+          data-testid={`slider-${title}`}
           {...events}
         />
       </div>
