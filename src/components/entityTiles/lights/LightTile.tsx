@@ -5,7 +5,7 @@ import { LightType } from './lightTypes'
 import { getIcon, getMetadata, getStatusSubtitle } from './lightUtils'
 import { useModalContext } from '../../../contexts/ModalContext'
 
-type LightTileProps = {
+export type LightTileProps = {
   title: string
   entityName: string
   lightType?: LightType
