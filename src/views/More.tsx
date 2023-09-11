@@ -1,3 +1,5 @@
+import ClearIcon from '@mui/icons-material/Clear'
+import CheckIcon from '@mui/icons-material/Check'
 import TileSection from '../components/layout/TileSection'
 import TileGroup from '../components/layout/TileGroup'
 import Tile from '../components/basic/Tile'
@@ -27,7 +29,7 @@ const More = () => (
       />
       <Tile
         title="Fully Kiosk API"
-        value={Object.hasOwn(window, 'fully') ? 'Yes' : 'No'}
+        icon={Object.hasOwn(window, 'fully') ? <CheckIcon /> : <ClearIcon />}
       />
     </TileGroup>
   </TileSection>
