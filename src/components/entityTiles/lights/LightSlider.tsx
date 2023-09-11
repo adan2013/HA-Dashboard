@@ -24,7 +24,9 @@ export const LightSlider = ({
   onConfirm
 }: LightSliderProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const percentage = value ? ((value - min) / (max - min)) * 100 : 0
+  const percentage = value
+    ? Math.round(clampValue(((value - min) / (max - min)) * 100, 0, 100))
+    : 0
 
   const onMove = (clientX: number) => {
     const startPoint = containerRef.current.getBoundingClientRect().left
@@ -70,6 +72,7 @@ export const LightSlider = ({
       >
         <div
           className="absolute z-10 h-full bg-yellow-400"
+          data-testid={`value-slider-${title}`}
           style={{ width: `${percentage}%` }}
         />
         <div
