@@ -59,7 +59,10 @@ const DateCountdownHelperTile = ({
 
   const tileData: TileProps = {
     title,
-    subtitle: `${daysLeft} days left`,
+    subtitle:
+      daysLeft < 0
+        ? `${Math.abs(daysLeft)} days after deadline`
+        : `${daysLeft} days left`,
     metadata: [
       `${deadline.getDate()}-${
         deadline.getMonth() + 1

@@ -88,7 +88,13 @@ describe('DateCountdownHelperTile', () => {
       jest.useFakeTimers().setSystemTime(new Date(currentDate))
       render(<DateCountdownHelperTile {...testProps} />)
       expect(screen.getByText('title')).toBeInTheDocument()
-      expect(screen.getByText(`${daysLeft} days left`)).toBeInTheDocument()
+      expect(
+        screen.getByText(
+          daysLeft < 0
+            ? `${daysLeft * -1} days after deadline`
+            : `${daysLeft} days left`
+        )
+      ).toBeInTheDocument()
       expect(screen.getByText('30-7-2023')).toBeInTheDocument()
       expect(screen.getByTestId('durability-percent')).toHaveTextContent(
         durability.toString()
