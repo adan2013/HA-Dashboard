@@ -2,14 +2,14 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import clsx from 'clsx'
 import { ReactElement, useState } from 'react'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'
-import { useModalContext } from '../ModalContext'
+import { useModalContext } from '../../../contexts/ModalContext'
 import {
   ModalBody,
   ModalButton,
   ModalFooter,
   ModalTitle
 } from '../ModalElements'
-import { ZigbeeNetworkModalParams } from '../utils'
+import { ZigbeeNetworkModalParams } from '../../../contexts/modalUtils'
 import { SortMethod, useHomeAssistantZigbeeEntities } from '../../../api/hooks'
 import {
   BATTERY_WARNING_THRESHOLD,

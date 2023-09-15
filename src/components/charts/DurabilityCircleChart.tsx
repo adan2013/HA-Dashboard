@@ -1,5 +1,5 @@
 import { Pie, PieChart, ResponsiveContainer } from 'recharts'
-import { clampValue } from './utils'
+import { clampValue } from '../../utils/numberUtils'
 
 type DurabilityChartProps = {
   durability: number
@@ -33,7 +33,10 @@ const DurabilityCircleChart = ({ durability, color }: DurabilityChartProps) => {
         </PieChart>
       </ResponsiveContainer>
       <div className="absolute bottom-2 right-2">%</div>
-      <div className="flex-center absolute bottom-1 right-1 aspect-square w-20 pl-2 pt-2 text-lg">
+      <div
+        className="flex-center absolute bottom-1 right-1 aspect-square w-20 pl-2 pt-2 text-lg"
+        data-testid="durability-percent"
+      >
         {percent}
       </div>
     </div>

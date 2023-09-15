@@ -6,6 +6,7 @@ type TilesGroupProps = {
   children: ReactNode
 }
 
+const DEFAULT_ROW_COUNT = 3
 const HEADER_HEIGHT = 30
 const TILE_SIZE_WITH_GAP = 175
 const MIN_ROW_COUNT = 2
@@ -13,7 +14,7 @@ const MIN_ROW_COUNT = 2
 const TileGroup = ({ name, children }: TilesGroupProps) => {
   const layout = useLayoutContext()
   const containerRef = useRef(null)
-  const [rowCount, setRowCount] = useState<number>(0)
+  const [rowCount, setRowCount] = useState<number>(DEFAULT_ROW_COUNT)
 
   useEffect(() => {
     const onResize = () => {

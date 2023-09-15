@@ -3,8 +3,8 @@ import PowerOffIcon from '@mui/icons-material/PowerOff'
 import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
-import { ConfirmationModalParams } from '../../modals/utils'
-import { useModalContext } from '../../modals/ModalContext'
+import { ConfirmationModalParams } from '../../../contexts/modalUtils'
+import { useModalContext } from '../../../contexts/ModalContext'
 
 type SwitchTileProps = {
   title: string

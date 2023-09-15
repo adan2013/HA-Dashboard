@@ -20,7 +20,7 @@ class WebSocketConnector {
     this.options = {
       pingInterval: isDevEnv() ? 1000 * 40 : 1000 * 60 * 2,
       pongTimeout: 1000 * 10,
-      reconnectInterval: 1000 * 10,
+      reconnectInterval: 1000 * 3,
       ...options
     }
     this.host = `ws://${url}`

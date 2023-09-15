@@ -1,6 +1,7 @@
 import { Area, AreaChart, ResponsiveContainer, YAxis } from 'recharts'
 import { useMemo } from 'react'
-import { ChartData, clampValue } from './utils'
+import { ChartData } from './utils'
+import { clampValue } from '../../utils/numberUtils'
 
 export type BackgroundHistoryChartProps = {
   data: ChartData[]

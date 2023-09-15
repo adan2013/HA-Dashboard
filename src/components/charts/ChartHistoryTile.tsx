@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
-import { getHistoryStats } from '../entityTiles/climate/utils'
 import { useHomeAssistantEntity } from '../../api/hooks'
 import BackgroundHistoryChart from './BackgroundHistoryChart'
 import HomeAssistantRestAPI from '../../api/HomeAssistantRestAPI'
 import Tile, { TileProps, TileValue } from '../basic/Tile'
-import { useModalContext } from '../modals/ModalContext'
-import { HistoryChartModalParams } from '../modals/utils'
-import { ChartData, ValueThreshold } from './utils'
+import { useModalContext } from '../../contexts/ModalContext'
+import { HistoryChartModalParams } from '../../contexts/modalUtils'
+import { ChartData, getHistoryStats, ValueThreshold } from './utils'
 
 export type ChartHistoryTileProps = {
   title: string

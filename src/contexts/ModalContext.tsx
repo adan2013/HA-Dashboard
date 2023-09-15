@@ -6,11 +6,16 @@ import {
   useMemo
 } from 'react'
 import Modal from 'react-modal'
-import { getModalStyles, ModalParams, ModalState, ModalType } from './utils'
-import ConfirmationBody from './bodies/ConfirmationBody'
-import LightControlBody from './bodies/LightControlBody'
-import HistoryChartBody from './bodies/HistoryChartBody'
-import ZigbeeNetworkBody from './bodies/ZigbeeNetworkBody'
+import {
+  getModalStyles,
+  ModalParams,
+  ModalState,
+  ModalType
+} from './modalUtils'
+import ConfirmationBody from '../components/modals/bodies/ConfirmationBody'
+import LightControlBody from '../components/modals/bodies/LightControlBody'
+import HistoryChartBody from '../components/modals/bodies/HistoryChartBody'
+import ZigbeeNetworkBody from '../components/modals/bodies/ZigbeeNetworkBody'
 
 type ProviderProps = {
   children: ReactElement
@@ -22,9 +27,9 @@ export type ModalContextType = {
   closeModal: () => void
 }
 
-Modal.setAppElement('#root')
+// Modal.setAppElement('#root')
 
-const modalContext = createContext<ModalContextType>(null)
+export const modalContext = createContext<ModalContextType>(null)
 
 export const useModalContext = () => useContext(modalContext)
 
@@ -55,7 +60,6 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
   const getModalWidth = () => {
     switch (modalState.modalType) {
       case 'confirmation':
-        return '400px'
       case 'lightControl':
         return '600px'
       default:

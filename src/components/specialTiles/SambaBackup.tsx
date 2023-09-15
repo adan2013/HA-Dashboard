@@ -60,7 +60,7 @@ export const CallManualBackup = () => (
   />
 )
 
-interface SambaBackupAttributes {
+export interface SambaBackupAttributes {
   backups_local: string
   backups_remote: string
   total_backups_succeeded: string
@@ -81,7 +81,7 @@ const Statistic = ({ title, value, icon }: StatisticProps) => (
         {cloneElement(icon, {
           className: '!text-md mr-2 mt-[-4px]'
         })}
-        {value}
+        <span data-testid={`${title}-value`}>{value}</span>
       </div>
       <div className="text-sm text-gray-300">{title}</div>
     </div>

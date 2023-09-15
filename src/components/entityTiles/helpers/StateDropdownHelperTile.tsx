@@ -3,8 +3,8 @@ import { toast } from 'react-toastify'
 import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
-import { ConfirmationModalParams } from '../../modals/utils'
-import { useModalContext } from '../../modals/ModalContext'
+import { ConfirmationModalParams } from '../../../contexts/modalUtils'
+import { useModalContext } from '../../../contexts/ModalContext'
 
 type CustomStateParams = {
   state: string
@@ -20,7 +20,7 @@ type StateChangeOption = {
   isDanger?: boolean
 }
 
-type StateDropdownHelperTileProps = {
+export type StateDropdownHelperTileProps = {
   title: string
   entityName: string
   icon?: ReactElement

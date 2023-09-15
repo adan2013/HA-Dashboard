@@ -3,14 +3,14 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined'
 import ZoomOutOutlinedIcon from '@mui/icons-material/ZoomOutOutlined'
 import ZoomInOutlinedIcon from '@mui/icons-material/ZoomInOutlined'
-import { useModalContext } from '../ModalContext'
+import { useModalContext } from '../../../contexts/ModalContext'
 import {
   ModalBody,
   ModalButton,
   ModalFooter,
   ModalTitle
 } from '../ModalElements'
-import { HistoryChartModalParams } from '../utils'
+import { HistoryChartModalParams } from '../../../contexts/modalUtils'
 import HomeAssistantRestAPI from '../../../api/HomeAssistantRestAPI'
 import HistoryChart from '../../charts/HistoryChart'
 import { ChartData } from '../../charts/utils'

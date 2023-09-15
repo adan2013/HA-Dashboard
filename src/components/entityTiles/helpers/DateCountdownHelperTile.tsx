@@ -3,10 +3,10 @@ import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
 import DurabilityCircleChart from '../../charts/DurabilityCircleChart'
-import { useModalContext } from '../../modals/ModalContext'
-import { ConfirmationModalParams } from '../../modals/utils'
+import { useModalContext } from '../../../contexts/ModalContext'
+import { ConfirmationModalParams } from '../../../contexts/modalUtils'
 
-type DateCountdownHelperTileProps = {
+export type DateCountdownHelperTileProps = {
   title: string
   entityName: string
   interval: number
@@ -59,7 +59,10 @@ const DateCountdownHelperTile = ({
 
   const tileData: TileProps = {
     title,
-    subtitle: `${daysLeft} days left`,
+    subtitle:
+      daysLeft < 0
+        ? `${Math.abs(daysLeft)} days after deadline`
+        : `${daysLeft} days left`,
     metadata: [
       `${deadline.getDate()}-${
         deadline.getMonth() + 1
