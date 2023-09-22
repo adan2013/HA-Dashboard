@@ -5,6 +5,7 @@ import TileGroup from '../components/layout/TileGroup'
 import Tile from '../components/basic/Tile'
 import { getPackageVersion } from '../utils/viteUtils'
 import PlaceholderTile from '../PlaceholderTile'
+import SpeakerTestTile from '../components/devTiles/SpeakerTestTile'
 
 const More = () => (
   <TileSection waitForHomeAssistantSync={false}>
@@ -31,6 +32,7 @@ const More = () => (
         title="Fully Kiosk API"
         icon={Object.hasOwn(window, 'fully') ? <CheckIcon /> : <ClearIcon />}
       />
+      <SpeakerTestTile />
     </TileGroup>
   </TileSection>
 )

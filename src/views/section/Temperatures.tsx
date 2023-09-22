@@ -1,6 +1,5 @@
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
-import PlaceholderTile from '../../PlaceholderTile'
 import {
   HumidityChartTile,
   TemperatureChartTile
@@ -34,8 +33,14 @@ const Temperatures = () => (
       <HumidityChartTile title="Ania" entityName="aniaTempSensor humidity" />
     </TileGroup>
     <TileGroup name="Server rack">
-      <PlaceholderTile title="Temperature" size="horizontal" />
-      <PlaceholderTile title="Humidity" size="horizontal" />
+      <TemperatureChartTile
+        title="Rack temperature"
+        entityName="dash-node Server Rack Temperature"
+      />
+      <HumidityChartTile
+        title="Rack humidity"
+        entityName="dash-node Server Rack Humidity"
+      />
       <TemperatureChartTile
         title="NAS temperature"
         entityName="SynologyNAS Temperature"
