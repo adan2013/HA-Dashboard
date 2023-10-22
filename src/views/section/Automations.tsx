@@ -22,15 +22,22 @@ const Automations = () => (
         title="Water filter"
         entityName="kitchenFilterService"
         interval={120}
-        warningThreshold={21}
-        criticalThreshold={7}
+        warningThreshold={10}
+        criticalThreshold={3}
       />
       <DateCountdownHelperTile
         title="Water membrane filter"
         entityName="kitchenMembraneFilterService"
+        interval={485}
+        warningThreshold={10}
+        criticalThreshold={3}
+      />
+      <DateCountdownHelperTile
+        title="Water mineralization filter"
+        entityName="kitchenMineralizationFilterService"
         interval={365}
-        warningThreshold={21}
-        criticalThreshold={7}
+        warningThreshold={10}
+        criticalThreshold={3}
       />
       <ToggleHelperTile
         title="Motion sensor"

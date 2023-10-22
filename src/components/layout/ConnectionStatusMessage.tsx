@@ -34,17 +34,13 @@ const getStyle = (status: HomeAssistantConnectionState): StyleType => {
   }
 }
 
-const VISIBILITY_TIMEOUT = 2000
-
 const ConnectionStatusMessage = () => {
   const [visible, setVisible] = useState<boolean>(true)
   const status = useHomeAssistantStatus()
 
   useEffect(() => {
-    setVisible(true)
-    if (status === 'authorized' || status === 'synced') {
-      setTimeout(() => setVisible(false), VISIBILITY_TIMEOUT)
-    }
+    const isConnected = status === 'authorized' || status === 'synced'
+    setVisible(!isConnected)
   }, [status])
 
   if (!visible) return null
