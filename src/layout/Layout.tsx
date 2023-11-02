@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useHomeAssistantStatus } from '../api/hooks'
 import { useHomeAssistant } from '../contexts/HomeAssistantContext'
 import { useModalContext } from '../contexts/ModalContext'
+import ConnectionStatusMessage from '../components/layout/ConnectionStatusMessage'
 
 type LayoutType = 'mobile' | 'desktop'
 const MOBILE_LAYOUT_BREAKPOINT = 1024
@@ -60,6 +61,7 @@ const Layout = () => {
         transition={Flip}
         limit={isMobile ? 2 : 4}
       />
+      <ConnectionStatusMessage />
     </>
   )
 }

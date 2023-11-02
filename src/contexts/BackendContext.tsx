@@ -1,5 +1,4 @@
 import { createContext, ReactElement, useContext } from 'react'
-import ConnectionStatusMessage from '../components/layout/ConnectionStatusMessage'
 import BackendWebSocketAPI from '../api/BackendWebSocketAPI'
 
 type ProviderProps = {
@@ -13,8 +12,5 @@ export const useBackend = () => useContext(backendContext)
 const backend = new BackendWebSocketAPI()
 
 export const BackendContextProvider = ({ children }: ProviderProps) => (
-  <backendContext.Provider value={backend}>
-    <ConnectionStatusMessage />
-    {children}
-  </backendContext.Provider>
+  <backendContext.Provider value={backend}>{children}</backendContext.Provider>
 )

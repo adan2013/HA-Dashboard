@@ -3,16 +3,16 @@ import {
   HomeAssistantConnectionState,
   EntityState,
   extractDeviceNameFromFriendlyName,
-  ZigbeeEntityState
+  ZigbeeEntityState,
+  BackendConnectionState
 } from './utils'
 import { useHomeAssistant } from '../contexts/HomeAssistantContext'
 import { useBackend } from '../contexts/BackendContext'
 
-export const useBackendStatus = (): boolean => {
-  const [status, setStatus] = useState<boolean>(false)
+export const useBackendStatus = (): BackendConnectionState => {
+  const [status, setStatus] = useState<BackendConnectionState>('disconnected')
   const backend = useBackend()
   useEffect(() => backend?.subscribeToConnectionStatus(setStatus), [backend])
-
   return status
 }
 

@@ -2,30 +2,31 @@ import EventEmitter from 'eventemitter3'
 import WebSocketConnector from './WebSocketConnector'
 import { getBackendHost } from '../utils/viteUtils'
 import {
-  BackendConnectionStatusListenerCallback,
+  BackendConnectionState,
+  BackendConnectionStateListenerCallback,
   ListenerRemover,
   SocketMessageInterface
 } from './utils'
 
 class BackendWebSocketAPI extends WebSocketConnector {
   private readonly events: EventEmitter
-  private connected = false
+  private status: BackendConnectionState = 'disconnected'
   public statusData: object = {}
   public serviceData: object = {}
 
-  private setConnectedStatus(connected: boolean) {
-    this.connected = connected
-    this.events.emit('backend/status', connected)
+  private changeConnectionState(status: BackendConnectionState) {
+    this.status = status
+    this.events.emit('backend/status', status)
   }
 
   subscribeToConnectionStatus(
-    callback: BackendConnectionStatusListenerCallback
+    callback: BackendConnectionStateListenerCallback
   ): ListenerRemover {
     this.events.on('backend/status', callback)
     const unsubscribe = () => {
       this.events.off('backend/status', callback)
     }
-    callback(this.connected)
+    callback(this.status)
     return unsubscribe
   }
 
@@ -37,17 +38,22 @@ class BackendWebSocketAPI extends WebSocketConnector {
     this.send(msg)
   }
 
+  override onConnectionStateChange(state: boolean) {
+    super.onConnectionStateChange(state)
+    this.changeConnectionState(state ? 'connected' : 'disconnected')
+  }
+
   override onReceive(event: MessageEvent) {
     super.onReceive(event)
     const msg = JSON.parse(event.data)
     switch (msg.type) {
       case 'welcome':
-        this.setConnectedStatus(false)
+        this.changeConnectionState('connected')
         this.sendMsg('syncData')
         break
       case 'dataUpdate':
-        if (!this.connected) {
-          this.setConnectedStatus(true)
+        if (this.status !== 'synced') {
+          this.changeConnectionState('synced')
         }
         this.serviceData = {
           ...this.serviceData,
