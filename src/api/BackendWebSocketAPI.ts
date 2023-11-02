@@ -7,16 +7,39 @@ import {
   ListenerRemover,
   SocketMessageInterface
 } from './utils'
+import { ServiceDataObject, ServiceManagerStatus } from './backend/backendTypes'
 
 class BackendWebSocketAPI extends WebSocketConnector {
   private readonly events: EventEmitter
   private status: BackendConnectionState = 'disconnected'
-  public statusData: object = {}
-  public serviceData: object = {}
+  public statusData: ServiceManagerStatus = null
+  public serviceData: ServiceDataObject = null
 
   private changeConnectionState(status: BackendConnectionState) {
     this.status = status
     this.events.emit('backend/status', status)
+  }
+
+  subscribeToStatusData(
+    callback: (data: ServiceManagerStatus) => void
+  ): ListenerRemover {
+    this.events.on('backend/statusData', callback)
+    const unsubscribe = () => {
+      this.events.off('backend/statusData', callback)
+    }
+    callback(this.statusData)
+    return unsubscribe
+  }
+
+  subscribeToServiceData(
+    callback: (data: ServiceDataObject) => void
+  ): ListenerRemover {
+    this.events.on('backend/serviceData', callback)
+    const unsubscribe = () => {
+      this.events.off('backend/serviceData', callback)
+    }
+    callback(this.serviceData)
+    return unsubscribe
   }
 
   subscribeToConnectionStatus(
@@ -36,6 +59,14 @@ class BackendWebSocketAPI extends WebSocketConnector {
       ...payload
     }
     this.send(msg)
+  }
+
+  public requestServiceStatus() {
+    this.sendMsg('getStatus')
+  }
+
+  public switchService(serviceName: string, enabled: boolean) {
+    this.sendMsg('switchService', { serviceName, enabled })
   }
 
   override onConnectionStateChange(state: boolean) {

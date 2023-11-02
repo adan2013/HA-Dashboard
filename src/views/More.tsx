@@ -6,6 +6,7 @@ import Tile from '../components/basic/Tile'
 import { getPackageVersion } from '../utils/viteUtils'
 import PlaceholderTile from '../PlaceholderTile'
 import SpeakerTestTile from '../components/devTiles/SpeakerTestTile'
+import ServiceStatusTile from '../components/devTiles/ServiceStatusTile'
 
 const More = () => (
   <TileSection waitForConnection={false}>
@@ -33,6 +34,7 @@ const More = () => (
         icon={Object.hasOwn(window, 'fully') ? <CheckIcon /> : <ClearIcon />}
       />
       <SpeakerTestTile />
+      <ServiceStatusTile />
     </TileGroup>
   </TileSection>
 )
