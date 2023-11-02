@@ -1,19 +1,17 @@
 import { ReactNode } from 'react'
-import { useHomeAssistantStatus } from '../../api/hooks'
+import { useBackendStatus, useHomeAssistantStatus } from '../../api/hooks'
 
 type SectionContentProps = {
   children: ReactNode
-  waitForHomeAssistantSync?: boolean
+  waitForConnection?: boolean
 }
 
-const TileSection = ({
-  children,
-  waitForHomeAssistantSync
-}: SectionContentProps) => {
+const TileSection = ({ children, waitForConnection }: SectionContentProps) => {
   const haStatus = useHomeAssistantStatus()
+  const backendStatus = useBackendStatus()
 
-  if (waitForHomeAssistantSync && haStatus !== 'synced') {
-    return <div>Connecting to Home Assistant...</div> // TODO make a loading spinner or skeleton loader
+  if (waitForConnection && (haStatus !== 'synced' || !backendStatus)) {
+    return <div>Connecting...</div> // TODO make a loading spinner or skeleton loader
   }
 
   return (
@@ -24,7 +22,7 @@ const TileSection = ({
 }
 
 TileSection.defaultProps = {
-  waitForHomeAssistantSync: true
+  waitForConnection: true
 }
 
 export default TileSection

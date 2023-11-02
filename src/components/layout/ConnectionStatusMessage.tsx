@@ -1,60 +1,53 @@
 import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { HomeAssistantConnectionState } from '../../api/utils'
-import { useHomeAssistantStatus } from '../../api/hooks'
+import { useBackendStatus, useHomeAssistantStatus } from '../../api/hooks'
 
-type StyleType = {
-  color: string
-  label: string
-}
-
-const getStyle = (status: HomeAssistantConnectionState): StyleType => {
-  switch (status) {
+const getHomeAssistantColor = (ha: HomeAssistantConnectionState): string => {
+  switch (ha) {
     case 'synced':
     case 'authorized':
-      return {
-        color: 'bg-green-500',
-        label: 'Connected'
-      }
+      return 'bg-green-500'
     case 'connected':
-      return {
-        color: 'bg-yellow-600',
-        label: 'Connecting'
-      }
-    case 'authError':
-      return {
-        color: 'bg-red-600',
-        label: 'Unauthorized'
-      }
+      return 'bg-yellow-600'
     default:
-      return {
-        color: 'bg-red-600',
-        label: 'Disconnected'
-      }
+      return 'bg-red-600'
   }
 }
 
+const getBackendColor = (backend: boolean): string =>
+  backend ? 'bg-green-500' : 'bg-red-600'
+
 const ConnectionStatusMessage = () => {
   const [visible, setVisible] = useState<boolean>(true)
-  const status = useHomeAssistantStatus()
+  const haStatus = useHomeAssistantStatus()
+  const backendStatus = useBackendStatus()
 
   useEffect(() => {
-    const isConnected = status === 'authorized' || status === 'synced'
-    setVisible(!isConnected)
-  }, [status])
+    const isConnectedToHA = haStatus === 'authorized' || haStatus === 'synced'
+    setVisible(!isConnectedToHA || !backendStatus)
+  }, [haStatus, backendStatus])
 
   if (!visible) return null
-  const { color, label } = getStyle(status)
-
+  const haColor = getHomeAssistantColor(haStatus)
+  const backendColor = getBackendColor(backendStatus)
+  console.log(haStatus, backendStatus) // TODO console log
   return (
     <div className="fixed right-1/2 top-0 z-10 translate-x-1/2 rounded-b-lg bg-black px-3 py-2 text-sm text-white">
       <div
         className={clsx(
           'mr-2 inline-block h-3 w-3 animate-pulse rounded-full',
-          color
+          haColor
         )}
       />
-      {label}
+      HA
+      <div
+        className={clsx(
+          'ml-4 mr-2 inline-block h-3 w-3 animate-pulse rounded-full',
+          backendColor
+        )}
+      />
+      BE
     </div>
   )
 }

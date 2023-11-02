@@ -6,6 +6,15 @@ import {
   ZigbeeEntityState
 } from './utils'
 import { useHomeAssistant } from '../contexts/HomeAssistantContext'
+import { useBackend } from '../contexts/BackendContext'
+
+export const useBackendStatus = (): boolean => {
+  const [status, setStatus] = useState<boolean>(false)
+  const backend = useBackend()
+  useEffect(() => backend?.subscribeToConnectionStatus(setStatus), [backend])
+
+  return status
+}
 
 export const useHomeAssistantStatus = (): HomeAssistantConnectionState => {
   const [status, setStatus] =

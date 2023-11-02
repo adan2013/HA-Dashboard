@@ -48,9 +48,11 @@ export type EntityListenerCallback = (
   connection: HomeAssistantConnectionState
 ) => void
 
-export type ConnectionStatusListenerCallback = (
+export type HomeAssistantConnectionStatusListenerCallback = (
   state: HomeAssistantConnectionState
 ) => void
+
+export type BackendConnectionStatusListenerCallback = (state: boolean) => void
 
 export const mapEntityState = (haEntity: any): EntityState => ({
   id: haEntity.entity_id,

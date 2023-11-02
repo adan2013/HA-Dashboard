@@ -8,7 +8,7 @@ import PlaceholderTile from '../PlaceholderTile'
 import SpeakerTestTile from '../components/devTiles/SpeakerTestTile'
 
 const More = () => (
-  <TileSection waitForHomeAssistantSync={false}>
+  <TileSection waitForConnection={false}>
     <TileGroup name="Language">
       <PlaceholderTile title="Polish" size="standard" />
       <PlaceholderTile title="English" size="standard" />

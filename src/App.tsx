@@ -8,6 +8,7 @@ import Layout from './layout/Layout'
 import SectionIndex from './views/section/SectionIndex'
 import { HomeAssistantContextProvider } from './contexts/HomeAssistantContext'
 import { ModalContextProvider } from './contexts/ModalContext'
+import { BackendContextProvider } from './contexts/BackendContext'
 
 const router = createBrowserRouter([
   {
@@ -45,9 +46,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <HomeAssistantContextProvider>
-      <ModalContextProvider>
-        <RouterProvider router={router} />
-      </ModalContextProvider>
+      <BackendContextProvider>
+        <ModalContextProvider>
+          <RouterProvider router={router} />
+        </ModalContextProvider>
+      </BackendContextProvider>
     </HomeAssistantContextProvider>
   )
 }
