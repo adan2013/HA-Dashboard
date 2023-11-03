@@ -3,8 +3,9 @@ import AirIcon from '@mui/icons-material/Air'
 import { Fragment, useMemo } from 'react'
 import DownloadIcon from '@mui/icons-material/Download'
 import UploadIcon from '@mui/icons-material/Upload'
-import { WeatherServiceData } from '../../api/backend/weatherTypes'
+import { HourlyWeather } from '../../api/backend/weatherTypes'
 import { addLeadingZero } from '../../utils/numberUtils'
+import { removePastHours } from './utils'
 
 type SunPositionItemProps = {
   isSunset?: boolean
@@ -47,7 +48,7 @@ const SunPositionItem = ({
 }
 
 type ShortForecastProps = {
-  data: Pick<WeatherServiceData, 'shortForecast'>
+  data: HourlyWeather[]
   limit?: number
   sunrise?: number
   sunset?: number
@@ -60,17 +61,18 @@ const ShortForecast = ({
   sunset
 }: ShortForecastProps) => {
   const forecast = useMemo(() => {
-    if (limit && data?.shortForecast.length > limit) {
-      return data?.shortForecast.slice(0, limit)
+    const forecastWithoutPast = removePastHours(data)
+    if (limit && forecastWithoutPast?.length > limit) {
+      return forecastWithoutPast.slice(0, limit)
     }
-    return data?.shortForecast
+    return forecastWithoutPast
   }, [data, limit])
 
   const sunriseTime = useMemo(() => new Date(sunrise), [sunrise])
   const sunsetTime = useMemo(() => new Date(sunset), [sunset])
 
   return (
-    <div className="m-1 flex flex-row overflow-auto py-2">
+    <div className="m-1 flex flex-row overflow-auto py-1">
       {forecast.map(f => {
         const time = new Date(f.timestamp)
         return (

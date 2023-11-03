@@ -1,9 +1,13 @@
 import NightsStayIcon from '@mui/icons-material/NightsStay'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { WeatherServiceData } from '../api/backend/weatherTypes'
 import { useBackend } from '../contexts/BackendContext'
 import ShortForecast from '../components/weather/ShortForecast'
 import LongForecast from '../components/weather/LongForecast'
+import CurrentWeather from '../components/weather/CurrentWeather'
+
+const Divider = () => <div className="mx-1 border-b-[1px] border-gray-400" />
 
 type WeatherViewProps = {
   compactMode?: boolean
@@ -12,6 +16,7 @@ type WeatherViewProps = {
 const Weather = ({ compactMode }: WeatherViewProps) => {
   const [state, setState] = useState<WeatherServiceData>(null)
   const backend = useBackend()
+  const navigate = useNavigate()
 
   useEffect(
     () =>
@@ -36,14 +41,20 @@ const Weather = ({ compactMode }: WeatherViewProps) => {
 
   if (compactMode) {
     return (
-      <div className="flex flex-col gap-3">
+      <div
+        className="flex cursor-pointer flex-col gap-2"
+        onClick={() => navigate('/weather')}
+      >
+        <CurrentWeather data={state.current} />
+        <Divider />
         <ShortForecast
-          data={state}
+          data={state.shortForecast}
           limit={12}
           sunrise={state.current.sunrise}
           sunset={state.current.sunset}
         />
-        <LongForecast data={state} />
+        <Divider />
+        <LongForecast data={state.longForecast} />
       </div>
     )
   }
