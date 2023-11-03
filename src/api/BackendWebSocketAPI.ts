@@ -11,6 +11,7 @@ import { ServiceDataObject, ServiceManagerStatus } from './backend/backendTypes'
 
 class BackendWebSocketAPI extends WebSocketConnector {
   private readonly events: EventEmitter
+  public version: string
   private status: BackendConnectionState = 'disconnected'
   public statusData: ServiceManagerStatus = null
   public serviceData: ServiceDataObject = null
@@ -79,6 +80,7 @@ class BackendWebSocketAPI extends WebSocketConnector {
     const msg = JSON.parse(event.data)
     switch (msg.type) {
       case 'welcome':
+        this.version = msg.version
         this.changeConnectionState('connected')
         this.sendMsg('syncData')
         break

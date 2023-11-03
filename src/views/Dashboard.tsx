@@ -114,7 +114,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="h-[calc(100vh-20rem)] p-3">
-        <Weather />
+        <Weather compactMode />
       </div>
       <div className={clsx('border-l-2 border-blue-600 p-3')}>
         <Notifications />
