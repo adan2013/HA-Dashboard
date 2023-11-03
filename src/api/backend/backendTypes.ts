@@ -16,7 +16,7 @@ export type ServiceStatus = {
 }
 
 export type ServiceManagerStatus = {
-  startTime: string
+  startTime: number
   daysRunning: number
   services: {
     [name: string]: ServiceStatus
