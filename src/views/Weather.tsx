@@ -49,7 +49,7 @@ const Weather = ({ compactMode }: WeatherViewProps) => {
         <Divider />
         <ShortForecast
           data={state.shortForecast}
-          limit={12}
+          limit={18}
           sunrise={state.current.sunrise}
           sunset={state.current.sunset}
         />

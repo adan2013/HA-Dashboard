@@ -6,6 +6,7 @@ import { sectionTiles } from '../layout/menus'
 import { useLayoutContext } from '../contexts/OutletContext'
 import Weather from './Weather'
 import Notifications from './Notifications'
+import { addLeadingZero } from '../utils/numberUtils'
 
 const dayNames = [
   'Sunday',
@@ -33,8 +34,8 @@ const monthNames = [
 ]
 
 const getTime = (now: Date) => {
-  const h = now.getHours() < 10 ? `0${now.getHours()}` : now.getHours()
-  const m = now.getMinutes() < 10 ? `0${now.getMinutes()}` : now.getMinutes()
+  const h = addLeadingZero(now.getHours())
+  const m = addLeadingZero(now.getMinutes())
   return `${h}:${m}`
 }
 

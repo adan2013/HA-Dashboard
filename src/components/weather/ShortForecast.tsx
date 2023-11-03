@@ -18,13 +18,14 @@ const SunPositionItem = ({
   eventTime,
   forecastTime
 }: SunPositionItemProps) => {
-  const h = eventTime.getHours()
-  const m = addLeadingZero(eventTime.getMinutes())
+  const hr = eventTime.getHours()
+  const minWithZero = addLeadingZero(eventTime.getMinutes())
+  const hrWithZero = addLeadingZero(eventTime.getHours())
   let shouldShow: boolean
   if (isSunset) {
-    shouldShow = forecastTime.getHours() === h
+    shouldShow = forecastTime.getHours() === hr
   } else {
-    shouldShow = forecastTime.getHours() === h + 1
+    shouldShow = forecastTime.getHours() === hr + 1
   }
   if (!shouldShow) {
     return null
@@ -33,7 +34,7 @@ const SunPositionItem = ({
   return (
     <div className="mx-4 my-1 rounded text-center">
       <div className="flex w-20 flex-col gap-1 text-lg">
-        <div>{`${h}:${m}`}</div>
+        <div>{`${hrWithZero}:${minWithZero}`}</div>
         <div className="flex h-16 items-center justify-center">
           {isSunset ? (
             <DownloadIcon className="!text-[3rem]" />
@@ -80,7 +81,7 @@ const ShortForecast = ({
             <SunPositionItem eventTime={sunriseTime} forecastTime={time} />
             <div className="mx-4 my-1 text-center">
               <div className="flex w-20 flex-col gap-1 text-lg">
-                <div>{time.getHours()}</div>
+                <div>{addLeadingZero(time.getHours())}</div>
                 <div className="flex h-16 items-center">
                   <img
                     src={`https://openweathermap.org/img/wn/${f.weather.icon}@2x.png`}
