@@ -57,14 +57,15 @@ const TimeAndDate = () => {
     return () => clearInterval(timer)
   }, [])
 
+  const time = getTime(now)
+  const day = getDay(now)
+  const date = getDate(now)
+
   return (
-    <>
-      <div className="text-7xl">{getTime(now)}</div>
-      <div className="flex flex-col justify-center">
-        <div className="text-xl">{getDay(now)}</div>
-        <div className="text-xl">{getDate(now)}</div>
-      </div>
-    </>
+    <div className="mt-1 flex flex-row items-center gap-3">
+      <div className="text-4xl font-bold">{time}</div>
+      <div className="text-2xl font-light">{`${day} ${date}`}</div>
+    </div>
   )
 }
 
@@ -103,11 +104,11 @@ const Dashboard = () => {
     <div className="relative grid grid-cols-2">
       <div
         className={clsx(
-          'col-span-2 flex h-24 flex-row gap-4 border-b-2 border-blue-600 p-3'
+          'col-span-2 flex h-20 flex-row justify-center gap-4 border-b-2 border-blue-600 p-3'
         )}
       >
         <TimeAndDate />
-        <div className="absolute right-5 top-6 flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border-2 border-transparent transition-colors hover:border-gray-500">
+        <div className="absolute right-5 top-4 flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border-2 border-transparent transition-colors hover:border-gray-500">
           <Link to="/more">
             <MoreHorizOutlinedIcon className="!text-[2rem]" />
           </Link>
