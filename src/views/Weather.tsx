@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { WeatherServiceData } from '../api/backend/weatherTypes'
 import { useBackend } from '../contexts/BackendContext'
 import ShortForecast from '../components/weather/ShortForecast'
+import LongForecast from '../components/weather/LongForecast'
 
 type WeatherViewProps = {
   compactMode?: boolean
@@ -35,12 +36,15 @@ const Weather = ({ compactMode }: WeatherViewProps) => {
 
   if (compactMode) {
     return (
-      <ShortForecast
-        data={state}
-        limit={12}
-        sunrise={state.current.sunrise}
-        sunset={state.current.sunset}
-      />
+      <div className="flex flex-col gap-3">
+        <ShortForecast
+          data={state}
+          limit={12}
+          sunrise={state.current.sunrise}
+          sunset={state.current.sunset}
+        />
+        <LongForecast data={state} />
+      </div>
     )
   }
 

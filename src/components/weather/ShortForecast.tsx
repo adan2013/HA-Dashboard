@@ -76,7 +76,7 @@ const ShortForecast = ({
         return (
           <Fragment key={f.timestamp}>
             <SunPositionItem eventTime={sunriseTime} forecastTime={time} />
-            <div className="mx-4 my-1 rounded text-center">
+            <div className="mx-4 my-1 text-center">
               <div className="flex w-20 flex-col gap-1 text-lg">
                 <div>{time.getHours()}</div>
                 <div className="flex h-16 items-center">
