@@ -91,14 +91,9 @@ const ShortForecast = ({
                     f.feelsLike
                   )}°)`}</span>
                 </div>
-                <div>
-                  <WaterDropIcon className="relative bottom-[0.1rem] scale-75" />
-                  {`${Math.round(f.pop)}%`}
-                </div>
-                <div>
-                  <AirIcon className="mr-1" />
-                  {Math.round(f.windSpeed)}
-                  <span className="ml-1 text-xs text-gray-200">km</span>
+                <div className="flex flex-row justify-center gap-1">
+                  {f.pop > 10 && <WaterDropIcon />}
+                  {f.windSpeed >= 20 && <AirIcon />}
                 </div>
               </div>
             </div>
