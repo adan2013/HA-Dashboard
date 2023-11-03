@@ -22,3 +22,4 @@ jobs:
         build-args: |
           VITE_HA_HOST=${{ secrets.VITE_HA_HOST }}
           VITE_HA_TOKEN=${{ secrets.VITE_HA_TOKEN }}
+          VITE_BACKEND_HOST=${{ secrets.VITE_BACKEND_HOST }}
