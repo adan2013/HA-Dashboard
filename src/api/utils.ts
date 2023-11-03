@@ -41,6 +41,8 @@ export type HomeAssistantConnectionState =
   | 'disconnected'
   | 'authError'
 
+export type BackendConnectionState = 'synced' | 'connected' | 'disconnected'
+
 export type ListenerRemover = () => void
 
 export type EntityListenerCallback = (
@@ -48,8 +50,12 @@ export type EntityListenerCallback = (
   connection: HomeAssistantConnectionState
 ) => void
 
-export type ConnectionStatusListenerCallback = (
+export type HomeAssistantConnectionStateListenerCallback = (
   state: HomeAssistantConnectionState
+) => void
+
+export type BackendConnectionStateListenerCallback = (
+  state: BackendConnectionState
 ) => void
 
 export const mapEntityState = (haEntity: any): EntityState => ({

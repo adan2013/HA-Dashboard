@@ -12,4 +12,8 @@ export const getHomeAssistantToken = (): string => import.meta.env.VITE_HA_TOKEN
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
+export const getBackendHost = (): string => import.meta.env.VITE_BACKEND_HOST
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const isDevEnv = (): boolean => import.meta.env.DEV

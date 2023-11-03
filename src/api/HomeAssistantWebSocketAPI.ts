@@ -7,26 +7,22 @@ import {
   SocketMessageInterface,
   ListenerRemover,
   EntityListenerCallback,
-  ConnectionStatusListenerCallback
+  HomeAssistantConnectionStateListenerCallback
 } from './utils'
 import WebSocketConnector from './WebSocketConnector'
 import { getHomeAssistantHost, getHomeAssistantToken } from '../utils/viteUtils'
 
 class HomeAssistantWebSocketAPI extends WebSocketConnector {
   private readonly token: string
-  private _status: HomeAssistantConnectionState = 'disconnected'
+  private status: HomeAssistantConnectionState = 'disconnected'
   private readonly events: EventEmitter
 
   msgId: number
   entities: EntityState[] = []
 
-  public get status(): HomeAssistantConnectionState {
-    return this._status
-  }
-
   private changeStatus(status: HomeAssistantConnectionState) {
-    this._status = status
-    this.events?.emit('api-status', status)
+    this.status = status
+    this.events?.emit('ha/status', status)
   }
 
   private getEntity(entityName: string): EntityState {
@@ -56,11 +52,11 @@ class HomeAssistantWebSocketAPI extends WebSocketConnector {
   }
 
   subscribeToConnectionState(
-    callback: ConnectionStatusListenerCallback
+    callback: HomeAssistantConnectionStateListenerCallback
   ): ListenerRemover {
-    this.events.on('api-status', callback)
+    this.events.on('ha/status', callback)
     const unsubscribe = () => {
-      this.events.off('api-status', callback)
+      this.events.off('ha/status', callback)
     }
     callback(this.status)
     return unsubscribe

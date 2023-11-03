@@ -6,6 +6,7 @@ import { sectionTiles } from '../layout/menus'
 import { useLayoutContext } from '../contexts/OutletContext'
 import Weather from './Weather'
 import Notifications from './Notifications'
+import { addLeadingZero } from '../utils/numberUtils'
 
 const dayNames = [
   'Sunday',
@@ -33,8 +34,8 @@ const monthNames = [
 ]
 
 const getTime = (now: Date) => {
-  const h = now.getHours() < 10 ? `0${now.getHours()}` : now.getHours()
-  const m = now.getMinutes() < 10 ? `0${now.getMinutes()}` : now.getMinutes()
+  const h = addLeadingZero(now.getHours())
+  const m = addLeadingZero(now.getMinutes())
   return `${h}:${m}`
 }
 
@@ -57,14 +58,15 @@ const TimeAndDate = () => {
     return () => clearInterval(timer)
   }, [])
 
+  const time = getTime(now)
+  const day = getDay(now)
+  const date = getDate(now)
+
   return (
-    <>
-      <div className="text-7xl">{getTime(now)}</div>
-      <div className="flex flex-col justify-center">
-        <div className="text-xl">{getDay(now)}</div>
-        <div className="text-xl">{getDate(now)}</div>
-      </div>
-    </>
+    <div className="mt-1 flex flex-row items-center gap-3">
+      <div className="text-4xl font-bold">{time}</div>
+      <div className="text-2xl font-light">{`${day} ${date}`}</div>
+    </div>
   )
 }
 
@@ -103,20 +105,20 @@ const Dashboard = () => {
     <div className="relative grid grid-cols-2">
       <div
         className={clsx(
-          'col-span-2 flex h-24 flex-row gap-4 border-b-2 border-blue-600 p-3'
+          'col-span-2 flex h-20 flex-row justify-center gap-4 border-b-2 border-blue-600 p-3'
         )}
       >
         <TimeAndDate />
-        <div className="absolute right-5 top-6 flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border-2 border-transparent transition-colors hover:border-gray-500">
+        <div className="absolute right-5 top-4 flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border-2 border-transparent transition-colors hover:border-gray-500">
           <Link to="/more">
             <MoreHorizOutlinedIcon className="!text-[2rem]" />
           </Link>
         </div>
       </div>
-      <div className="h-[calc(100vh-20rem)] p-3">
-        <Weather />
+      <div className="h-[calc(100vh-20rem)] overflow-auto p-3">
+        <Weather compactMode />
       </div>
-      <div className={clsx('border-l-2 border-blue-600 p-3')}>
+      <div className="overflow-auto border-l-2 border-blue-600 p-3">
         <Notifications />
       </div>
     </div>

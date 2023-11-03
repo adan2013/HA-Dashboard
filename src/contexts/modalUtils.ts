@@ -5,6 +5,7 @@ export type ModalType =
   | 'confirmation'
   | 'lightControl'
   | 'historyChart'
+  | 'serviceStatus'
   | 'zigbeeNetwork'
 
 export type ConfirmationModalParams = {

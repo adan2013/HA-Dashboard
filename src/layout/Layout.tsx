@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom'
 import MobileLayout from './MobileLayout'
 import DesktopLayout from './DesktopLayout'
 import 'react-toastify/dist/ReactToastify.css'
-import { useHomeAssistantStatus } from '../api/hooks'
+import { useBackendStatus, useHomeAssistantStatus } from '../api/hooks'
 import { useHomeAssistant } from '../contexts/HomeAssistantContext'
 import { useModalContext } from '../contexts/ModalContext'
+import ConnectionStatusMessage from '../components/layout/ConnectionStatusMessage'
+import { useBackend } from '../contexts/BackendContext'
 
 type LayoutType = 'mobile' | 'desktop'
 const MOBILE_LAYOUT_BREAKPOINT = 1024
@@ -15,23 +17,28 @@ const getLayoutType = (): LayoutType =>
 
 const Layout = () => {
   const [layoutMode, setLayoutMode] = useState<LayoutType>(getLayoutType())
-  const status = useHomeAssistantStatus()
+  const statusHa = useHomeAssistantStatus()
+  const statusBackend = useBackendStatus()
   const ha = useHomeAssistant()
+  const backend = useBackend()
   const modal = useModalContext()
   const navigate = useNavigate()
   const isMobile = layoutMode === 'mobile'
 
   useEffect(() => {
     window.onFullyScreenOn = () => {
-      if (status !== 'authorized' && status !== 'synced') {
+      if (statusHa !== 'synced') {
         ha.connect()
+      }
+      if (statusBackend !== 'synced') {
+        backend.connect()
       }
     }
     window.onFullyScreenOff = () => {
       modal.closeModal()
       navigate('/')
     }
-  }, [navigate, status, ha, modal])
+  }, [navigate, statusHa, statusBackend, ha, backend, modal])
 
   useEffect(() => {
     if (Object.hasOwn(window, 'fully')) {
@@ -60,6 +67,7 @@ const Layout = () => {
         transition={Flip}
         limit={isMobile ? 2 : 4}
       />
+      <ConnectionStatusMessage />
     </>
   )
 }
