@@ -59,7 +59,7 @@ const Weather = ({ compactMode }: WeatherViewProps) => {
     )
   }
 
-  return <>FULL VERSION - WIP</>
+  return <>WEATHER VIEW - WIP</>
 }
 
 export default Weather

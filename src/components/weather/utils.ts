@@ -24,20 +24,17 @@ export const getDayOfWeekName = (date: Date): string => {
 
 export const removePastHours = (hours: HourlyWeather[]): HourlyWeather[] => {
   if (!hours) return null
-  const now = new Date()
-  const currentHour = now.getHours()
-  return hours.filter(h => {
-    const hour = new Date(h.timestamp).getHours()
-    return hour > currentHour
-  })
+  const now = new Date().getTime()
+  return hours.filter(h => new Date(h.timestamp).getTime() > now)
 }
 
-export const removePastDays = (days: DailyWeather[]): DailyWeather[] => {
+export const removeCurrentDay = (days: DailyWeather[]): DailyWeather[] => {
   if (!days) return null
   const now = new Date()
-  const currentDate = now.getDate()
   return days.filter(d => {
-    const date = new Date(d.timestamp).getDate()
-    return date > currentDate
+    const date = new Date(d.timestamp)
+    return !(
+      now.getDate() === date.getDate() && now.getMonth() === date.getMonth()
+    )
   })
 }
