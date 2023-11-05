@@ -28,13 +28,11 @@ export const removePastHours = (hours: HourlyWeather[]): HourlyWeather[] => {
   return hours.filter(h => new Date(h.timestamp).getTime() > now)
 }
 
-export const removeCurrentDay = (days: DailyWeather[]): DailyWeather[] => {
+export const removePastDays = (days: DailyWeather[]): DailyWeather[] => {
   if (!days) return null
-  const now = new Date()
+  const endOfCurrentDay = new Date().setHours(23, 59, 59)
   return days.filter(d => {
-    const date = new Date(d.timestamp)
-    return !(
-      now.getDate() === date.getDate() && now.getMonth() === date.getMonth()
-    )
+    const date = new Date(d.timestamp).getTime()
+    return date > endOfCurrentDay
   })
 }

@@ -3,30 +3,38 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { WeatherServiceData } from '../api/backend/weatherTypes'
 import { useBackend } from '../contexts/BackendContext'
-import ShortForecast from '../components/weather/ShortForecast'
-import LongForecast from '../components/weather/LongForecast'
-import CurrentWeather from '../components/weather/CurrentWeather'
+import ShortForecast from '../components/weather/compact/ShortForecast'
+import LongForecast from '../components/weather/compact/LongForecast'
+import CurrentWeather from '../components/weather/compact/CurrentWeather'
+
+const COMPACT_MODE_BREAKPOINT = 800
 
 const Divider = () => <div className="mx-1 border-b-[1px] border-gray-400" />
 
 type WeatherViewProps = {
-  compactMode?: boolean
+  isWidget?: boolean
 }
 
-const Weather = ({ compactMode }: WeatherViewProps) => {
+const Weather = ({ isWidget }: WeatherViewProps) => {
+  const [compactMode, setCompactMode] = useState<boolean>(true)
   const [state, setState] = useState<WeatherServiceData>(null)
   const backend = useBackend()
   const navigate = useNavigate()
 
-  useEffect(
-    () =>
-      backend?.subscribeToServiceData(data => {
-        if (data?.weather) {
-          setState(data.weather)
-        }
-      }),
-    [backend]
-  )
+  useEffect(() => {
+    const unsubscribe = backend?.subscribeToServiceData(data => {
+      if (data?.weather) {
+        setState(data.weather)
+      }
+    })
+    const onResize = () =>
+      setCompactMode(window.innerWidth < COMPACT_MODE_BREAKPOINT)
+    window.addEventListener('resize', onResize)
+    return () => {
+      window.removeEventListener('resize', onResize)
+      unsubscribe()
+    }
+  }, [backend])
 
   if (!state) {
     return (
@@ -39,11 +47,11 @@ const Weather = ({ compactMode }: WeatherViewProps) => {
     )
   }
 
-  if (compactMode) {
+  if (isWidget || compactMode) {
     return (
       <div
         className="flex cursor-pointer flex-col gap-2"
-        onClick={() => navigate('/weather')}
+        onClick={isWidget ? () => navigate('/weather') : undefined}
       >
         <CurrentWeather data={state.current} />
         <Divider />
