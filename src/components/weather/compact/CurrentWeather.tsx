@@ -3,7 +3,7 @@ import AirIcon from '@mui/icons-material/Air'
 import { cloneElement, ReactElement } from 'react'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import BiotechIcon from '@mui/icons-material/Biotech'
-import { CurrentWeather as CurrentWeatherType } from '../../api/backend/weatherTypes'
+import { CurrentWeather as CurrentWeatherType } from '../../../api/backend/weatherTypes'
 
 type WeatherParameterProps = {
   icon: ReactElement
@@ -24,8 +24,8 @@ type CurrentWeatherProps = {
 }
 
 const CurrentWeather = ({ data }: CurrentWeatherProps) => (
-  <div className="flex flex-row items-center gap-3 text-lg">
-    <div className="">
+  <div className="flex flex-row items-center gap-3 overflow-x-auto text-lg">
+    <div className="min-w-[60px]">
       <img
         src={`https://openweathermap.org/img/wn/${data.weather.icon}@2x.png`}
         alt={data.weather.type}

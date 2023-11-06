@@ -116,7 +116,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="h-[calc(100vh-20rem)] overflow-auto p-3">
-        <Weather compactMode />
+        <Weather isWidget />
       </div>
       <div className="overflow-auto border-l-2 border-blue-600 p-3">
         <Notifications />

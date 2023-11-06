@@ -1,8 +1,8 @@
 import WaterDropIcon from '@mui/icons-material/WaterDrop'
 import AirIcon from '@mui/icons-material/Air'
-import { DailyWeather } from '../../api/backend/weatherTypes'
-import { addLeadingZero } from '../../utils/numberUtils'
-import { getDayOfWeekName, removeCurrentDay } from './utils'
+import { DailyWeather } from '../../../api/backend/weatherTypes'
+import { addLeadingZero } from '../../../utils/numberUtils'
+import { getDayOfWeekName, removePastDays } from '../utils'
 
 type LongForecastProps = {
   data: DailyWeather[]
@@ -10,7 +10,7 @@ type LongForecastProps = {
 
 const LongForecast = ({ data }: LongForecastProps) => (
   <div className="m-1 flex flex-col gap-2 text-center text-lg">
-    {removeCurrentDay(data).map(f => {
+    {removePastDays(data).map(f => {
       const time = new Date(f.timestamp)
       return (
         <div className="flex flex-row items-center gap-1" key={f.timestamp}>
