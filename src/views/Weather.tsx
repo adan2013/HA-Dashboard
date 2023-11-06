@@ -1,6 +1,7 @@
 import NightsStayIcon from '@mui/icons-material/NightsStay'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import clsx from 'clsx'
 import { WeatherServiceData } from '../api/backend/weatherTypes'
 import { useBackend } from '../contexts/BackendContext'
 import ShortForecast from '../components/weather/compact/ShortForecast'
@@ -50,7 +51,7 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
   if (isWidget || compactMode) {
     return (
       <div
-        className="flex cursor-pointer flex-col gap-2"
+        className={clsx('flex flex-col gap-2', isWidget && 'cursor-pointer')}
         onClick={isWidget ? () => navigate('/weather') : undefined}
       >
         <CurrentWeather data={state.current} />
