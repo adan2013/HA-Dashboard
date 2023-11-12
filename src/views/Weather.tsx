@@ -30,6 +30,7 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
     })
     const onResize = () =>
       setCompactMode(window.innerWidth < COMPACT_MODE_BREAKPOINT)
+    onResize()
     window.addEventListener('resize', onResize)
     return () => {
       window.removeEventListener('resize', onResize)
@@ -68,7 +69,21 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
     )
   }
 
-  return <>WEATHER VIEW - WIP</>
+  return (
+    <div className="mx-auto w-full max-w-[1200px]">
+      <div className="mx-6">
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-yellow-700">1</div>
+          <div className="bg-yellow-700">2</div>
+          <div className="bg-yellow-700">3</div>
+          <div className="bg-yellow-700">4</div>
+          <div className="bg-yellow-700">5</div>
+          <div className="bg-yellow-700">6</div>
+          <div className="bg-yellow-700">7</div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default Weather

@@ -115,7 +115,7 @@ const Dashboard = () => {
           </Link>
         </div>
       </div>
-      <div className="h-[calc(100vh-20rem)] overflow-auto p-3">
+      <div className="h-[calc(100vh-19rem)] overflow-auto p-3">
         <Weather isWidget />
       </div>
       <div className="overflow-auto border-l-2 border-blue-600 p-3">
