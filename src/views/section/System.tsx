@@ -3,7 +3,6 @@ import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew'
 import LogoutIcon from '@mui/icons-material/Logout'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
-import PlaceholderTile from '../../PlaceholderTile'
 import { SignalTile } from '../../components/specialTiles/ZigbeeTiles'
 import {
   CallManualBackup,
@@ -21,13 +20,13 @@ import {
 import CallServiceTile from '../../components/entityTiles/services/CallServiceTile'
 import Tile from '../../components/basic/Tile'
 import { getHomeAssistantHost } from '../../utils/viteUtils'
+import ServiceStatusTile from '../../components/devTiles/ServiceStatusTile'
 
 const System = () => (
   <TileSection>
     <TileGroup name="Status">
       <SignalTile />
-      <PlaceholderTile title="ESPhome devices" size="standard" />
-      <PlaceholderTile title="HA services" size="standard" />
+      <ServiceStatusTile />
     </TileGroup>
     <TileGroup name="Backups">
       <SambaBackupStatus />
