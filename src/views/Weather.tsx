@@ -73,13 +73,9 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
     <div className="mx-auto w-full max-w-[1200px]">
       <div className="mx-6">
         <div className="grid grid-cols-3 gap-4">
-          <div className="bg-yellow-700">1</div>
-          <div className="bg-yellow-700">2</div>
-          <div className="bg-yellow-700">3</div>
-          <div className="bg-yellow-700">4</div>
-          <div className="bg-yellow-700">5</div>
-          <div className="bg-yellow-700">6</div>
-          <div className="bg-yellow-700">7</div>
+          <div className="col-span-3 mt-5 rounded-lg bg-gray-700 p-5 text-center">
+            WIP
+          </div>
         </div>
       </div>
     </div>

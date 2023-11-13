@@ -39,9 +39,8 @@ export const removePastDays = (days: DailyWeather[]): DailyWeather[] => {
 
 export const getBarColorForHumidity = (humidity: number): string => {
   if (humidity > 40 && humidity < 60) return 'bg-green-500'
-  if (humidity > 25 && humidity < 75) return 'bg-yellow-500'
-  if (humidity > 10 && humidity < 90) return 'bg-orange-500'
-  return 'bg-red-500'
+  if (humidity > 20 && humidity < 80) return 'bg-yellow-500'
+  return 'bg-orange-500'
 }
 
 export const getBarColorForWindSpeed = (speed: number): string => {
