@@ -91,6 +91,7 @@ const RangeSegmentChart = ({
           >
             {CHART_DATA.map((entry, idx) => (
               <Cell
+                name={entry.name}
                 key={entry.name}
                 fill={getSegmentColor(idx, activeSegment, colorScheme, mode)}
                 strokeWidth={0}
