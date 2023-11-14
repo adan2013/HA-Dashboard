@@ -10,6 +10,9 @@ import LongForecast from '../components/weather/compact/LongForecast'
 import CurrentWeather from '../components/weather/compact/CurrentWeather'
 import Tile from '../components/basic/Tile'
 import { useLayoutContext } from '../contexts/OutletContext'
+import UvIndexTile from '../components/weather/full/UvIndexTile'
+import AirQualityIndexTile from '../components/weather/full/AirQualityIndexTile'
+import HumidityTile from '../components/weather/full/HumidityTile'
 
 const chartData = [
   { name: 'Group A', value: 25 },
@@ -103,13 +106,13 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
         <div className="grid grid-cols-5 gap-4">
           <Tile title="Current" size="horizontal" />
           <Tile title="Temp. history" />
-          <Tile title="UV" customBody={<ChartBody />} />
-          <Tile title="Air quality" customBody={<ChartBody />} />
+          <UvIndexTile value={state.current.uvi} />
+          <AirQualityIndexTile value={state.current.aqi} />
           <Tile title="Wind history" />
           <Tile title="Wind" size="horizontal" customBody={<ChartBody />} />
           <Tile title="Rain radar" size="big" />
           <Tile title="Storm radar" size="big" />
-          <Tile title="Humidity" customBody={<ChartBody />} />
+          <HumidityTile value={state.current.humidity} />
           <Tile title="Sun" />
           <Tile title="Pressure" size="horizontal" customBody={<ChartBody />} />
         </div>
