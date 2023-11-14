@@ -1,5 +1,5 @@
 import Tile from '../../basic/Tile'
-import RangeSegmentChart from './RangeSegmentChart'
+import RangeSegmentChart from '../../charts/RangeSegmentChart'
 
 type AirQualityIndexTileProps = {
   value: number
@@ -28,9 +28,9 @@ const AirQualityIndexTile = ({ value }: AirQualityIndexTileProps) => {
       title="Air quality index"
       customBody={
         <RangeSegmentChart
-          centerValue={aqi}
-          bottomValue={getAirQualityDescription(aqi)}
-          activeSegment={aqi}
+          value={aqi}
+          label={getAirQualityDescription(aqi)}
+          thresholds={[1, 2, 3, 4]}
         />
       }
     />

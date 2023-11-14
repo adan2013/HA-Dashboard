@@ -1,16 +1,8 @@
 import Tile from '../../basic/Tile'
-import RangeSegmentChart from './RangeSegmentChart'
+import RangeSegmentChart from '../../charts/RangeSegmentChart'
 
 type HumidityTileProps = {
   value: number
-}
-
-const getHumiditySegment = (humidity: number) => {
-  if (humidity > 40 && humidity < 60) return 3
-  if (humidity <= 40) return 2
-  if (humidity >= 60) return 4
-  if (humidity <= 5) return 1
-  return 5
 }
 
 const HumidityTile = ({ value }: HumidityTileProps) => {
@@ -21,10 +13,10 @@ const HumidityTile = ({ value }: HumidityTileProps) => {
       title="Humidity"
       customBody={
         <RangeSegmentChart
-          centerValue={humidity}
-          bottomValue="%"
+          value={humidity}
+          label="%"
           mode="range"
-          activeSegment={getHumiditySegment(humidity)}
+          thresholds={[15, 40, 60, 90]}
         />
       }
     />

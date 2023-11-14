@@ -1,4 +1,5 @@
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import { useMemo } from 'react'
 
 type RangeSegmentMode = 'gauge' | 'range'
 
@@ -41,19 +42,36 @@ const getSegmentColor = (
 }
 
 export type RangeSegmentChartProps = {
-  centerValue?: number | string
-  bottomValue?: number | string
+  value?: number
+  label?: string
   mode?: RangeSegmentMode
-  activeSegment?: number
+  thresholds: [number, number, number, number]
 }
 
 const RangeSegmentChart = ({
-  centerValue,
-  bottomValue,
+  value = 0,
+  label,
   mode = 'gauge',
-  activeSegment = 0
+  thresholds
 }: RangeSegmentChartProps) => {
   const colorScheme = getColorScheme(mode)
+
+  const activeSegment = useMemo(() => {
+    let segment = 0
+    const [t1, t2, t3, t4] = thresholds
+    if (value <= t1) {
+      segment = 1
+    } else if (value <= t2) {
+      segment = 2
+    } else if (value <= t3) {
+      segment = 3
+    } else if (value <= t4) {
+      segment = 4
+    } else if (value > t4) {
+      segment = 5
+    }
+    return segment
+  }, [value, thresholds])
 
   return (
     <div className="relative h-32">
@@ -82,11 +100,9 @@ const RangeSegmentChart = ({
         </PieChart>
       </ResponsiveContainer>
       <div className="absolute bottom-10 right-1/2 translate-x-1/2 text-3xl">
-        {centerValue}
+        {value}
       </div>
-      <div className="absolute bottom-0 right-1/2 translate-x-1/2">
-        {bottomValue}
-      </div>
+      <div className="absolute bottom-0 right-1/2 translate-x-1/2">{label}</div>
     </div>
   )
 }

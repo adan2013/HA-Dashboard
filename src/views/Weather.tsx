@@ -13,6 +13,9 @@ import { useLayoutContext } from '../contexts/OutletContext'
 import UvIndexTile from '../components/weather/full/UvIndexTile'
 import AirQualityIndexTile from '../components/weather/full/AirQualityIndexTile'
 import HumidityTile from '../components/weather/full/HumidityTile'
+import TemperatureHistoryTile from '../components/weather/full/TemperatureHistoryTile'
+import WindHistoryTile from '../components/weather/full/WindHistoryTile'
+import PressureTile from '../components/weather/full/PressureTile'
 
 const chartData = [
   { name: 'Group A', value: 25 },
@@ -105,16 +108,26 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
       <div className="mx-6">
         <div className="grid grid-cols-5 gap-4">
           <Tile title="Current" size="horizontal" />
-          <Tile title="Temp. history" />
+          <TemperatureHistoryTile
+            history={[23, 24, 25, 19, 18, 23, 24, 25, 19, 10, 4, -6]}
+          />
           <UvIndexTile value={state.current.uvi} />
           <AirQualityIndexTile value={state.current.aqi} />
-          <Tile title="Wind history" />
+          <WindHistoryTile
+            history={[27, 33, 35, 34, 41, 41, 36, 35, 34, 0, 0, 19]}
+          />
           <Tile title="Wind" size="horizontal" customBody={<ChartBody />} />
           <Tile title="Rain radar" size="big" />
           <Tile title="Storm radar" size="big" />
           <HumidityTile value={state.current.humidity} />
           <Tile title="Sun" />
-          <Tile title="Pressure" size="horizontal" customBody={<ChartBody />} />
+          <PressureTile
+            current={1017}
+            history={[
+              1002, 1015, 990, 1022, 1008, 1011, 995, 1000, 1025, 988, 1018,
+              1004
+            ]}
+          />
         </div>
         <div className="my-4 h-40 rounded-lg bg-blue-900 p-5 text-center">
           SHORT FORECAST
