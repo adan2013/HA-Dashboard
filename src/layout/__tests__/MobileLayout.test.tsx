@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { mobileMenu } from '../menus'
 import MobileLayout from '../MobileLayout'
 
 describe('MobileLayout', () => {

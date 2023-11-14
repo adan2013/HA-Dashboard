@@ -10,15 +10,15 @@
   "keywords": [
     "vite",
     "react",
-    "starter",
-    "template"
+    "home assistant",
+    "smart home"
   ],
   "scripts": {
     "dev": "vite --host",
     "build": "vite build --emptyOutDir",
     "serve": "vite preview",
-    "lint": "eslint . --ext .js,.ts,.tsx",
-    "lint-fix": "eslint --fix  . --ext .js,.ts,.tsx",
+    "lint": "eslint ./src --ext .js,.ts,.tsx",
+    "lint-fix": "eslint --fix ./src --ext .js,.ts,.tsx",
     "lint:stylelint": "stylelint **/*.{css,scss,tsx}",
     "fix:stylelint": "stylelint --fix  ./src/**/*.{css, scss,tsx}",
     "test": "jest",
