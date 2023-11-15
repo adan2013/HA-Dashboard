@@ -7,6 +7,7 @@ export type ModalType =
   | 'historyChart'
   | 'serviceStatus'
   | 'zigbeeNetwork'
+  | 'weather'
 
 export type ConfirmationModalParams = {
   message?: string
@@ -31,11 +32,16 @@ export type ZigbeeNetworkModalParams = {
   tab: 'all' | 'battery' | 'signal'
 }
 
+export type WeatherModalParams = {
+  content: 'rain'
+}
+
 export type ModalParams =
   | ConfirmationModalParams
   | LightControlModalParams
   | HistoryChartModalParams
   | ZigbeeNetworkModalParams
+  | WeatherModalParams
 
 export type ModalState = {
   isOpen: boolean

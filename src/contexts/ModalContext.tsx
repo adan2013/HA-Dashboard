@@ -17,6 +17,7 @@ import LightControlBody from '../components/modals/bodies/LightControlBody'
 import HistoryChartBody from '../components/modals/bodies/HistoryChartBody'
 import ZigbeeNetworkBody from '../components/modals/bodies/ZigbeeNetworkBody'
 import ServiceStatusTableBody from '../components/modals/bodies/ServiceStatusTableBody'
+import WeatherBody from '../components/modals/bodies/WeatherBody'
 
 type ProviderProps = {
   children: ReactElement
@@ -80,6 +81,8 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
         return <ServiceStatusTableBody />
       case 'zigbeeNetwork':
         return <ZigbeeNetworkBody />
+      case 'weather':
+        return <WeatherBody />
       default:
         return null
     }

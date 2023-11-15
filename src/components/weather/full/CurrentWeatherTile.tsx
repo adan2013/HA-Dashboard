@@ -10,7 +10,7 @@ const CurrentWeatherTile = ({ current }: Props) => (
     title="Current"
     size="horizontal"
     customBody={
-      <div className="grid h-32 grid-cols-2 items-center gap-6 text-lg">
+      <div className="grid h-32 grid-cols-2 items-center text-lg">
         <div className="flex justify-center">
           <img
             src={`https://openweathermap.org/img/wn/${current.weather.icon}@2x.png`}

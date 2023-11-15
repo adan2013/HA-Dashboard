@@ -16,8 +16,9 @@ const SunTile = ({ sunrise, sunset }: Props) => {
   const sunsetDate = new Date(sunset)
   const lengthOfPhase = sunsetDate.getTime() - sunriseDate.getTime()
   if (lengthOfPhase <= 0) return null
-  const percentageOfPhaseLeft = Math.round(
-    ((sunsetDate.getTime() - now.getTime()) / lengthOfPhase) * 100
+  const percentageOfPhaseLeft = Math.max(
+    Math.round(((sunsetDate.getTime() - now.getTime()) / lengthOfPhase) * 100),
+    0
   )
 
   return (
