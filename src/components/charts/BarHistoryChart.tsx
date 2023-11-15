@@ -26,6 +26,8 @@ const BarHistoryChart = ({
   const min = useMemo(() => Math.min(...history), [history])
   const max = useMemo(() => Math.max(...history), [history])
 
+  if (history.length === 0) return null
+
   return (
     <div className="h-32">
       <div className="mx-1 h-28">

@@ -16,7 +16,7 @@ const HumidityTile = ({ value }: HumidityTileProps) => {
           value={humidity}
           label="%"
           mode="range"
-          thresholds={[15, 40, 60, 90]}
+          thresholds={[20, 40, 60, 80]}
         />
       }
     />

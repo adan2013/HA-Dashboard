@@ -2,7 +2,6 @@ import NightsStayIcon from '@mui/icons-material/NightsStay'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import clsx from 'clsx'
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 import { WeatherServiceData } from '../api/backend/weatherTypes'
 import { useBackend } from '../contexts/BackendContext'
 import ShortForecast from '../components/weather/compact/ShortForecast'
@@ -14,41 +13,11 @@ import UvIndexTile from '../components/weather/full/UvIndexTile'
 import AirQualityIndexTile from '../components/weather/full/AirQualityIndexTile'
 import HumidityTile from '../components/weather/full/HumidityTile'
 import TemperatureHistoryTile from '../components/weather/full/TemperatureHistoryTile'
-import WindHistoryTile from '../components/weather/full/WindHistoryTile'
+import WindDirectionTile from '../components/weather/full/WindDirectionTile'
 import PressureTile from '../components/weather/full/PressureTile'
-
-const chartData = [
-  { name: 'Group A', value: 25 },
-  { name: 'Group B', value: 25 },
-  { name: 'Group C', value: 25 },
-  { name: 'Group D', value: 25 },
-  { name: 'Group E', value: 25 }
-]
-const COLORS = ['#22c55e', '#eab308', '#f97316', '#ef4444', '#a855f7']
-
-const ChartBody = () => (
-  <div className="absolute left-0 top-5 h-full w-full">
-    <ResponsiveContainer>
-      <PieChart>
-        <Pie
-          animationDuration={0}
-          data={chartData}
-          startAngle={215}
-          endAngle={-35}
-          innerRadius={55}
-          outerRadius={70}
-          fill="#8884d8"
-          paddingAngle={8}
-          dataKey="value"
-        >
-          {chartData.map((entry, index) => (
-            <Cell key={entry.name} fill={COLORS[index]} strokeWidth={0} />
-          ))}
-        </Pie>
-      </PieChart>
-    </ResponsiveContainer>
-  </div>
-)
+import WindTile from '../components/weather/full/WindTile'
+import SunTile from '../components/weather/full/SunTile'
+import CurrentWeatherTile from '../components/weather/full/CurrentWeatherTile'
 
 const Divider = () => <div className="mx-1 border-b-[1px] border-gray-400" />
 
@@ -107,20 +76,24 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
     <div className="mx-auto w-full max-w-[1000px]">
       <div className="mx-6">
         <div className="grid grid-cols-5 gap-4">
-          <Tile title="Current" size="horizontal" />
+          <CurrentWeatherTile current={state.current} />
           <TemperatureHistoryTile
             history={[23, 24, 25, 19, 18, 23, 24, 25, 19, 10, 4, -6]}
           />
           <UvIndexTile value={state.current.uvi} />
           <AirQualityIndexTile value={state.current.aqi} />
-          <WindHistoryTile
+          <WindDirectionTile windDirection={45} />
+          <WindTile
+            windSpeed={state.current.windSpeed}
             history={[27, 33, 35, 34, 41, 41, 36, 35, 34, 0, 0, 19]}
           />
-          <Tile title="Wind" size="horizontal" customBody={<ChartBody />} />
           <Tile title="Rain radar" size="big" />
           <Tile title="Storm radar" size="big" />
           <HumidityTile value={state.current.humidity} />
-          <Tile title="Sun" />
+          <SunTile
+            sunrise={state.current.sunrise}
+            sunset={state.current.sunset}
+          />
           <PressureTile
             current={1017}
             history={[
