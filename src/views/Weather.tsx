@@ -87,7 +87,21 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
             windSpeed={state.current.windSpeed}
             history={[27, 33, 35, 34, 41, 41, 36, 35, 34, 0, 0, 19]}
           />
-          <Tile title="Rain radar" size="big" />
+          <Tile
+            title="Rain radar"
+            size="big"
+            customBody={
+              <div className="flex h-full w-full justify-center p-2">
+                <div className="relative w-full overflow-hidden rounded-lg">
+                  <iframe
+                    className="absolute left-0 top-0 h-full w-full"
+                    title="rain-radar"
+                    src="https://embed.windy.com/embed2.html?lat=51.494&lon=19.167&detailLat=52.249&detailLon=21.002&width=330&height=330&zoom=5&level=surface&overlay=rain&product=ecmwf&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1"
+                  />
+                </div>
+              </div>
+            }
+          />
           <Tile title="Storm radar" size="big" />
           <HumidityTile value={state.current.humidity} />
           <SunTile
