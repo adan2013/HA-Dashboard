@@ -83,7 +83,7 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
           />
           <UvIndexTile value={state.current.uvi} />
           <AirQualityIndexTile value={state.current.aqi} />
-          <WindDirectionTile windDirection={45} />
+          <WindDirectionTile windDirection={state.current.windDeg} />
           <WindTile
             windSpeed={state.current.windSpeed}
             history={[27, 33, 35, 34, 41, 41, 36, 35, 34, 0, 0, 19]}
