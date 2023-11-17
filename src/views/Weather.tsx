@@ -94,7 +94,7 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
             sunset={state.current.sunset}
           />
           <PressureTile
-            current={1017}
+            current={state.current.pressure}
             history={state.historicalWeather.pressure}
           />
         </div>

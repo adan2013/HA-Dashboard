@@ -100,7 +100,7 @@ const RangeSegmentChart = ({
           </Pie>
         </PieChart>
       </ResponsiveContainer>
-      <div className="absolute bottom-10 right-1/2 translate-x-1/2 text-3xl">
+      <div className="absolute bottom-10 right-1/2 translate-x-1/2 text-4xl">
         {value}
       </div>
       <div className="absolute bottom-0 right-1/2 translate-x-1/2">{label}</div>
