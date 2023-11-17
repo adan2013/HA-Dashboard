@@ -19,6 +19,7 @@ import WindTile from '../components/weather/full/WindTile'
 import SunTile from '../components/weather/full/SunTile'
 import CurrentWeatherTile from '../components/weather/full/CurrentWeatherTile'
 import RainRadarTile from '../components/weather/full/RainRadarTile'
+import LongFullForecast from '../components/weather/full/LongFullForecast'
 
 const Divider = () => <div className="mx-1 border-b-[1px] border-gray-400" />
 
@@ -101,8 +102,9 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
         <div className="my-4 h-40 rounded-lg bg-blue-900 p-5 text-center">
           SHORT FORECAST
         </div>
-        <div className="my-4 h-64 rounded-lg bg-blue-900 p-5 text-center">
-          LONG FORECAST
+        <LongFullForecast data={state.longForecast} />
+        <div className="py-6 text-center font-light text-gray-300">
+          Last update at: {new Date(state.timestamp).toLocaleString()}
         </div>
       </div>
     </div>

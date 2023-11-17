@@ -39,7 +39,7 @@ export type LongForecast = {
   timestamp: number
   sunrise: number
   sunset: number
-  sumary: string
+  summary: string
   dayTemp: number
   nightTemp: number
   minTemp: number
