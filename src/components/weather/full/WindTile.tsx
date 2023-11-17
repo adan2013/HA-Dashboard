@@ -18,7 +18,11 @@ const WindTile = ({ windSpeed, history }: Props) => (
           label="km/h"
           thresholds={[20, 40, 60, 80]}
         />
-        <BarHistoryChart history={history} chartColor="#06b6d4" />
+        <BarHistoryChart
+          history={history}
+          chartColor="#06b6d4"
+          minRangeOffset={1}
+        />
       </div>
     }
   />

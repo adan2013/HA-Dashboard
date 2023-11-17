@@ -44,7 +44,7 @@ const RainRadarTile = ({
       size="big"
       onClick={openModalOnClick ? openModal : undefined}
       customBody={
-        <div className="flex h-full w-full justify-center p-2">
+        <div className="flex h-[21rem] w-full justify-center p-2">
           <ResponsiveWidgetElement disableInteractions={disableInteractions} />
         </div>
       }

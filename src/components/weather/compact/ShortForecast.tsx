@@ -3,7 +3,7 @@ import AirIcon from '@mui/icons-material/Air'
 import { Fragment, ReactElement, useMemo } from 'react'
 import DownloadIcon from '@mui/icons-material/Download'
 import UploadIcon from '@mui/icons-material/Upload'
-import { HourlyWeather } from '../../../api/backend/weatherTypes'
+import { ShortForecast as ShortForecastType } from '../../../api/backend/weatherTypes'
 import { addLeadingZero } from '../../../utils/numberUtils'
 import { removePastHours } from './utils'
 
@@ -51,7 +51,7 @@ const SunPositionItem = ({
 }
 
 type ShortForecastProps = {
-  data: HourlyWeather[]
+  data: ShortForecastType[]
   limit?: number
   sunrise?: number
   sunset?: number

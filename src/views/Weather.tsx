@@ -78,15 +78,13 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
       <div className="mx-6">
         <div className="grid grid-cols-5 gap-4">
           <CurrentWeatherTile current={state.current} />
-          <TemperatureHistoryTile
-            history={[23, 24, 25, 19, 18, 23, 24, 25, 19, 10, 4, -6]}
-          />
+          <TemperatureHistoryTile history={state.historicalWeather.temp} />
           <UvIndexTile value={state.current.uvi} />
           <AirQualityIndexTile value={state.current.aqi} />
           <WindDirectionTile windDirection={state.current.windDeg} />
           <WindTile
             windSpeed={state.current.windSpeed}
-            history={[27, 33, 35, 34, 41, 41, 36, 35, 34, 0, 0, 19]}
+            history={state.historicalWeather.windSpeed}
           />
           <RainRadarTile disableInteractions openModalOnClick />
           <Tile title="Storm radar" size="big" />
@@ -97,10 +95,7 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
           />
           <PressureTile
             current={1017}
-            history={[
-              1002, 1015, 990, 1022, 1008, 1011, 995, 1000, 1025, 988, 1018,
-              1004
-            ]}
+            history={state.historicalWeather.pressure}
           />
         </div>
         <div className="my-4 h-40 rounded-lg bg-blue-900 p-5 text-center">

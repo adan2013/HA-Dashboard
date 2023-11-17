@@ -54,6 +54,11 @@ const System = () => (
         icon={<PowerSettingsNewIcon />}
         confirmationRequired
       />
+      <Tile
+        title="Open Synology dashboard"
+        icon={<LogoutIcon />}
+        onClick={() => window.open(`http://192.168.1.3:5000`, '_self')}
+      />
     </TileGroup>
     <TileGroup name="Home Assistant">
       <CallServiceTile

@@ -1,4 +1,4 @@
-import { DailyWeather, HourlyWeather } from '../../../api/backend/weatherTypes'
+import { ShortForecast, LongForecast } from '../../../api/backend/weatherTypes'
 
 export const getDayOfWeekName = (date: Date): string => {
   const dayOfWeek = date.getDay()
@@ -22,13 +22,13 @@ export const getDayOfWeekName = (date: Date): string => {
   }
 }
 
-export const removePastHours = (hours: HourlyWeather[]): HourlyWeather[] => {
+export const removePastHours = (hours: ShortForecast[]): ShortForecast[] => {
   if (!hours) return null
   const now = new Date().getTime()
   return hours.filter(h => new Date(h.timestamp).getTime() > now)
 }
 
-export const removePastDays = (days: DailyWeather[]): DailyWeather[] => {
+export const removePastDays = (days: LongForecast[]): LongForecast[] => {
   if (!days) return null
   const endOfCurrentDay = new Date().setHours(23, 59, 59)
   return days.filter(d => {

@@ -16,9 +16,8 @@ const SunTile = ({ sunrise, sunset }: Props) => {
   const sunsetDate = new Date(sunset)
   const lengthOfPhase = sunsetDate.getTime() - sunriseDate.getTime()
   if (lengthOfPhase <= 0) return null
-  const percentageOfPhaseLeft = Math.max(
-    Math.round(((sunsetDate.getTime() - now.getTime()) / lengthOfPhase) * 100),
-    0
+  const percentageOfPhaseLeft = Math.round(
+    ((sunsetDate.getTime() - now.getTime()) / lengthOfPhase) * 100
   )
 
   return (
@@ -31,7 +30,9 @@ const SunTile = ({ sunrise, sunset }: Props) => {
               <div
                 className="absolute h-full w-full bg-amber-500"
                 style={{
-                  right: `${percentageOfPhaseLeft}%`
+                  right: `${
+                    percentageOfPhaseLeft < 0 ? 100 : percentageOfPhaseLeft
+                  }%`
                 }}
               />
             </div>
