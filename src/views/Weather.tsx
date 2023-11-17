@@ -19,7 +19,12 @@ import WindTile from '../components/weather/full/WindTile'
 import SunTile from '../components/weather/full/SunTile'
 import CurrentWeatherTile from '../components/weather/full/CurrentWeatherTile'
 import RainRadarTile from '../components/weather/full/RainRadarTile'
-import LongFullForecast from '../components/weather/full/LongFullForecast'
+import TableForecastView, {
+  longForecastParams,
+  shortForecastParams
+} from '../components/weather/full/TableForecastView'
+import { getDayOfWeekName } from '../components/weather/compact/utils'
+import { addLeadingZero } from '../utils/numberUtils'
 
 const Divider = () => <div className="mx-1 border-b-[1px] border-gray-400" />
 
@@ -99,11 +104,24 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
             history={state.historicalWeather.pressure}
           />
         </div>
-        <div className="my-4 h-40 rounded-lg bg-blue-900 p-5 text-center">
-          SHORT FORECAST
-        </div>
-        <LongFullForecast data={state.longForecast} />
-        <div className="py-6 text-center font-light text-gray-300">
+        <TableForecastView
+          data={state.shortForecast}
+          params={shortForecastParams}
+          headerRenderer={date =>
+            `${addLeadingZero(date.getHours())}:${addLeadingZero(
+              date.getMinutes()
+            )}`
+          }
+          limit={24}
+        />
+        <TableForecastView
+          data={state.longForecast}
+          params={longForecastParams}
+          headerRenderer={date =>
+            `${getDayOfWeekName(date)} ${addLeadingZero(date.getDate())}`
+          }
+        />
+        <div className="py-4 text-center font-light text-gray-300">
           Last update at: {new Date(state.timestamp).toLocaleString()}
         </div>
       </div>
