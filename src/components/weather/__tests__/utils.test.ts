@@ -1,4 +1,4 @@
-import { removePastDays, removePastHours } from '../compact/utils'
+import { removePastDays, removePastHours } from '../utils'
 import {
   hourlyForecastMock,
   dailyForecastMock

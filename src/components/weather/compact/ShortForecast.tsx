@@ -5,7 +5,7 @@ import DownloadIcon from '@mui/icons-material/Download'
 import UploadIcon from '@mui/icons-material/Upload'
 import { ShortForecast as ShortForecastType } from '../../../api/backend/weatherTypes'
 import { addLeadingZero } from '../../../utils/numberUtils'
-import { removePastHours } from './utils'
+import { removePastHours } from '../utils'
 
 const ItemContainer = ({ children }: { children: ReactElement[] }) => (
   <div className="flex flex-col gap-1 rounded bg-gray-800 py-2">{children}</div>

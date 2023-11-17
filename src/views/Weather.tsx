@@ -23,7 +23,7 @@ import TableForecastView, {
   longForecastParams,
   shortForecastParams
 } from '../components/weather/full/TableForecastView'
-import { getDayOfWeekName } from '../components/weather/compact/utils'
+import { getDayOfWeekName } from '../components/weather/utils'
 import { addLeadingZero } from '../utils/numberUtils'
 
 const Divider = () => <div className="mx-1 border-b-[1px] border-gray-400" />

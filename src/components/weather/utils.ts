@@ -1,4 +1,4 @@
-import { ShortForecast, LongForecast } from '../../../api/backend/weatherTypes'
+import { ShortForecast, LongForecast } from '../../api/backend/weatherTypes'
 
 export const getDayOfWeekName = (date: Date): string => {
   const dayOfWeek = date.getDay()
