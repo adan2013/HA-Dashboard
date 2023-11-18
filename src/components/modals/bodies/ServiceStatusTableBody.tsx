@@ -21,6 +21,8 @@ const getStatusColor = (statusType: StatusColor): string => {
       return 'bg-yellow-500'
     case 'red':
       return 'bg-red-500'
+    case 'blue':
+      return 'bg-blue-500'
     default:
       return 'bg-gray-500'
   }
@@ -69,7 +71,7 @@ const ServiceStatusTableBody = () => {
 
   const getHelperRow = (helperName: string, status: Status) => (
     <tr key={helperName} className="hover:bg-gray-700">
-      <td className="p-2 text-left">{`> ${helperName}`}</td>
+      <td className="p-2 text-left">{`↳ ${helperName}`}</td>
       <td className="p-2 text-left text-sm">
         <div
           className={clsx(
