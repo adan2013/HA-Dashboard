@@ -30,13 +30,13 @@ describe('Weather - compact version', () => {
     expect(screen.getByText('00')).toBeInTheDocument()
     expect(screen.getByText('01')).toBeInTheDocument()
     expect(screen.getByText('23°')).toBeInTheDocument()
-    expect(screen.getByText('24°')).toBeInTheDocument()
-    expect(screen.getByText('25°')).toBeInTheDocument()
-    expect(screen.getByText('(124°)')).toBeInTheDocument()
-    expect(screen.getByText('(125°)')).toBeInTheDocument()
-    expect(screen.getByText('(126°)')).toBeInTheDocument()
-    expect(screen.getAllByTestId('WaterDropIcon')).toHaveLength(2)
-    expect(screen.getAllByTestId('AirIcon')).toHaveLength(1)
+    expect(screen.getByText('27°')).toBeInTheDocument()
+    expect(screen.getByText('3°')).toBeInTheDocument()
+    expect(screen.getByText('(21°)')).toBeInTheDocument()
+    expect(screen.getByText('(31°)')).toBeInTheDocument()
+    expect(screen.getByText('(-2°)')).toBeInTheDocument()
+    expect(screen.getAllByTestId('WaterDropIcon')).toHaveLength(1)
+    expect(screen.getAllByTestId('AirIcon')).toHaveLength(2)
     const images = screen.getAllByRole('img')
     expect(images[0]).toHaveAttribute(
       'src',
@@ -44,11 +44,11 @@ describe('Weather - compact version', () => {
     )
     expect(images[1]).toHaveAttribute(
       'src',
-      'https://openweathermap.org/img/wn/24d@2x.png'
+      'https://openweathermap.org/img/wn/01d@2x.png'
     )
     expect(images[2]).toHaveAttribute(
       'src',
-      'https://openweathermap.org/img/wn/25d@2x.png'
+      'https://openweathermap.org/img/wn/76d@2x.png'
     )
   })
 
@@ -84,8 +84,8 @@ describe('Weather - compact version', () => {
     expect(screen.getByText('Mon 01')).toBeInTheDocument()
     expect(screen.getByText('Tue 02')).toBeInTheDocument()
     expect(screen.getByText('23° / 24°')).toBeInTheDocument()
-    expect(screen.getByText('24° / 25°')).toBeInTheDocument()
-    expect(screen.getByText('25° / 26°')).toBeInTheDocument()
+    expect(screen.getByText('22° / 16°')).toBeInTheDocument()
+    expect(screen.getByText('4° / -2°')).toBeInTheDocument()
     expect(screen.getAllByTestId('WaterDropIcon')).toHaveLength(3)
     expect(screen.getAllByTestId('AirIcon')).toHaveLength(3)
     expect(screen.getAllByRole('img')).toHaveLength(3)
