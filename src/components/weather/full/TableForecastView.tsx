@@ -19,9 +19,9 @@ export const shortForecastParams: Params<ShortForecast> = {
   'Pressure (hPa)': f => Math.round(f.pressure),
   'Wind speed (km/h)': f => Math.round(f.windSpeed),
   'Wind gust (km/h)': f => Math.round(f.windGust),
-  'Visibility (m)': f => Math.round(f.visibility),
-  Clouds: f => `${f.clouds}%`,
-  Precipitation: f => `${f.pop}%`,
+  'Visibility (m)': f => (f.visibility > 0 ? Math.round(f.visibility) : '-'),
+  Clouds: f => `${Math.round(f.clouds)}%`,
+  Precipitation: f => `${Math.round(f.pop)}%`,
   'UV index': f => Math.round(f.uvi)
 }
 
@@ -33,8 +33,8 @@ export const longForecastParams: Params<LongForecast> = {
   'Pressure (hPa)': f => Math.round(f.pressure),
   'Wind speed (km/h)': f => Math.round(f.windSpeed),
   'Wind gust (km/h)': f => Math.round(f.windGust),
-  Clouds: f => `${f.clouds}%`,
-  Precipitation: f => `${f.pop}%`,
+  Clouds: f => `${Math.round(f.clouds)}%`,
+  Precipitation: f => `${Math.round(f.pop)}%`,
   'UV index': f => Math.round(f.uvi),
   Sunrise: f => renderTimestamp(f.sunrise),
   Sunset: f => renderTimestamp(f.sunset)
