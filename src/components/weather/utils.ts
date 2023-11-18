@@ -1,4 +1,4 @@
-import { DailyWeather, HourlyWeather } from '../../../api/backend/weatherTypes'
+import { ShortForecast, LongForecast } from '../../api/backend/weatherTypes'
 
 export const getDayOfWeekName = (date: Date): string => {
   const dayOfWeek = date.getDay()
@@ -22,13 +22,13 @@ export const getDayOfWeekName = (date: Date): string => {
   }
 }
 
-export const removePastHours = (hours: HourlyWeather[]): HourlyWeather[] => {
+export const removePastHours = (hours: ShortForecast[]): ShortForecast[] => {
   if (!hours) return null
   const now = new Date().getTime()
   return hours.filter(h => new Date(h.timestamp).getTime() > now)
 }
 
-export const removePastDays = (days: DailyWeather[]): DailyWeather[] => {
+export const removePastDays = (days: LongForecast[]): LongForecast[] => {
   if (!days) return null
   const endOfCurrentDay = new Date().setHours(23, 59, 59)
   return days.filter(d => {
@@ -40,7 +40,8 @@ export const removePastDays = (days: DailyWeather[]): DailyWeather[] => {
 export const getBarColorForHumidity = (humidity: number): string => {
   if (humidity > 40 && humidity < 60) return 'bg-green-500'
   if (humidity > 20 && humidity < 80) return 'bg-yellow-500'
-  return 'bg-orange-500'
+  if (humidity > 5 && humidity < 95) return 'bg-orange-500'
+  return 'bg-red-500'
 }
 
 export const getBarColorForWindSpeed = (speed: number): string => {

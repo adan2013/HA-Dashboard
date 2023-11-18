@@ -1,11 +1,11 @@
 import WaterDropIcon from '@mui/icons-material/WaterDrop'
 import AirIcon from '@mui/icons-material/Air'
-import { DailyWeather } from '../../../api/backend/weatherTypes'
+import { LongForecast as LongForecastType } from '../../../api/backend/weatherTypes'
 import { addLeadingZero } from '../../../utils/numberUtils'
-import { getDayOfWeekName, removePastDays } from './utils'
+import { getDayOfWeekName, removePastDays } from '../utils'
 
 type LongForecastProps = {
-  data: DailyWeather[]
+  data: LongForecastType[]
 }
 
 const LongForecast = ({ data }: LongForecastProps) => (

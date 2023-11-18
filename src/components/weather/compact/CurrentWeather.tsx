@@ -10,7 +10,7 @@ import {
   getBarColorForHumidity,
   getBarColorForUltraViolet,
   getBarColorForWindSpeed
-} from './utils'
+} from '../utils'
 
 type WeatherParameterProps = {
   icon: ReactElement

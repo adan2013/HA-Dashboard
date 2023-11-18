@@ -7,8 +7,27 @@ import { useBackend } from '../contexts/BackendContext'
 import ShortForecast from '../components/weather/compact/ShortForecast'
 import LongForecast from '../components/weather/compact/LongForecast'
 import CurrentWeather from '../components/weather/compact/CurrentWeather'
-
-const COMPACT_MODE_BREAKPOINT = 800
+import { useLayoutContext } from '../contexts/OutletContext'
+import UvIndexTile from '../components/weather/full/UvIndexTile'
+import AirQualityIndexTile from '../components/weather/full/AirQualityIndexTile'
+import HumidityTile from '../components/weather/full/HumidityTile'
+import TemperatureHistoryTile from '../components/weather/full/TemperatureHistoryTile'
+import WindDirectionTile from '../components/weather/full/WindDirectionTile'
+import PressureTile from '../components/weather/full/PressureTile'
+import WindTile from '../components/weather/full/WindTile'
+import SunTile from '../components/weather/full/SunTile'
+import CurrentWeatherTile from '../components/weather/full/CurrentWeatherTile'
+import RainRadarTile from '../components/weather/full/RainRadarTile'
+import TableForecastView, {
+  longForecastParams,
+  shortForecastParams
+} from '../components/weather/full/TableForecastView'
+import { getDayOfWeekName } from '../components/weather/utils'
+import { addLeadingZero } from '../utils/numberUtils'
+import WindGustTile from '../components/weather/full/WindGustTile'
+import DewPointTile from '../components/weather/full/DewPointTile'
+import CloudsTile from '../components/weather/full/CloudsTile'
+import VisibilityTile from '../components/weather/full/VisibilityTile'
 
 const Divider = () => <div className="mx-1 border-b-[1px] border-gray-400" />
 
@@ -17,26 +36,20 @@ type WeatherViewProps = {
 }
 
 const Weather = ({ isWidget }: WeatherViewProps) => {
-  const [compactMode, setCompactMode] = useState<boolean>(true)
   const [state, setState] = useState<WeatherServiceData>(null)
   const backend = useBackend()
   const navigate = useNavigate()
+  const { isMobile } = useLayoutContext()
 
-  useEffect(() => {
-    const unsubscribe = backend?.subscribeToServiceData(data => {
-      if (data?.weather) {
-        setState(data.weather)
-      }
-    })
-    const onResize = () =>
-      setCompactMode(window.innerWidth < COMPACT_MODE_BREAKPOINT)
-    onResize()
-    window.addEventListener('resize', onResize)
-    return () => {
-      window.removeEventListener('resize', onResize)
-      unsubscribe()
-    }
-  }, [backend])
+  useEffect(
+    () =>
+      backend?.subscribeToServiceData(data => {
+        if (data?.weather) {
+          setState(data.weather)
+        }
+      }),
+    [backend]
+  )
 
   if (!state) {
     return (
@@ -49,7 +62,7 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
     )
   }
 
-  if (isWidget || compactMode) {
+  if (isWidget || isMobile) {
     return (
       <div
         className={clsx('flex flex-col gap-2', isWidget && 'cursor-pointer')}
@@ -70,12 +83,52 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[1200px]">
+    <div className="mx-auto w-full max-w-[1000px]">
       <div className="mx-6">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-3 mt-5 rounded-lg bg-gray-700 p-5 text-center">
-            WIP
-          </div>
+        <div className="grid grid-cols-5 gap-4">
+          <CurrentWeatherTile current={state.current} />
+          <TemperatureHistoryTile history={state.historicalWeather.temp} />
+          <UvIndexTile value={state.current.uvi} />
+          <AirQualityIndexTile value={state.current.aqi} />
+          <WindDirectionTile windDirection={state.current.windDeg} />
+          <WindTile
+            windSpeed={state.current.windSpeed}
+            history={state.historicalWeather.windSpeed}
+          />
+          <RainRadarTile disableInteractions openModalOnClick />
+          <WindGustTile value={state.current.windGust} />
+          <DewPointTile value={state.current.dewPoint} />
+          <HumidityTile value={state.current.humidity} />
+          <PressureTile
+            current={state.current.pressure}
+            history={state.historicalWeather.pressure}
+          />
+          <SunTile
+            sunrise={state.current.sunrise}
+            sunset={state.current.sunset}
+          />
+          <CloudsTile value={state.current.clouds} />
+          <VisibilityTile value={state.current.visibility} />
+        </div>
+        <TableForecastView
+          data={state.shortForecast}
+          params={shortForecastParams}
+          headerRenderer={date =>
+            `${addLeadingZero(date.getHours())}:${addLeadingZero(
+              date.getMinutes()
+            )}`
+          }
+          limit={24}
+        />
+        <TableForecastView
+          data={state.longForecast}
+          params={longForecastParams}
+          headerRenderer={date =>
+            `${getDayOfWeekName(date)} ${addLeadingZero(date.getDate())}`
+          }
+        />
+        <div className="py-4 text-center font-light text-gray-300">
+          Last update at: {new Date(state.timestamp).toLocaleString()}
         </div>
       </div>
     </div>

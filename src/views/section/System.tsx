@@ -1,6 +1,5 @@
 import ReplayIcon from '@mui/icons-material/Replay'
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew'
-import LogoutIcon from '@mui/icons-material/Logout'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import { SignalTile } from '../../components/specialTiles/ZigbeeTiles'
@@ -18,9 +17,9 @@ import {
   VolumeTemperature
 } from '../../components/specialTiles/SynologyNasServer'
 import CallServiceTile from '../../components/entityTiles/services/CallServiceTile'
-import Tile from '../../components/basic/Tile'
 import { getHomeAssistantHost } from '../../utils/viteUtils'
 import ServiceStatusTile from '../../components/devTiles/ServiceStatusTile'
+import ExternalPageTile from '../../components/specialTiles/ExternalPageTile'
 
 const System = () => (
   <TileSection>
@@ -54,6 +53,10 @@ const System = () => (
         icon={<PowerSettingsNewIcon />}
         confirmationRequired
       />
+      <ExternalPageTile
+        title="Open Synology dashboard"
+        url="http://192.168.1.3:5000"
+      />
     </TileGroup>
     <TileGroup name="Home Assistant">
       <CallServiceTile
@@ -70,22 +73,19 @@ const System = () => (
         icon={<PowerSettingsNewIcon />}
         confirmationRequired
       />
-      <Tile
+      <ExternalPageTile
         title="Go to HA Dashboard"
-        icon={<LogoutIcon />}
-        onClick={() => window.open(`http://${getHomeAssistantHost()}`, '_self')}
+        url={`http://${getHomeAssistantHost()}`}
       />
     </TileGroup>
     <TileGroup name="Server">
-      <Tile
+      <ExternalPageTile
         title="Open Proxmox dashboard"
-        icon={<LogoutIcon />}
-        onClick={() => window.open(`http://192.168.1.10:8006`, '_self')}
+        url="http://192.168.1.10:8006"
       />
-      <Tile
+      <ExternalPageTile
         title="Open Portainer dashboard"
-        icon={<LogoutIcon />}
-        onClick={() => window.open(`http://192.168.1.11:9000`, '_self')}
+        url="http://192.168.1.11:9000"
       />
     </TileGroup>
   </TileSection>
