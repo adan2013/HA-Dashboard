@@ -7,7 +7,6 @@ import { useBackend } from '../contexts/BackendContext'
 import ShortForecast from '../components/weather/compact/ShortForecast'
 import LongForecast from '../components/weather/compact/LongForecast'
 import CurrentWeather from '../components/weather/compact/CurrentWeather'
-import Tile from '../components/basic/Tile'
 import { useLayoutContext } from '../contexts/OutletContext'
 import UvIndexTile from '../components/weather/full/UvIndexTile'
 import AirQualityIndexTile from '../components/weather/full/AirQualityIndexTile'
@@ -25,6 +24,10 @@ import TableForecastView, {
 } from '../components/weather/full/TableForecastView'
 import { getDayOfWeekName } from '../components/weather/utils'
 import { addLeadingZero } from '../utils/numberUtils'
+import WindGustTile from '../components/weather/full/WindGustTile'
+import DewPointTile from '../components/weather/full/DewPointTile'
+import CloudsTile from '../components/weather/full/CloudsTile'
+import VisibilityTile from '../components/weather/full/VisibilityTile'
 
 const Divider = () => <div className="mx-1 border-b-[1px] border-gray-400" />
 
@@ -93,16 +96,19 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
             history={state.historicalWeather.windSpeed}
           />
           <RainRadarTile disableInteractions openModalOnClick />
-          <Tile title="Storm radar" size="big" />
+          <DewPointTile value={state.current.dewPoint} />
           <HumidityTile value={state.current.humidity} />
-          <SunTile
-            sunrise={state.current.sunrise}
-            sunset={state.current.sunset}
-          />
+          <WindGustTile value={state.current.windGust} />
           <PressureTile
             current={state.current.pressure}
             history={state.historicalWeather.pressure}
           />
+          <SunTile
+            sunrise={state.current.sunrise}
+            sunset={state.current.sunset}
+          />
+          <CloudsTile value={state.current.clouds} />
+          <VisibilityTile value={state.current.visibility} />
         </div>
         <TableForecastView
           data={state.shortForecast}
