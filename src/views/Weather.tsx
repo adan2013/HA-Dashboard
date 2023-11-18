@@ -96,9 +96,9 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
             history={state.historicalWeather.windSpeed}
           />
           <RainRadarTile disableInteractions openModalOnClick />
+          <WindGustTile value={state.current.windGust} />
           <DewPointTile value={state.current.dewPoint} />
           <HumidityTile value={state.current.humidity} />
-          <WindGustTile value={state.current.windGust} />
           <PressureTile
             current={state.current.pressure}
             history={state.historicalWeather.pressure}

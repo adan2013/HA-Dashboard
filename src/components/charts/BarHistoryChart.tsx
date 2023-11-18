@@ -1,4 +1,11 @@
-import { BarChart, Bar, ResponsiveContainer, YAxis } from 'recharts'
+import {
+  BarChart,
+  Bar,
+  ResponsiveContainer,
+  YAxis,
+  ReferenceLine,
+  Cell
+} from 'recharts'
 import { useMemo } from 'react'
 
 const BAR_COLOR = '#a855f7'
@@ -6,12 +13,14 @@ const BAR_COLOR = '#a855f7'
 export type BarHistoryChartProps = {
   history: number[]
   chartColor?: string
+  negativeChartColor?: string
   minRangeOffset?: number
 }
 
 const BarHistoryChart = ({
   history,
   chartColor,
+  negativeChartColor,
   minRangeOffset
 }: BarHistoryChartProps) => {
   const chartData = useMemo(
@@ -33,7 +42,19 @@ const BarHistoryChart = ({
       <div className="mx-1 h-28">
         <ResponsiveContainer>
           <BarChart data={chartData}>
-            <Bar dataKey="value" fill={chartColor || BAR_COLOR} />
+            <ReferenceLine y={0} stroke="#d6d3d1" />
+            <Bar dataKey="value">
+              {chartData.map(({ key, value }) => (
+                <Cell
+                  fill={
+                    value > 0
+                      ? chartColor || BAR_COLOR
+                      : negativeChartColor || chartColor || BAR_COLOR
+                  }
+                  key={key}
+                />
+              ))}
+            </Bar>
             <YAxis
               type="number"
               domain={[

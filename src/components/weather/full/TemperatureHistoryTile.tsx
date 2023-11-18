@@ -12,6 +12,7 @@ const TemperatureHistoryTile = ({ history }: Props) => (
       <BarHistoryChart
         history={history}
         chartColor="#b91c1c"
+        negativeChartColor="#0ea5e9"
         minRangeOffset={1}
       />
     }
