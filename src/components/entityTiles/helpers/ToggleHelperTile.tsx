@@ -45,6 +45,13 @@ const ToggleHelperTile = ({
   }
 
   let subtitle = entityState?.state
+  if (reverseState) {
+    if (subtitle === 'on') {
+      subtitle = 'off'
+    } else if (subtitle === 'off') {
+      subtitle = 'on'
+    }
+  }
   if (stateNames) {
     subtitle = stateNames[isActive ? 1 : 0]
   }

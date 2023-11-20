@@ -45,7 +45,7 @@ describe('ToggleHelperTile', () => {
   it('should render ToggleHelperTile with reversed state of icon and tile style', () => {
     render(<ToggleHelperTile {...testProps} reverseState />)
     expect(screen.getByText('title')).toBeInTheDocument()
-    expect(screen.getByText('on')).toBeInTheDocument()
+    expect(screen.getByText('off')).toBeInTheDocument()
     expect(screen.getByTestId('off-icon')).toBeInTheDocument()
     expect(screen.getByTestId('off-icon')).toHaveClass('off-color-class')
   })
@@ -62,20 +62,20 @@ describe('ToggleHelperTile', () => {
   })
 
   it.each([
-    ['on', false, 'turn_off'],
-    ['on', true, 'turn_off'],
-    ['off', false, 'turn_on'],
-    ['off', true, 'turn_on']
+    ['on', false, 'turn_off', 'on'],
+    ['on', true, 'turn_off', 'off'],
+    ['off', false, 'turn_on', 'off'],
+    ['off', true, 'turn_on', 'on']
   ])(
     'should render %s state with reverseState set to %s and call the %s service',
-    async (state, reversed, service) => {
+    async (state, reversed, service, subtitleWithState) => {
       useHomeAssistantEntity.mockImplementationOnce(() =>
         getMockedEntityState('entityName', state)
       )
       render(<ToggleHelperTile {...testProps} reverseState={reversed} />)
-      expect(screen.getByText(state)).toBeInTheDocument()
-      fireEvent.mouseDown(screen.getByText(state))
-      fireEvent.mouseUp(screen.getByText(state))
+      expect(screen.getByText(subtitleWithState)).toBeInTheDocument()
+      fireEvent.mouseDown(screen.getByText('title'))
+      fireEvent.mouseUp(screen.getByText('title'))
       await waitFor(() =>
         expect(callService).toHaveBeenCalledWith(
           'entityName_id',
