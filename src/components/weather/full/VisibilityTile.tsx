@@ -5,17 +5,29 @@ type Props = {
 }
 
 const VisibilityTile = ({ value }: Props) => {
-  const roundedValue = Math.round(value / 100) / 10
-  const percentage = Math.round((roundedValue / 10) * 100)
+  if (value) {
+    const roundedValue = Math.round(value / 100) / 10
+    const percentage = Math.round((roundedValue / 10) * 100)
 
+    return (
+      <Tile
+        title="Visibility"
+        value={{
+          main: roundedValue,
+          unit: 'km'
+        }}
+        metadata={[`${percentage}%`]}
+      />
+    )
+  }
   return (
     <Tile
       title="Visibility"
       value={{
-        main: roundedValue,
+        main: '--',
         unit: 'km'
       }}
-      metadata={[`${percentage}%`]}
+      metadata={[`No data`]}
     />
   )
 }
