@@ -21,7 +21,7 @@ const DesktopLayout = () => {
     <div className="text-white">
       <div
         className={clsx(
-          'min-h-screen overflow-hidden p-4 lg:p-0 lg:pb-28',
+          'min-h-screen overflow-hidden p-4 lg:p-0 lg:pb-24',
           'bg-black text-white'
         )}
       >
