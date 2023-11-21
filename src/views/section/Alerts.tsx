@@ -78,7 +78,7 @@ const Alerts = () => (
     <TileGroup name="Security">
       <ToggleHelperTile
         title="Door deadbolt sensor"
-        entityName="mainDoorDeadboltSensor contact"
+        entityName="mainDoorDeadboltSensor Door"
         onIcon={<LockIcon />}
         offIcon={<LockOpenIcon />}
         onColor="text-white"
@@ -97,7 +97,7 @@ const Alerts = () => (
     <TileGroup name="Water leak monitoring">
       <ToggleHelperTile
         title="Filter sensor"
-        entityName="waterFilterLeakSensor water leak"
+        entityName="waterFilterLeakSensor Moisture"
         {...waterLeakSensorProps}
       />
       <PlaceholderTile title="Washing machine sensor" size="standard" />

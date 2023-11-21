@@ -60,7 +60,7 @@ const Automations = () => (
     <TileGroup name="Bathroom">
       <PowerChartTile
         title="Washing machine power consumption"
-        entityName="washingMachinePlug power"
+        entityName="washingMachinePlug Power"
       />
       <SwitchTile
         title="WM plug"
@@ -90,7 +90,7 @@ const Automations = () => (
       />
       <EnergyConsumptionChartTile
         title="WM energy consumption"
-        entityName="washingMachinePlug energy"
+        entityName="washingMachinePlug Energy"
         customProps={{
           hideMinMax: true,
           hideChart: true,
@@ -102,7 +102,7 @@ const Automations = () => (
       />
       <TemperatureChartTile
         title="WM plug temperature"
-        entityName="washingMachinePlug device temperature"
+        entityName="washingMachinePlug Temperature"
         customProps={{
           hideChart: true,
           disableModalHistory: true,
