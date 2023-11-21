@@ -10,27 +10,27 @@ const Temperatures = () => (
     <TileGroup name="Temperature">
       <TemperatureChartTile
         title="Living room"
-        entityName="livingRoomTempSensor temperature"
+        entityName="livingRoomTempSensor Temperature"
       />
       <TemperatureChartTile
         title="Daniel"
-        entityName="danielTempSensor temperature"
+        entityName="danielTempSensor Temperature"
       />
       <TemperatureChartTile
         title="Ania"
-        entityName="aniaTempSensor temperature"
+        entityName="aniaTempSensor Temperature"
       />
     </TileGroup>
     <TileGroup name="Humidity">
       <HumidityChartTile
         title="Living room"
-        entityName="livingRoomTempSensor humidity"
+        entityName="livingRoomTempSensor Humidity"
       />
       <HumidityChartTile
         title="Daniel"
-        entityName="danielTempSensor humidity"
+        entityName="danielTempSensor Humidity"
       />
-      <HumidityChartTile title="Ania" entityName="aniaTempSensor humidity" />
+      <HumidityChartTile title="Ania" entityName="aniaTempSensor Humidity" />
     </TileGroup>
     <TileGroup name="Server rack">
       <TemperatureChartTile
