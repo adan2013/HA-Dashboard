@@ -9,6 +9,7 @@ import { useHomeAssistant } from '../contexts/HomeAssistantContext'
 import { useModalContext } from '../contexts/ModalContext'
 import ConnectionStatusMessage from '../components/layout/ConnectionStatusMessage'
 import { useBackend } from '../contexts/BackendContext'
+import useMountEvent from '../hooks/useMountEvent'
 
 type LayoutType = 'mobile' | 'desktop'
 const MOBILE_LAYOUT_BREAKPOINT = 1024
@@ -26,32 +27,46 @@ const Layout = () => {
   const isMobile = layoutMode === 'mobile'
 
   useEffect(() => {
-    window.onFullyScreenOn = () => {
+    window.onScreenOn = () => {
       if (statusHa !== 'synced') {
+        console.log('Force reconnecting to the Home Assistant')
         ha.connect()
       }
       if (statusBackend !== 'synced') {
+        console.log('Force reconnecting to the Backend')
         backend.connect()
       }
     }
-    window.onFullyScreenOff = () => {
+    window.onScreenOff = () => {
       modal.closeModal()
       navigate('/')
     }
   }, [navigate, statusHa, statusBackend, ha, backend, modal])
 
-  useEffect(() => {
+  useMountEvent(() => {
     if (Object.hasOwn(window, 'fully')) {
       console.log('Fully Kiosk detected! Enabling API integration')
-      window.fully.bind('screenOn', 'onFullyScreenOn();')
-      window.fully.bind('screenOff', 'onFullyScreenOff();')
+      window.fully.bind('screenOn', 'onScreenOn();')
+      window.fully.bind('screenOff', 'onScreenOff();')
     } else {
       console.log('Fully Kiosk not detected')
     }
     const onResize = () => setLayoutMode(getLayoutType())
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        console.log('Browser tab is hidden')
+      } else {
+        console.log('Browser tab is visible')
+        window.onScreenOn()
+      }
+    }
     window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    return () => {
+      window.removeEventListener('resize', onResize)
+      window.removeEventListener('visibilitychange', onVisibilityChange)
+    }
+  })
 
   return (
     <>
