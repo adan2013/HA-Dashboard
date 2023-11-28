@@ -7,6 +7,7 @@ import LightTile from '../../components/entityTiles/lights/LightTile'
 import PlaceholderTile from '../../PlaceholderTile'
 import ToggleHelperTile from '../../components/entityTiles/helpers/ToggleHelperTile'
 import CallRemoteControlTile from '../../components/entityTiles/services/CallRemoteControlTile'
+import SwitchTile from '../../components/entityTiles/switch/SwitchTile'
 
 const Lights = () => (
   <TileSection>
@@ -24,17 +25,18 @@ const Lights = () => (
         lockColorTemperature
       />
       <LightTile
-        title="Front ambient section"
-        entityName="kitchen-node Ambient front"
+        title="Front ceiling section"
+        entityName="livingRoomFrontLight"
         lightType="ceiling"
+        lockColorTemperature
       />
       <LightTile
-        title="Back ambient section"
-        entityName="kitchen-node Ambient back"
+        title="Back ceiling section"
+        entityName="livingRoomBackLight"
         lightType="ceiling"
+        lockColorTemperature
       />
       <PlaceholderTile title="Cabinet lights" size="standard" />
-      <PlaceholderTile title="Auto cabinet light control" size="standard" />
       <CallRemoteControlTile
         title="Turn off all lights"
         icon={<PowerSettingsNewOutlinedIcon />}
@@ -80,6 +82,12 @@ const Lights = () => (
         lightType="ceiling"
       />
       <LightTile title="WC light" entityName="wcLight" lightType="ceiling" />
+      <SwitchTile title="Balcony light plug" entityName="balconyLight" />
+      <ToggleHelperTile
+        title="Balcony light auto switch"
+        entityName="balconyLightAutoSwitch"
+        metadataRenderer={() => ['16-22']}
+      />
     </TileGroup>
   </TileSection>
 )
