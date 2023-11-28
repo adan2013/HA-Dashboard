@@ -45,14 +45,14 @@ const ConnectionStatusMessage = () => {
   const backendColor = getBackendIconStyle(backendStatus)
 
   return (
-    <div className="fixed right-1/2 top-0 z-10 translate-x-1/2 rounded-b-lg bg-black px-3 py-2 text-sm text-white">
+    <div className="fixed right-1/2 top-0 z-10 translate-x-1/2 rounded-b-lg bg-blue-900 px-5 py-2 text-sm text-white">
       <div
         className={clsx('mr-2 inline-block h-3 w-3 rounded-full', haColor)}
       />
       HA
       <div
         className={clsx(
-          'ml-4 mr-2 inline-block h-3 w-3 rounded-full',
+          'ml-5 mr-2 inline-block h-3 w-3 rounded-full',
           backendColor
         )}
       />
