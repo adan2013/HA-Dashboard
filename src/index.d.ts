@@ -2,8 +2,8 @@ export {}
 
 declare global {
   interface Window {
-    onFullyScreenOn: () => void
-    onFullyScreenOff: () => void
+    onScreenOn: () => void
+    onScreenOff: () => void
     fully: any
   }
 }

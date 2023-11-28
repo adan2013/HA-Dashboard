@@ -56,8 +56,8 @@ describe('Layout', () => {
         <Layout />
       </MemoryRouter>
     )
-    expect(window.onFullyScreenOn).toBeDefined()
-    expect(window.onFullyScreenOff).toBeDefined()
+    expect(window.onScreenOn).toBeDefined()
+    expect(window.onScreenOff).toBeDefined()
     expect(bindMock).toHaveBeenCalledTimes(2)
   })
 
@@ -67,8 +67,8 @@ describe('Layout', () => {
         <Layout />
       </MemoryRouter>
     )
-    expect(window.onFullyScreenOff).toBeDefined()
-    window.onFullyScreenOff()
+    expect(window.onScreenOff).toBeDefined()
+    window.onScreenOff()
     expect(window.location.pathname).toBe('/')
     expect(closeModalMock).toHaveBeenCalledTimes(1)
   })

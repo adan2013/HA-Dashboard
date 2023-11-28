@@ -66,4 +66,11 @@ describe('RangeSegmentChart', () => {
       expect(screen.queryAllByTestId(`CELL_OFF`)).toHaveLength(5 - segments)
     }
   )
+
+  it('should render custom center value', () => {
+    render(<RangeSegmentChart {...testProps} customCenterValue="--" />)
+    expect(screen.queryByText('2')).not.toBeInTheDocument()
+    expect(screen.getByText('--')).toBeInTheDocument()
+    expect(screen.getByText('LABEL')).toBeInTheDocument()
+  })
 })

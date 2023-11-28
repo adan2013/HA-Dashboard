@@ -44,6 +44,7 @@ const getSegmentColor = (
 export type RangeSegmentChartProps = {
   value?: number
   label?: string
+  customCenterValue?: string | number
   mode?: RangeSegmentMode
   thresholds: [number, number, number, number]
 }
@@ -51,6 +52,7 @@ export type RangeSegmentChartProps = {
 const RangeSegmentChart = ({
   value = 0,
   label,
+  customCenterValue,
   mode = 'gauge',
   thresholds
 }: RangeSegmentChartProps) => {
@@ -101,7 +103,7 @@ const RangeSegmentChart = ({
         </PieChart>
       </ResponsiveContainer>
       <div className="absolute bottom-10 right-1/2 translate-x-1/2 text-4xl">
-        {value}
+        {customCenterValue || value}
       </div>
       <div className="absolute bottom-0 right-1/2 translate-x-1/2">{label}</div>
     </div>
