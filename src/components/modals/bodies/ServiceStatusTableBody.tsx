@@ -44,7 +44,7 @@ const ServiceStatusTableBody = () => {
   const getServiceRow = (serviceName: string, service: ServiceStatus) => (
     <tr key={serviceName} className="hover:bg-gray-700">
       <td className="p-2 text-left">{serviceName}</td>
-      <td className="p-2 text-left text-sm">
+      <td className="min-w-[300px] p-2 text-left text-sm">
         <div
           className={clsx(
             'mr-2 inline-block h-3 w-3 rounded-full',
