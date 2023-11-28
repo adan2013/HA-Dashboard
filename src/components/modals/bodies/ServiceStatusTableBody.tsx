@@ -12,6 +12,7 @@ import {
   StatusColor
 } from '../../../api/backend/backendTypes'
 import { useBackend } from '../../../contexts/BackendContext'
+import Spinner from '../../basic/Spinner'
 
 const getStatusColor = (statusType: StatusColor): string => {
   switch (statusType) {
@@ -86,7 +87,7 @@ const ServiceStatusTableBody = () => {
 
   return (
     <ModalBody>
-      {state && (
+      {state ? (
         <>
           <div className="mt-3 text-center">
             Started at: {new Date(state.startTime).toUTCString()} (
@@ -120,6 +121,8 @@ const ServiceStatusTableBody = () => {
             </div>
           </div>
         </>
+      ) : (
+        <Spinner />
       )}
       <ModalFooter>
         <ModalButton

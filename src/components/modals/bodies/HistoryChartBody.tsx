@@ -14,6 +14,7 @@ import { HistoryChartModalParams } from '../../../contexts/modalUtils'
 import HomeAssistantRestAPI from '../../../api/HomeAssistantRestAPI'
 import HistoryChart from '../../charts/HistoryChart'
 import { ChartData } from '../../charts/utils'
+import Spinner from '../../basic/Spinner'
 
 const ZOOM_VALUES = [7200, 4320, 2880, 2160, 0, 360]
 
@@ -65,9 +66,8 @@ const HistoryChartBody = () => {
             thresholds={params.graphValueThresholds}
           />
         ) : (
-          <>Loading...</>
+          <Spinner />
         )}
-        {/* TODO add spinner */}
       </div>
       <ModalFooter>
         <ModalButton

@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { useBackendStatus, useHomeAssistantStatus } from '../../api/hooks'
+import Spinner from '../basic/Spinner'
 
 type SectionContentProps = {
   children: ReactNode
@@ -11,7 +12,7 @@ const TileSection = ({ children, waitForConnection }: SectionContentProps) => {
   const backendStatus = useBackendStatus()
 
   if (waitForConnection && (haStatus !== 'synced' || !backendStatus)) {
-    return <div>Connecting...</div> // TODO make a loading spinner or skeleton loader
+    return <Spinner />
   }
 
   return (
