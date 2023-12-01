@@ -18,7 +18,7 @@ import {
 } from '../../components/specialTiles/SynologyNasServer'
 import CallServiceTile from '../../components/entityTiles/services/CallServiceTile'
 import { getHomeAssistantHost } from '../../utils/viteUtils'
-import ServiceStatusTile from '../../components/devTiles/ServiceStatusTile'
+import ServiceStatusTile from '../../components/backendTiles/ServiceStatusTile'
 import ExternalPageTile from '../../components/specialTiles/ExternalPageTile'
 
 const System = () => (
