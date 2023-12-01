@@ -31,34 +31,37 @@ jest.mock('../../../api/hooks', () => {
   return {
     __esModule: true,
     ...originalModule,
-    useHomeAssistantEntity: jest.fn(entityName => {
-      switch (entityName) {
-        case 'SynologyNAS DSM update':
+    useHomeAssistantEntity: jest.fn(entityId => {
+      switch (entityId) {
+        case 'update.synologynas_dsm_update':
           return getMockedEntityState(
-            'SynologyNAS DSM update',
+            'update.synologynas_dsm_update',
             '',
             testDsmUpdateStatus
           )
-        case 'SynologyNAS Security status':
+        case 'binary_sensor.synologynas_security_status':
           return getMockedEntityState(
-            'SynologyNAS Security status',
+            'binary_sensor.synologynas_security_status',
             '',
             testSecurityStatus
           )
-        case 'SynologyNAS (Volume 1) Status':
-          return getMockedEntityState('SynologyNAS (Volume 1) Status', 'normal')
-        case 'SynologyNAS (Volume 1) Volume used':
+        case 'sensor.synologynas_volume_1_status':
           return getMockedEntityState(
-            'SynologyNAS (Volume 1) Volume used',
+            'sensor.synologynas_volume_1_status',
+            'normal'
+          )
+        case 'sensor.synologynas_volume_1_volume_used':
+          return getMockedEntityState(
+            'sensor.synologynas_volume_1_volume_used',
             '14.58'
           )
-        case 'SynologyNAS (Volume 1) Average disk temp':
+        case 'sensor.synologynas_volume_1_average_disk_temp':
           return getMockedEntityState(
-            'SynologyNAS (Volume 1) Average disk temp',
+            'sensor.synologynas_volume_1_average_disk_temp',
             '37.25'
           )
-        case 'SynologyNAS Temperature':
-          return getMockedEntityState('SynologyNAS Temperature', '43.72')
+        case 'sensor.synologynas_temperature':
+          return getMockedEntityState('sensor.synologynas_temperature', '43.72')
         default:
           return {
             entityState: null,

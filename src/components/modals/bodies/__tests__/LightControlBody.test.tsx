@@ -94,12 +94,9 @@ describe('LightControlBody', () => {
     renderLightControlBody()
     fireEvent.mouseDown(screen.getByTestId('slider-Brightness'))
     fireEvent.mouseUp(screen.getByTestId('slider-Brightness'))
-    expect(callService).toHaveBeenCalledWith(
-      'entityName_id',
-      'light',
-      'turn_on',
-      { brightness: 127 }
-    )
+    expect(callService).toHaveBeenCalledWith('entity', 'light', 'turn_on', {
+      brightness: 127
+    })
   })
 
   it('should call turn_off service if brightness is set to 0', () => {
@@ -108,33 +105,22 @@ describe('LightControlBody', () => {
     })
     fireEvent.mouseDown(screen.getByTestId('slider-Brightness'))
     fireEvent.mouseUp(screen.getByTestId('slider-Brightness'))
-    expect(callService).toHaveBeenCalledWith(
-      'entityName_id',
-      'light',
-      'turn_off'
-    )
+    expect(callService).toHaveBeenCalledWith('entity', 'light', 'turn_off')
   })
 
   it('should call ha service and change the color temperature', () => {
     renderLightControlBody()
     fireEvent.mouseDown(screen.getByTestId('slider-Color temperature'))
     fireEvent.mouseUp(screen.getByTestId('slider-Color temperature'))
-    expect(callService).toHaveBeenCalledWith(
-      'entityName_id',
-      'light',
-      'turn_on',
-      { kelvin: 2000 }
-    )
+    expect(callService).toHaveBeenCalledWith('entity', 'light', 'turn_on', {
+      kelvin: 2000
+    })
   })
 
   it('should turn off light after clicking the footer button', () => {
     renderLightControlBody()
     fireEvent.click(screen.getByTestId('modal-button-Turn off'))
-    expect(callService).toHaveBeenCalledWith(
-      'entityName_id',
-      'light',
-      'turn_off'
-    )
+    expect(callService).toHaveBeenCalledWith('entity', 'light', 'turn_off')
   })
 
   it('should turn on light after clicking the footer button', () => {
@@ -142,11 +128,7 @@ describe('LightControlBody', () => {
       turnedOn: false
     })
     fireEvent.click(screen.getByTestId('modal-button-Turn on'))
-    expect(callService).toHaveBeenCalledWith(
-      'entityName_id',
-      'light',
-      'turn_on'
-    )
+    expect(callService).toHaveBeenCalledWith('entity', 'light', 'turn_on')
   })
 
   it('should close the modal after clicking the close button', () => {

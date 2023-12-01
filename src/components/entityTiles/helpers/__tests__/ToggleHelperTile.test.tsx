@@ -76,7 +76,7 @@ describe('ToggleHelperTile', () => {
       fireEvent.mouseUp(screen.getByText('title'))
       await waitFor(() =>
         expect(callService).toHaveBeenCalledWith(
-          'entityName_id',
+          'entity',
           'input_boolean',
           service
         )

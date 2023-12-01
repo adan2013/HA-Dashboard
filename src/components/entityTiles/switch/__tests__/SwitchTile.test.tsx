@@ -34,11 +34,7 @@ describe('SwitchTile', () => {
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
     await waitFor(() =>
-      expect(callService).toHaveBeenCalledWith(
-        'entityName_id',
-        'switch',
-        'turn_off'
-      )
+      expect(callService).toHaveBeenCalledWith('entity', 'switch', 'turn_off')
     )
   })
 
@@ -54,11 +50,7 @@ describe('SwitchTile', () => {
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
     await waitFor(() =>
-      expect(callService).toHaveBeenCalledWith(
-        'entityName_id',
-        'switch',
-        'turn_on'
-      )
+      expect(callService).toHaveBeenCalledWith('entity', 'switch', 'turn_on')
     )
   })
 

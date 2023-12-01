@@ -101,7 +101,7 @@ describe('StateDropdownHelperTile', () => {
     fireEvent.mouseUp(screen.getByText('normal-state'))
     await waitFor(() =>
       expect(callService).toHaveBeenCalledWith(
-        'entityName_id',
+        'entity',
         'input_select',
         'select_option',
         {

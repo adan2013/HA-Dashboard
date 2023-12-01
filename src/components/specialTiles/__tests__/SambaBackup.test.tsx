@@ -20,10 +20,14 @@ jest.mock('../../../api/hooks', () => {
   return {
     __esModule: true,
     ...originalModule,
-    useHomeAssistantEntity: jest.fn(entityName => {
-      switch (entityName) {
-        case 'Samba Backup':
-          return getMockedEntityState('Samba Backup', 'IDLE', testSambaStats)
+    useHomeAssistantEntity: jest.fn(entityId => {
+      switch (entityId) {
+        case 'sensor.samba_backup':
+          return getMockedEntityState(
+            'sensor.samba_backup',
+            'IDLE',
+            testSambaStats
+          )
         default:
           return {
             entityState: null,
