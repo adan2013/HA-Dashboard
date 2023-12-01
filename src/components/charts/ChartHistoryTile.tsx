@@ -9,7 +9,7 @@ import { ChartData, getHistoryStats, ValueThreshold } from './utils'
 
 export type ChartHistoryTileProps = {
   title: string
-  entityName: string
+  entityId: string
   unit: string
   showDecimals?: number
   hideMinMax?: boolean
@@ -21,7 +21,7 @@ export type ChartHistoryTileProps = {
 
 const ChartHistoryTile = ({
   title,
-  entityName,
+  entityId,
   unit,
   showDecimals,
   hideMinMax,
@@ -31,7 +31,7 @@ const ChartHistoryTile = ({
   customTileProps
 }: ChartHistoryTileProps) => {
   const modal = useModalContext()
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
+  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
   const [history, setHistory] = useState<ChartData[]>(null)
 
   const historyStats = useMemo(
@@ -56,7 +56,7 @@ const ChartHistoryTile = ({
   const openHistoryModal = () => {
     const params: HistoryChartModalParams = {
       title,
-      entityName,
+      entityName: entityState.attributes.friendly_name,
       entityId: entityState?.id,
       graphValueThresholds: historyGraphThresholds
     }

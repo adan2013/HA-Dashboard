@@ -10,40 +10,43 @@ const Temperatures = () => (
     <TileGroup name="Temperature">
       <TemperatureChartTile
         title="Living room"
-        entityName="livingRoomTempSensor Temperature"
+        entityId="sensor.livingroomtempsensor_temperature"
       />
       <TemperatureChartTile
         title="Daniel"
-        entityName="danielTempSensor Temperature"
+        entityId="sensor.danieltempsensor_temperature"
       />
       <TemperatureChartTile
         title="Ania"
-        entityName="aniaTempSensor Temperature"
+        entityId="sensor.aniatempsensor_temperature"
       />
     </TileGroup>
     <TileGroup name="Humidity">
       <HumidityChartTile
         title="Living room"
-        entityName="livingRoomTempSensor Humidity"
+        entityId="sensor.livingroomtempsensor_humidity"
       />
       <HumidityChartTile
         title="Daniel"
-        entityName="danielTempSensor Humidity"
+        entityId="sensor.danieltempsensor_humidity"
       />
-      <HumidityChartTile title="Ania" entityName="aniaTempSensor Humidity" />
+      <HumidityChartTile
+        title="Ania"
+        entityId="sensor.aniatempsensor_humidity"
+      />
     </TileGroup>
     <TileGroup name="Server rack">
       <TemperatureChartTile
         title="Rack temperature"
-        entityName="dash-node Server Rack Temperature"
+        entityId="sensor.dash_node_server_rack_temperature"
       />
       <HumidityChartTile
         title="Rack humidity"
-        entityName="dash-node Server Rack Humidity"
+        entityId="sensor.dash_node_server_rack_humidity"
       />
       <TemperatureChartTile
         title="NAS temperature"
-        entityName="SynologyNAS Temperature"
+        entityId="sensor.synologynas_temperature"
         customProps={{
           hideChart: true
         }}

@@ -25,28 +25,28 @@ class HomeAssistantWebSocketAPI extends WebSocketConnector {
     this.events?.emit('ha/status', status)
   }
 
-  private getEntity(entityName: string): EntityState {
-    return this.entities.find(e => e.attributes.friendly_name === entityName)
+  private getEntity(entityId: string): EntityState {
+    return this.entities.find(e => e.id === entityId)
   }
 
   subscribeToEntity(
-    entityName: string,
+    entityId: string,
     callback: EntityListenerCallback
   ): ListenerRemover {
-    const currentState = this.getEntity(entityName)
+    const currentState = this.getEntity(entityId)
     if (currentState) {
       const eventHandler = (state: EntityState) => {
         callback(state, this.status)
       }
-      this.events.on(entityName, eventHandler)
+      this.events.on(entityId, eventHandler)
       const unsubscribe = () => {
-        this.events.off(entityName, eventHandler)
+        this.events.off(entityId, eventHandler)
       }
       eventHandler(currentState)
       return unsubscribe
     }
     console.warn(
-      `Failed to subscribe to the entity "${entityName}" - entity not found!`
+      `Failed to subscribe to the entity "${entityId}" - entity not found!`
     )
     return undefined
   }
@@ -151,13 +151,11 @@ class HomeAssistantWebSocketAPI extends WebSocketConnector {
           if (changedEntityIndex >= 0) {
             this.entities[changedEntityIndex] = mapEntityState(newState)
             this.events.emit(
-              this.entities[changedEntityIndex].attributes.friendly_name,
+              this.entities[changedEntityIndex].id,
               this.entities[changedEntityIndex]
             )
           } else {
-            console.warn(
-              `changed entity not found! ID: ${newState.attributes.friendly_name}`
-            )
+            console.warn(`changed entity not found! ID: ${newState.id}`)
           }
         }
       }

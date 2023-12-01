@@ -17,7 +17,7 @@ export type ConfirmationModalParams = {
 
 export type LightControlModalParams = {
   title: string
-  entityName: string
+  entityId: string
   lockColorTemperature?: boolean
 }
 

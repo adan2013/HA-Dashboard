@@ -25,12 +25,12 @@ const { useHomeAssistantEntity } = require('../../../../api/hooks')
 
 const testProps: LightTileProps = {
   title: 'title',
-  entityName: 'entityName'
+  entityId: 'entity'
 }
 
 const mockLightState = (turnedOn = true, colorTempSupported = true) => {
   useHomeAssistantEntity.mockImplementation(() =>
-    getMockedEntityState('entityName', turnedOn ? 'on' : 'off', {
+    getMockedEntityState('entity', turnedOn ? 'on' : 'off', {
       brightness: turnedOn ? 127 : undefined,
       color_temp_kelvin: turnedOn && colorTempSupported ? 3000 : undefined,
       min_color_temp_kelvin: colorTempSupported ? 1000 : undefined,
@@ -70,22 +70,14 @@ describe('LightTile', () => {
     const { rerender } = render(<LightTile {...testProps} />)
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
-    expect(callService).toHaveBeenLastCalledWith(
-      'entityName_id',
-      'light',
-      'turn_off'
-    )
+    expect(callService).toHaveBeenLastCalledWith('entity', 'light', 'turn_off')
     expect(callService).toHaveBeenCalledTimes(1)
 
     mockLightState(false)
     rerender(<LightTile {...testProps} />)
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
-    expect(callService).toHaveBeenLastCalledWith(
-      'entityName_id',
-      'light',
-      'turn_on'
-    )
+    expect(callService).toHaveBeenLastCalledWith('entity', 'light', 'turn_on')
     expect(callService).toHaveBeenCalledTimes(2)
   })
 
@@ -97,7 +89,7 @@ describe('LightTile', () => {
     fireEvent.mouseUp(screen.getByText('title'))
     expect(openModalMock).toHaveBeenLastCalledWith('lightControl', {
       title: 'title',
-      entityName: 'entityName',
+      entityId: 'entity',
       lockColorTemperature: true
     })
     expect(openModalMock).toHaveBeenCalledTimes(1)

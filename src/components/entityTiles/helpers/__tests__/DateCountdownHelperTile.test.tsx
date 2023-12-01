@@ -36,13 +36,13 @@ jest.mock('recharts', () => {
 
 jest.mock('../../../../api/hooks', () => ({
   useHomeAssistantEntity: jest.fn(() =>
-    getMockedEntityState('entityName', '2023-04-01')
+    getMockedEntityState('entity', '2023-04-01')
   )
 }))
 
 const testProps: DateCountdownHelperTileProps = {
   title: 'title',
-  entityName: 'entityName',
+  entityId: 'entity',
   interval: 120,
   warningThreshold: 50,
   criticalThreshold: 10

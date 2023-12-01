@@ -32,9 +32,9 @@ describe('ZigbeeNetworkBody', () => {
     renderZigbeeNetworkBody(tab)
     expect(screen.getByText('Zigbee network')).toBeInTheDocument()
     expect(screen.getByText(menuItemName)).toHaveClass('bg-white text-black')
-    expect(screen.getByText('device1')).toBeInTheDocument()
-    expect(screen.getByText('device2')).toBeInTheDocument()
-    expect(screen.getByText('device3')).toBeInTheDocument()
+    expect(screen.getByText('device1_name')).toBeInTheDocument()
+    expect(screen.getByText('device2_name')).toBeInTheDocument()
+    expect(screen.getByText('device3_name')).toBeInTheDocument()
   })
 
   it('should switch between tabs', () => {

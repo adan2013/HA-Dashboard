@@ -20,28 +20,28 @@ const Automations = () => (
     <TileGroup name="Kitchen">
       <DateCountdownHelperTile
         title="Water filter"
-        entityName="kitchenFilterService"
+        entityId="input_datetime.kitchenfilterservice"
         interval={120}
         warningThreshold={10}
         criticalThreshold={3}
       />
       <DateCountdownHelperTile
         title="Water membrane filter"
-        entityName="kitchenMembraneFilterService"
+        entityId="input_datetime.kitchenmembranefilterservice"
         interval={485}
         warningThreshold={10}
         criticalThreshold={3}
       />
       <DateCountdownHelperTile
         title="Water mineralization filter"
-        entityName="kitchenMineralizationFilterService"
+        entityId="input_datetime.kitchenfinalfilterservice"
         interval={365}
         warningThreshold={10}
         criticalThreshold={3}
       />
       <ToggleHelperTile
         title="Motion sensor"
-        entityName="kitchen-node Motion in kitchen"
+        entityId="binary_sensor.kitchen_node_motion_in_kitchen"
         onIcon={<VisibilityIcon />}
         offIcon={<VisibilityOffIcon />}
         stateNames={['clear', 'detected']}
@@ -49,7 +49,7 @@ const Automations = () => (
       />
       <ToggleHelperTile
         title="Light sensor"
-        entityName="kitchen-node Bright in kitchen"
+        entityId="binary_sensor.kitchen_node_bright_in_kitchen"
         onIcon={<WbSunnyIcon />}
         offIcon={<NightsStayIcon />}
         onColor="text-yellow-500"
@@ -60,16 +60,16 @@ const Automations = () => (
     <TileGroup name="Bathroom">
       <PowerChartTile
         title="Washing machine power consumption"
-        entityName="washingMachinePlug Power"
+        entityId="sensor.washingmachineplug_power"
       />
       <SwitchTile
         title="WM plug"
-        entityName="washingMachinePlug"
+        entityId="switch.washingmachineplug"
         confirmationRequired
       />
       <StateDropdownHelperTile
         title="WM status"
-        entityName="washingMachineState"
+        entityId="input_select.washingmachinestate"
         icon={<LocalLaundryServiceIcon />}
         customStateParams={[
           {
@@ -90,7 +90,7 @@ const Automations = () => (
       />
       <EnergyConsumptionChartTile
         title="WM energy consumption"
-        entityName="washingMachinePlug Energy"
+        entityId="sensor.washingmachineplug_energy"
         customProps={{
           hideMinMax: true,
           hideChart: true,
@@ -102,7 +102,7 @@ const Automations = () => (
       />
       <TemperatureChartTile
         title="WM plug temperature"
-        entityName="washingMachinePlug Temperature"
+        entityId="sensor.washingmachineplug_device_temperature"
         customProps={{
           hideChart: true,
           disableModalHistory: true,

@@ -9,7 +9,7 @@ jest.mock('../../../../api/hooks', () => {
     __esModule: true,
     ...originalModule,
     useHomeAssistantEntity: jest.fn(() =>
-      getMockedEntityState('entityName', '14.521')
+      getMockedEntityState('entity', '14.521')
     )
   }
 })
@@ -19,7 +19,7 @@ describe('PlugTile', () => {
     render(
       <PowerChartTile
         title="title"
-        entityName="entityName"
+        entityId="entityName"
         customProps={{
           unit: '%'
         }}
@@ -35,7 +35,7 @@ describe('PlugTile', () => {
     render(
       <EnergyConsumptionChartTile
         title="title"
-        entityName="entityName"
+        entityId="entityName"
         customProps={{
           unit: '%'
         }}

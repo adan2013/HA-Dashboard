@@ -4,18 +4,18 @@ import ChartHistoryTile, {
 
 type TypedClimateTileProps = {
   title: string
-  entityName: string
+  entityId: string
   customProps?: Partial<ChartHistoryTileProps>
 }
 
 export const TemperatureChartTile = ({
   title,
-  entityName,
+  entityId,
   customProps
 }: TypedClimateTileProps) => (
   <ChartHistoryTile
     title={title}
-    entityName={entityName}
+    entityId={entityId}
     unit="°C"
     showDecimals={1}
     {...customProps}
@@ -24,12 +24,12 @@ export const TemperatureChartTile = ({
 
 export const HumidityChartTile = ({
   title,
-  entityName,
+  entityId,
   customProps
 }: TypedClimateTileProps) => (
   <ChartHistoryTile
     title={title}
-    entityName={entityName}
+    entityId={entityId}
     unit="%"
     historyGraphThresholds={[
       { label: 'Min', value: 40, color: 'green' },

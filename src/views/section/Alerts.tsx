@@ -43,19 +43,19 @@ const Alerts = () => (
     <TileGroup name="Notifications">
       <ToggleHelperTile
         title="Tablet lights"
-        entityName="alertTabletLights"
+        entityId="input_boolean.alerttabletlights"
         onIcon={<HighlightIcon />}
         offIcon={<HighlightIcon />}
       />
       <ToggleHelperTile
         title="Sound alerts"
-        entityName="alertSounds"
+        entityId="input_boolean.alertsounds"
         onIcon={<VolumeUpIcon />}
         offIcon={<VolumeUpIcon />}
       />
       <ToggleHelperTile
         title="DND at night"
-        entityName="alertDNDatNight"
+        entityId="input_boolean.alertdndatnight"
         onIcon={<NotificationsPausedIcon />}
         offIcon={<NotificationsPausedIcon />}
       />
@@ -66,19 +66,19 @@ const Alerts = () => (
       <BatteryTile />
       <ToggleHelperTile
         title="Battery level alerts"
-        entityName="alertBatteryLevel"
+        entityId="input_boolean.alertbatterylevel"
         {...alertToggleProps}
       />
       <ToggleHelperTile
         title="Self-diagnostic alerts"
-        entityName="alertSelfDiagnostic"
+        entityId="input_boolean.alertselfdiagnostic"
         {...alertToggleProps}
       />
     </TileGroup>
     <TileGroup name="Security">
       <ToggleHelperTile
         title="Door deadbolt sensor"
-        entityName="mainDoorDeadboltSensor Door"
+        entityId="binary_sensor.maindoordeadboltsensor_contact"
         onIcon={<LockIcon />}
         offIcon={<LockOpenIcon />}
         onColor="text-white"
@@ -90,21 +90,21 @@ const Alerts = () => (
       />
       <ToggleHelperTile
         title="Door deadbolt alarm"
-        entityName="alertDoorDeadbolt"
+        entityId="input_boolean.alertdeadbolt"
         {...alertToggleProps}
       />
     </TileGroup>
     <TileGroup name="Water leak monitoring">
       <ToggleHelperTile
         title="Filter sensor"
-        entityName="waterFilterLeakSensor Moisture"
+        entityId="binary_sensor.waterfilterleaksensor_water_leak"
         {...waterLeakSensorProps}
       />
       <PlaceholderTile title="Washing machine sensor" size="standard" />
       <PlaceholderTile title="Bathroom sensor" size="standard" />
       <ToggleHelperTile
         title="Water leak alerts"
-        entityName="alertWaterLeak"
+        entityId="input_boolean.alertwaterleak"
         {...alertToggleProps}
       />
     </TileGroup>

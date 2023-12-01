@@ -16,7 +16,7 @@ import Tile, { TileProps } from '../basic/Tile'
 export const SambaBackupStatus = () => (
   <StateDropdownHelperTile
     title="Backup service"
-    entityName="Samba Backup"
+    entityId="sensor.samba_backup"
     icon={<QuestionMarkIcon />}
     customStateParams={[
       {
@@ -89,7 +89,9 @@ const Statistic = ({ title, value, icon }: StatisticProps) => (
 )
 
 export const BackupStats = () => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity('Samba Backup')
+  const { entityState, isUnavailable } = useHomeAssistantEntity(
+    'sensor.samba_backup'
+  )
   const data = entityState?.attributes as unknown as SambaBackupAttributes
 
   const body = (

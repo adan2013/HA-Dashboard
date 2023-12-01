@@ -15,9 +15,7 @@ jest.mock('../../../../api/hooks', () => {
   return {
     __esModule: true,
     ...originalModule,
-    useHomeAssistantEntity: jest.fn(() =>
-      getMockedEntityState('entityName', 'on')
-    )
+    useHomeAssistantEntity: jest.fn(() => getMockedEntityState('entity', 'on'))
   }
 })
 
@@ -26,7 +24,7 @@ const { useHomeAssistantEntity } = require('../../../../api/hooks')
 
 const testProps: ToggleHelperTileProps = {
   title: 'title',
-  entityName: 'entityName',
+  entityId: 'entityName',
   onColor: 'on-color-class',
   offColor: 'off-color-class',
   onIcon: <div data-testid="on-icon" />,
@@ -52,7 +50,7 @@ describe('ToggleHelperTile', () => {
 
   it('should render ToggleHelperTile in "turned off" state', () => {
     useHomeAssistantEntity.mockImplementationOnce(() =>
-      getMockedEntityState('entityName', 'off')
+      getMockedEntityState('entity', 'off')
     )
     render(<ToggleHelperTile {...testProps} />)
     expect(screen.getByText('title')).toBeInTheDocument()
@@ -70,7 +68,7 @@ describe('ToggleHelperTile', () => {
     'should render %s state with reverseState set to %s and call the %s service',
     async (state, reversed, service, subtitleWithState) => {
       useHomeAssistantEntity.mockImplementationOnce(() =>
-        getMockedEntityState('entityName', state)
+        getMockedEntityState('entity', state)
       )
       render(<ToggleHelperTile {...testProps} reverseState={reversed} />)
       expect(screen.getByText(subtitleWithState)).toBeInTheDocument()
@@ -78,7 +76,7 @@ describe('ToggleHelperTile', () => {
       fireEvent.mouseUp(screen.getByText('title'))
       await waitFor(() =>
         expect(callService).toHaveBeenCalledWith(
-          'entityName_id',
+          'entity',
           'input_boolean',
           service
         )
@@ -103,7 +101,7 @@ describe('ToggleHelperTile', () => {
     expect(screen.getByText('customOn')).toBeInTheDocument()
     expect(screen.queryByText('on')).not.toBeInTheDocument()
     useHomeAssistantEntity.mockImplementationOnce(() =>
-      getMockedEntityState('entityName', 'off')
+      getMockedEntityState('entity', 'off')
     )
     rerender(<ToggleHelperTile {...testProps} stateNames={states} />)
     expect(screen.getByText('customOff')).toBeInTheDocument()
@@ -119,7 +117,7 @@ describe('ToggleHelperTile', () => {
       />
     )
     expect(metadataRendererMock).toHaveBeenCalledWith(
-      getMockedEntityState('entityName', 'on').entityState
+      getMockedEntityState('entity', 'on').entityState
     )
     expect(screen.getByText('metadata_content')).toBeInTheDocument()
   })

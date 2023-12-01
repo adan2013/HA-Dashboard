@@ -22,25 +22,19 @@ jest.mock('../../../../api/hooks', () => {
   return {
     __esModule: true,
     ...originalModule,
-    useHomeAssistantEntity: jest.fn(() =>
-      getMockedEntityState('entityName', 'on')
-    )
+    useHomeAssistantEntity: jest.fn(() => getMockedEntityState('entity', 'on'))
   }
 })
 
 describe('SwitchTile', () => {
   it('should render turned on SwitchTile and call turn_off service', async () => {
-    render(<SwitchTile title="title" entityName="entityName" />)
+    render(<SwitchTile title="title" entityId="entityName" />)
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('on')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
     await waitFor(() =>
-      expect(callService).toHaveBeenCalledWith(
-        'entityName_id',
-        'switch',
-        'turn_off'
-      )
+      expect(callService).toHaveBeenCalledWith('entity', 'switch', 'turn_off')
     )
   })
 
@@ -48,24 +42,20 @@ describe('SwitchTile', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
     const { useHomeAssistantEntity } = require('../../../../api/hooks')
     useHomeAssistantEntity.mockImplementationOnce(() =>
-      getMockedEntityState('entityName', 'off')
+      getMockedEntityState('entity', 'off')
     )
-    render(<SwitchTile title="title" entityName="entityName" />)
+    render(<SwitchTile title="title" entityId="entityName" />)
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('off')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
     await waitFor(() =>
-      expect(callService).toHaveBeenCalledWith(
-        'entityName_id',
-        'switch',
-        'turn_on'
-      )
+      expect(callService).toHaveBeenCalledWith('entity', 'switch', 'turn_on')
     )
   })
 
   it('should disable the toggle option', async () => {
-    render(<SwitchTile title="title" entityName="entityName" disableToggle />)
+    render(<SwitchTile title="title" entityId="entityName" disableToggle />)
     expect(screen.getByText('title')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
@@ -75,7 +65,7 @@ describe('SwitchTile', () => {
 
   it('should open confirmation modal instead of calling ha service', async () => {
     render(
-      <SwitchTile title="title" entityName="entityName" confirmationRequired />
+      <SwitchTile title="title" entityId="entityName" confirmationRequired />
     )
     expect(screen.getByText('title')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('title'))

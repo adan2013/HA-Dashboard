@@ -89,7 +89,7 @@ const ServiceStatusTableBody = () => {
     <ModalBody>
       {state ? (
         <>
-          <div className="mt-3 text-center">
+          <div className="mt-3 px-2 text-center">
             Started at: {new Date(state.startTime).toUTCString()} (
             {state.daysRunning} days)
           </div>

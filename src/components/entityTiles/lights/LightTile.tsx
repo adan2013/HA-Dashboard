@@ -4,10 +4,11 @@ import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
 import { LightType } from './lightTypes'
 import { getIcon, getMetadata, getStatusSubtitle } from './lightUtils'
 import { useModalContext } from '../../../contexts/ModalContext'
+import { LightControlModalParams } from '../../../contexts/modalUtils'
 
 export type LightTileProps = {
   title: string
-  entityName: string
+  entityId: string
   lightType?: LightType
   disableToggle?: boolean
   disableManualControl?: boolean
@@ -16,13 +17,13 @@ export type LightTileProps = {
 
 const LightTile = ({
   title,
-  entityName,
+  entityId,
   lightType,
   disableToggle,
   disableManualControl,
   lockColorTemperature
 }: LightTileProps) => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
+  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
   const ha = useHomeAssistant()
   const modal = useModalContext()
 
@@ -37,9 +38,9 @@ const LightTile = ({
   const openModal = () => {
     modal.openModal('lightControl', {
       title,
-      entityName,
+      entityId,
       lockColorTemperature
-    })
+    } as LightControlModalParams)
   }
 
   const tileData: TileProps = {

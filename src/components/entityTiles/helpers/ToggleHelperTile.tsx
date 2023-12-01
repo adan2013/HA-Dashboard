@@ -8,7 +8,7 @@ import { EntityState } from '../../../api/utils'
 
 export type ToggleHelperTileProps = {
   title: string
-  entityName: string
+  entityId: string
   readonly?: boolean
   reverseState?: boolean
   onColor?: string
@@ -22,7 +22,7 @@ export type ToggleHelperTileProps = {
 
 const ToggleHelperTile = ({
   title,
-  entityName,
+  entityId,
   readonly,
   reverseState,
   onColor,
@@ -33,7 +33,7 @@ const ToggleHelperTile = ({
   metadataRenderer,
   tileProps
 }: ToggleHelperTileProps) => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
+  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
   const ha = useHomeAssistant()
 
   const entityIsActive = entityState?.state === 'on'

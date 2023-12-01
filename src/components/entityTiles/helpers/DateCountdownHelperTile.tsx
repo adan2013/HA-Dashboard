@@ -8,7 +8,7 @@ import { ConfirmationModalParams } from '../../../contexts/modalUtils'
 
 export type DateCountdownHelperTileProps = {
   title: string
-  entityName: string
+  entityId: string
   interval: number
   warningThreshold?: number
   criticalThreshold?: number
@@ -16,12 +16,12 @@ export type DateCountdownHelperTileProps = {
 
 const DateCountdownHelperTile = ({
   title,
-  entityName,
+  entityId,
   interval,
   warningThreshold,
   criticalThreshold
 }: DateCountdownHelperTileProps) => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
+  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
   const ha = useHomeAssistant()
   const modal = useModalContext()
 
