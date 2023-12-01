@@ -42,7 +42,7 @@ const renderLightControlBody = ({
   modalParams = {}
 }: RenderParams = {}) => {
   useHomeAssistantEntity.mockImplementation(() =>
-    getMockedEntityState('entityName', turnedOn ? 'on' : 'off', {
+    getMockedEntityState('entity', turnedOn ? 'on' : 'off', {
       min_color_temp_kelvin: colorTempSupported ? 1000 : undefined,
       max_color_temp_kelvin: colorTempSupported ? 4000 : undefined,
       brightness: turnedOn ? brightnessValue : undefined,
@@ -52,7 +52,8 @@ const renderLightControlBody = ({
   )
   return renderModalBody(<LightControlBody />, 'lightControl', {
     title: 'modal-title',
-    entityName: 'entityName',
+    entityName: 'entity_name',
+    entityId: 'entity',
     ...modalParams
   })
 }

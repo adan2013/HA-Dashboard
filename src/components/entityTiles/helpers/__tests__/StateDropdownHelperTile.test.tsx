@@ -26,14 +26,14 @@ jest.mock('../../../../api/hooks', () => {
     __esModule: true,
     ...originalModule,
     useHomeAssistantEntity: jest.fn(() =>
-      getMockedEntityState('entityName', 'normal-state')
+      getMockedEntityState('entity', 'normal-state')
     )
   }
 })
 
 const testProps: StateDropdownHelperTileProps = {
   title: 'title',
-  entityId: 'entityName',
+  entityId: 'entity',
   icon: <div data-testid="basic-icon" />,
   iconClassnames: 'basic-icon-classname',
   customStateParams: [
@@ -82,7 +82,7 @@ describe('StateDropdownHelperTile', () => {
 
   it('should use custom state params', () => {
     useHomeAssistantEntity.mockImplementationOnce(() =>
-      getMockedEntityState('entityName', 'custom-state')
+      getMockedEntityState('entity', 'custom-state')
     )
     render(<StateDropdownHelperTile {...testProps} />)
     expect(screen.getByText('title')).toBeInTheDocument()

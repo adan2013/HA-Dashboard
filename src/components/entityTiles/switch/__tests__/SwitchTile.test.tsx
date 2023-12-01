@@ -22,9 +22,7 @@ jest.mock('../../../../api/hooks', () => {
   return {
     __esModule: true,
     ...originalModule,
-    useHomeAssistantEntity: jest.fn(() =>
-      getMockedEntityState('entityName', 'on')
-    )
+    useHomeAssistantEntity: jest.fn(() => getMockedEntityState('entity', 'on'))
   }
 })
 
@@ -48,7 +46,7 @@ describe('SwitchTile', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
     const { useHomeAssistantEntity } = require('../../../../api/hooks')
     useHomeAssistantEntity.mockImplementationOnce(() =>
-      getMockedEntityState('entityName', 'off')
+      getMockedEntityState('entity', 'off')
     )
     render(<SwitchTile title="title" entityId="entityName" />)
     expect(screen.getByText('title')).toBeInTheDocument()

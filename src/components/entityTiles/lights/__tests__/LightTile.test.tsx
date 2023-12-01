@@ -30,7 +30,7 @@ const testProps: LightTileProps = {
 
 const mockLightState = (turnedOn = true, colorTempSupported = true) => {
   useHomeAssistantEntity.mockImplementation(() =>
-    getMockedEntityState('entityName', turnedOn ? 'on' : 'off', {
+    getMockedEntityState('entity', turnedOn ? 'on' : 'off', {
       brightness: turnedOn ? 127 : undefined,
       color_temp_kelvin: turnedOn && colorTempSupported ? 3000 : undefined,
       min_color_temp_kelvin: colorTempSupported ? 1000 : undefined,
