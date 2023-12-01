@@ -19,7 +19,7 @@ describe('PlugTile', () => {
     render(
       <PowerChartTile
         title="title"
-        entityName="entityName"
+        entityId="entityName"
         customProps={{
           unit: '%'
         }}
@@ -35,7 +35,7 @@ describe('PlugTile', () => {
     render(
       <EnergyConsumptionChartTile
         title="title"
-        entityName="entityName"
+        entityId="entityName"
         customProps={{
           unit: '%'
         }}

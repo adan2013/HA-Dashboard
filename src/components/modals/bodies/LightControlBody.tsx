@@ -26,9 +26,7 @@ const LightControlBody = () => {
   const modal = useModalContext()
   const ha = useHomeAssistant()
   const params = modal.state.params as LightControlModalParams
-  const { entityState, isUnavailable } = useHomeAssistantEntity(
-    params.entityName
-  )
+  const { entityState, isUnavailable } = useHomeAssistantEntity(params.entityId)
   const minColorTemp = entityState?.attributes?.min_color_temp_kelvin
   const maxColorTemp = entityState?.attributes?.max_color_temp_kelvin
   const colorTempRangeExists = minColorTemp && maxColorTemp

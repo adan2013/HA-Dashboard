@@ -42,7 +42,7 @@ jest.mock('../../../../api/hooks', () => ({
 
 const testProps: DateCountdownHelperTileProps = {
   title: 'title',
-  entityName: 'entityName',
+  entityId: 'entityName',
   interval: 120,
   warningThreshold: 50,
   criticalThreshold: 10

@@ -1,8 +1,8 @@
 {
-  "name": "starter-vite-react",
+  "name": "ha-dashboard",
   "private": true,
-  "version": "2.3.0",
-  "description": "Opinionated Vite starter template with ESLint, Prettier, Stylelint and more.",
+  "version": "2.4.0",
+  "description": "Home Assistant dashboard for wall-mounted tablet",
   "repository": {
     "type": "git",
     "url": "https://github.com/fabgrel10/vite-react-starter"

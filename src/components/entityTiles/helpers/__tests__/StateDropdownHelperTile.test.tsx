@@ -33,7 +33,7 @@ jest.mock('../../../../api/hooks', () => {
 
 const testProps: StateDropdownHelperTileProps = {
   title: 'title',
-  entityName: 'entityName',
+  entityId: 'entityName',
   icon: <div data-testid="basic-icon" />,
   iconClassnames: 'basic-icon-classname',
   customStateParams: [

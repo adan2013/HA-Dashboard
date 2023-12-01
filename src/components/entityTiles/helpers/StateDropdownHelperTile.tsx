@@ -22,7 +22,7 @@ type StateChangeOption = {
 
 export type StateDropdownHelperTileProps = {
   title: string
-  entityName: string
+  entityId: string
   icon?: ReactElement
   iconClassnames?: string
   customStateParams?: CustomStateParams[]
@@ -33,7 +33,7 @@ export type StateDropdownHelperTileProps = {
 
 const StateDropdownHelperTile = ({
   title,
-  entityName,
+  entityId,
   icon,
   iconClassnames,
   customStateParams,
@@ -41,7 +41,7 @@ const StateDropdownHelperTile = ({
   clickAction,
   holdAction
 }: StateDropdownHelperTileProps) => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
+  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
   const ha = useHomeAssistant()
   const modal = useModalContext()
 

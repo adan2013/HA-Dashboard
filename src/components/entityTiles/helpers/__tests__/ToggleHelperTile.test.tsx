@@ -26,7 +26,7 @@ const { useHomeAssistantEntity } = require('../../../../api/hooks')
 
 const testProps: ToggleHelperTileProps = {
   title: 'title',
-  entityName: 'entityName',
+  entityId: 'entityName',
   onColor: 'on-color-class',
   offColor: 'off-color-class',
   onIcon: <div data-testid="on-icon" />,

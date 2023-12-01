@@ -42,7 +42,7 @@ const renderTile = (customProps: Partial<ChartHistoryTileProps> = {}) =>
   render(
     <ChartHistoryTile
       title="TILE"
-      entityName="entityName"
+      entityId="entityName"
       showDecimals={0}
       unit="%"
       {...customProps}

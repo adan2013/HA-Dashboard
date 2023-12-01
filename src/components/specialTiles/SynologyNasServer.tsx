@@ -15,7 +15,7 @@ export interface SynologyDsmAttributes {
 
 export const SynologyDsmUpdate = () => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(
-    'SynologyNAS DSM update'
+    'update.synologynas_dsm_update'
   )
   const data = entityState?.attributes as unknown as SynologyDsmAttributes
   const upToDate = data?.installed_version === data?.latest_version
@@ -41,7 +41,7 @@ export interface SynologySecurityStatusAttributes {
 
 export const SynologySecurityStatus = () => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(
-    'SynologyNAS Security status'
+    'binary_sensor.synologynas_security_status'
   )
 
   const data =
@@ -77,7 +77,7 @@ export const SynologySecurityStatus = () => {
 export const SynologyVolumeStatus = () => (
   <StateDropdownHelperTile
     title="Volume status"
-    entityName="SynologyNAS (Volume 1) Status"
+    entityId="sensor.synologynas_volume_1_status"
     icon={<DiscFullIcon />}
     iconClassnames="text-red-600"
     customStateParams={[
@@ -93,7 +93,7 @@ export const SynologyVolumeStatus = () => (
 export const OccupiedDiskSpace = () => (
   <ChartHistoryTile
     title="Occupied disk space"
-    entityName="SynologyNAS (Volume 1) Volume used"
+    entityId="sensor.synologynas_volume_1_volume_used"
     unit="%"
     showDecimals={1}
     hideMinMax
@@ -108,7 +108,7 @@ export const OccupiedDiskSpace = () => (
 export const VolumeTemperature = () => (
   <TemperatureChartTile
     title="Volume disk AVG temp"
-    entityName="SynologyNAS (Volume 1) Average disk temp"
+    entityId="sensor.synologynas_volume_1_average_disk_temp"
     customProps={{
       hideChart: true,
       hideMinMax: true,
@@ -122,7 +122,7 @@ export const VolumeTemperature = () => (
 export const NasTemperature = () => (
   <TemperatureChartTile
     title="NAS system temperature"
-    entityName="SynologyNAS Temperature"
+    entityId="sensor.synologynas_temperature"
     customProps={{
       hideChart: true,
       hideMinMax: true,

@@ -8,18 +8,18 @@ import { useModalContext } from '../../../contexts/ModalContext'
 
 type SwitchTileProps = {
   title: string
-  entityName: string
+  entityId: string
   confirmationRequired?: boolean
   disableToggle?: boolean
 }
 
 const SwitchTile = ({
   title,
-  entityName,
+  entityId,
   confirmationRequired,
   disableToggle
 }: SwitchTileProps) => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityName)
+  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
   const ha = useHomeAssistant()
   const modal = useModalContext()
   const isActive = entityState?.state === 'on'

@@ -4,18 +4,18 @@ import ChartHistoryTile, {
 
 type TypedPlugTileProps = {
   title: string
-  entityName: string
+  entityId: string
   customProps?: Partial<ChartHistoryTileProps>
 }
 
 export const PowerChartTile = ({
   title,
-  entityName,
+  entityId,
   customProps
 }: TypedPlugTileProps) => (
   <ChartHistoryTile
     title={title}
-    entityName={entityName}
+    entityId={entityId}
     unit="W"
     historyGraphThresholds={[
       { label: 'Power load limit', value: 2300, color: 'red' }
@@ -27,12 +27,12 @@ export const PowerChartTile = ({
 
 export const EnergyConsumptionChartTile = ({
   title,
-  entityName,
+  entityId,
   customProps
 }: TypedPlugTileProps) => (
   <ChartHistoryTile
     title={title}
-    entityName={entityName}
+    entityId={entityId}
     unit="kWh"
     showDecimals={2}
     {...customProps}

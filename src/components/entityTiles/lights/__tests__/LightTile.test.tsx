@@ -25,7 +25,7 @@ const { useHomeAssistantEntity } = require('../../../../api/hooks')
 
 const testProps: LightTileProps = {
   title: 'title',
-  entityName: 'entityName'
+  entityId: 'entityName'
 }
 
 const mockLightState = (turnedOn = true, colorTempSupported = true) => {

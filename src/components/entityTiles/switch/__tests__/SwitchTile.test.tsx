@@ -30,7 +30,7 @@ jest.mock('../../../../api/hooks', () => {
 
 describe('SwitchTile', () => {
   it('should render turned on SwitchTile and call turn_off service', async () => {
-    render(<SwitchTile title="title" entityName="entityName" />)
+    render(<SwitchTile title="title" entityId="entityName" />)
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('on')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('title'))
@@ -50,7 +50,7 @@ describe('SwitchTile', () => {
     useHomeAssistantEntity.mockImplementationOnce(() =>
       getMockedEntityState('entityName', 'off')
     )
-    render(<SwitchTile title="title" entityName="entityName" />)
+    render(<SwitchTile title="title" entityId="entityName" />)
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('off')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('title'))
@@ -65,7 +65,7 @@ describe('SwitchTile', () => {
   })
 
   it('should disable the toggle option', async () => {
-    render(<SwitchTile title="title" entityName="entityName" disableToggle />)
+    render(<SwitchTile title="title" entityId="entityName" disableToggle />)
     expect(screen.getByText('title')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
@@ -75,7 +75,7 @@ describe('SwitchTile', () => {
 
   it('should open confirmation modal instead of calling ha service', async () => {
     render(
-      <SwitchTile title="title" entityName="entityName" confirmationRequired />
+      <SwitchTile title="title" entityId="entityName" confirmationRequired />
     )
     expect(screen.getByText('title')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('title'))

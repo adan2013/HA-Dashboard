@@ -28,38 +28,38 @@ export const generateEntityHistory = (values: number[]) => [
 ]
 
 export const getZigbeeEntity = (
-  name: string,
+  id: string,
   battery: number,
   signal: number
 ) => ({
   entity: {
-    id: `${name}_id`,
+    id,
     state: 'something',
     lastChanged: '',
     lastUpdated: '',
     attributes: {
-      friendly_name: name,
+      friendly_name: id,
       battery,
       linkquality: signal
     }
   },
-  friendlyName: name,
+  friendlyName: `${id}_name`,
   battery,
   signal
 })
 
 export const getMockedEntityState = (
-  name: string,
+  id: string,
   state: string,
   attributes: object = {}
 ): HomeAssistantEntityData => ({
   entityState: {
-    id: `${name}_id`,
+    id,
     state,
     lastChanged: '1234',
     lastUpdated: '5678',
     attributes: {
-      friendly_name: name,
+      friendly_name: `${id}_name`,
       ...attributes
     }
   },

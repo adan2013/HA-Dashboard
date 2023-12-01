@@ -32,7 +32,7 @@ export type HomeAssistantEntityData = {
 }
 
 export const useHomeAssistantEntity = (
-  entityName: string
+  entityId: string
 ): HomeAssistantEntityData => {
   const [state, setState] = useState<HomeAssistantEntityData>({
     entityState: null,
@@ -42,14 +42,14 @@ export const useHomeAssistantEntity = (
 
   useEffect(
     () =>
-      ha?.subscribeToEntity(entityName, data => {
+      ha?.subscribeToEntity(entityId, data => {
         setState({
           entityState: data,
           isUnavailable:
             !data || data.state === 'unavailable' || data.state === 'unknown'
         })
       }),
-    [entityName, ha]
+    [entityId, ha]
   )
 
   return state

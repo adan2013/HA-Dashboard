@@ -14,25 +14,25 @@ const Lights = () => (
     <TileGroup name="Living room">
       <LightTile
         title="TV light"
-        entityName="tvLight"
+        entityId="light.tvlight"
         lightType="ceiling"
         lockColorTemperature
       />
       <LightTile
         title="Table light"
-        entityName="tableLight"
+        entityId="light.tablelight"
         lightType="ceiling"
         lockColorTemperature
       />
       <LightTile
         title="Front ceiling section"
-        entityName="livingRoomFrontLight"
+        entityId="light.livingroomfrontlight"
         lightType="ceiling"
         lockColorTemperature
       />
       <LightTile
         title="Back ceiling section"
-        entityName="livingRoomBackLight"
+        entityId="light.livingroombacklight"
         lightType="ceiling"
         lockColorTemperature
       />
@@ -47,25 +47,25 @@ const Lights = () => (
     <TileGroup name="Kitchen">
       <ToggleHelperTile
         title="Left side lamp"
-        entityName="kitchenLeftLightOn"
+        entityId="input_boolean.kitchenleftlighton"
         onColor="text-yellow-500"
         onIcon={<LightbulbIcon />}
         offIcon={<LightbulbOutlinedIcon />}
       />
       <ToggleHelperTile
         title="Right side lamp"
-        entityName="kitchenRightLightOn"
+        entityId="input_boolean.kitchenrightlighton"
         onColor="text-yellow-500"
         onIcon={<LightbulbIcon />}
         offIcon={<LightbulbOutlinedIcon />}
       />
       <ToggleHelperTile
         title="Movement detection"
-        entityName="kitchenAutoLights"
+        entityId="input_boolean.kitchenautolights"
       />
       <ToggleHelperTile
         title="Light detection"
-        entityName="kitchenIgnoreSunPosition"
+        entityId="input_boolean.kitchenignoresunposition"
         reverseState
       />
       <CallRemoteControlTile
@@ -78,14 +78,18 @@ const Lights = () => (
     <TileGroup name="Others">
       <LightTile
         title="Bathroom light"
-        entityName="bathroomLight"
+        entityId="light.bathroomlight"
         lightType="ceiling"
       />
-      <LightTile title="WC light" entityName="wcLight" lightType="ceiling" />
-      <SwitchTile title="Balcony light plug" entityName="balconyLight" />
+      <LightTile
+        title="WC light"
+        entityId="light.wclight"
+        lightType="ceiling"
+      />
+      <SwitchTile title="Balcony light plug" entityId="switch.balconylight" />
       <ToggleHelperTile
         title="Balcony light auto switch"
-        entityName="balconyLightAutoSwitch"
+        entityId="input_boolean.balconylightautoswitch"
         metadataRenderer={() => ['16-22']}
       />
     </TileGroup>
