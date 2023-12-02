@@ -90,8 +90,9 @@ const ServiceStatusTableBody = () => {
       {state ? (
         <>
           <div className="mt-3 px-2 text-center">
-            Started at: {new Date(state.startTime).toUTCString()} (
-            {state.daysRunning} days)
+            Current time: {state.currentTime}
+            <br />
+            Started at: {state.startTime} ({state.daysRunning} days)
           </div>
           <div className="mx-4 text-center">
             <div className="my-4 h-[450px] max-h-[calc(100vh-250px)] overflow-scroll">
