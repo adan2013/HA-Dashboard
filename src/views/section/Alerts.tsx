@@ -58,6 +58,7 @@ const Alerts = () => (
         entityId="input_boolean.alertdndatnight"
         onIcon={<NotificationsPausedIcon />}
         offIcon={<NotificationsPausedIcon />}
+        metadataRenderer={() => ['22-7']}
       />
       <PlaceholderTile title="SMS alerts" size="standard" />
       <PlaceholderTile title="Send test SMS" size="standard" />
