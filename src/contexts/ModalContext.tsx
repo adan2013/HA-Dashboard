@@ -18,6 +18,7 @@ import HistoryChartBody from '../components/modals/bodies/HistoryChartBody'
 import ZigbeeNetworkBody from '../components/modals/bodies/ZigbeeNetworkBody'
 import ServiceStatusTableBody from '../components/modals/bodies/ServiceStatusTableBody'
 import WeatherBody from '../components/modals/bodies/WeatherBody'
+import TriggerNotificationBody from '../components/modals/bodies/TriggerNotificationBody'
 
 type ProviderProps = {
   children: ReactElement
@@ -63,6 +64,7 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
     switch (modalState.modalType) {
       case 'confirmation':
       case 'lightControl':
+      case 'triggerNotification':
         return '600px'
       default:
         return '90vw'
@@ -83,6 +85,8 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
         return <ZigbeeNetworkBody />
       case 'weather':
         return <WeatherBody />
+      case 'triggerNotification':
+        return <TriggerNotificationBody />
       default:
         return null
     }

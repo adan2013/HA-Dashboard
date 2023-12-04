@@ -7,6 +7,7 @@ import { getPackageVersion } from '../utils/viteUtils'
 import PlaceholderTile from '../PlaceholderTile'
 import SpeakerTestTile from '../components/devTiles/SpeakerTestTile'
 import { useBackend } from '../contexts/BackendContext'
+import TriggerNotificationTile from '../components/devTiles/TriggerNotificationTile'
 
 const More = () => {
   const backend = useBackend()
@@ -39,6 +40,7 @@ const More = () => {
           icon={Object.hasOwn(window, 'fully') ? <CheckIcon /> : <ClearIcon />}
         />
         <SpeakerTestTile />
+        <TriggerNotificationTile />
       </TileGroup>
     </TileSection>
   )
