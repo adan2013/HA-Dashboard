@@ -53,7 +53,7 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
 
   if (!state) {
     return (
-      <div className="text-md mt-20 text-center font-extrabold text-gray-500">
+      <div className="text-md mt-20 text-center font-extrabold text-gray-400">
         <div className="mb-2">
           <NightsStayIcon className="!text-8xl" />
         </div>
