@@ -44,6 +44,7 @@ export const SynologySecurityStatus = () => {
     'binary_sensor.synologynas_security_status'
   )
 
+  const isSafe = entityState?.state === 'off'
   const data =
     entityState?.attributes as unknown as SynologySecurityStatusAttributes
   const unSafeStatuses = []
@@ -61,8 +62,6 @@ export const SynologySecurityStatus = () => {
   verifyStatus('systemCheck')
   verifyStatus('update')
   verifyStatus('userInfo')
-
-  const isSafe = unSafeStatuses.length === 0
 
   const tileProps: TileProps = {
     title: 'Security status',
