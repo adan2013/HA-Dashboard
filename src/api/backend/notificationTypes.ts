@@ -24,4 +24,5 @@ export type NotificationPayload = {
 export type NotificationsServiceData = {
   active: NotificationPayload[]
   availableIds: string[]
+  dndMode: boolean
 }

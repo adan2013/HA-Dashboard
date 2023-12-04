@@ -43,6 +43,12 @@ type NotificationsViewProps = {
   isWidget?: boolean
 }
 
+const DndIsModeActive = () => (
+  <div className="my-4 text-center font-extrabold text-gray-400">
+    DND MODE IS ACTIVE
+  </div>
+)
+
 const Notifications = ({ isWidget }: NotificationsViewProps) => {
   const [state, setState] = useState<NotificationsServiceData>(null)
   const backend = useBackend()
@@ -59,11 +65,12 @@ const Notifications = ({ isWidget }: NotificationsViewProps) => {
 
   if (!state || state.active.length === 0) {
     return (
-      <div className="text-md mt-20 text-center font-extrabold text-gray-500">
+      <div className="mt-20 text-center font-extrabold text-gray-400">
         <div className="mb-2">
           <CheckBoxOutlinedIcon className="!text-8xl" />
         </div>
         NO ACTIVE NOTIFICATIONS
+        {state?.dndMode && <DndIsModeActive />}
       </div>
     )
   }
@@ -82,6 +89,7 @@ const Notifications = ({ isWidget }: NotificationsViewProps) => {
           </Link>
         </div>
       )}
+      {state.dndMode && <DndIsModeActive />}
       {state.active.map(n => (
         <div
           key={n.id}
