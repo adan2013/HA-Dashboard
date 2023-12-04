@@ -2,6 +2,7 @@ import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined'
 import { useEffect, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import clsx from 'clsx'
+import { Link } from 'react-router-dom'
 import { useBackend } from '../contexts/BackendContext'
 import {
   NotificationLight,
@@ -38,7 +39,11 @@ const formatTime = (createAt: string) => {
   return `${hours}:${minutes} ${day}-${month}-${year}`
 }
 
-const Notifications = () => {
+type NotificationsViewProps = {
+  isWidget?: boolean
+}
+
+const Notifications = ({ isWidget }: NotificationsViewProps) => {
   const [state, setState] = useState<NotificationsServiceData>(null)
   const backend = useBackend()
 
@@ -65,21 +70,39 @@ const Notifications = () => {
 
   return (
     <div className="mx-auto w-full max-w-[1000px] p-2">
+      {isWidget && (
+        <div className="relative mb-4 text-3xl font-bold uppercase">
+          {`${state.active.length} active ${
+            state.active.length > 1 ? 'notifications' : 'notification'
+          }`}
+          <Link to="/notifications">
+            <div className="absolute right-0 top-0 flex h-full cursor-pointer items-center rounded-lg bg-gray-600 px-3 text-sm uppercase hover:bg-blue-800">
+              Open full view
+            </div>
+          </Link>
+        </div>
+      )}
       {state.active.map(n => (
         <div
           key={n.id}
           className={clsx(
-            'relative mb-6 border-l-8 bg-gray-800 p-4 pb-10 pr-16',
+            'relative mb-6 border-l-8 bg-gray-800 p-4',
             getBorderColor(n.light)
           )}
         >
-          <div className="text-lg font-bold">{n.title}</div>
-          <div className="my-2">{n.description}</div>
-          {n.extraInfo && <div className="my-2 font-light">{n.extraInfo}</div>}
+          <div className="pr-14">
+            <div className="text-lg font-bold">{n.title}</div>
+            <div className="my-2">{n.description}</div>
+            {n.extraInfo && (
+              <div className="mt-4 font-light">
+                <i>{n.extraInfo}</i>
+              </div>
+            )}
+          </div>
           {n.canBeDismissed && (
             <CloseIcon className="absolute right-3 top-3 cursor-pointer rounded-full p-2 !text-4xl text-gray-400 hover:bg-gray-600 hover:text-white lg:!text-5xl" />
           )}
-          <div className="absolute bottom-3 right-3 text-sm font-light text-gray-200">
+          <div className="mt-3 text-right text-sm font-light text-gray-200">
             {formatTime(n.createdAt)}
           </div>
         </div>

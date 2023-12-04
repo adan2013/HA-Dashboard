@@ -119,7 +119,7 @@ const Dashboard = () => {
         <Weather isWidget />
       </div>
       <div className="h-[calc(100vh-19rem)] overflow-auto border-l-2 border-blue-600 p-3">
-        <Notifications />
+        <Notifications isWidget />
       </div>
     </div>
   )
