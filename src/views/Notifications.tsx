@@ -100,7 +100,10 @@ const Notifications = ({ isWidget }: NotificationsViewProps) => {
             )}
           </div>
           {n.canBeDismissed && (
-            <CloseIcon className="absolute right-3 top-3 cursor-pointer rounded-full p-2 !text-4xl text-gray-400 hover:bg-gray-600 hover:text-white lg:!text-5xl" />
+            <CloseIcon
+              onClick={() => backend?.dismissNotification(n.id)}
+              className="absolute right-3 top-3 cursor-pointer rounded-full p-2 !text-4xl text-gray-400 hover:bg-gray-600 hover:text-white lg:!text-5xl"
+            />
           )}
           <div className="mt-3 text-right text-sm font-light text-gray-200">
             {formatTime(n.createdAt)}
