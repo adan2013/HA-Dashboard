@@ -16,6 +16,7 @@ const DesktopLayout = () => {
     isMobile: false
   }
   const collapsed = location.pathname !== '/'
+  const onNotificationView = location.pathname === '/notifications'
 
   return (
     <div className="text-white">
@@ -79,7 +80,7 @@ const DesktopLayout = () => {
             </Link>
           ))}
         </div>
-        {collapsed && (
+        {collapsed && !onNotificationView && (
           <div
             className="fixed bottom-5 right-5 text-gray-300"
             data-testid="notification-button"

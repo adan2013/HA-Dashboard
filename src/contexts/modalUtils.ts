@@ -8,6 +8,7 @@ export type ModalType =
   | 'serviceStatus'
   | 'zigbeeNetwork'
   | 'weather'
+  | 'triggerNotification'
 
 export type ConfirmationModalParams = {
   message?: string

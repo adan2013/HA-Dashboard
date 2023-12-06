@@ -21,7 +21,7 @@ const testSecurityStatus: SynologySecurityStatusAttributes = {
   network: 'safe',
   securitySetting: 'safe',
   systemCheck: 'safe',
-  update: 'safe',
+  update: 'info',
   userInfo: 'safe'
 }
 
@@ -42,7 +42,7 @@ jest.mock('../../../api/hooks', () => {
         case 'binary_sensor.synologynas_security_status':
           return getMockedEntityState(
             'binary_sensor.synologynas_security_status',
-            '',
+            'off',
             testSecurityStatus
           )
         case 'sensor.synologynas_volume_1_status':
@@ -108,13 +108,15 @@ describe('SynologyNasServer', () => {
     useHomeAssistantEntity.mockImplementationOnce(() =>
       getMockedEntityState(
         'SynologyNAS Security status',
-        '',
+        'on',
         newSecurityAttributes
       )
     )
     rerender(<SynologySecurityStatus />)
     expect(screen.getByText('Security status')).toBeInTheDocument()
-    expect(screen.getByText('Unsafe: network, systemCheck')).toBeInTheDocument()
+    expect(
+      screen.getByText('Unsafe: network, systemCheck, update')
+    ).toBeInTheDocument()
     expect(screen.getByTestId('UpdateIcon')).toBeInTheDocument()
     expect(screen.getByTestId('UpdateIcon')).toHaveClass('text-yellow-600')
   })

@@ -1,4 +1,5 @@
 import { WeatherServiceData } from './weatherTypes'
+import { NotificationsServiceData } from './notificationTypes'
 
 export type StatusColor = 'none' | 'red' | 'yellow' | 'green' | 'blue'
 
@@ -26,4 +27,5 @@ export type ServiceManagerStatus = {
 
 export interface ServiceDataObject {
   weather: WeatherServiceData
+  notifications: NotificationsServiceData
 }

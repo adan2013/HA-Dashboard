@@ -66,6 +66,14 @@ class BackendWebSocketAPI extends WebSocketConnector {
     this.sendMsg('getStatus')
   }
 
+  public triggerNotification(id: string) {
+    this.sendMsg('triggerNotification', { notificationId: id })
+  }
+
+  public dismissNotification(id: string) {
+    this.sendMsg('dismissNotification', { notificationId: id })
+  }
+
   public switchService(serviceName: string, enabled: boolean) {
     this.sendMsg('switchService', { serviceName, enabled })
   }

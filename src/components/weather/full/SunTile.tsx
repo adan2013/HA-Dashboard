@@ -29,6 +29,7 @@ const SunTile = ({ sunrise, sunset }: Props) => {
             <div className="relative aspect-square overflow-hidden rounded-full bg-gray-800">
               <div
                 className="absolute h-full w-full bg-amber-500"
+                data-testid="sun-progress-indicator"
                 style={{
                   right: `${
                     percentageOfPhaseLeft < 0 ? 100 : percentageOfPhaseLeft
