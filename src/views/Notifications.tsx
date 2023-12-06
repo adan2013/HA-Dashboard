@@ -41,6 +41,7 @@ const formatTime = (createAt: string) => {
 
 type NotificationsViewProps = {
   isWidget?: boolean
+  initialData?: NotificationsServiceData
 }
 
 const DndIsModeActive = () => (
@@ -49,8 +50,11 @@ const DndIsModeActive = () => (
   </div>
 )
 
-const Notifications = ({ isWidget }: NotificationsViewProps) => {
-  const [state, setState] = useState<NotificationsServiceData>(null)
+const Notifications = ({
+  isWidget,
+  initialData = null
+}: NotificationsViewProps) => {
+  const [state, setState] = useState<NotificationsServiceData>(initialData)
   const backend = useBackend()
 
   useEffect(
@@ -78,13 +82,13 @@ const Notifications = ({ isWidget }: NotificationsViewProps) => {
   return (
     <div className="mx-auto w-full max-w-[1000px] p-2">
       {isWidget && (
-        <div className="relative mb-4 text-3xl font-bold uppercase">
-          {`${state.active.length} active ${
-            state.active.length > 1 ? 'notifications' : 'notification'
+        <div className="relative mb-4 text-3xl font-bold">
+          {`${state.active.length} ACTIVE ${
+            state.active.length > 1 ? 'NOTIFICATIONS' : 'NOTIFICATION'
           }`}
           <Link to="/notifications">
-            <div className="absolute right-0 top-0 flex h-full cursor-pointer items-center rounded-lg bg-gray-600 px-3 text-sm uppercase hover:bg-blue-800">
-              Open full view
+            <div className="absolute right-0 top-0 flex h-full cursor-pointer items-center rounded-lg bg-gray-600 px-3 text-sm hover:bg-blue-800">
+              OPEN FULL VIEW
             </div>
           </Link>
         </div>
@@ -93,6 +97,7 @@ const Notifications = ({ isWidget }: NotificationsViewProps) => {
       {state.active.map(n => (
         <div
           key={n.id}
+          data-testid={`notification-light-border-${n.id}`}
           className={clsx(
             'relative mb-6 border-l-8 bg-gray-800 p-4',
             getBorderColor(n.light)
@@ -110,6 +115,7 @@ const Notifications = ({ isWidget }: NotificationsViewProps) => {
           {n.canBeDismissed && (
             <CloseIcon
               onClick={() => backend?.dismissNotification(n.id)}
+              data-testid={`notification-close-button-${n.id}`}
               className="absolute right-3 top-3 cursor-pointer rounded-full p-2 !text-4xl text-gray-400 hover:bg-gray-600 hover:text-white lg:!text-5xl"
             />
           )}
