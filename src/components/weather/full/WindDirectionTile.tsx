@@ -7,7 +7,7 @@ type Props = {
 
 const WindDirectionTile = ({ windDirection }: Props) => (
   <Tile
-    title="Wind Direction"
+    title="Wind direction"
     customBody={
       <div className="relative mt-4 flex items-center justify-center">
         <div className="absolute top-0 z-10 h-6 w-6 translate-y-[-40%] bg-blue-900 text-center">
@@ -15,6 +15,7 @@ const WindDirectionTile = ({ windDirection }: Props) => (
         </div>
         <div
           className="rounded-full border-2 border-white p-4"
+          data-testid="wind-direction-arrow"
           style={{
             transform: `rotate(${windDirection}deg)`
           }}
