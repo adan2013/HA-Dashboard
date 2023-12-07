@@ -142,6 +142,7 @@ export const dailyForecastMock: LongForecast[] = [
 
 export const weatherServiceDataMock: WeatherServiceData = {
   timestamp: new Date('2023-12-31T23:00:00').getTime(),
+  aqiStation: 'AirQualityStationName',
   current: currentWeatherMock,
   shortForecast: hourlyForecastMock,
   longForecast: dailyForecastMock,

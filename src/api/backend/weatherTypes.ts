@@ -61,6 +61,7 @@ export type HistoricalWeather = {
 
 export type WeatherServiceData = {
   timestamp: number
+  aqiStation: string
   current: CurrentWeather
   shortForecast: ShortForecast[]
   longForecast: LongForecast[]

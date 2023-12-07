@@ -7,6 +7,7 @@ type AirQualityIndexTileProps = {
 
 const getAirQualityDescription = (aqi: number) => {
   switch (aqi) {
+    case 0:
     case 1:
       return 'Good'
     case 2:
