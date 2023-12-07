@@ -129,6 +129,8 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
         />
         <div className="py-4 text-center font-light text-gray-300">
           Last update at: {new Date(state.timestamp).toLocaleString()}
+          <br />
+          {`Air quality index provided by ${state.aqiStation}`}
         </div>
       </div>
     </div>
