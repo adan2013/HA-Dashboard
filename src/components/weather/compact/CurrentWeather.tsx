@@ -4,10 +4,13 @@ import { cloneElement, ReactElement } from 'react'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import BiotechIcon from '@mui/icons-material/Biotech'
 import clsx from 'clsx'
-import { CurrentWeather as CurrentWeatherType } from '../../../api/backend/weatherTypes'
+import {
+  CurrentWeather as CurrentWeatherType,
+  ShortForecast
+} from '../../../api/backend/weatherTypes'
 import {
   getBarColorForAirQuality,
-  getBarColorForHumidity,
+  getBarColorForRain,
   getBarColorForUltraViolet,
   getBarColorForWindSpeed
 } from '../utils'
@@ -30,9 +33,10 @@ const WeatherParameter = ({ icon, value, barColor }: WeatherParameterProps) => (
 
 type CurrentWeatherProps = {
   data: CurrentWeatherType
+  shortForecast?: ShortForecast[]
 }
 
-const CurrentWeather = ({ data }: CurrentWeatherProps) => (
+const CurrentWeather = ({ data, shortForecast }: CurrentWeatherProps) => (
   <div className="flex flex-row items-center gap-3 overflow-x-auto text-lg">
     <div className="min-w-[100px]">
       <img
@@ -48,11 +52,13 @@ const CurrentWeather = ({ data }: CurrentWeatherProps) => (
     </div>
     <div className="flex-1">
       <div className="flex flex-row justify-end gap-2">
-        <WeatherParameter
-          icon={<WaterDropIcon />}
-          value={`${Math.round(data.humidity)}%`}
-          barColor={getBarColorForHumidity(data.humidity)}
-        />
+        {shortForecast && shortForecast.length > 0 && (
+          <WeatherParameter
+            icon={<WaterDropIcon />}
+            value={`${Math.round(shortForecast[0].pop)}%`}
+            barColor={getBarColorForRain(shortForecast[0].pop)}
+          />
+        )}
         <WeatherParameter
           icon={<AirIcon />}
           value={`${Math.round(data.windSpeed)} km/h`}

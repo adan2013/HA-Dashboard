@@ -37,10 +37,10 @@ export const removePastDays = (days: LongForecast[]): LongForecast[] => {
   })
 }
 
-export const getBarColorForHumidity = (humidity: number): string => {
-  if (humidity > 40 && humidity < 60) return 'bg-green-500'
-  if (humidity > 20 && humidity < 80) return 'bg-yellow-500'
-  if (humidity > 5 && humidity < 95) return 'bg-orange-500'
+export const getBarColorForRain = (pop: number): string => {
+  if (pop < 20) return 'bg-green-500'
+  if (pop >= 20 && pop < 50) return 'bg-yellow-500'
+  if (pop >= 50 && pop < 80) return 'bg-orange-500'
   return 'bg-red-500'
 }
 

@@ -10,14 +10,19 @@ import {
 
 describe('Weather - compact version', () => {
   it('should render current weather', () => {
-    render(<CurrentWeather data={currentWeatherMock} />)
+    render(
+      <CurrentWeather
+        data={currentWeatherMock}
+        shortForecast={hourlyForecastMock}
+      />
+    )
     expect(screen.getByRole('img')).toHaveAttribute(
       'src',
       'https://openweathermap.org/img/wn/01d@2x.png'
     )
     expect(screen.getByText('20°')).toBeInTheDocument()
     expect(screen.getByText('Feels like 19°')).toBeInTheDocument()
-    expect(screen.getByText('80%')).toBeInTheDocument()
+    expect(screen.getByText('8%')).toBeInTheDocument()
     expect(screen.getByText('5 km/h')).toBeInTheDocument()
     expect(screen.getByText('UVI 1')).toBeInTheDocument()
     expect(screen.getByText('AQI 2')).toBeInTheDocument()
