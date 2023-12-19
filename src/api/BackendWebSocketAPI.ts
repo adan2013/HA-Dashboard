@@ -74,6 +74,10 @@ class BackendWebSocketAPI extends WebSocketConnector {
     this.sendMsg('dismissNotification', { notificationId: id })
   }
 
+  public triggerRemoteControl(id: string, value: string) {
+    this.sendMsg('remoteControl', { id, value })
+  }
+
   public switchService(serviceName: string, enabled: boolean) {
     this.sendMsg('switchService', { serviceName, enabled })
   }
