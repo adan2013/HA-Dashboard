@@ -2,10 +2,10 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import useAqaraOppleLogic from '../useAqaraOppleLogic'
 import { holdTest } from '../../utils/testUtils'
 
-const callService = jest.fn()
-jest.mock('../../contexts/HomeAssistantContext', () => ({
-  useHomeAssistant: jest.fn(() => ({
-    callService
+const triggerRemoteControl = jest.fn()
+jest.mock('../../contexts/BackendContext', () => ({
+  useBackend: jest.fn(() => ({
+    triggerRemoteControl
   }))
 }))
 
@@ -23,36 +23,26 @@ describe('useAqaraOppleLogic', () => {
     }
     click()
     await waitFor(() =>
-      expect(callService).toHaveBeenCalledWith(undefined, 'mqtt', 'publish', {
-        topic: `dashboard/rc/RC-NAME`,
-        payload: `button_10_single`
-      })
+      expect(triggerRemoteControl).toHaveBeenCalledWith(
+        'RC-NAME',
+        'button_10_single'
+      )
     )
     click()
     click()
     await waitFor(() =>
-      expect(callService).toHaveBeenLastCalledWith(
-        undefined,
-        'mqtt',
-        'publish',
-        {
-          topic: `dashboard/rc/RC-NAME`,
-          payload: `button_10_double`
-        }
+      expect(triggerRemoteControl).toHaveBeenLastCalledWith(
+        'RC-NAME',
+        'button_10_double'
       )
     )
     click()
     click()
     click()
     await waitFor(() =>
-      expect(callService).toHaveBeenLastCalledWith(
-        undefined,
-        'mqtt',
-        'publish',
-        {
-          topic: `dashboard/rc/RC-NAME`,
-          payload: `button_10_triple`
-        }
+      expect(triggerRemoteControl).toHaveBeenLastCalledWith(
+        'RC-NAME',
+        'button_10_triple'
       )
     )
   })
@@ -62,10 +52,10 @@ describe('useAqaraOppleLogic', () => {
     await holdTest(1100)
     fireEvent.mouseUp(screen.getByText('BUTTON'))
     await waitFor(() =>
-      expect(callService).toHaveBeenCalledWith(undefined, 'mqtt', 'publish', {
-        topic: `dashboard/rc/RC-NAME`,
-        payload: `button_10_hold`
-      })
+      expect(triggerRemoteControl).toHaveBeenCalledWith(
+        'RC-NAME',
+        'button_10_hold'
+      )
     )
   })
 })

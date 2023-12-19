@@ -6,12 +6,12 @@ export type Button = string | [string, string]
 
 type SwitchButtonProps = {
   button: Button
-  rcName: string
+  entityId: string
   num: number
 }
 
-const SwitchButton = ({ button, rcName, num }: SwitchButtonProps) => {
-  const interactionEvents = useAqaraOppleLogic(rcName, num)
+const SwitchButton = ({ button, entityId, num }: SwitchButtonProps) => {
+  const interactionEvents = useAqaraOppleLogic(entityId, num)
 
   let main: string
   let sub: string
@@ -38,11 +38,11 @@ const SwitchButton = ({ button, rcName, num }: SwitchButtonProps) => {
 }
 
 type SwitcherProps = {
-  rcName: string
+  entityId: string
   buttons: Button[]
 }
 
-const Switcher = ({ rcName, buttons }: SwitcherProps) => (
+const Switcher = ({ entityId, buttons }: SwitcherProps) => (
   <div className="absolute bottom-0 left-0 h-64 w-full p-2">
     <div className={clsx('grid h-full auto-rows-fr grid-cols-2 gap-2')}>
       {buttons.map((btn, idx) => {
@@ -52,7 +52,12 @@ const Switcher = ({ rcName, buttons }: SwitcherProps) => (
         }
         const key = Array.isArray(btn) ? btn[0] : btn
         return (
-          <SwitchButton key={key} rcName={rcName} num={idx + 1} button={btn} />
+          <SwitchButton
+            key={key}
+            entityId={entityId}
+            num={idx + 1}
+            button={btn}
+          />
         )
       })}
     </div>
@@ -61,19 +66,19 @@ const Switcher = ({ rcName, buttons }: SwitcherProps) => (
 
 type RemoteControlTileProps = {
   title: string
-  rcName: string
+  entityId: string
   buttons: Button[]
 }
 
 const RemoteControlTile = ({
   title,
-  rcName,
+  entityId,
   buttons
 }: RemoteControlTileProps) => {
   const tileData: TileProps = {
     title,
     size: 'big',
-    customBody: <Switcher rcName={rcName} buttons={buttons} />
+    customBody: <Switcher entityId={entityId} buttons={buttons} />
   }
   return <Tile {...tileData} />
 }

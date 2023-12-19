@@ -3,17 +3,21 @@ import RemoteControlTile, { Button } from '../RemoteControlTile'
 
 const testButtons: Button[] = ['B1', ['B2-1', 'B2-2'], 'B3', 'B4']
 
-const callService = jest.fn()
-jest.mock('../../../contexts/HomeAssistantContext', () => ({
-  useHomeAssistant: jest.fn(() => ({
-    callService
+const triggerRemoteControl = jest.fn()
+jest.mock('../../../contexts/BackendContext', () => ({
+  useBackend: jest.fn(() => ({
+    triggerRemoteControl
   }))
 }))
 
 describe('RemoteControlTile', () => {
   it('should display all buttons', () => {
     render(
-      <RemoteControlTile title="Remote" rcName="rcTest" buttons={testButtons} />
+      <RemoteControlTile
+        title="Remote"
+        entityId="rcTest"
+        buttons={testButtons}
+      />
     )
     expect(screen.getByText('Remote')).toBeVisible()
     expect(screen.getByText('B1')).toBeVisible()
@@ -25,17 +29,21 @@ describe('RemoteControlTile', () => {
 
   it('should call mqtt server with the correct payload', async () => {
     render(
-      <RemoteControlTile title="Remote" rcName="rcTest" buttons={testButtons} />
+      <RemoteControlTile
+        title="Remote"
+        entityId="rcTest"
+        buttons={testButtons}
+      />
     )
     fireEvent.mouseDown(screen.getByText('B1'))
     fireEvent.mouseUp(screen.getByText('B1'))
     fireEvent.mouseDown(screen.getByText('B1'))
     fireEvent.mouseUp(screen.getByText('B1'))
     await waitFor(() =>
-      expect(callService).toHaveBeenCalledWith(undefined, 'mqtt', 'publish', {
-        topic: `dashboard/rc/rcTest`,
-        payload: `button_1_double`
-      })
+      expect(triggerRemoteControl).toHaveBeenCalledWith(
+        'rcTest',
+        'button_1_double'
+      )
     )
   })
 })

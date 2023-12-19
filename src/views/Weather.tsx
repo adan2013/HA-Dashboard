@@ -68,7 +68,10 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
         className={clsx('flex flex-col gap-2', isWidget && 'cursor-pointer')}
         onClick={isWidget ? () => navigate('/weather') : undefined}
       >
-        <CurrentWeather data={state.current} />
+        <CurrentWeather
+          data={state.current}
+          shortForecast={state.shortForecast}
+        />
         <Divider />
         <ShortForecast
           data={state.shortForecast}
