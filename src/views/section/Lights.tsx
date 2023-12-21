@@ -40,7 +40,7 @@ const Lights = () => (
       <CallRemoteControlTile
         title="Turn off all lights"
         icon={<PowerSettingsNewOutlinedIcon />}
-        rcName="livingRoom"
+        entityId="sensor.livingroomremote_action"
         button="button_6_single"
       />
     </TileGroup>
@@ -71,7 +71,7 @@ const Lights = () => (
       <CallRemoteControlTile
         title="Turn off all lights"
         icon={<PowerSettingsNewOutlinedIcon />}
-        rcName="kitchen"
+        entityId="sensor.kitchenremote_action"
         button="button_3_single"
       />
     </TileGroup>

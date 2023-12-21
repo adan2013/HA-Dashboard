@@ -1,11 +1,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import CallRemoteControlTile from '../CallRemoteControlTile'
 
-const callService = jest.fn()
+const triggerRemoteControl = jest.fn()
 
-jest.mock('../../../../contexts/HomeAssistantContext', () => ({
-  useHomeAssistant: jest.fn(() => ({
-    callService
+jest.mock('../../../../contexts/BackendContext', () => ({
+  useBackend: jest.fn(() => ({
+    triggerRemoteControl
   }))
 }))
 
@@ -14,7 +14,7 @@ describe('CallRemoteControlTile', () => {
     render(
       <CallRemoteControlTile
         title="title"
-        rcName="rcName"
+        entityId="remoteEntityId"
         button="buttonName"
         icon={<div data-testid="customIcon" />}
       />
@@ -24,11 +24,11 @@ describe('CallRemoteControlTile', () => {
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
     await waitFor(() =>
-      expect(callService).toHaveBeenCalledWith(undefined, 'mqtt', 'publish', {
-        topic: 'dashboard/rc/rcName',
-        payload: 'buttonName'
-      })
+      expect(triggerRemoteControl).toHaveBeenCalledWith(
+        'remoteEntityId',
+        'buttonName'
+      )
     )
-    expect(callService).toHaveBeenCalledTimes(1)
+    expect(triggerRemoteControl).toHaveBeenCalledTimes(1)
   })
 })
