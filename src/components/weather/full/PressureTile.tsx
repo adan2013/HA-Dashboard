@@ -21,15 +21,18 @@ const PressureTile = ({ current, history }: Props) => {
   const diff = useMemo(() => {
     const min = Math.min(...history)
     const max = Math.max(...history)
-    return max - min
-  }, [history])
+    const diffToMin = current - min
+    const diffToMax = max - current
+    if (diffToMin < diffToMax) return max - min
+    return min - max
+  }, [history, current])
 
   return (
     <Tile
       title="Pressure"
       size="horizontal"
       customBody={
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-2" data-testid={`pressure-diff-${diff}`}>
           <RangeSegmentChart
             value={diff}
             label="hPa"

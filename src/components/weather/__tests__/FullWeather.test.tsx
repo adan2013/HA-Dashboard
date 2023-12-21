@@ -138,11 +138,11 @@ describe('Weather - full version', () => {
     expect(screen.getByText('%')).toBeVisible()
   })
 
-  it('should display pressure tile', () => {
+  it('should display pressure tile with difference segment on the left (negative value)', () => {
     render(
       <PressureTile
         current={currentWeatherMock.pressure}
-        history={[999, 1030, 989, 1001]}
+        history={[980, 988, 992, 1000]}
       />
     )
     expect(screen.getByText('Pressure')).toBeVisible()
@@ -151,8 +151,21 @@ describe('Weather - full version', () => {
     expect(screen.getByText('hPa')).toBeVisible()
     expect(screen.getByText('MIN')).toBeVisible()
     expect(screen.getByText('MAX')).toBeVisible()
-    expect(screen.getByText('989')).toBeVisible()
-    expect(screen.getByText('1030')).toBeVisible()
+    expect(screen.getByText('980')).toBeVisible()
+    expect(screen.getByText('1000')).toBeVisible()
+    expect(screen.getByTestId('pressure-diff--20')).toBeInTheDocument()
+  })
+
+  it('should display pressure tile with difference segment on the right (positive value)', () => {
+    render(
+      <PressureTile
+        current={currentWeatherMock.pressure}
+        history={[1040, 1032, 1026, 1018]}
+      />
+    )
+    expect(screen.getByText('Pressure')).toBeVisible()
+    expect(screen.getAllByText('CHART_COMPONENT')).toHaveLength(2)
+    expect(screen.getByTestId('pressure-diff-22')).toBeInTheDocument()
   })
 
   it('should display sun tile with the correct progress indicator', () => {
