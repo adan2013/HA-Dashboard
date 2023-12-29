@@ -9,10 +9,10 @@ const RemoteControl = () => (
         title="Living room"
         entityId="sensor.livingroomremote_action"
         buttons={[
-          ['Back ambient', 'Min / Normal'],
-          ['Full ambient', 'Normal / Max'],
+          'Back section',
+          'Full main light',
           'TV light',
-          ['Table light', 'Normal / Max'],
+          'Table light',
           undefined,
           'Turn off'
         ]}
