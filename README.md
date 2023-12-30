@@ -11,6 +11,8 @@ Sure! Feel free to fork this repository and modify it to your needs. Change the 
 **Do I need only a Home Assistant instance?**
 No, except the Home Assistant, my implementation uses an external Node.js backend for the weather, real-time notifications etc. Of course, you can remove the backend if you like, but it requires a few changes in the code. The repository for the Node.js backend can be found [here](https://github.com/adan2013/HA-Backend).
 
+![data flow](docs/data-flow.png)
+
 ## Future plans
 
 - [ ] Publicly hosted demo
