@@ -49,6 +49,7 @@ describe('Notifications', () => {
     expect(screen.getByText('test1_description')).toBeVisible()
     expect(screen.getByText('test1_extraInfo')).toBeVisible()
     expect(screen.getByText('12:00 05-05-2023')).toBeVisible()
+    expect(screen.queryByTestId('action-test1')).not.toBeInTheDocument()
     expect(screen.getByTestId('notification-close-button-test1')).toBeVisible()
     expect(
       screen
@@ -102,5 +103,11 @@ describe('Notifications', () => {
     expect(
       screen.queryByTestId('notification-close-button-test1')
     ).not.toBeInTheDocument()
+  })
+
+  it('should render action button for notification test3', () => {
+    renderView(true, false, [mockNotification('test3')])
+    expect(screen.getByTestId('action-test3')).toBeInTheDocument()
+    expect(screen.getByText('EXAMPLE ACTION')).toBeVisible()
   })
 })

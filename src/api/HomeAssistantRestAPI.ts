@@ -7,7 +7,7 @@ type SensorHistoryItem = {
   value: number
 }
 
-class HomeAssistantWebSocketAPI {
+class HomeAssistantRestAPI {
   private static getApiConfig = () => {
     const host = getHomeAssistantHost()
     const token = getHomeAssistantToken()
@@ -55,4 +55,4 @@ class HomeAssistantWebSocketAPI {
   }
 }
 
-export default HomeAssistantWebSocketAPI
+export default HomeAssistantRestAPI

@@ -63,10 +63,18 @@ export const SynologySecurityStatus = () => {
   verifyStatus('update')
   verifyStatus('userInfo')
 
+  let subtitleText = 'Safe'
+  if (!isSafe) {
+    subtitleText = `Unsafe: ${unSafeStatuses.join(', ')}`
+  }
+  if (isUnavailable) {
+    subtitleText = 'Unknown'
+  }
+
   const tileProps: TileProps = {
     title: 'Security status',
-    subtitle: isSafe ? 'Safe' : `Unsafe: ${unSafeStatuses.join(', ')}`,
-    icon: isSafe ? <CheckIcon /> : <UpdateIcon />,
+    subtitle: subtitleText,
+    icon: isSafe && !isUnavailable ? <CheckIcon /> : <UpdateIcon />,
     iconClassnames: isSafe ? undefined : 'text-yellow-600',
     isUnavailable
   }

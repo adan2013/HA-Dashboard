@@ -9,6 +9,7 @@ import {
   NotificationsServiceData
 } from '../api/backend/notificationTypes'
 import { addLeadingZero } from '../utils/numberUtils'
+import NotificationActionButton from '../components/notifications/NotificationActionButton'
 
 const getBorderColor = (lightType: NotificationLight) => {
   switch (lightType) {
@@ -87,7 +88,7 @@ const Notifications = ({
             state.active.length > 1 ? 'NOTIFICATIONS' : 'NOTIFICATION'
           }`}
           <Link to="/notifications">
-            <div className="absolute right-0 top-0 flex h-full cursor-pointer items-center rounded-lg bg-gray-600 px-3 text-sm hover:bg-blue-800">
+            <div className="absolute right-0 top-0 flex h-full cursor-pointer items-center rounded bg-gray-600 px-3 text-sm hover:bg-blue-800">
               OPEN FULL VIEW
             </div>
           </Link>
@@ -122,6 +123,7 @@ const Notifications = ({
           <div className="mt-3 text-right text-sm font-light text-gray-200">
             {formatTime(n.createdAt)}
           </div>
+          <NotificationActionButton id={n.id} />
         </div>
       ))}
     </div>
