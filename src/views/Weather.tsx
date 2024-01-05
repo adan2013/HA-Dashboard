@@ -26,8 +26,9 @@ import { getDayOfWeekName } from '../components/weather/utils'
 import { addLeadingZero } from '../utils/numberUtils'
 import WindGustTile from '../components/weather/full/WindGustTile'
 import DewPointTile from '../components/weather/full/DewPointTile'
-import CloudsTile from '../components/weather/full/CloudsTile'
-import VisibilityTile from '../components/weather/full/VisibilityTile'
+import UvIndexHistoryTile from '../components/weather/full/UvIndexHistoryTile'
+import AqIndexHistoryTile from '../components/weather/full/AqIndexHistoryTile'
+import MetadataFooter from '../components/weather/full/MetadataFooter'
 
 const Divider = () => <div className="mx-1 border-b-[1px] border-gray-400" />
 
@@ -110,8 +111,8 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
             sunrise={state.current.sunrise}
             sunset={state.current.sunset}
           />
-          <CloudsTile value={state.current.clouds} />
-          <VisibilityTile value={state.current.visibility} />
+          <UvIndexHistoryTile history={state.historicalWeather.uvi} />
+          <AqIndexHistoryTile history={state.historicalWeather.aqi} />
         </div>
         <TableForecastView
           data={state.shortForecast}
@@ -130,11 +131,7 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
             `${getDayOfWeekName(date)} ${addLeadingZero(date.getDate())}`
           }
         />
-        <div className="py-4 text-center font-light text-gray-300">
-          Last update at: {new Date(state.timestamp).toLocaleString()}
-          <br />
-          {`Air quality index provided by ${state.aqiStation}`}
-        </div>
+        <MetadataFooter state={state} />
       </div>
     </div>
   )

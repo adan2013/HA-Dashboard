@@ -57,11 +57,15 @@ export type HistoricalWeather = {
   temp: number[]
   windSpeed: number[]
   pressure: number[]
+  uvi: number[]
+  aqi: number[]
 }
 
 export type WeatherServiceData = {
   timestamp: number
-  aqiStation: string
+  aqiStationName: string
+  aqiStationId: string
+  aqiStationTime: string
   current: CurrentWeather
   shortForecast: ShortForecast[]
   longForecast: LongForecast[]

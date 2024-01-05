@@ -4,7 +4,8 @@ import TemperatureHistoryTile from '../full/TemperatureHistoryTile'
 import {
   currentWeatherMock,
   dailyForecastMock,
-  hourlyForecastMock
+  hourlyForecastMock,
+  weatherServiceDataMock
 } from '../../../api/backend/weatherMocks'
 import UvIndexTile from '../full/UvIndexTile'
 import AirQualityIndexTile from '../full/AirQualityIndexTile'
@@ -24,6 +25,9 @@ import TableForecastView, {
 import { addLeadingZero } from '../../../utils/numberUtils'
 import { getDayOfWeekName } from '../utils'
 import RainRadarTile from '../full/RainRadarTile'
+import UvIndexHistoryTile from '../full/UvIndexHistoryTile'
+import AqIndexHistoryTile from '../full/AqIndexHistoryTile'
+import MetadataFooter from '../full/MetadataFooter'
 
 const openModalMock = jest.fn()
 
@@ -45,6 +49,21 @@ jest.mock('recharts', () => {
 })
 
 describe('Weather - full version', () => {
+  it('should render footer with metadata', () => {
+    render(<MetadataFooter state={weatherServiceDataMock} />)
+    expect(
+      screen.getByText('Last update at: 12/31/2023, 11:00:00 PM')
+    ).toBeVisible()
+    expect(
+      screen.getByText('Air quality index provided by AirQualityStationName')
+    ).toBeVisible()
+    expect(
+      screen.getByText(
+        'Station ID: 123456 | Station time: 12/4/2023, 5:13:00 AM'
+      )
+    ).toBeVisible()
+  })
+
   it('should display current weather tile', () => {
     render(<CurrentWeatherTile current={currentWeatherMock} />)
     expect(screen.getByText('20°')).toBeVisible()
@@ -210,6 +229,26 @@ describe('Weather - full version', () => {
     expect(screen.getByText('9.5')).toBeVisible()
     expect(screen.getByText('km')).toBeVisible()
     expect(screen.getByText('95%')).toBeVisible()
+  })
+
+  it('should display UV index history tile', () => {
+    render(<UvIndexHistoryTile history={[0, 1, 1, 5, 3, 2]} />)
+    expect(screen.getByText('UVI history')).toBeVisible()
+    expect(screen.getByText('MIN')).toBeVisible()
+    expect(screen.getByText('MAX')).toBeVisible()
+    expect(screen.getByText('0')).toBeVisible()
+    expect(screen.getByText('5')).toBeVisible()
+    expect(screen.getByText('CHART_COMPONENT')).toBeVisible()
+  })
+
+  it('should display AQ index history tile', () => {
+    render(<AqIndexHistoryTile history={[1, 1, 2, 3, 4, 1]} />)
+    expect(screen.getByText('AQI history')).toBeVisible()
+    expect(screen.getByText('MIN')).toBeVisible()
+    expect(screen.getByText('MAX')).toBeVisible()
+    expect(screen.getByText('1')).toBeVisible()
+    expect(screen.getByText('4')).toBeVisible()
+    expect(screen.getByText('CHART_COMPONENT')).toBeVisible()
   })
 
   it('should display table view for short forecast', () => {

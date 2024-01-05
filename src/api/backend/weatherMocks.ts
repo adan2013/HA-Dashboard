@@ -142,13 +142,17 @@ export const dailyForecastMock: LongForecast[] = [
 
 export const weatherServiceDataMock: WeatherServiceData = {
   timestamp: new Date('2023-12-31T23:00:00').getTime(),
-  aqiStation: 'AirQualityStationName',
+  aqiStationName: 'AirQualityStationName',
+  aqiStationId: '123456',
+  aqiStationTime: '2023-12-04T05:13:00Z',
   current: currentWeatherMock,
   shortForecast: hourlyForecastMock,
   longForecast: dailyForecastMock,
   historicalWeather: {
     temp: [4, 8, 1, -2, 0, 1],
     windSpeed: [10, 12, 3, 0, 5, 7],
-    pressure: [1004, 1011, 1005, 1006, 1010, 1011]
+    pressure: [1004, 1011, 1005, 1006, 1010, 1011],
+    uvi: [0, 1, 2, 2, 3, 2],
+    aqi: [1, 1, 2, 3, 2, 1]
   }
 }
