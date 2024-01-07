@@ -14,6 +14,7 @@ import {
 } from '../../components/entityTiles/switch/PlugTile'
 import { TemperatureChartTile } from '../../components/entityTiles/climate/ClimateTile'
 import StateDropdownHelperTile from '../../components/entityTiles/helpers/StateDropdownHelperTile'
+import NumericValueTile from '../../components/entityTiles/general/NumericValueTile'
 
 const Automations = () => (
   <TileSection>
@@ -41,20 +42,16 @@ const Automations = () => (
       />
       <ToggleHelperTile
         title="Motion sensor"
-        entityId="binary_sensor.kitchen_node_motion_in_kitchen"
+        entityId="binary_sensor.kitchenmotionsensor_occupancy"
         onIcon={<VisibilityIcon />}
         offIcon={<VisibilityOffIcon />}
         stateNames={['clear', 'detected']}
         readonly
       />
-      <ToggleHelperTile
+      <NumericValueTile
         title="Light sensor"
-        entityId="binary_sensor.kitchen_node_bright_in_kitchen"
-        onIcon={<WbSunnyIcon />}
-        offIcon={<NightsStayIcon />}
-        onColor="text-yellow-500"
-        stateNames={['dark', 'bright']}
-        readonly
+        entityId="sensor.kitchenmotionsensor_illuminance_lux"
+        unit="lux"
       />
     </TileGroup>
     <TileGroup name="Bathroom">
@@ -91,14 +88,6 @@ const Automations = () => (
       <EnergyConsumptionChartTile
         title="WM energy consumption"
         entityId="sensor.washingmachineplug_energy"
-        customProps={{
-          hideMinMax: true,
-          hideChart: true,
-          disableModalHistory: true,
-          customTileProps: {
-            size: 'standard'
-          }
-        }}
       />
       <TemperatureChartTile
         title="WM plug temperature"

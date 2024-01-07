@@ -15,35 +15,19 @@ jest.mock('../../../../api/hooks', () => {
 })
 
 describe('PlugTile', () => {
-  it('should render PowerChart tile with custom props', () => {
-    render(
-      <PowerChartTile
-        title="title"
-        entityId="entityName"
-        customProps={{
-          unit: '%'
-        }}
-      />
-    )
+  it('should render PowerChart tile', () => {
+    render(<PowerChartTile title="title" entityId="entityName" />)
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('14')).toBeInTheDocument()
     expect(screen.getByText('.5')).toBeInTheDocument()
-    expect(screen.getByText('%')).toBeInTheDocument()
+    expect(screen.getByText('W')).toBeInTheDocument()
   })
 
-  it('should render EnergyConsumption tile with custom props', () => {
-    render(
-      <EnergyConsumptionChartTile
-        title="title"
-        entityId="entityName"
-        customProps={{
-          unit: '%'
-        }}
-      />
-    )
+  it('should render EnergyConsumption tile', () => {
+    render(<EnergyConsumptionChartTile title="title" entityId="entityName" />)
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('14')).toBeInTheDocument()
     expect(screen.getByText('.52')).toBeInTheDocument()
-    expect(screen.getByText('%')).toBeInTheDocument()
+    expect(screen.getByText('kWh')).toBeInTheDocument()
   })
 })
