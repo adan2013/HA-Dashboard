@@ -52,7 +52,6 @@ const renderLightControlBody = ({
   )
   return renderModalBody(<LightControlBody />, 'lightControl', {
     title: 'modal-title',
-    entityName: 'entity_name',
     entityId: 'entity',
     ...modalParams
   })

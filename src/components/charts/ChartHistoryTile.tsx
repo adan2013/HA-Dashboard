@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useHomeAssistantEntity } from '../../api/hooks'
 import BackgroundHistoryChart from './BackgroundHistoryChart'
 import HomeAssistantRestAPI from '../../api/HomeAssistantRestAPI'
-import Tile, { TileProps, TileValue } from '../basic/Tile'
+import { TileProps } from '../basic/Tile'
 import { useModalContext } from '../../contexts/ModalContext'
 import { HistoryChartModalParams } from '../../contexts/modalUtils'
 import { ChartData, getHistoryStats, ValueThreshold } from './utils'
+import NumericValueTile, {
+  NumericValueTileProps
+} from '../entityTiles/general/NumericValueTile'
 
 export type ChartHistoryTileProps = {
   title: string
@@ -23,16 +25,15 @@ const ChartHistoryTile = ({
   title,
   entityId,
   unit,
-  showDecimals,
+  showDecimals = 0,
   hideMinMax,
   hideChart,
   disableModalHistory,
   historyGraphThresholds,
   customTileProps
 }: ChartHistoryTileProps) => {
-  const modal = useModalContext()
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
   const [history, setHistory] = useState<ChartData[]>(null)
+  const modal = useModalContext()
 
   const historyStats = useMemo(
     () => getHistoryStats(history, showDecimals),
@@ -40,70 +41,47 @@ const ChartHistoryTile = ({
   )
 
   useEffect(() => {
-    if (entityState?.id) {
-      HomeAssistantRestAPI.getSensorHistory(entityState.id).then(data => {
-        setHistory(
-          data.map(item => ({
-            id: item.time,
-            name: item.time,
-            value: item.value
-          }))
-        )
-      })
-    }
-  }, [entityState])
+    HomeAssistantRestAPI.getSensorHistory(entityId).then(data => {
+      setHistory(
+        data.map(item => ({
+          id: item.time,
+          name: item.time,
+          value: item.value
+        }))
+      )
+    })
+  }, [entityId])
 
   const openHistoryModal = () => {
     const params: HistoryChartModalParams = {
       title,
-      entityName: entityState.attributes.friendly_name,
-      entityId: entityState?.id,
+      entityId,
       graphValueThresholds: historyGraphThresholds
     }
     modal.openModal('historyChart', params)
   }
 
-  const getValue = (): TileValue | string => {
-    const value = Number.parseFloat(entityState?.state) || 0
-    if (value === 0) {
-      return {
-        main: 0,
-        decimal: showDecimals ? 0 : undefined,
-        unit
-      }
-    }
-    const main = Math.floor(value)
-    const decimalPart = value.toString().split('.')[1] || '00000'
-    const decimal = decimalPart.substring(0, showDecimals)
-    return {
-      main,
-      decimal: showDecimals ? decimal : undefined,
-      unit
-    }
-  }
-
-  const tileData: TileProps = {
+  const numericTileData: NumericValueTileProps = {
     title,
-    value: getValue(),
-    size: 'horizontal',
-    onClick: disableModalHistory ? undefined : openHistoryModal,
-    isUnavailable,
-    ...customTileProps
+    entityId,
+    unit,
+    showDecimals,
+    customTileProps: {
+      size: 'horizontal',
+      onClick: disableModalHistory ? undefined : openHistoryModal,
+      customBody:
+        !hideChart && history ? (
+          <BackgroundHistoryChart data={history} />
+        ) : undefined,
+      metadata:
+        !hideMinMax && historyStats
+          ? [`${historyStats.min} / ${historyStats.max}`]
+          : undefined,
+      ...customTileProps
+    }
   }
 
-  if (!hideChart && history) {
-    tileData.customBody = <BackgroundHistoryChart data={history} />
-  }
-
-  if (!hideMinMax && historyStats) {
-    tileData.metadata = [`${historyStats.min} / ${historyStats.max}`]
-  }
-
-  return <Tile {...tileData} />
-}
-
-ChartHistoryTile.defaultProps = {
-  showDecimals: 0
+  return <NumericValueTile {...numericTileData} />
 }
 
 export default ChartHistoryTile

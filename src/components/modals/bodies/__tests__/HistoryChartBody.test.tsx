@@ -18,7 +18,6 @@ jest.mock('axios', () => ({
 
 const testParams: HistoryChartModalParams = {
   title: 'chart-title',
-  entityName: 'entityName',
   entityId: 'entityId',
   graphValueThresholds: [
     {
