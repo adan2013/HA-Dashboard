@@ -26,13 +26,6 @@ const actionConfig: NotificationAction[] = [
         }
       )
     }
-  },
-  {
-    id: 'waterFilterInspection',
-    text: 'Show inspections',
-    action: ({ navigate }) => {
-      navigate('/section/automations')
-    }
   }
 ]
 
