@@ -71,7 +71,7 @@ const CurrentWeather = ({ data, shortForecast }: CurrentWeatherProps) => (
         />
         <WeatherParameter
           icon={<BiotechIcon />}
-          value={`AQI ${Math.round(data.aqi)}`}
+          value={data.aqi === 0 ? 'AQI ??' : `AQI ${Math.round(data.aqi)}`}
           barColor={getBarColorForAirQuality(Math.round(data.aqi))}
         />
       </div>

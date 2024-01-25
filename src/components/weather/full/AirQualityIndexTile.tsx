@@ -7,7 +7,6 @@ type AirQualityIndexTileProps = {
 
 const getAirQualityDescription = (aqi: number) => {
   switch (aqi) {
-    case 0:
     case 1:
       return 'Good'
     case 2:
@@ -16,8 +15,10 @@ const getAirQualityDescription = (aqi: number) => {
       return 'Moderate'
     case 4:
       return 'Poor'
-    default:
+    case 5:
       return 'Hazardous'
+    default:
+      return 'Unknown'
   }
 }
 
@@ -30,6 +31,7 @@ const AirQualityIndexTile = ({ value }: AirQualityIndexTileProps) => {
       customBody={
         <RangeSegmentChart
           value={aqi}
+          customCenterValue={aqi === 0 ? '--' : aqi}
           label={getAirQualityDescription(aqi)}
           thresholds={[1, 2, 3, 4]}
         />

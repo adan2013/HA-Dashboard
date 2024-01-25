@@ -84,7 +84,9 @@ export const getBarColorForAirQuality = (aqi: number): string => {
       return 'bg-orange-500'
     case 4:
       return 'bg-red-500'
-    default:
+    case 5:
       return 'bg-purple-500'
+    default:
+      return 'bg-gray-400'
   }
 }
