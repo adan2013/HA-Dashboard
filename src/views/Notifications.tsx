@@ -94,7 +94,6 @@ const Notifications = ({
           </Link>
         </div>
       )}
-      {state.dndMode && <DndIsModeActive />}
       {state.active.map(n => (
         <div
           key={n.id}
@@ -126,6 +125,7 @@ const Notifications = ({
           <NotificationActionButton id={n.id} />
         </div>
       ))}
+      {state.dndMode && <DndIsModeActive />}
     </div>
   )
 }
