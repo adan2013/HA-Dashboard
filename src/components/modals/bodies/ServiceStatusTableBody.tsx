@@ -44,6 +44,17 @@ const ServiceStatusTableBody = () => {
 
   const getServiceRow = (serviceName: string, service: ServiceStatus) => (
     <tr key={serviceName} className="hover:bg-gray-700">
+      <td className="p-2 text-center hover:cursor-pointer">
+        {service.status.enabled ? (
+          <div onClick={() => backend?.switchService(serviceName, false)}>
+            <PowerSettingsNewIcon className="!text-3xl text-green-500" />
+          </div>
+        ) : (
+          <div onClick={() => backend?.switchService(serviceName, true)}>
+            <PowerSettingsNewIcon className="!text-3xl text-red-500" />
+          </div>
+        )}
+      </td>
       <td className="p-2 text-left">{serviceName}</td>
       <td className="min-w-[300px] p-2 text-left text-sm">
         <div
@@ -54,25 +65,13 @@ const ServiceStatusTableBody = () => {
         />
         {service.status.message}
       </td>
-      <td className="p-2 text-right hover:cursor-pointer">
-        {service.status.enabled ? (
-          <div onClick={() => backend?.switchService(serviceName, false)}>
-            <PowerSettingsNewIcon className="mr-1 text-green-500" />
-            Enabled
-          </div>
-        ) : (
-          <div onClick={() => backend?.switchService(serviceName, true)}>
-            <PowerSettingsNewIcon className="mr-1 text-red-500" />
-            Disabled
-          </div>
-        )}
-      </td>
     </tr>
   )
 
   const getHelperRow = (helperName: string, status: Status) => (
     <tr key={helperName} className="hover:bg-gray-700">
-      <td className="p-2 text-left">{`↳ ${helperName}`}</td>
+      <td />
+      <td className="p-2 pl-4 text-left">{`→ ${helperName}`}</td>
       <td className="p-2 text-left text-sm">
         <div
           className={clsx(
@@ -93,15 +92,17 @@ const ServiceStatusTableBody = () => {
             Current time: {state.currentTime}
             <br />
             Started at: {state.startTime} ({state.daysRunning} days)
+            <br />
+            Entities count: {state.syncedEntitiesCount}
           </div>
           <div className="mx-4 text-center">
             <div className="my-4 h-[450px] max-h-[calc(100vh-250px)] overflow-scroll">
               <table className="w-full">
                 <thead className="border-b-[1px] border-white">
                   <tr>
+                    <th className="p-2" />
                     <th className="p-2 text-left">Name</th>
                     <th className="p-2 text-left">Status</th>
-                    <th className="p-2 text-right">State</th>
                   </tr>
                 </thead>
                 <tbody>

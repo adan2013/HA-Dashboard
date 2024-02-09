@@ -7,7 +7,7 @@ const testEntities: ZigbeeEntityState[] = [
   getZigbeeEntity('device1', 10, 100),
   getZigbeeEntity('device2', 45, 200),
   getZigbeeEntity('device3', 70, 140),
-  getZigbeeEntity('device4', 29, 20),
+  getZigbeeEntity('device4', 15, 19),
   getZigbeeEntity('device5', 40, 50),
   getZigbeeEntity('device6', 100, 255)
 ]
@@ -27,7 +27,7 @@ describe('ZigbeeTiles', () => {
     expect(screen.getByTestId('device3_name-2')).toBeInTheDocument()
     expect(screen.getByText('70%')).toBeInTheDocument()
     expect(screen.getByTestId('device4_name-3')).toBeInTheDocument()
-    expect(screen.getByText('29%')).toBeInTheDocument()
+    expect(screen.getByText('15%')).toBeInTheDocument()
     expect(screen.getByTestId('device5_name-4')).toBeInTheDocument()
     expect(screen.getByText('40%')).toBeInTheDocument()
     expect(screen.getByText('See more (1)')).toBeInTheDocument()
@@ -45,7 +45,7 @@ describe('ZigbeeTiles', () => {
     expect(screen.getByTestId('device3_name-2')).toBeInTheDocument()
     expect(screen.getByText('140 LQ')).toBeInTheDocument()
     expect(screen.getByTestId('device4_name-3')).toBeInTheDocument()
-    expect(screen.getByText('20 LQ')).toBeInTheDocument()
+    expect(screen.getByText('19 LQ')).toBeInTheDocument()
     expect(screen.getByTestId('device5_name-4')).toBeInTheDocument()
     expect(screen.getByText('50 LQ')).toBeInTheDocument()
     expect(screen.getByText('See more (1)')).toBeInTheDocument()

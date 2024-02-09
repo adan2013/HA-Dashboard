@@ -1,7 +1,5 @@
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import WbSunnyIcon from '@mui/icons-material/WbSunny'
-import NightsStayIcon from '@mui/icons-material/NightsStay'
 import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
@@ -18,42 +16,6 @@ import NumericValueTile from '../../components/entityTiles/general/NumericValueT
 
 const Automations = () => (
   <TileSection>
-    <TileGroup name="Kitchen">
-      <DateCountdownHelperTile
-        title="Water filter"
-        entityId="input_datetime.kitchenfilterservice"
-        interval={120}
-        warningThreshold={10}
-        criticalThreshold={3}
-      />
-      <DateCountdownHelperTile
-        title="Water membrane filter"
-        entityId="input_datetime.kitchenmembranefilterservice"
-        interval={485}
-        warningThreshold={10}
-        criticalThreshold={3}
-      />
-      <DateCountdownHelperTile
-        title="Water mineralization filter"
-        entityId="input_datetime.kitchenfinalfilterservice"
-        interval={365}
-        warningThreshold={10}
-        criticalThreshold={3}
-      />
-      <ToggleHelperTile
-        title="Motion sensor"
-        entityId="binary_sensor.kitchenmotionsensor_occupancy"
-        onIcon={<VisibilityIcon />}
-        offIcon={<VisibilityOffIcon />}
-        stateNames={['clear', 'detected']}
-        readonly
-      />
-      <NumericValueTile
-        title="Light sensor"
-        entityId="sensor.kitchenmotionsensor_illuminance_lux"
-        unit="lux"
-      />
-    </TileGroup>
     <TileGroup name="Bathroom">
       <PowerChartTile
         title="Washing machine power consumption"
@@ -100,6 +62,44 @@ const Automations = () => (
             size: 'standard'
           }
         }}
+      />
+    </TileGroup>
+    <TileGroup name="Kitchen">
+      <ToggleHelperTile
+        title="Motion sensor"
+        entityId="binary_sensor.kitchenmotionsensor_occupancy"
+        onIcon={<VisibilityIcon />}
+        offIcon={<VisibilityOffIcon />}
+        stateNames={['clear', 'detected']}
+        readonly
+      />
+      <NumericValueTile
+        title="Light sensor"
+        entityId="sensor.kitchenmotionsensor_illuminance_lux"
+        unit="lux"
+      />
+    </TileGroup>
+    <TileGroup name="Deadlines">
+      <DateCountdownHelperTile
+        title="Water filter"
+        entityId="input_datetime.kitchenfilterservice"
+        interval={120}
+        warningThreshold={10}
+        criticalThreshold={3}
+      />
+      <DateCountdownHelperTile
+        title="Water membrane filter"
+        entityId="input_datetime.kitchenmembranefilterservice"
+        interval={485}
+        warningThreshold={10}
+        criticalThreshold={3}
+      />
+      <DateCountdownHelperTile
+        title="Water mineralization filter"
+        entityId="input_datetime.kitchenfinalfilterservice"
+        interval={365}
+        warningThreshold={10}
+        criticalThreshold={3}
       />
     </TileGroup>
   </TileSection>
