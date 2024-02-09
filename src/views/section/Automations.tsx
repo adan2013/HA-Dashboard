@@ -1,7 +1,5 @@
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import WbSunnyIcon from '@mui/icons-material/WbSunny'
-import NightsStayIcon from '@mui/icons-material/NightsStay'
 import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
