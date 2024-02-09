@@ -20,6 +20,7 @@ export type ServiceManagerStatus = {
   currentTime: string
   startTime: string
   daysRunning: number
+  syncedEntitiesCount: number
   services: {
     [name: string]: ServiceStatus
   }
