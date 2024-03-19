@@ -13,7 +13,7 @@ const RemoteControl = () => (
           'Full main light',
           'TV light',
           'Table light',
-          undefined,
+          'Cabinet light',
           'Turn off'
         ]}
       />

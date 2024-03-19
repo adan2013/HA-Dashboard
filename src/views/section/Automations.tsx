@@ -88,16 +88,16 @@ const Automations = () => (
         criticalThreshold={3}
       />
       <DateCountdownHelperTile
-        title="Water membrane filter"
-        entityId="input_datetime.kitchenmembranefilterservice"
-        interval={485}
+        title="Water mineralization filter"
+        entityId="input_datetime.kitchenfinalfilterservice"
+        interval={365}
         warningThreshold={10}
         criticalThreshold={3}
       />
       <DateCountdownHelperTile
-        title="Water mineralization filter"
-        entityId="input_datetime.kitchenfinalfilterservice"
-        interval={365}
+        title="Water membrane filter"
+        entityId="input_datetime.kitchenmembranefilterservice"
+        interval={485}
         warningThreshold={10}
         criticalThreshold={3}
       />
