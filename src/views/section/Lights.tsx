@@ -4,7 +4,6 @@ import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOu
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import LightTile from '../../components/entityTiles/lights/LightTile'
-import PlaceholderTile from '../../PlaceholderTile'
 import ToggleHelperTile from '../../components/entityTiles/helpers/ToggleHelperTile'
 import CallRemoteControlTile from '../../components/entityTiles/services/CallRemoteControlTile'
 import SwitchTile from '../../components/entityTiles/switch/SwitchTile'
@@ -12,6 +11,23 @@ import SwitchTile from '../../components/entityTiles/switch/SwitchTile'
 const Lights = () => (
   <TileSection>
     <TileGroup name="Living room">
+      <LightTile
+        title="Back ceiling section"
+        entityId="light.livingroombacklight"
+        lightType="ceiling"
+        lockColorTemperature
+      />
+      <LightTile
+        title="Front ceiling section"
+        entityId="light.livingroomfrontlight"
+        lightType="ceiling"
+        lockColorTemperature
+      />
+      <LightTile
+        title="Cabinet lights"
+        entityId="light.cabinetlight"
+        lightType="bulb"
+      />
       <LightTile
         title="TV light"
         entityId="light.tvlight"
@@ -24,19 +40,6 @@ const Lights = () => (
         lightType="ceiling"
         lockColorTemperature
       />
-      <LightTile
-        title="Front ceiling section"
-        entityId="light.livingroomfrontlight"
-        lightType="ceiling"
-        lockColorTemperature
-      />
-      <LightTile
-        title="Back ceiling section"
-        entityId="light.livingroombacklight"
-        lightType="ceiling"
-        lockColorTemperature
-      />
-      <PlaceholderTile title="Cabinet lights" size="standard" />
       <CallRemoteControlTile
         title="Turn off all lights"
         icon={<PowerSettingsNewOutlinedIcon />}
