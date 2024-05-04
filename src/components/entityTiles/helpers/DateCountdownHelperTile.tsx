@@ -28,15 +28,16 @@ const DateCountdownHelperTile = ({
   const today = new Date()
   const deadline = new Date(entityState?.state)
   deadline.setDate(deadline.getDate() + interval)
-  const daysLeft = Math.ceil((deadline.getTime() - today.getTime()) / 86400000)
+  const daysLeft =
+    Math.ceil((deadline.getTime() - today.getTime()) / 86400000) || 0
   const durability = Math.ceil((daysLeft * 100) / interval)
 
   let chartColor = '#16a34a'
-  if (warningThreshold && durability < warningThreshold) {
+  if (warningThreshold && daysLeft <= warningThreshold) {
     chartColor = '#ea580c'
   }
-  if (criticalThreshold && durability < criticalThreshold) {
-    chartColor = '#dc2626'
+  if (criticalThreshold && daysLeft <= criticalThreshold) {
+    chartColor = '#ff0000'
   }
 
   const displayToast = () => {
