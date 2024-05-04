@@ -79,9 +79,9 @@ describe('DateCountdownHelperTile', () => {
     [67, 80, '#16a34a', '2023-05-11'],
     [41, 49, '#ea580c', '2023-06-11'],
     [25, 30, '#ea580c', '2023-06-30'],
-    [9, 10, '#dc2626', '2023-07-20'],
-    [0, 0, '#dc2626', '2023-07-30'],
-    [0, -31, '#dc2626', '2023-08-30']
+    [9, 10, '#ff0000', '2023-07-20'],
+    [0, 0, '#ff0000', '2023-07-30'],
+    [0, -31, '#ff0000', '2023-08-30']
   ])(
     'should render DateCountdownHelperTile with %i percent of durability and %i days left',
     (durability, daysLeft, color, currentDate) => {

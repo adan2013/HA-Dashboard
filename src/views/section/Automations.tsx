@@ -84,22 +84,36 @@ const Automations = () => (
         title="Water filter"
         entityId="input_datetime.kitchenfilterservice"
         interval={120}
-        warningThreshold={10}
-        criticalThreshold={3}
+        warningThreshold={14}
+        criticalThreshold={7}
       />
       <DateCountdownHelperTile
         title="Water mineralization filter"
         entityId="input_datetime.kitchenfinalfilterservice"
         interval={365}
-        warningThreshold={10}
-        criticalThreshold={3}
+        warningThreshold={14}
+        criticalThreshold={7}
       />
       <DateCountdownHelperTile
         title="Water membrane filter"
         entityId="input_datetime.kitchenmembranefilterservice"
         interval={485}
-        warningThreshold={10}
-        criticalThreshold={3}
+        warningThreshold={14}
+        criticalThreshold={7}
+      />
+      <DateCountdownHelperTile
+        title="Car insurance"
+        entityId="input_datetime.carinsurance"
+        interval={365}
+        warningThreshold={30}
+        criticalThreshold={14}
+      />
+      <DateCountdownHelperTile
+        title="Car technical inspection"
+        entityId="input_datetime.cartechnicalinspection"
+        interval={365}
+        warningThreshold={30}
+        criticalThreshold={14}
       />
     </TileGroup>
   </TileSection>
