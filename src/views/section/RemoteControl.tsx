@@ -1,6 +1,7 @@
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import RemoteControlTile from '../../components/specialTiles/RemoteControlTile'
+import AirConditionerTile from '../../components/specialTiles/AirConditionerTile'
 
 const RemoteControl = () => (
   <TileSection>
@@ -16,6 +17,10 @@ const RemoteControl = () => (
           'Cabinet light',
           'Turn off'
         ]}
+      />
+      <AirConditionerTile
+        title="Gree air conditioner"
+        entityId="climate.airconditioner"
       />
       <RemoteControlTile
         title="Kitchen"

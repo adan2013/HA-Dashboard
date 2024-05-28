@@ -9,6 +9,10 @@ export interface EntityAttributeInterface {
   min_color_temp_kelvin?: number
   max_color_temp_kelvin?: number
   battery?: number
+  current_temperature?: number
+  temperature?: number
+  fan_mode?: string
+  fan_modes?: string[]
   friendly_name: string
   linkquality?: number
 }
