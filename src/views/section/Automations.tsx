@@ -10,7 +10,6 @@ import {
   EnergyConsumptionChartTile,
   PowerChartTile
 } from '../../components/entityTiles/switch/PlugTile'
-import { TemperatureChartTile } from '../../components/entityTiles/climate/ClimateTile'
 import StateDropdownHelperTile from '../../components/entityTiles/helpers/StateDropdownHelperTile'
 import NumericValueTile from '../../components/entityTiles/general/NumericValueTile'
 
@@ -51,20 +50,16 @@ const Automations = () => (
         title="WM energy consumption"
         entityId="sensor.washingmachineplug_energy"
       />
-      <TemperatureChartTile
-        title="WM plug temperature"
-        entityId="sensor.washingmachineplug_device_temperature"
-        customProps={{
-          hideChart: true,
-          disableModalHistory: true,
-          showDecimals: 0,
-          customTileProps: {
-            size: 'standard'
-          }
-        }}
-      />
     </TileGroup>
     <TileGroup name="Kitchen">
+      <PowerChartTile
+        title="A/C power consumption"
+        entityId="sensor.airconditionerbreaker_power"
+      />
+      <EnergyConsumptionChartTile
+        title="A/C energy consumption"
+        entityId="sensor.airconditionerbreaker_energy"
+      />
       <ToggleHelperTile
         title="Motion sensor"
         entityId="binary_sensor.kitchenmotionsensor_occupancy"
