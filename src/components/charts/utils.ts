@@ -24,6 +24,9 @@ export const getHistoryStats = (
     return null
   }
   const values = data.map(i => i.value).filter(i => i > 0)
+  if (values.length === 0) {
+    return null
+  }
   const min = Math.min(...values).toFixed(toFixed)
   const max = Math.max(...values).toFixed(toFixed)
   const sum = values.reduce((a, b) => a + b, 0)
