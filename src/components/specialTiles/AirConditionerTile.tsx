@@ -12,6 +12,7 @@ import AutoModeIcon from '@mui/icons-material/AutoMode'
 import Tile, { TileProps } from '../basic/Tile'
 import { useHomeAssistantEntity } from '../../api/hooks'
 import { useHomeAssistant } from '../../contexts/HomeAssistantContext'
+import useClickHoldLogic from '../../hooks/useClickHoldLogic'
 
 type AcStatusProps = {
   items: {
@@ -44,20 +45,23 @@ type AcButtonProps = {
   onClick?: () => void
 }
 
-const AcButton = ({ icon, text, id, onClick }: AcButtonProps) => (
-  <div
-    className={clsx(
-      'flex cursor-pointer flex-col items-center justify-center rounded-md border-2',
-      'select-none border-gray-400 bg-transparent text-white',
-      'transition-colors hover:border-white hover:bg-white hover:text-black'
-    )}
-    onClick={onClick}
-    data-testid={id ? `btn-${id}` : undefined}
-  >
-    <div>{icon}</div>
-    <div className="mt-1 text-xs">{text}</div>
-  </div>
-)
+const AcButton = ({ icon, text, id, onClick }: AcButtonProps) => {
+  const events = useClickHoldLogic(onClick, undefined)
+  return (
+    <div
+      className={clsx(
+        'flex cursor-pointer flex-col items-center justify-center rounded-md border-2',
+        'select-none border-gray-400 bg-transparent text-white',
+        'transition-colors hover:border-white hover:bg-white hover:text-black'
+      )}
+      data-testid={id ? `btn-${id}` : undefined}
+      {...events}
+    >
+      <div>{icon}</div>
+      <div className="mt-1 text-xs">{text}</div>
+    </div>
+  )
+}
 
 type AirConditionerTileProps = {
   title: string

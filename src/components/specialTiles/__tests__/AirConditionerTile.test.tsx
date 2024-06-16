@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { getMockedEntityState } from '../../../utils/testUtils'
 import { EntityAttributeInterface } from '../../../api/utils'
 import AirConditionerTile from '../AirConditionerTile'
@@ -31,6 +31,11 @@ jest.mock('../../../api/hooks', () => {
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
 const { useHomeAssistantEntity } = require('../../../api/hooks')
+
+const clickButton = (btn: HTMLElement) => {
+  fireEvent.mouseDown(btn)
+  fireEvent.mouseUp(btn)
+}
 
 const renderAirConditionerTile = (
   state = 'off',
@@ -140,7 +145,7 @@ describe('AirConditionerTile', () => {
   describe('target temperature control', () => {
     it('should decrease the target temperature', () => {
       const { inputs } = renderAirConditionerTile()
-      inputs.tempDown.click()
+      clickButton(inputs.tempDown)
       expect(callService).toHaveBeenCalledWith(
         AC_ENTITY_ID,
         'climate',
@@ -153,7 +158,7 @@ describe('AirConditionerTile', () => {
 
     it('should increase the target temperature', () => {
       const { inputs } = renderAirConditionerTile()
-      inputs.tempUp.click()
+      clickButton(inputs.tempUp)
       expect(callService).toHaveBeenCalledWith(
         AC_ENTITY_ID,
         'climate',
@@ -168,7 +173,7 @@ describe('AirConditionerTile', () => {
   describe('fan mode control', () => {
     it('should switch fan mode to auto by clicking fan auto button', () => {
       const { inputs } = renderAirConditionerTile()
-      inputs.fanAuto.click()
+      clickButton(inputs.fanAuto)
       expect(callService).toHaveBeenCalledWith(
         AC_ENTITY_ID,
         'climate',
@@ -193,7 +198,7 @@ describe('AirConditionerTile', () => {
             ...defaultAttributes,
             fan_mode: oldMode
           })
-          inputs.fanDown.click()
+          clickButton(inputs.fanDown)
           expect(callService).toHaveBeenCalledWith(
             AC_ENTITY_ID,
             'climate',
@@ -220,7 +225,7 @@ describe('AirConditionerTile', () => {
             ...defaultAttributes,
             fan_mode: oldMode
           })
-          inputs.fanUp.click()
+          clickButton(inputs.fanUp)
           expect(callService).toHaveBeenCalledWith(
             AC_ENTITY_ID,
             'climate',
@@ -246,13 +251,13 @@ describe('AirConditionerTile', () => {
             hvac_mode: mode
           }
         )
-      inputs.offMode.click()
+      clickButton(inputs.offMode)
       expectCall('off')
-      inputs.fanMode.click()
+      clickButton(inputs.fanMode)
       expectCall('fan_only')
-      inputs.coolMode.click()
+      clickButton(inputs.coolMode)
       expectCall('cool')
-      inputs.autoMode.click()
+      clickButton(inputs.autoMode)
       expectCall('auto')
     })
   })
