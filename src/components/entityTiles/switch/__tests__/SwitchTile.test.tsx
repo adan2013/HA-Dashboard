@@ -31,6 +31,7 @@ describe('SwitchTile', () => {
     render(<SwitchTile title="title" entityId="entityName" />)
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('on')).toBeInTheDocument()
+    expect(screen.getByTestId('PowerIcon')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
     await waitFor(() =>
@@ -47,11 +48,39 @@ describe('SwitchTile', () => {
     render(<SwitchTile title="title" entityId="entityName" />)
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('off')).toBeInTheDocument()
+    expect(screen.getByTestId('PowerOffIcon')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
     await waitFor(() =>
       expect(callService).toHaveBeenCalledWith('entity', 'switch', 'turn_on')
     )
+  })
+
+  it('should use custom on icon', () => {
+    render(
+      <SwitchTile
+        title="title"
+        entityId="entityName"
+        onIcon={<div data-testid="custom-on" />}
+      />
+    )
+    expect(screen.getByTestId('custom-on')).toBeInTheDocument()
+  })
+
+  it('should use custom off icon', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
+    const { useHomeAssistantEntity } = require('../../../../api/hooks')
+    useHomeAssistantEntity.mockImplementationOnce(() =>
+      getMockedEntityState('entity', 'off')
+    )
+    render(
+      <SwitchTile
+        title="title"
+        entityId="entityName"
+        offIcon={<div data-testid="custom-off" />}
+      />
+    )
+    expect(screen.getByTestId('custom-off')).toBeInTheDocument()
   })
 
   it('should disable the toggle option', async () => {
