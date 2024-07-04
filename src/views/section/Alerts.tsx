@@ -34,7 +34,7 @@ const waterLeakSensorProps: Partial<ToggleHelperTileProps> = {
   metadataRenderer: entityState => {
     if (!entityState || !entityState.attributes) return undefined
     const { battery, linkquality } = entityState.attributes
-    return [`${battery}%`, `${linkquality} LQI`]
+    return [`${battery || '--'}%`, `${linkquality || '--'} LQI`]
   }
 }
 
@@ -101,7 +101,11 @@ const Alerts = () => (
         entityId="binary_sensor.waterfilterleaksensor_water_leak"
         {...waterLeakSensorProps}
       />
-      <PlaceholderTile title="Washing machine sensor" size="standard" />
+      <ToggleHelperTile
+        title="WM sensor"
+        entityId="binary_sensor.washingmachineleaksensor_water_leak"
+        {...waterLeakSensorProps}
+      />
       <PlaceholderTile title="Bathroom sensor" size="standard" />
       <ToggleHelperTile
         title="Water leak alerts"
