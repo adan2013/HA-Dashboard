@@ -39,7 +39,7 @@ const clickButton = (btn: HTMLElement) => {
 
 const renderAirConditionerTile = (
   state = 'off',
-  attributes = defaultAttributes,
+  attributes: Partial<EntityAttributeInterface> = {},
   isUnavailable = false
 ) => {
   useHomeAssistantEntity.mockImplementationOnce(() =>
@@ -48,7 +48,10 @@ const renderAirConditionerTile = (
           entityState: null,
           isUnavailable: true
         }
-      : getMockedEntityState(AC_ENTITY_ID, state, attributes)
+      : getMockedEntityState(AC_ENTITY_ID, state, {
+          ...defaultAttributes,
+          ...attributes
+        })
   )
   callService.mockClear()
   return {
@@ -184,6 +187,20 @@ describe('AirConditionerTile', () => {
       )
     })
 
+    it('should highlight the auto fan button if auto mode is active', () => {
+      const { inputs } = renderAirConditionerTile('cool', {
+        fan_mode: 'auto'
+      })
+      expect(inputs.fanAuto).toHaveClass('bg-white')
+    })
+
+    it('should not highlight the auto fan button if auto mode is not active', () => {
+      const { inputs } = renderAirConditionerTile('cool', {
+        fan_mode: 'high'
+      })
+      expect(inputs.fanAuto).not.toHaveClass('bg-white')
+    })
+
     describe('fan down button', () => {
       it.each([
         ['auto', 'high'],
@@ -259,6 +276,14 @@ describe('AirConditionerTile', () => {
       expectCall('cool')
       clickButton(inputs.autoMode)
       expectCall('auto')
+    })
+
+    it('should highlight the selected button mode', () => {
+      const { inputs } = renderAirConditionerTile('fan_only')
+      expect(inputs.offMode).not.toHaveClass('bg-white')
+      expect(inputs.fanMode).toHaveClass('bg-white')
+      expect(inputs.coolMode).not.toHaveClass('bg-white')
+      expect(inputs.autoMode).not.toHaveClass('bg-white')
     })
   })
 })

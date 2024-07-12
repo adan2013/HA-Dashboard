@@ -43,16 +43,19 @@ type AcButtonProps = {
   text?: string
   id?: string
   onClick?: () => void
+  selected?: boolean
 }
 
-const AcButton = ({ icon, text, id, onClick }: AcButtonProps) => {
+const AcButton = ({ icon, text, id, onClick, selected }: AcButtonProps) => {
   const events = useClickHoldLogic(onClick, undefined)
   return (
     <div
       className={clsx(
-        'flex cursor-pointer flex-col items-center justify-center rounded-md border-2',
-        'select-none border-gray-400 bg-transparent text-white',
-        'transition-colors hover:border-white hover:bg-white hover:text-black'
+        'flex cursor-pointer select-none flex-col items-center justify-center rounded-md border-2',
+        'transition-colors hover:border-white hover:bg-white hover:text-black',
+        selected
+          ? 'border-white bg-white text-black'
+          : 'border-gray-400 bg-transparent text-white'
       )}
       data-testid={id ? `btn-${id}` : undefined}
       {...events}
@@ -186,6 +189,7 @@ const AirConditionerTile = ({ title, entityId }: AirConditionerTileProps) => {
             icon={<HdrAutoIcon />}
             id="fan-auto"
             onClick={() => changeFanMode('auto')}
+            selected={transformedFanMode === 'Auto'}
           />
           <AcButton
             icon={<ArrowCircleDownIcon />}
@@ -204,24 +208,28 @@ const AirConditionerTile = ({ title, entityId }: AirConditionerTileProps) => {
             text="Off"
             id="off-mode"
             onClick={() => changeMode('off')}
+            selected={mode === 'off'}
           />
           <AcButton
             icon={<AirIcon />}
             text="Fan"
             id="fan-mode"
             onClick={() => changeMode('fan_only')}
+            selected={mode === 'fan_only'}
           />
           <AcButton
             icon={<AcUnitIcon />}
             text="Cool"
             id="cool-mode"
             onClick={() => changeMode('cool')}
+            selected={mode === 'cool'}
           />
           <AcButton
             icon={<AutoModeIcon />}
             text="Auto"
             id="auto-mode"
             onClick={() => changeMode('auto')}
+            selected={mode === 'auto'}
           />
         </div>
       </div>
