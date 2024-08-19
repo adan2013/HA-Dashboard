@@ -13,7 +13,7 @@ const MonitorValue = ({ title, value }: MonitorValueProps) => (
     <div>
       <div className="text-2xl">
         <span data-testid={`${title}-value`}>
-          {value === undefined ? '-' : value.toFixed(2)}
+          {value === undefined ? '--' : value.toFixed(2)}
         </span>
       </div>
       <div className="text-xs text-gray-300">{title}</div>
