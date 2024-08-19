@@ -6,12 +6,10 @@ import TileGroup from '../../components/layout/TileGroup'
 import ToggleHelperTile from '../../components/entityTiles/helpers/ToggleHelperTile'
 import DateCountdownHelperTile from '../../components/entityTiles/helpers/DateCountdownHelperTile'
 import SwitchTile from '../../components/entityTiles/switch/SwitchTile'
-import {
-  EnergyConsumptionChartTile,
-  PowerChartTile
-} from '../../components/entityTiles/switch/PlugTile'
+import { PowerChartTile } from '../../components/entityTiles/switch/PlugTile'
 import StateDropdownHelperTile from '../../components/entityTiles/helpers/StateDropdownHelperTile'
 import NumericValueTile from '../../components/entityTiles/general/NumericValueTile'
+import EnergyMonitorTile from '../../components/entityTiles/switch/EnergyMonitorTile'
 
 const Automations = () => (
   <TileSection>
@@ -19,6 +17,10 @@ const Automations = () => (
       <PowerChartTile
         title="Washing machine power consumption"
         entityId="sensor.washingmachineplug_power"
+      />
+      <EnergyMonitorTile
+        deviceName="washingMachine"
+        title="WM energy monitor"
       />
       <SwitchTile
         title="WM plug"
@@ -46,19 +48,15 @@ const Automations = () => (
             'Are you sure you want to reset the state of the washing machine?'
         }}
       />
-      <EnergyConsumptionChartTile
-        title="WM energy consumption"
-        entityId="sensor.washingmachineplug_energy"
-      />
     </TileGroup>
     <TileGroup name="Kitchen">
       <PowerChartTile
         title="A/C power consumption"
         entityId="sensor.airconditionerbreaker_power"
       />
-      <EnergyConsumptionChartTile
-        title="A/C energy consumption"
-        entityId="sensor.airconditionerbreaker_energy"
+      <EnergyMonitorTile
+        deviceName="greeAirConditioner"
+        title="A/C energy monitor"
       />
       <ToggleHelperTile
         title="Motion sensor"

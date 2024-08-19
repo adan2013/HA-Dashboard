@@ -14,11 +14,7 @@ const More = () => {
 
   return (
     <TileSection waitForConnection={false}>
-      <TileGroup name="Language">
-        <PlaceholderTile title="Polish" size="standard" />
-        <PlaceholderTile title="English" size="standard" />
-      </TileGroup>
-      <TileGroup name="Dev">
+      <TileGroup name="Info">
         <Tile
           title="Dashboard version"
           customBody={
@@ -39,8 +35,11 @@ const More = () => {
           title="Fully Kiosk API"
           icon={Object.hasOwn(window, 'fully') ? <CheckIcon /> : <ClearIcon />}
         />
+      </TileGroup>
+      <TileGroup name="Testing">
         <SpeakerTestTile />
         <TriggerNotificationTile />
+        <PlaceholderTile title="Send test SMS" size="standard" />
       </TileGroup>
     </TileSection>
   )
