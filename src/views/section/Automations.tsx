@@ -1,13 +1,11 @@
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import ToggleHelperTile from '../../components/entityTiles/helpers/ToggleHelperTile'
 import DateCountdownHelperTile from '../../components/entityTiles/helpers/DateCountdownHelperTile'
 import SwitchTile from '../../components/entityTiles/switch/SwitchTile'
 import { PowerChartTile } from '../../components/entityTiles/switch/PlugTile'
-import StateDropdownHelperTile from '../../components/entityTiles/helpers/StateDropdownHelperTile'
 import NumericValueTile from '../../components/entityTiles/general/NumericValueTile'
 import EnergyMonitorTile from '../../components/entityTiles/switch/EnergyMonitorTile'
 
@@ -26,27 +24,6 @@ const Automations = () => (
         title="WM plug"
         entityId="switch.washingmachineplug"
         confirmationRequired
-      />
-      <StateDropdownHelperTile
-        title="WM status"
-        entityId="input_select.washingmachinestate"
-        icon={<LocalLaundryServiceIcon />}
-        customStateParams={[
-          {
-            state: 'LOADED',
-            iconClassnames: 'text-orange-400'
-          },
-          {
-            state: 'WORKING',
-            iconClassnames: 'text-sky-400'
-          }
-        ]}
-        holdAction={{
-          state: 'EMPTY',
-          confirmationRequired: true,
-          message:
-            'Are you sure you want to reset the state of the washing machine?'
-        }}
       />
     </TileGroup>
     <TileGroup name="Kitchen">
