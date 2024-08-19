@@ -1,6 +1,19 @@
 import Tile, { TileProps, TileValue } from '../../basic/Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 
+export const splitNumericValueToMainAndDecimal = (
+  value: number,
+  showDecimals: number
+): [number, number] => {
+  if (value === 0 || value === undefined) {
+    return [0, 0]
+  }
+  const main = Math.floor(value)
+  const decimalPart = value.toString().split('.')[1] || '00000'
+  const decimal = decimalPart.substring(0, showDecimals)
+  return [main, Number(decimal)]
+}
+
 export type NumericValueTileProps = {
   title: string
   entityId: string
@@ -27,9 +40,10 @@ const NumericValueTile = ({
         unit
       }
     }
-    const main = Math.floor(value)
-    const decimalPart = value.toString().split('.')[1] || '00000'
-    const decimal = decimalPart.substring(0, showDecimals)
+    const [main, decimal] = splitNumericValueToMainAndDecimal(
+      value,
+      showDecimals
+    )
     return {
       main,
       decimal: showDecimals ? decimal : undefined,

@@ -61,7 +61,6 @@ const Alerts = () => (
         metadataRenderer={() => ['22-7']}
       />
       <PlaceholderTile title="SMS alerts" size="standard" />
-      <PlaceholderTile title="Send test SMS" size="standard" />
     </TileGroup>
     <TileGroup name="System and devices">
       <BatteryTile />
