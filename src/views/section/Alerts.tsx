@@ -14,6 +14,7 @@ import { BatteryTile } from '../../components/specialTiles/ZigbeeTiles'
 import ToggleHelperTile, {
   ToggleHelperTileProps
 } from '../../components/entityTiles/helpers/ToggleHelperTile'
+import DateCountdownHelperTile from '../../components/entityTiles/helpers/DateCountdownHelperTile'
 
 const alertToggleProps: Partial<ToggleHelperTileProps> = {
   stateNames: ['DISABLED', 'enabled'],
@@ -110,6 +111,50 @@ const Alerts = () => (
         title="Water leak alerts"
         entityId="input_boolean.alertwaterleak"
         {...alertToggleProps}
+      />
+    </TileGroup>
+    <TileGroup name="Deadlines">
+      <DateCountdownHelperTile
+        title="Water filter"
+        entityId="input_datetime.kitchenfilterservice"
+        interval={120}
+        warningThreshold={14}
+        criticalThreshold={7}
+      />
+      <DateCountdownHelperTile
+        title="Water mineralization filter"
+        entityId="input_datetime.kitchenfinalfilterservice"
+        interval={365}
+        warningThreshold={14}
+        criticalThreshold={7}
+      />
+      <DateCountdownHelperTile
+        title="Water membrane filter"
+        entityId="input_datetime.kitchenmembranefilterservice"
+        interval={485}
+        warningThreshold={14}
+        criticalThreshold={7}
+      />
+      <DateCountdownHelperTile
+        title="Car insurance"
+        entityId="input_datetime.carinsurance"
+        interval={365}
+        warningThreshold={30}
+        criticalThreshold={14}
+      />
+      <DateCountdownHelperTile
+        title="Car technical inspection"
+        entityId="input_datetime.cartechnicalinspection"
+        interval={365}
+        warningThreshold={30}
+        criticalThreshold={14}
+      />
+      <DateCountdownHelperTile
+        title="Coffee machine cleaning"
+        entityId="input_datetime.coffeemachinecleaning"
+        interval={14}
+        warningThreshold={3}
+        criticalThreshold={1}
       />
     </TileGroup>
   </TileSection>
