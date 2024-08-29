@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { ReactElement, ReactNode } from 'react'
 import SupportIcon from '@mui/icons-material/Support'
 import LayersIcon from '@mui/icons-material/Layers'

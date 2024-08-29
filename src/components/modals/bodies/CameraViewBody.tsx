@@ -1,12 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import { useModalContext } from '../../../contexts/ModalContext'
 import { ModalBody, ModalButton, ModalFooter } from '../ModalElements'
 import { CameraViewModalParams } from '../../../contexts/modalUtils'
-import HomeAssistantRestAPI from '../../../api/HomeAssistantRestAPI'
-import HistoryChart from '../../charts/HistoryChart'
-import { ChartData } from '../../charts/utils'
-import Spinner from '../../basic/Spinner'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 
 const parseDate = (date: string) => {

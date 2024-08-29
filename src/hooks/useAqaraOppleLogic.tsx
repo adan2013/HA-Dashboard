@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
 import useMultipleClickHoldLogic from './useMultipleClickHoldLogic'
-import { useHomeAssistant } from '../contexts/HomeAssistantContext'
 import { useBackend } from '../contexts/BackendContext'
 
 const useAqaraOppleLogic = (entityId: string, btnNumber: number) => {
