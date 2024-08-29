@@ -18,6 +18,7 @@ import HistoryChartBody from '../components/modals/bodies/HistoryChartBody'
 import ZigbeeNetworkBody from '../components/modals/bodies/ZigbeeNetworkBody'
 import ServiceStatusTableBody from '../components/modals/bodies/ServiceStatusTableBody'
 import WeatherBody from '../components/modals/bodies/WeatherBody'
+import CameraViewBody from '../components/modals/bodies/CameraViewBody'
 import TriggerNotificationBody from '../components/modals/bodies/TriggerNotificationBody'
 
 type ProviderProps = {
@@ -85,6 +86,8 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
         return <ZigbeeNetworkBody />
       case 'weather':
         return <WeatherBody />
+      case 'cameraView':
+        return <CameraViewBody />
       case 'triggerNotification':
         return <TriggerNotificationBody />
       default:

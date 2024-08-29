@@ -8,6 +8,7 @@ export type ModalType =
   | 'serviceStatus'
   | 'zigbeeNetwork'
   | 'weather'
+  | 'cameraView'
   | 'triggerNotification'
 
 export type ConfirmationModalParams = {
@@ -36,12 +37,18 @@ export type WeatherModalParams = {
   content: 'rain'
 }
 
+export type CameraViewModalParams = {
+  entityId: string
+  imageHost: string
+}
+
 export type ModalParams =
   | ConfirmationModalParams
   | LightControlModalParams
   | HistoryChartModalParams
   | ZigbeeNetworkModalParams
   | WeatherModalParams
+  | CameraViewModalParams
 
 export type ModalState = {
   isOpen: boolean
