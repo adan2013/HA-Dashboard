@@ -23,6 +23,14 @@ type ParamProps = {
   children: ReactNode
 }
 
+const transformRemainingTime = (s: string) => {
+  const time = Number(s)
+  if (time <= 0) return '-- min'
+  const hours = Math.floor(time / 60)
+  const minutes = time % 60
+  return `${hours}h ${minutes}m`
+}
+
 const Param = ({ icon, children }: ParamProps) => (
   <div className="flex flex-row gap-2">
     {icon}
@@ -90,10 +98,9 @@ const BambuLabPrinterTile = ({
   const currentLayer = Number(currentLayerEntity.entityState?.state) || '-'
   const totalLayerCount =
     Number(totalLayerCountEntity.entityState?.state) || '-'
-  const remainingTime =
-    Number(remainingTimeEntity.entityState?.state) > 0
-      ? remainingTimeEntity.entityState?.state
-      : '-- : --'
+  const remainingTime = transformRemainingTime(
+    remainingTimeEntity.entityState?.state
+  )
   const speedProfile = speedProfileEntity.entityState?.state || 'Unknown'
   const nozzleSize = nozzleSizeEntity.entityState?.state
     ? `${nozzleSizeEntity.entityState?.state} mm`
