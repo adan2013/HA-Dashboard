@@ -40,6 +40,9 @@ const BambuLabPrinterTile = ({
   title,
   mainEntityId
 }: BambuLabPrinterTileProps) => {
+  const printStatusEntity = useHomeAssistantEntity(
+    `sensor.${mainEntityId}_print_status`
+  )
   const stageEntity = useHomeAssistantEntity(
     `sensor.${mainEntityId}_current_stage`
   )
@@ -83,6 +86,7 @@ const BambuLabPrinterTile = ({
     `sensor.${mainEntityId}_active_tray`
   )
 
+  const printStatus = printStatusEntity.entityState?.state || 'Unknown'
   const stage = transformStageValue(stageEntity.entityState?.state)
   const currentLayer = Number(currentLayerEntity.entityState?.state) || '-'
   const totalLayerCount =
@@ -111,9 +115,12 @@ const BambuLabPrinterTile = ({
     title,
     size: 'big',
     customBody: (
-      <div className="absolute bottom-0 left-0 h-64 w-full p-2">
+      <div className="absolute bottom-0 left-0 h-72 w-full p-2">
         <div className="flex flex-col gap-4">
-          <div className="font-bold">{stage}</div>
+          <div className="mt-3">
+            <div className="text-2xl font-bold">{capitalize(printStatus)}</div>
+            <div className="text-xs">Stage: {stage}</div>
+          </div>
           <div className="grid grid-cols-2 gap-3">
             <Param
               icon={<LayersIcon />}
