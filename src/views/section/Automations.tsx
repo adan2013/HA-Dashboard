@@ -1,5 +1,6 @@
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import PauseIcon from '@mui/icons-material/Pause'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import ToggleHelperTile from '../../components/entityTiles/helpers/ToggleHelperTile'
@@ -9,6 +10,8 @@ import NumericValueTile from '../../components/entityTiles/general/NumericValueT
 import EnergyMonitorTile from '../../components/entityTiles/switch/EnergyMonitorTile'
 import BambuLabPrinterTile from '../../components/specialTiles/BambuLabPrinterTile'
 import PlaceholderTile from '../../PlaceholderTile'
+import LightTile from '../../components/entityTiles/lights/LightTile'
+import CallServiceTile from '../../components/entityTiles/services/CallServiceTile'
 
 const Automations = () => (
   <TileSection>
@@ -54,8 +57,18 @@ const Automations = () => (
         confirmationRequired
       />
       <PlaceholderTile title="Auto power off" size="standard" />
-      <PlaceholderTile title="Pause current task" size="standard" />
-      <PlaceholderTile title="Chamber light" size="standard" />
+      <CallServiceTile
+        title="Pause printing"
+        domain="button"
+        service="p1s_01p00a453001011_pause_printing"
+        icon={<PauseIcon />}
+        confirmationRequired
+      />
+      <LightTile
+        title="Chamber light"
+        entityId="light.p1s_01p00a453001011_chamber_light"
+        disableManualControl
+      />
       <PlaceholderTile title="Camera view" size="standard" />
     </TileGroup>
     <TileGroup name="Bathroom">
