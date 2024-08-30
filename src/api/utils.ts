@@ -13,6 +13,7 @@ export interface EntityAttributeInterface {
   temperature?: number
   fan_mode?: string
   fan_modes?: string[]
+  entity_picture?: string
   friendly_name: string
   linkquality?: number
 }
