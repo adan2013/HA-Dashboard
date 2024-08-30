@@ -26,6 +26,7 @@ const CameraViewBody = () => {
             <img
               src={`${params.imageHost}${entityState.attributes.entity_picture}`}
               alt="Camera view"
+              data-testid="camera-view"
               className="mx-auto max-h-[calc(100vh-300px)]"
             />
           </>

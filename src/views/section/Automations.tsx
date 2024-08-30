@@ -10,7 +10,6 @@ import { PowerChartTile } from '../../components/entityTiles/switch/PlugTile'
 import NumericValueTile from '../../components/entityTiles/general/NumericValueTile'
 import EnergyMonitorTile from '../../components/entityTiles/switch/EnergyMonitorTile'
 import BambuLabPrinterTile from '../../components/specialTiles/BambuLabPrinterTile'
-import PlaceholderTile from '../../PlaceholderTile'
 import LightTile from '../../components/entityTiles/lights/LightTile'
 import CallServiceTile from '../../components/entityTiles/services/CallServiceTile'
 import Tile from '../../components/basic/Tile'
@@ -62,7 +61,10 @@ const Automations = () => {
           entityId="switch.bambulabprinterplug"
           confirmationRequired
         />
-        <PlaceholderTile title="Auto power off" size="standard" />
+        <ToggleHelperTile
+          title="Auto power off"
+          entityId="input_boolean.printerautooff"
+        />
         <CallServiceTile
           title="Pause printing"
           domain="button"

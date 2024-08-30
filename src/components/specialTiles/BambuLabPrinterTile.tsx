@@ -25,7 +25,7 @@ type ParamProps = {
 
 const transformRemainingTime = (s: string) => {
   const time = Number(s)
-  if (time <= 0) return '-- min'
+  if (time <= 0) return '0h 0m'
   const hours = Math.floor(time / 60)
   const minutes = time % 60
   return `${hours}h ${minutes}m`
@@ -95,9 +95,8 @@ const BambuLabPrinterTile = ({
 
   const printStatus = printStatusEntity.entityState?.state || 'Unknown'
   const stage = transformStageValue(stageEntity.entityState?.state)
-  const currentLayer = Number(currentLayerEntity.entityState?.state) || '-'
-  const totalLayerCount =
-    Number(totalLayerCountEntity.entityState?.state) || '-'
+  const currentLayer = Number(currentLayerEntity.entityState?.state) || 0
+  const totalLayerCount = Number(totalLayerCountEntity.entityState?.state) || 0
   const remainingTime = transformRemainingTime(
     remainingTimeEntity.entityState?.state
   )
