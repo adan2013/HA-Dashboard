@@ -152,7 +152,7 @@ const Alerts = () => (
       <DateCountdownHelperTile
         title="Coffee machine cleaning"
         entityId="input_datetime.coffeemachinecleaning"
-        interval={14}
+        interval={10}
         warningThreshold={3}
         criticalThreshold={1}
       />
