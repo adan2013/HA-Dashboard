@@ -62,8 +62,9 @@ const Automations = () => {
           confirmationRequired
         />
         <ToggleHelperTile
-          title="Auto power off"
+          title="Turn off printer once finished"
           entityId="input_boolean.printerautooff"
+          stateNames={['Disabled', 'Enabled']}
         />
         <CallServiceTile
           title="Pause printing"
