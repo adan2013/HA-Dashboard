@@ -1,6 +1,8 @@
 import clsx from 'clsx'
 import Tile, { TileProps } from '../basic/Tile'
-import useAqaraOppleLogic from '../../hooks/useAqaraOppleLogic'
+import useRemoteControl, {
+  SupportedActions
+} from '../../hooks/useRemoteControl'
 
 export type Button = string | [string, string]
 
@@ -8,10 +10,16 @@ type SwitchButtonProps = {
   button: Button
   entityId: string
   num: number
+  supportedActions: SupportedActions
 }
 
-const SwitchButton = ({ button, entityId, num }: SwitchButtonProps) => {
-  const interactionEvents = useAqaraOppleLogic(entityId, num)
+const SwitchButton = ({
+  button,
+  entityId,
+  num,
+  supportedActions
+}: SwitchButtonProps) => {
+  const interactionEvents = useRemoteControl(entityId, num, supportedActions)
 
   let main: string
   let sub: string
@@ -40,9 +48,10 @@ const SwitchButton = ({ button, entityId, num }: SwitchButtonProps) => {
 type SwitcherProps = {
   entityId: string
   buttons: Button[]
+  supportedActions: SupportedActions
 }
 
-const Switcher = ({ entityId, buttons }: SwitcherProps) => (
+const Switcher = ({ entityId, buttons, supportedActions }: SwitcherProps) => (
   <div className="absolute bottom-0 left-0 h-64 w-full p-2">
     <div className={clsx('grid h-full auto-rows-fr grid-cols-2 gap-2')}>
       {buttons.map((btn, idx) => {
@@ -57,6 +66,7 @@ const Switcher = ({ entityId, buttons }: SwitcherProps) => (
             entityId={entityId}
             num={idx + 1}
             button={btn}
+            supportedActions={supportedActions}
           />
         )
       })}
@@ -68,17 +78,25 @@ type RemoteControlTileProps = {
   title: string
   entityId: string
   buttons: Button[]
+  supportedActions: SupportedActions
 }
 
 const RemoteControlTile = ({
   title,
   entityId,
-  buttons
+  buttons,
+  supportedActions
 }: RemoteControlTileProps) => {
   const tileData: TileProps = {
     title,
     size: 'big',
-    customBody: <Switcher entityId={entityId} buttons={buttons} />
+    customBody: (
+      <Switcher
+        entityId={entityId}
+        buttons={buttons}
+        supportedActions={supportedActions}
+      />
+    )
   }
   return <Tile {...tileData} />
 }

@@ -15,7 +15,8 @@ describe('CallRemoteControlTile', () => {
       <CallRemoteControlTile
         title="title"
         entityId="remoteEntityId"
-        button="buttonName"
+        buttonNumber={2}
+        buttonAction="hold"
         icon={<div data-testid="customIcon" />}
       />
     )
@@ -26,7 +27,8 @@ describe('CallRemoteControlTile', () => {
     await waitFor(() =>
       expect(triggerRemoteControl).toHaveBeenCalledWith(
         'remoteEntityId',
-        'buttonName'
+        2,
+        'hold'
       )
     )
     expect(triggerRemoteControl).toHaveBeenCalledTimes(1)

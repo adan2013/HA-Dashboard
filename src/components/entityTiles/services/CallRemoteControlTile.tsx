@@ -7,20 +7,22 @@ type CallRemoteControlTileProps = {
   title: string
   icon?: ReactElement
   entityId: string
-  button: string
+  buttonNumber: number
+  buttonAction: string
 }
 
 const CallRemoteControlTile = ({
   title,
   icon,
   entityId,
-  button
+  buttonNumber,
+  buttonAction
 }: CallRemoteControlTileProps) => {
   const [disabled, setDisabled] = useState(false)
   const backend = useBackend()
 
   const onClick = () => {
-    backend.triggerRemoteControl(entityId, button)
+    backend.triggerRemoteControl(entityId, buttonNumber, buttonAction)
     setDisabled(true)
     setTimeout(() => setDisabled(false), 1000)
   }

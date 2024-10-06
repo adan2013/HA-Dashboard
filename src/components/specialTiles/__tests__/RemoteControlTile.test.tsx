@@ -1,7 +1,14 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import RemoteControlTile, { Button } from '../RemoteControlTile'
+import { SupportedActions } from '../../../hooks/useRemoteControl'
 
 const testButtons: Button[] = ['B1', ['B2-1', 'B2-2'], 'B3', 'B4']
+
+const supportedActions: SupportedActions = {
+  double: true,
+  triple: true,
+  hold: true
+}
 
 const triggerRemoteControl = jest.fn()
 jest.mock('../../../contexts/BackendContext', () => ({
@@ -17,6 +24,7 @@ describe('RemoteControlTile', () => {
         title="Remote"
         entityId="rcTest"
         buttons={testButtons}
+        supportedActions={supportedActions}
       />
     )
     expect(screen.getByText('Remote')).toBeVisible()
@@ -33,6 +41,7 @@ describe('RemoteControlTile', () => {
         title="Remote"
         entityId="rcTest"
         buttons={testButtons}
+        supportedActions={supportedActions}
       />
     )
     fireEvent.mouseDown(screen.getByText('B1'))
@@ -40,10 +49,7 @@ describe('RemoteControlTile', () => {
     fireEvent.mouseDown(screen.getByText('B1'))
     fireEvent.mouseUp(screen.getByText('B1'))
     await waitFor(() =>
-      expect(triggerRemoteControl).toHaveBeenCalledWith(
-        'rcTest',
-        'button_1_double'
-      )
+      expect(triggerRemoteControl).toHaveBeenCalledWith('rcTest', 1, 'double')
     )
   })
 })

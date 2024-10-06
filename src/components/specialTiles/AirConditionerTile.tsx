@@ -86,8 +86,12 @@ const transformModeType = (mode: string) => {
   }
 }
 
-const transformFanMode = (mode: string, fanModes: string[]) => {
-  if (!!mode && !!fanModes) {
+const transformFanMode = (
+  mode: string,
+  fanModes: string[],
+  isUnavailable = false
+) => {
+  if (!!mode && !!fanModes && !isUnavailable) {
     const fanSpeedSteps = fanModes.filter(fm => fm !== 'auto')
     const selectedFanSpeed = fanSpeedSteps.findIndex(fm => fm === mode)
     return selectedFanSpeed === -1
@@ -111,7 +115,8 @@ const AirConditionerTile = ({ title, entityId }: AirConditionerTileProps) => {
   const transformedMode = transformModeType(mode)
   const transformedFanMode = transformFanMode(
     fanMode,
-    entityState?.attributes?.fan_modes
+    entityState?.attributes?.fan_modes,
+    isUnavailable
   )
   const transformedCurrentTemp = isUnavailable ? '--' : `${currentTemp}°`
   const transformedTemp = isUnavailable ? '--' : `${temp}°`

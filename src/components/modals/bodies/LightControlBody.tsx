@@ -111,7 +111,7 @@ const LightControlBody = () => {
           <>
             <div className="w-[1px] bg-amber-50 opacity-60" />
             <PresetButton
-              icon={<AcUnitIcon />}
+              icon={<Brightness5Icon />}
               id={entityState?.id}
               colorTemp={minColorTemp}
             />
@@ -121,7 +121,7 @@ const LightControlBody = () => {
               colorTemp={(minColorTemp + maxColorTemp) / 2}
             />
             <PresetButton
-              icon={<Brightness5Icon />}
+              icon={<AcUnitIcon />}
               id={entityState?.id}
               colorTemp={maxColorTemp}
             />
