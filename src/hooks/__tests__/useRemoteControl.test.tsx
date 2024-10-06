@@ -1,6 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import useRemoteControl, { SupportedActions } from '../useRemoteControl'
-import { holdTest } from '../../utils/testUtils'
 
 const triggerRemoteControl = jest.fn()
 jest.mock('../../contexts/BackendContext', () => ({
@@ -25,6 +24,10 @@ const TestButton = ({ actions }: { actions?: SupportedActions }) => {
 }
 
 describe('useRemoteControl', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
   it('should call mqtt with correct click payloads (single, double, triple)', async () => {
     render(<TestButton />)
     const click = () => {
@@ -59,7 +62,7 @@ describe('useRemoteControl', () => {
   it('should call mqtt with correct hold payload', async () => {
     render(<TestButton />)
     fireEvent.mouseDown(screen.getByText('BUTTON'))
-    await holdTest(1100)
+    jest.advanceTimersByTime(1100)
     fireEvent.mouseUp(screen.getByText('BUTTON'))
     await waitFor(() =>
       expect(triggerRemoteControl).toHaveBeenCalledWith('RC-NAME', 10, 'hold')
@@ -81,14 +84,14 @@ describe('useRemoteControl', () => {
       fireEvent.mouseUp(screen.getByText('BUTTON'))
     }
     click()
-    await holdTest(1100)
+    jest.advanceTimersByTime(1100)
     click()
     click()
-    await holdTest(1100)
+    jest.advanceTimersByTime(1100)
     click()
     click()
     click()
-    await holdTest(1100)
+    jest.advanceTimersByTime(1100)
     await waitFor(() => expect(triggerRemoteControl).toHaveBeenCalledTimes(2))
   })
 
@@ -103,9 +106,8 @@ describe('useRemoteControl', () => {
       />
     )
     fireEvent.mouseDown(screen.getByText('BUTTON'))
-    await holdTest(1100)
+    jest.advanceTimersByTime(1100)
     fireEvent.mouseUp(screen.getByText('BUTTON'))
-    await holdTest(1100)
     await waitFor(() => expect(triggerRemoteControl).not.toHaveBeenCalled())
   })
 })

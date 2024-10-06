@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import LightTile, { LightTileProps } from '../LightTile'
-import { getMockedEntityState, holdTest } from '../../../../utils/testUtils'
+import { getMockedEntityState } from '../../../../utils/testUtils'
 
 const callService = jest.fn()
 jest.mock('../../../../contexts/HomeAssistantContext', () => ({
@@ -41,6 +41,10 @@ const mockLightState = (turnedOn = true, colorTempSupported = true) => {
 }
 
 describe('LightTile', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
   it('should display the bulb light tile', () => {
     mockLightState()
     render(<LightTile {...testProps} />)
@@ -81,11 +85,11 @@ describe('LightTile', () => {
     expect(callService).toHaveBeenCalledTimes(2)
   })
 
-  it('should open light control modal on hold', async () => {
+  it('should open light control modal on hold', () => {
     mockLightState()
     render(<LightTile {...testProps} lockColorTemperature />)
     fireEvent.mouseDown(screen.getByText('title'))
-    await holdTest(1100)
+    jest.advanceTimersByTime(1100)
     fireEvent.mouseUp(screen.getByText('title'))
     expect(openModalMock).toHaveBeenLastCalledWith('lightControl', {
       title: 'title',
@@ -95,20 +99,20 @@ describe('LightTile', () => {
     expect(openModalMock).toHaveBeenCalledTimes(1)
   })
 
-  it('should disallow to toggle the light on click', async () => {
+  it('should disallow to toggle the light on click', () => {
     mockLightState()
     render(<LightTile {...testProps} disableToggle />)
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
-    await holdTest(500)
+    jest.advanceTimersByTime(500)
     expect(callService).not.toHaveBeenCalled()
   })
 
-  it('should disallow to open the manual control modal on hold', async () => {
+  it('should disallow to open the manual control modal on hold', () => {
     mockLightState()
     render(<LightTile {...testProps} disableManualControl />)
     fireEvent.mouseDown(screen.getByText('title'))
-    await holdTest(1100)
+    jest.advanceTimersByTime(1100)
     fireEvent.mouseUp(screen.getByText('title'))
     expect(openModalMock).not.toHaveBeenCalled()
   })

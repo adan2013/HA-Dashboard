@@ -3,7 +3,7 @@ import { ToastContainer } from 'react-toastify'
 import DateCountdownHelperTile, {
   DateCountdownHelperTileProps
 } from '../DateCountdownHelperTile'
-import { getMockedEntityState, holdTest } from '../../../../utils/testUtils'
+import { getMockedEntityState } from '../../../../utils/testUtils'
 
 const openModalMock = jest.fn()
 
@@ -49,6 +49,10 @@ const testProps: DateCountdownHelperTileProps = {
 }
 
 describe('DateCountdownHelperTile', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
   it('should show a toast when the tile is clicked', async () => {
     render(
       <>
@@ -68,7 +72,7 @@ describe('DateCountdownHelperTile', () => {
   it('should reset the countdown when the tile is held', async () => {
     render(<DateCountdownHelperTile {...testProps} />)
     fireEvent.mouseDown(screen.getByText('title'))
-    await holdTest(1100)
+    jest.advanceTimersByTime(1100)
     fireEvent.mouseUp(screen.getByText('title'))
     await waitFor(() => expect(openModalMock).toHaveBeenCalledTimes(1))
   })

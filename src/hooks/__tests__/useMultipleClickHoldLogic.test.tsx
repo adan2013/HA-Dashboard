@@ -1,6 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import useMultipleClickHoldLogic from '../useMultipleClickHoldLogic'
-import { holdTest } from '../../utils/testUtils'
 
 const TestButton = ({
   onClick,
@@ -16,6 +15,10 @@ const TestButton = ({
 }
 
 describe('useMultipleClickHoldLogic', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
   it('should call onClick with the correct count of clicks', async () => {
     const onClick = jest.fn()
     const onHold = jest.fn()
@@ -44,12 +47,12 @@ describe('useMultipleClickHoldLogic', () => {
     expect(onHold).not.toHaveBeenCalled()
   })
 
-  it('should call onHold when the button is held', async () => {
+  it('should call onHold when the button is held', () => {
     const onClick = jest.fn()
     const onHold = jest.fn()
     render(<TestButton onClick={onClick} onHold={onHold} />)
     fireEvent.mouseDown(screen.getByText('BUTTON'))
-    await holdTest(110)
+    jest.advanceTimersByTime(110)
     fireEvent.mouseUp(screen.getByText('BUTTON'))
     expect(onClick).not.toHaveBeenCalled()
     expect(onHold).toHaveBeenCalledTimes(1)

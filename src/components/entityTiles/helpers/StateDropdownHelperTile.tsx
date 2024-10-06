@@ -60,7 +60,9 @@ const StateDropdownHelperTile = ({
         message:
           action.message ||
           `Are you sure you want to change the state to ${action.state}?`,
-        onConfirm: () => changeState(action.state)
+        onConfirm: () => {
+          changeState(action.state)
+        }
       }
       modal.openModal('confirmation', params)
     } else {
