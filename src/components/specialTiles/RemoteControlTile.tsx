@@ -32,7 +32,7 @@ const SwitchButton = ({
     <div
       className={clsx(
         'flex cursor-pointer items-center justify-center rounded-md border-2',
-        'select-none border-gray-400 bg-transparent text-white',
+        'select-none border-gray-400 bg-transparent text-center text-white',
         'transition-colors hover:border-white hover:bg-white hover:text-black'
       )}
       {...interactionEvents}
