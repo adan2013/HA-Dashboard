@@ -1,6 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import CallServiceTile from '../CallServiceTile'
-import { holdTest } from '../../../../utils/testUtils'
 
 const callService = jest.fn()
 const openModalMock = jest.fn()
@@ -18,6 +17,10 @@ jest.mock('../../../../contexts/ModalContext', () => ({
 }))
 
 describe('CallServiceTile', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
   it('should display all the information and call service with timeout', async () => {
     render(
       <CallServiceTile
@@ -55,7 +58,7 @@ describe('CallServiceTile', () => {
 
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
-    await holdTest(500)
+    jest.advanceTimersByTime(500)
     expect(callService).toHaveBeenCalledTimes(1)
   })
 

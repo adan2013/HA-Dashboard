@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import useClickHoldLogic from '../useClickHoldLogic'
-import { holdTest } from '../../utils/testUtils'
 
 const TestButton = ({
   onClick,
@@ -16,6 +15,10 @@ const TestButton = ({
 }
 
 describe('useClickHoldLogic', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
   it('should call onClick when the user clicks and releases before the delay', () => {
     const onClick = jest.fn()
     const onHold = jest.fn()
@@ -29,19 +32,19 @@ describe('useClickHoldLogic', () => {
     expect(onHold).not.toHaveBeenCalled()
   })
 
-  it('should call onHold when the user hold the button', async () => {
+  it('should call onHold when the user hold the button', () => {
     const onClick = jest.fn()
     const onHold = jest.fn()
     render(<TestButton onClick={onClick} onHold={onHold} />)
     fireEvent.mouseDown(screen.getByText('BUTTON'))
-    await holdTest(150)
+    jest.advanceTimersByTime(80)
     fireEvent.mouseUp(screen.getByText('BUTTON'))
     expect(onHold).toHaveBeenCalledTimes(1)
     fireEvent.touchStart(screen.getByText('BUTTON'))
-    await holdTest(150)
+    jest.advanceTimersByTime(80)
     fireEvent.touchEnd(screen.getByText('BUTTON'))
-    expect(onClick).not.toHaveBeenCalled()
     expect(onHold).toHaveBeenCalledTimes(2)
+    expect(onClick).not.toHaveBeenCalled()
   })
 
   it('should call onHold immediately if user use right mouse button', async () => {

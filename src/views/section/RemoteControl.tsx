@@ -7,10 +7,23 @@ import AirConditionerTile from '../../components/specialTiles/AirConditionerTile
 import SwitchTile, {
   SwitchTileProps
 } from '../../components/entityTiles/switch/SwitchTile'
+import { SupportedActions } from '../../hooks/useRemoteControl'
 
 const acSwitchIcons: Partial<SwitchTileProps> = {
   onIcon: <ToggleOnOutlinedIcon />,
   offIcon: <ToggleOffOutlinedIcon />
+}
+
+const aqaraOppleActions: SupportedActions = {
+  double: true,
+  triple: true,
+  hold: true
+}
+
+const tuyaActions: SupportedActions = {
+  double: true,
+  triple: false,
+  hold: true
 }
 
 const RemoteControl = () => (
@@ -19,6 +32,7 @@ const RemoteControl = () => (
       <RemoteControlTile
         title="Living room"
         entityId="sensor.livingroomremote_action"
+        supportedActions={aqaraOppleActions}
         buttons={[
           'Back section',
           'Full main light',
@@ -48,8 +62,20 @@ const RemoteControl = () => (
         {...acSwitchIcons}
       />
       <RemoteControlTile
+        title="Daniel's bed remote"
+        entityId="sensor.danielbedremote_action"
+        supportedActions={tuyaActions}
+        buttons={[
+          ['Reading mode', 'Minimal mode'],
+          ['Ambient mode', 'Max light'],
+          'Turn off',
+          ['Double: All rooms', '(HOLD) Turn off all']
+        ]}
+      />
+      <RemoteControlTile
         title="Kitchen"
         entityId="sensor.kitchenremote_action"
+        supportedActions={aqaraOppleActions}
         buttons={[
           'Right side',
           'Left side',

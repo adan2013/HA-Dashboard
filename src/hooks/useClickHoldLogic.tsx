@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef } from 'react'
 
 const isTouchEvent = event => 'touches' in event
 
@@ -39,7 +39,7 @@ const useClickHoldLogic = (
   onHold: () => void,
   options: ClickHoldLogicOptions = {}
 ) => {
-  const [holdTriggered, setHoldTriggered] = useState(false)
+  const holdTriggered = useRef<boolean>(false)
   const timeout = useRef<number>()
   const target = useRef<HTMLDivElement>()
   const startCoordinates = useRef<MouseCoordinates>()
@@ -62,7 +62,7 @@ const useClickHoldLogic = (
       }
       timeout.current = window.setTimeout(() => {
         if (onHold) onHold()
-        setHoldTriggered(true)
+        holdTriggered.current = true
       }, delay)
     },
     [onHold, delay, shouldPreventDefault, disableInteractions]
@@ -72,10 +72,15 @@ const useClickHoldLogic = (
     (event, shouldTriggerClick = true) => {
       if (disableInteractions) return
       if (timeout.current) clearTimeout(timeout.current)
-      if (shouldTriggerClick && !holdTriggered && target.current && onClick) {
+      if (
+        shouldTriggerClick &&
+        !holdTriggered.current &&
+        target.current &&
+        onClick
+      ) {
         onClick()
       }
-      setHoldTriggered(false)
+      holdTriggered.current = false
       if (shouldPreventDefault && target.current) {
         target.current.removeEventListener('touchend', preventDefault)
       }
@@ -89,7 +94,7 @@ const useClickHoldLogic = (
       if (holdOnRightClick) {
         event.preventDefault()
         if (onHold) onHold()
-        setHoldTriggered(true)
+        holdTriggered.current = true
       }
     },
     [onHold, holdOnRightClick]

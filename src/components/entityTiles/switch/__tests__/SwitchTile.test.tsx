@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import SwitchTile from '../SwitchTile'
-import { getMockedEntityState, holdTest } from '../../../../utils/testUtils'
+import { getMockedEntityState } from '../../../../utils/testUtils'
 
 const openModalMock = jest.fn()
 const callService = jest.fn()
@@ -27,6 +27,10 @@ jest.mock('../../../../api/hooks', () => {
 })
 
 describe('SwitchTile', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
   it('should render turned on SwitchTile and call turn_off service', async () => {
     render(<SwitchTile title="title" entityId="entityName" />)
     expect(screen.getByText('title')).toBeInTheDocument()
@@ -83,12 +87,12 @@ describe('SwitchTile', () => {
     expect(screen.getByTestId('custom-off')).toBeInTheDocument()
   })
 
-  it('should disable the toggle option', async () => {
+  it('should disable the toggle option', () => {
     render(<SwitchTile title="title" entityId="entityName" disableToggle />)
     expect(screen.getByText('title')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('title'))
     fireEvent.mouseUp(screen.getByText('title'))
-    await holdTest(500)
+    jest.advanceTimersByTime(500)
     expect(callService).not.toHaveBeenCalled()
   })
 

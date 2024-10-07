@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import StateDropdownHelperTile, {
   StateDropdownHelperTileProps
 } from '../StateDropdownHelperTile'
-import { getMockedEntityState, holdTest } from '../../../../utils/testUtils'
+import { getMockedEntityState } from '../../../../utils/testUtils'
 
 const callService = jest.fn()
 const openModalMock = jest.fn()
@@ -59,6 +59,14 @@ const testProps: StateDropdownHelperTileProps = {
 const { useHomeAssistantEntity } = require('../../../../api/hooks')
 
 describe('StateDropdownHelperTile', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
+  beforeEach(() => {
+    callService.mockReset()
+  })
+
   it('should render the tile with a standard state information', () => {
     render(<StateDropdownHelperTile {...testProps} />)
     expect(screen.getByText('title')).toBeInTheDocument()
@@ -115,7 +123,7 @@ describe('StateDropdownHelperTile', () => {
     render(<StateDropdownHelperTile {...testProps} />)
     expect(screen.getByText('normal-state')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('normal-state'))
-    await holdTest(1100)
+    jest.advanceTimersByTime(1100)
     fireEvent.mouseUp(screen.getByText('normal-state'))
     await waitFor(() =>
       expect(openModalMock).toHaveBeenCalledWith(

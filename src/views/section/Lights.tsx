@@ -44,7 +44,8 @@ const Lights = () => (
         title="Turn off all lights"
         icon={<PowerSettingsNewOutlinedIcon />}
         entityId="sensor.livingroomremote_action"
-        button="button_6_single"
+        buttonNumber={6}
+        buttonAction="single"
       />
     </TileGroup>
     <TileGroup name="Kitchen">
@@ -75,10 +76,12 @@ const Lights = () => (
         title="Turn off all lights"
         icon={<PowerSettingsNewOutlinedIcon />}
         entityId="sensor.kitchenremote_action"
-        button="button_3_single"
+        buttonNumber={3}
+        buttonAction="single"
       />
     </TileGroup>
     <TileGroup name="Others">
+      <LightTile title="Daniel`s bed lamp" entityId="light.danielbedlamp" />
       <LightTile
         title="Bathroom light"
         entityId="light.bathroomlight"
@@ -89,6 +92,8 @@ const Lights = () => (
         entityId="light.wclight"
         lightType="ceiling"
       />
+    </TileGroup>
+    <TileGroup name="Outside">
       <SwitchTile title="Balcony light plug" entityId="switch.balconylight" />
       <ToggleHelperTile
         title="Balcony light auto switch"

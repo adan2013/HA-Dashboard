@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import ToggleHelperTile, { ToggleHelperTileProps } from '../ToggleHelperTile'
-import { getMockedEntityState, holdTest } from '../../../../utils/testUtils'
+import { getMockedEntityState } from '../../../../utils/testUtils'
 
 const callService = jest.fn()
 jest.mock('../../../../contexts/HomeAssistantContext', () => ({
@@ -32,6 +32,10 @@ const testProps: ToggleHelperTileProps = {
 }
 
 describe('ToggleHelperTile', () => {
+  beforeAll(() => {
+    jest.useFakeTimers()
+  })
+
   it('should render ToggleHelperTile', () => {
     render(<ToggleHelperTile {...testProps} />)
     expect(screen.getByText('title')).toBeInTheDocument()
@@ -84,12 +88,12 @@ describe('ToggleHelperTile', () => {
     }
   )
 
-  it('should not call the ha service if tile is in readonly mode', async () => {
+  it('should not call the ha service if tile is in readonly mode', () => {
     render(<ToggleHelperTile {...testProps} readonly />)
     expect(screen.getByText('on')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('on'))
     fireEvent.mouseUp(screen.getByText('on'))
-    await holdTest(500)
+    jest.advanceTimersByTime(500)
     expect(callService).not.toHaveBeenCalled()
   })
 
@@ -144,7 +148,7 @@ describe('ToggleHelperTile', () => {
     expect(screen.getByText('unknown')).toBeInTheDocument()
     fireEvent.mouseDown(screen.getByText('unknown'))
     fireEvent.mouseUp(screen.getByText('unknown'))
-    await holdTest(500)
+    jest.advanceTimersByTime(500)
     expect(callService).not.toHaveBeenCalled()
   })
 })
