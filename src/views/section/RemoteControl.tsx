@@ -68,7 +68,8 @@ const RemoteControl = () => (
         buttons={[
           ['Reading mode', 'Minimal mode'],
           ['Ambient mode', 'Max light'],
-          'Turn off'
+          'Turn off',
+          ['All rooms', 'Turn off all']
         ]}
       />
       <RemoteControlTile
