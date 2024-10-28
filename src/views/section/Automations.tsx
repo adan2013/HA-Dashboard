@@ -83,7 +83,7 @@ const Automations = () => {
           icon={<VideocamIcon />}
           onClick={() =>
             modal.openModal('cameraView', {
-              entityId: 'image.p1s_01p00a453001011_camera',
+              entityId: 'camera.p1s_01p00a453001011_camera',
               imageHost: 'http://homeassistant.local:8123'
             })
           }
