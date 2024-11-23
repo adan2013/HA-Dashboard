@@ -25,7 +25,7 @@ const Automations = () => {
       <TileGroup name="Balcony">
         <PowerChartTile
           title="Power consumption"
-          entityId="sensor.airconditionerbreaker_power"
+          entityId="sensor.balconycircuitswitch_power"
         />
         <EnergyMonitorTile deviceName="balconyCircuit" title="Energy monitor" />
         <SwitchTile
