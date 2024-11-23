@@ -2,6 +2,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import PauseIcon from '@mui/icons-material/Pause'
 import VideocamIcon from '@mui/icons-material/Videocam'
+import FlashOnIcon from '@mui/icons-material/FlashOn'
+import FlashOffIcon from '@mui/icons-material/FlashOff'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import ToggleHelperTile from '../../components/entityTiles/helpers/ToggleHelperTile'
@@ -20,25 +22,25 @@ const Automations = () => {
 
   return (
     <TileSection>
-      <TileGroup name="Living room">
+      <TileGroup name="Balcony">
         <PowerChartTile
-          title="A/C power consumption"
+          title="Power consumption"
           entityId="sensor.airconditionerbreaker_power"
         />
-        <EnergyMonitorTile
-          deviceName="greeAirConditioner"
-          title="A/C energy monitor"
+        <EnergyMonitorTile deviceName="balconyCircuit" title="Energy monitor" />
+        <SwitchTile
+          title="Balcony circuit"
+          entityId="switch.balconycircuitswitch"
+          onIcon={<FlashOnIcon />}
+          offIcon={<FlashOffIcon />}
+        />
+        <ToggleHelperTile
+          title="Circuit auto switch"
+          entityId="input_boolean.balconycircuitautoswitch"
+          metadataRenderer={() => ['16-22']}
         />
       </TileGroup>
       <TileGroup name="Kitchen">
-        <PowerChartTile
-          title="3D printer power consumption"
-          entityId="sensor.bambulabprinterplug_power"
-        />
-        <EnergyMonitorTile
-          deviceName="bambuLabPrinter"
-          title="3D printer energy monitor"
-        />
         <ToggleHelperTile
           title="Motion sensor"
           entityId="binary_sensor.kitchenmotionsensor_occupancy"
@@ -51,6 +53,16 @@ const Automations = () => {
           title="Light sensor"
           entityId="sensor.kitchenmotionsensor_illuminance_lux"
           unit="lux"
+        />
+      </TileGroup>
+      <TileGroup name="3D printer">
+        <PowerChartTile
+          title="3D printer power consumption"
+          entityId="sensor.bambulabprinterplug_power"
+        />
+        <EnergyMonitorTile
+          deviceName="bambuLabPrinter"
+          title="3D printer energy monitor"
         />
         <BambuLabPrinterTile
           title="Bambu Lab P1S"

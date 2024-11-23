@@ -6,7 +6,6 @@ import TileGroup from '../../components/layout/TileGroup'
 import LightTile from '../../components/entityTiles/lights/LightTile'
 import ToggleHelperTile from '../../components/entityTiles/helpers/ToggleHelperTile'
 import CallRemoteControlTile from '../../components/entityTiles/services/CallRemoteControlTile'
-import SwitchTile from '../../components/entityTiles/switch/SwitchTile'
 
 const Lights = () => (
   <TileSection>
@@ -91,14 +90,6 @@ const Lights = () => (
         title="WC light"
         entityId="light.wclight"
         lightType="ceiling"
-      />
-    </TileGroup>
-    <TileGroup name="Outside">
-      <SwitchTile title="Balcony light plug" entityId="switch.balconylight" />
-      <ToggleHelperTile
-        title="Balcony light auto switch"
-        entityId="input_boolean.balconylightautoswitch"
-        metadataRenderer={() => ['16-22']}
       />
     </TileGroup>
   </TileSection>
