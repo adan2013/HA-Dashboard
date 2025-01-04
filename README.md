@@ -13,6 +13,14 @@ No, except the Home Assistant, my implementation uses an external Node.js backen
 
 ![data flow](docs/data-flow.png)
 
+## Screenshots
+
+![demo1](docs/demo1.png)
+![demo2](docs/demo2.png)
+![demo3](docs/demo3.png)
+![demo4](docs/demo4.png)
+![demo5](docs/demo5.png)
+
 ## Future plans
 
 - [ ] Publicly hosted demo
