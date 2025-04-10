@@ -51,7 +51,7 @@ const Automations = () => {
         />
         <NumericValueTile
           title="Light sensor"
-          entityId="sensor.kitchenmotionsensor_illuminance_lux"
+          entityId="sensor.kitchenmotionsensor_illuminance"
           unit="lux"
         />
       </TileGroup>
