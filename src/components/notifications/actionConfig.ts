@@ -19,6 +19,22 @@ const actionConfig: NotificationAction[] = [
     action: ({ backend }) => {
       backend.dismissNotification('loadedWashingMachine')
     }
+  },
+  {
+    id: 'manualKitchenLights',
+    text: 'Switch to auto',
+    action: ({ homeAssistant }) => {
+      homeAssistant.callService(
+        'input_boolean.kitchenleftlighton',
+        'input_boolean',
+        'turn_off'
+      )
+      homeAssistant.callService(
+        'input_boolean.kitchenrightlighton',
+        'input_boolean',
+        'turn_off'
+      )
+    }
   }
 ]
 

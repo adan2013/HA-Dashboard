@@ -2,7 +2,7 @@ import { ReactNode, useRef, useEffect, useState } from 'react'
 import { useLayoutContext } from '../../contexts/OutletContext'
 
 type TilesGroupProps = {
-  name: string
+  name?: string
   children: ReactNode
 }
 
@@ -39,7 +39,7 @@ const TileGroup = ({ name, children }: TilesGroupProps) => {
 
   return (
     <div className="flex flex-col justify-center" ref={containerRef}>
-      <div className="mb-2 text-lg">{name}</div>
+      {name && <div className="mb-2 text-lg">{name}</div>}
       <div
         className="inline-grid grid-flow-row-dense grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-flow-col-dense lg:grid-cols-none"
         style={extraStyles}

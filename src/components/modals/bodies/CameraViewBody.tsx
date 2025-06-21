@@ -17,7 +17,7 @@ const CameraViewBody = () => {
 
   return (
     <ModalBody>
-      <div className="mx-4 h-[550px] max-h-[calc(100vh-170px)] text-center">
+      <div className="mx-4 h-[550px] max-h-[calc(100vh-170px)] overflow-y-auto text-center">
         {isUnavailable ? (
           <div className="mx-auto mt-8">Camera is unavailable</div>
         ) : (
@@ -27,7 +27,7 @@ const CameraViewBody = () => {
               src={`${params.imageHost}${entityState.attributes.entity_picture}`}
               alt="Camera view"
               data-testid="camera-view"
-              className="mx-auto max-h-[calc(100vh-300px)]"
+              className="mx-auto"
             />
           </>
         )}

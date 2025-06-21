@@ -1,7 +1,7 @@
 {
   "name": "ha-dashboard",
   "private": true,
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "Home Assistant dashboard for wall-mounted tablet",
   "repository": {
     "type": "git",

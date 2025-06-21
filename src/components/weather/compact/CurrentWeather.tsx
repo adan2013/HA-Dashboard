@@ -44,9 +44,9 @@ const CurrentWeather = ({ data, shortForecast }: CurrentWeatherProps) => (
         alt={data.weather.type}
       />
     </div>
-    <div className="flex min-w-[100px] flex-col items-start gap-1">
+    <div className="mr-6 flex min-w-[100px] flex-col items-start gap-1">
       <div className="text-5xl">{Math.round(data.temp)}°</div>
-      <div className="text-lg text-gray-200">
+      <div className="whitespace-nowrap text-lg text-gray-200">
         Feels like {Math.round(data.feelsLike)}°
       </div>
     </div>
