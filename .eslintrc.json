@@ -6,13 +6,7 @@
     "jest/globals": true,
     "node": true
   },
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "jest",
-    "import",
-    "unused-imports"
-  ],
+  "plugins": ["react", "jsx-a11y", "jest", "import", "unused-imports"],
   "extends": [
     "airbnb",
     "airbnb/hooks",
@@ -33,9 +27,7 @@
   },
   "overrides": [
     {
-      "files": [
-        "src/**/*.{js,jsx}"
-      ],
+      "files": ["src/**/*.{js,jsx}"],
       "rules": {
         "react/prop-types": "off",
         "import/order": [
@@ -45,10 +37,7 @@
               "builtin",
               "external",
               "internal",
-              [
-                "parent",
-                "sibling"
-              ],
+              ["parent", "sibling"],
               "index",
               "object",
               "type"
@@ -60,9 +49,7 @@
                 "position": "after"
               }
             ],
-            "pathGroupsExcludedImportTypes": [
-              "builtin"
-            ],
+            "pathGroupsExcludedImportTypes": ["builtin"],
             "alphabetize": {
               "order": "asc",
               "caseInsensitive": true
@@ -75,12 +62,10 @@
     }
   ],
   "rules": {
+    "no-plusplus": "off",
     "import/extensions": "off",
     "import/no-extraneous-dependencies": "off",
-    "jsx-quotes": [
-      "error",
-      "prefer-double"
-    ],
+    "jsx-quotes": ["error", "prefer-double"],
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "warn",
     "react/function-component-definition": "off",
