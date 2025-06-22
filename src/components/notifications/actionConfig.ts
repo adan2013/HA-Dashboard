@@ -22,7 +22,7 @@ const actionConfig: NotificationAction[] = [
   },
   {
     id: 'manualKitchenLights',
-    text: 'Switch to auto',
+    text: 'Turn off',
     action: ({ homeAssistant }) => {
       homeAssistant.callService(
         'input_boolean.kitchenleftlighton',
