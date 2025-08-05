@@ -81,6 +81,7 @@ const Lights = () => (
     </TileGroup>
     <TileGroup name="Others">
       <LightTile title="Daniel`s bed lamp" entityId="light.danielbedlamp" />
+      <LightTile title="Ania`s bed lamp" entityId="light.aniabedlamp" />
       <LightTile
         title="Bathroom light"
         entityId="light.bathroomlight"
