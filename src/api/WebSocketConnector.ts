@@ -23,8 +23,7 @@ class WebSocketConnector {
       reconnectInterval: 1000 * 3,
       ...options
     }
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
-    this.host = `${protocol}://${url}`
+    this.host = `ws://${url}`
     this.connect()
   }
 

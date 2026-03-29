@@ -17,7 +17,7 @@ class HomeAssistantRestAPI {
       )
     }
     return {
-      entryPoint: `${window.location.protocol}//${host}/api`,
+      entryPoint: `http://${host}/api`,
       axiosConfig: {
         headers: {
           authorization: `Bearer ${token}`,

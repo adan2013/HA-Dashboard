@@ -27,5 +27,5 @@ RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=builder /HA-Dashboard/dist /usr/share/nginx/html
 
-EXPOSE 80 443
+EXPOSE 80
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
