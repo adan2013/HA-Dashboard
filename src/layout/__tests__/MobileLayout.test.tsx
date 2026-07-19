@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import MobileLayout from '../MobileLayout'
 
@@ -29,5 +29,38 @@ describe('MobileLayout', () => {
     expect(screen.getByTestId('section-Weather')).toBeInTheDocument()
     expect(screen.getByTestId('section-Notifications')).toBeInTheDocument()
     expect(screen.getByTestId('section-More')).toBeInTheDocument()
+  })
+
+  it('should use the glass effect on iOS', () => {
+    const userAgentDescriptor = Object.getOwnPropertyDescriptor(
+      navigator,
+      'userAgent'
+    )
+    Object.defineProperty(navigator, 'userAgent', {
+      configurable: true,
+      value: 'iPhone'
+    })
+
+    try {
+      render(
+        <MemoryRouter>
+          <MobileLayout />
+        </MemoryRouter>
+      )
+
+      const navigation = screen.getByTestId('mobile-navigation')
+      expect(navigation).toHaveClass('mobile-navigation-glass', 'rounded-full')
+      expect(
+        within(screen.getByTestId('section-Dashboard-highlighted')).getByText(
+          'Dashboard'
+        )
+      ).toHaveClass('sr-only')
+    } finally {
+      if (userAgentDescriptor) {
+        Object.defineProperty(navigator, 'userAgent', userAgentDescriptor)
+      } else {
+        delete (navigator as { userAgent?: string }).userAgent
+      }
+    }
   })
 })

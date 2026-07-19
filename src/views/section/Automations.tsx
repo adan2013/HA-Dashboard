@@ -33,6 +33,7 @@ const Automations = () => {
           entityId="switch.balconycircuitswitch"
           onIcon={<FlashOnIcon />}
           offIcon={<FlashOffIcon />}
+          confirmationRequired
         />
         <ToggleHelperTile
           title="Circuit auto switch"

@@ -4,6 +4,15 @@ import { mobileMenu, pageMetadata } from './menus'
 import { OutletContextType } from '../contexts/OutletContext'
 import NotificationDot from '../components/layout/NotificationDot'
 
+const isIOS = () => {
+  if (typeof navigator === 'undefined') return false
+
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  )
+}
+
 const MobileLayout = () => {
   const location = useLocation()
   const pageTitle = pageMetadata.find(
@@ -15,12 +24,13 @@ const MobileLayout = () => {
   const anythingIsSelected = mobileMenu.some(
     ({ path }) => path === location.pathname
   )
+  const shouldUseGlassEffect = isIOS()
 
   return (
     <div className="text-white">
       <div
         className={clsx(
-          'min-h-screen overflow-x-hidden p-4 pb-24',
+          'pb-mobile-navigation min-h-screen overflow-x-hidden p-4',
           'bg-black text-white'
         )}
       >
@@ -29,8 +39,22 @@ const MobileLayout = () => {
         )}
         <Outlet context={context} />
       </div>
-      <div className="fixed bottom-0 z-20 h-16 w-full border-t-2 border-blue-800 bg-gray-900">
-        <div className="flex h-full flex-row">
+      <nav
+        aria-label="Mobile navigation"
+        data-testid="mobile-navigation"
+        className={clsx(
+          'floating-navigation-offset mobile-navigation fixed z-20 rounded-2xl border shadow-2xl',
+          shouldUseGlassEffect
+            ? 'mobile-navigation-glass rounded-full p-1.5'
+            : 'p-1'
+        )}
+      >
+        <div
+          className={clsx(
+            'flex flex-row',
+            shouldUseGlassEffect ? 'h-12' : 'h-16'
+          )}
+        >
           {mobileMenu.map(({ name, path, icon, notificationDot }) => {
             const isHighlighted =
               location.pathname === path ||
@@ -39,27 +63,40 @@ const MobileLayout = () => {
               <div
                 key={name}
                 className={clsx(
-                  'w-1/4 transition-colors duration-500',
-                  isHighlighted && 'bg-blue-800'
+                  'h-full w-1/4 transition-colors duration-300',
+                  shouldUseGlassEffect ? 'rounded-full' : 'rounded-xl p-1',
+                  isHighlighted && 'bg-blue-800 shadow-sm'
                 )}
                 data-testid={`section-${name}${
                   isHighlighted ? '-highlighted' : ''
                 }`}
               >
-                <Link to={path}>
-                  <div className="flex h-full cursor-pointer flex-col items-center justify-center">
+                <Link to={path} className="block h-full">
+                  <div
+                    className={clsx(
+                      'flex h-full cursor-pointer flex-col items-center justify-center',
+                      shouldUseGlassEffect ? 'rounded-full' : 'rounded-lg'
+                    )}
+                  >
                     <div className="relative px-1">
                       {notificationDot && <NotificationDot />}
                       {icon}
                     </div>
-                    <div className="pt-2 text-xs">{name}</div>
+                    <div
+                      className={clsx(
+                        'pt-2 text-xs',
+                        shouldUseGlassEffect && 'sr-only'
+                      )}
+                    >
+                      {name}
+                    </div>
                   </div>
                 </Link>
               </div>
             )
           })}
         </div>
-      </div>
+      </nav>
     </div>
   )
 }

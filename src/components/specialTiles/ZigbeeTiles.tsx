@@ -8,8 +8,8 @@ import { useModalContext } from '../../contexts/ModalContext'
 import { ZigbeeNetworkModalParams } from '../../contexts/modalUtils'
 
 const COUNT_OF_TILE_ENTITIES = 5
-export const BATTERY_WARNING_THRESHOLD = 16
-export const SIGNAL_WARNING_THRESHOLD = 20
+export const BATTERY_WARNING_THRESHOLD = 35
+export const SIGNAL_WARNING_THRESHOLD = 60
 
 const ListSeparator = () => (
   <div className="mx-2 h-[1px] bg-gray-200 opacity-50" />
