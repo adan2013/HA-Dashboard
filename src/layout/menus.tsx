@@ -8,7 +8,7 @@ import SettingsRemoteOutlinedIcon from '@mui/icons-material/SettingsRemoteOutlin
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined'
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined'
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined'
+import MenuIcon from '@mui/icons-material/Menu'
 
 type PageMetadata = {
   path: string
@@ -56,7 +56,7 @@ export const mobileMenu: MenuItem[] = [
   {
     name: 'More',
     path: '/more',
-    icon: <MoreHorizOutlinedIcon />
+    icon: <MenuIcon />
   }
 ]
 
