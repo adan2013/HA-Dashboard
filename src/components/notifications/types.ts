@@ -1,9 +1,7 @@
 import { NavigateFunction } from 'react-router-dom'
-import HomeAssistantWebSocketAPI from '../../api/HomeAssistantWebSocketAPI'
 import BackendWebSocketAPI from '../../api/BackendWebSocketAPI'
 
 export type NotificationActionContext = {
-  homeAssistant: HomeAssistantWebSocketAPI
   backend: BackendWebSocketAPI
   navigate: NavigateFunction
 }

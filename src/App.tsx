@@ -6,9 +6,10 @@ import More from './views/More'
 import Error404 from './views/Error404'
 import Layout from './layout/Layout'
 import SectionIndex from './views/section/SectionIndex'
-import { HomeAssistantContextProvider } from './contexts/HomeAssistantContext'
 import { ModalContextProvider } from './contexts/ModalContext'
 import { BackendContextProvider } from './contexts/BackendContext'
+import { useBackendAuthenticationState } from './api/hooks'
+import DashboardLogin from './components/auth/DashboardLogin'
 
 const router = createBrowserRouter([
   {
@@ -43,15 +44,27 @@ const router = createBrowserRouter([
   }
 ])
 
+const AuthenticatedApp = () => {
+  const authenticationState = useBackendAuthenticationState()
+  if (
+    authenticationState === 'missingToken' ||
+    authenticationState === 'invalidToken'
+  ) {
+    return <DashboardLogin authenticationState={authenticationState} />
+  }
+
+  return (
+    <ModalContextProvider>
+      <RouterProvider router={router} />
+    </ModalContextProvider>
+  )
+}
+
 function App() {
   return (
-    <HomeAssistantContextProvider>
-      <BackendContextProvider>
-        <ModalContextProvider>
-          <RouterProvider router={router} />
-        </ModalContextProvider>
-      </BackendContextProvider>
-    </HomeAssistantContextProvider>
+    <BackendContextProvider>
+      <AuthenticatedApp />
+    </BackendContextProvider>
   )
 }
 

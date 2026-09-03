@@ -9,7 +9,11 @@ I am not a big fan of Material Design and I wanted to create something more spec
 Sure! Feel free to fork this repository and modify it to your needs. Change the environment variables and create your own sections with tiles adjusted to your smart home configuration.
 
 **Do I need only a Home Assistant instance?**
-No, except the Home Assistant, my implementation uses an external Node.js backend for the weather, real-time notifications etc. Of course, you can remove the backend if you like, but it requires a few changes in the code. The repository for the Node.js backend can be found [here](https://github.com/adan2013/HA-Backend).
+No. The dedicated [Node.js backend](https://github.com/adan2013/HA-Backend)
+is required. The dashboard maintains a single WebSocket connection to the
+backend, while the backend owns all REST and WebSocket communication with Home
+Assistant. The Home Assistant access token is therefore never sent to or
+stored by the frontend.
 
 ![data flow](docs/data-flow.png)
 
@@ -21,42 +25,44 @@ No, except the Home Assistant, my implementation uses an external Node.js backen
 ![demo4](docs/demo4.png)
 ![demo5](docs/demo5.png)
 
-## Future plans
-
-- [ ] Publicly hosted demo
-- [ ] PWA support
-- [ ] Documentation for created tiles
-- [ ] Dependency Injection for tiles
-- [ ] Cover websocket connection with tests
-- [ ] Security alarm
-
 ## Getting Started
 
 1. Fork and clone the repository
 2. Install dependencies
-    ```bash
-    yarn install
-    ```
- 3. Create `.env` file and add the environment variables
-    ```
-    VITE_HA_HOST=ip_address:8123
-    VITE_HA_TOKEN=ha_access_token
-    ```
-4. Start the development server
-    ```bash
+   ```bash
+   yarn install
+   ```
+3. Create `.env` file and add the environment variables
+   ```
+   VITE_HA_HOST=ip_address:8123
+   VITE_BACKEND_HOST=ip_address:8008
+   ```
+   `VITE_BACKEND_HOST` is the only application API endpoint used by the
+   frontend. `VITE_HA_HOST` is retained only for the link that opens the Home
+   Assistant dashboard.
+
+The dashboard asks for `DASHBOARD_ACCESS_TOKEN` on first launch and stores it
+in browser local storage. The Home Assistant token is only configured in the
+backend. 4. Start the development server
+`bash
     yarn dev
-    ```
+    `
 
 ## Other commands
 
 ```
 yarn build         - build for production
+yarn typecheck     - run the TypeScript compiler without emitting files
 yarn test          - run tests
 yarn coverage      - generate test coverage report
 yarn coverage-full - generate test coverage report for all files
 yarn docker-build  - build docker image
 yarn docker-run    - run docker image
 ```
+
+The production container serves the dashboard on port `8080` as an
+unprivileged `nginx` user. For example, publish it locally on port `3000` with
+`docker run -p 3000:8080 ha-dashboard`.
 
 ## Built with
 

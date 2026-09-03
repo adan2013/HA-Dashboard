@@ -1,5 +1,5 @@
 import { cloneElement, ReactElement } from 'react'
-import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
+import { useBackend } from '../../../contexts/BackendContext'
 
 export type PresetButtonProps = {
   icon: ReactElement
@@ -14,10 +14,13 @@ export const PresetButton = ({
   brightness,
   colorTemp
 }: PresetButtonProps) => {
-  const ha = useHomeAssistant()
+  const backend = useBackend()
 
   const onClick = () => {
-    ha.callService(id, 'light', 'turn_on', { brightness, kelvin: colorTemp })
+    backend.callService(id, 'light', 'turn_on', {
+      brightness,
+      kelvin: colorTemp
+    })
   }
 
   return (

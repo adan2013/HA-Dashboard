@@ -1,6 +1,6 @@
 import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
-import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
+import { useBackend } from '../../../contexts/BackendContext'
 import { LightType } from './lightTypes'
 import { getIcon, getMetadata, getStatusSubtitle } from './lightUtils'
 import { useModalContext } from '../../../contexts/ModalContext'
@@ -24,7 +24,7 @@ const LightTile = ({
   lockColorTemperature
 }: LightTileProps) => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
-  const ha = useHomeAssistant()
+  const backend = useBackend()
   const modal = useModalContext()
 
   const isActive = entityState?.state === 'on'
@@ -32,7 +32,7 @@ const LightTile = ({
   const toggleLight = () => {
     if (isUnavailable) return
     const action = isActive ? 'turn_off' : 'turn_on'
-    ha.callService(entityState.id, 'light', action)
+    backend.callService(entityState.id, 'light', action)
   }
 
   const openModal = () => {

@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import MobileLayout from './MobileLayout'
 import DesktopLayout from './DesktopLayout'
 import 'react-toastify/dist/ReactToastify.css'
-import { useBackendStatus, useHomeAssistantStatus } from '../api/hooks'
-import { useHomeAssistant } from '../contexts/HomeAssistantContext'
+import { useBackendStatus } from '../api/hooks'
 import { useModalContext } from '../contexts/ModalContext'
 import ConnectionStatusMessage from '../components/layout/ConnectionStatusMessage'
 import { useBackend } from '../contexts/BackendContext'
@@ -18,9 +17,7 @@ const getLayoutType = (): LayoutType =>
 
 const Layout = () => {
   const [layoutMode, setLayoutMode] = useState<LayoutType>(getLayoutType())
-  const statusHa = useHomeAssistantStatus()
-  const statusBackend = useBackendStatus()
-  const ha = useHomeAssistant()
+  const backendStatus = useBackendStatus()
   const backend = useBackend()
   const modal = useModalContext()
   const navigate = useNavigate()
@@ -28,20 +25,16 @@ const Layout = () => {
 
   useEffect(() => {
     window.onScreenOn = () => {
-      if (statusHa !== 'synced') {
-        console.log('Force reconnecting to the Home Assistant')
-        ha.connect()
-      }
-      if (statusBackend !== 'synced') {
+      if (backendStatus !== 'synced') {
         console.log('Force reconnecting to the Backend')
-        backend.connect()
+        backend.reconnect()
       }
     }
     window.onScreenOff = () => {
       modal.closeModal()
       navigate('/')
     }
-  }, [navigate, statusHa, statusBackend, ha, backend, modal])
+  }, [navigate, backendStatus, backend, modal])
 
   useMountEvent(() => {
     if (Object.hasOwn(window, 'fully')) {
@@ -60,11 +53,19 @@ const Layout = () => {
         window.onScreenOn()
       }
     }
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        console.log('Browser page restored from cache')
+        window.onScreenOn()
+      }
+    }
     window.addEventListener('resize', onResize)
+    window.addEventListener('pageshow', onPageShow)
     document.addEventListener('visibilitychange', onVisibilityChange)
     return () => {
       window.removeEventListener('resize', onResize)
-      window.removeEventListener('visibilitychange', onVisibilityChange)
+      window.removeEventListener('pageshow', onPageShow)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
     }
   })
 

@@ -7,8 +7,8 @@ import { getMockedEntityState } from '../../../../utils/testUtils'
 const callService = jest.fn()
 const openModalMock = jest.fn()
 
-jest.mock('../../../../contexts/HomeAssistantContext', () => ({
-  useHomeAssistant: jest.fn(() => ({
+jest.mock('../../../../contexts/BackendContext', () => ({
+  useBackend: jest.fn(() => ({
     callService
   }))
 }))

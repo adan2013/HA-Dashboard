@@ -7,8 +7,8 @@ import {
 import LightControlBody from '../LightControlBody'
 
 const callService = jest.fn()
-jest.mock('../../../../contexts/HomeAssistantContext', () => ({
-  useHomeAssistant: jest.fn(() => ({
+jest.mock('../../../../contexts/BackendContext', () => ({
+  useBackend: jest.fn(() => ({
     callService
   }))
 }))

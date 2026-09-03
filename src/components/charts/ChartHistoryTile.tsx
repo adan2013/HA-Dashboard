@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import BackgroundHistoryChart from './BackgroundHistoryChart'
-import HomeAssistantRestAPI from '../../api/HomeAssistantRestAPI'
 import { TileProps } from '../basic/Tile'
 import { useModalContext } from '../../contexts/ModalContext'
 import { HistoryChartModalParams } from '../../contexts/modalUtils'
@@ -8,6 +7,7 @@ import { ChartData, getHistoryStats, ValueThreshold } from './utils'
 import NumericValueTile, {
   NumericValueTileProps
 } from '../entityTiles/general/NumericValueTile'
+import { useBackend } from '../../contexts/BackendContext'
 
 export type ChartHistoryTileProps = {
   title: string
@@ -34,6 +34,7 @@ const ChartHistoryTile = ({
 }: ChartHistoryTileProps) => {
   const [history, setHistory] = useState<ChartData[]>(null)
   const modal = useModalContext()
+  const backend = useBackend()
 
   const historyStats = useMemo(
     () => getHistoryStats(history, showDecimals),
@@ -41,16 +42,20 @@ const ChartHistoryTile = ({
   )
 
   useEffect(() => {
-    HomeAssistantRestAPI.getSensorHistory(entityId).then(data => {
-      setHistory(
-        data.map(item => ({
-          id: item.time,
-          name: item.time,
-          value: item.value
-        }))
-      )
-    })
-  }, [entityId])
+    if (!backend?.getSensorHistory) return
+    backend
+      .getSensorHistory(entityId)
+      .then(data => {
+        setHistory(
+          data.map(item => ({
+            id: item.time,
+            name: item.time,
+            value: item.value
+          }))
+        )
+      })
+      .catch(error => console.error('Failed to load entity history', error))
+  }, [backend, entityId])
 
   const openHistoryModal = () => {
     const params: HistoryChartModalParams = {

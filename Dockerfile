@@ -1,31 +1,25 @@
-FROM node:18-alpine as builder
+FROM node:22-alpine AS builder
+
+WORKDIR /opt/app
 
 ARG VITE_HA_HOST
-ARG VITE_HA_TOKEN
 ARG VITE_BACKEND_HOST
 
-ENV VITE_HA_HOST=$VITE_HA_HOST
-ENV VITE_HA_TOKEN=$VITE_HA_TOKEN
-ENV VITE_BACKEND_HOST=$VITE_BACKEND_HOST
-
 COPY package.json yarn.lock ./
-COPY package.json ./
-COPY yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-RUN yarn
-RUN mkdir /HA-Dashboard
-RUN mv ./node_modules ./HA-Dashboard
-
-WORKDIR /HA-Dashboard
 COPY . .
 RUN yarn build
 
-FROM nginx:alpine
+FROM nginx:1.28-alpine
 
+COPY ./nginx-main.conf /etc/nginx/nginx.conf
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-RUN rm -rf /usr/share/nginx/html/*
+COPY --from=builder /opt/app/dist /usr/share/nginx/html
+RUN chown -R nginx:nginx /usr/share/nginx/html /var/cache/nginx /etc/nginx/conf.d
 
-COPY --from=builder /HA-Dashboard/dist /usr/share/nginx/html
-
-EXPOSE 80
+USER nginx
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -q -O /dev/null http://127.0.0.1:8080/ || exit 1
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

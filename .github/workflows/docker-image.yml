@@ -9,6 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: yarn
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    - name: Typecheck
+      run: yarn typecheck
     - name: Login to DockerHub
       uses: docker/login-action@v2
       with:
@@ -21,5 +29,4 @@ jobs:
         tags: adan2013/ha-dashboard:latest
         build-args: |
           VITE_HA_HOST=${{ secrets.VITE_HA_HOST }}
-          VITE_HA_TOKEN=${{ secrets.VITE_HA_TOKEN }}
           VITE_BACKEND_HOST=${{ secrets.VITE_BACKEND_HOST }}

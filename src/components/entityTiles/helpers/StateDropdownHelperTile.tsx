@@ -2,7 +2,7 @@ import { ReactElement } from 'react'
 import { toast } from 'react-toastify'
 import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
-import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
+import { useBackend } from '../../../contexts/BackendContext'
 import { ConfirmationModalParams } from '../../../contexts/modalUtils'
 import { useModalContext } from '../../../contexts/ModalContext'
 
@@ -42,11 +42,11 @@ const StateDropdownHelperTile = ({
   holdAction
 }: StateDropdownHelperTileProps) => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
-  const ha = useHomeAssistant()
+  const backend = useBackend()
   const modal = useModalContext()
 
   const changeState = (value: string) => {
-    ha.callService(entityState.id, 'input_select', 'select_option', {
+    backend.callService(entityState.id, 'input_select', 'select_option', {
       option: value
     })
     toast.success('The state has been changed')

@@ -14,13 +14,11 @@ jest.mock('../../../contexts/ModalContext', () => ({
   })
 }))
 
-jest.mock('axios', () => ({
-  get: jest.fn().mockImplementation(() =>
-    Promise.resolve({
-      status: 200,
-      data: generateEntityHistory([24.98, 26, 22])
-    })
-  )
+const getSensorHistory = jest.fn(() =>
+  Promise.resolve(generateEntityHistory([24.98, 26, 22]))
+)
+jest.mock('../../../contexts/BackendContext', () => ({
+  useBackend: () => ({ getSensorHistory })
 }))
 
 jest.mock('../../../api/hooks', () => ({

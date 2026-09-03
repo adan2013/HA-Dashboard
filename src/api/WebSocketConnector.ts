@@ -4,6 +4,7 @@ export interface WebSocketConnectionOptions {
   pingInterval?: number
   pongTimeout?: number
   reconnectInterval?: number
+  autoConnect?: boolean
 }
 
 class WebSocketConnector {
@@ -11,7 +12,8 @@ class WebSocketConnector {
   private pingInterval: number
   private pongTimeout: number
   private reconnectTimeout: number
-  private socket: WebSocket
+  private socket?: WebSocket
+  private reconnectEnabled = false
 
   readonly options: WebSocketConnectionOptions
   readonly host: string
@@ -24,22 +26,40 @@ class WebSocketConnector {
       ...options
     }
     this.host = `ws://${url}`
-    this.connect()
+    if (this.options.autoConnect !== false) this.connect()
   }
 
   sendPingMessage() {
-    this.socket.send(JSON.stringify({ type: 'ping' }))
+    this.socket?.send(JSON.stringify({ type: 'ping' }))
   }
 
   disconnect() {
-    this.socket?.close()
+    this.reconnectEnabled = false
+    if (this.socket) {
+      this.socket.onclose = null
+      this.socket.close()
+      this.socket = undefined
+    }
     window.clearInterval(this.pingInterval)
     window.clearTimeout(this.pongTimeout)
     window.clearTimeout(this.reconnectTimeout)
   }
 
-  connect() {
+  reconnect() {
     this.disconnect()
+    this.onConnectionStateChange(false)
+    this.connect()
+  }
+
+  connect() {
+    if (
+      this.socket?.readyState === WebSocket.OPEN ||
+      this.socket?.readyState === WebSocket.CONNECTING
+    ) {
+      return
+    }
+    this.disconnect()
+    this.reconnectEnabled = true
     this.socket = new WebSocket(this.host)
     this.socket.onmessage = e => this.onReceive(e)
     this.socket.onopen = () => this.onConnectionStateChange(true)
@@ -62,13 +82,12 @@ class WebSocketConnector {
           this.sendPingMessage()
           this.pongTimeout = window.setTimeout(() => {
             console.warn('websocket PONG timeout!')
-            this.disconnect()
-            this.onConnectionStateChange(false)
+            this.socket?.close()
           }, this.options.pongTimeout)
         }, this.options.pingInterval)
       }
     }
-    if (!state && this.options.reconnectInterval) {
+    if (!state && this.reconnectEnabled && this.options.reconnectInterval) {
       console.warn(
         `websocket connection lost! Reconnecting in ${this.options.reconnectInterval}ms`
       )
@@ -85,7 +104,7 @@ class WebSocketConnector {
       console.log('[WS]', msg)
     }
     if (msg.type === 'ping') {
-      this.socket.send(JSON.stringify({ type: 'pong' }))
+      this.socket?.send(JSON.stringify({ type: 'pong' }))
     }
     if (msg.type === 'pong') {
       window.clearTimeout(this.pongTimeout)
@@ -100,7 +119,7 @@ class WebSocketConnector {
     if (isDevEnv()) {
       console.log('[PC]', msg)
     }
-    this.socket.send(JSON.stringify(msg))
+    this.socket?.send(JSON.stringify(msg))
   }
 }
 
