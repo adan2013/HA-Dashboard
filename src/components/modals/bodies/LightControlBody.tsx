@@ -16,7 +16,7 @@ import {
 } from '../ModalElements'
 import { LightControlModalParams } from '../../../contexts/modalUtils'
 import { useHomeAssistantEntity } from '../../../api/hooks'
-import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
+import { useBackend } from '../../../contexts/BackendContext'
 import { PresetButton } from '../../entityTiles/lights/PresetButton'
 import { LightSlider } from '../../entityTiles/lights/LightSlider'
 
@@ -24,7 +24,7 @@ const LightControlBody = () => {
   const [brightness, setBrightness] = useState<number>(0)
   const [colorTemp, setColorTemp] = useState<number>(0)
   const modal = useModalContext()
-  const ha = useHomeAssistant()
+  const backend = useBackend()
   const params = modal.state.params as LightControlModalParams
   const { entityState, isUnavailable } = useHomeAssistantEntity(params.entityId)
   const minColorTemp = entityState?.attributes?.min_color_temp_kelvin
@@ -53,21 +53,21 @@ const LightControlBody = () => {
   const toggleLight = () => {
     if (isUnavailable) return
     const action = isTurnedOn ? 'turn_off' : 'turn_on'
-    ha.callService(entityState.id, 'light', action)
+    backend.callService(entityState.id, 'light', action)
   }
 
   const updateBrightness = () => {
     if (isUnavailable) return
     if (brightness > 0) {
-      ha.callService(entityState.id, 'light', 'turn_on', { brightness })
+      backend.callService(entityState.id, 'light', 'turn_on', { brightness })
     } else {
-      ha.callService(entityState.id, 'light', 'turn_off')
+      backend.callService(entityState.id, 'light', 'turn_off')
     }
   }
 
   const updateColorTemp = () => {
     if (isUnavailable) return
-    ha.callService(entityState.id, 'light', 'turn_on', {
+    backend.callService(entityState.id, 'light', 'turn_on', {
       kelvin: colorTemp
     })
   }

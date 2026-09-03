@@ -11,10 +11,10 @@ import {
   ModalTitle
 } from '../ModalElements'
 import { HistoryChartModalParams } from '../../../contexts/modalUtils'
-import HomeAssistantRestAPI from '../../../api/HomeAssistantRestAPI'
 import HistoryChart from '../../charts/HistoryChart'
 import { ChartData } from '../../charts/utils'
 import Spinner from '../../basic/Spinner'
+import { useBackend } from '../../../contexts/BackendContext'
 
 const ZOOM_VALUES = [7200, 4320, 2880, 2160, 0, 360]
 
@@ -22,13 +22,15 @@ const HistoryChartBody = () => {
   const [history, setHistory] = useState<ChartData[]>(null)
   const [zoom, setZoom] = useState(4)
   const modal = useModalContext()
+  const backend = useBackend()
   const params = modal.state.params as HistoryChartModalParams
 
   const loadHistory = useCallback(() => {
     setHistory(null)
     const zoomValue = ZOOM_VALUES[zoom]
-    HomeAssistantRestAPI.getSensorHistory(params.entityId, zoomValue).then(
-      data => {
+    backend
+      .getSensorHistory(params.entityId, zoomValue)
+      .then(data => {
         setHistory(
           data.map(item => {
             const time = new Date(item.time)
@@ -43,9 +45,9 @@ const HistoryChartBody = () => {
             }
           })
         )
-      }
-    )
-  }, [zoom, params.entityId])
+      })
+      .catch(error => console.error('Failed to load entity history', error))
+  }, [backend, zoom, params.entityId])
 
   useEffect(() => {
     loadHistory()

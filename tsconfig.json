@@ -2,9 +2,18 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "module": "commonjs",
+    "moduleResolution": "node",
     "target": "ES2022",
     "sourceMap": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "strict": false,
+    "noEmit": true,
+    "types": [
+      "vite/client",
+      "jest",
+      "testing-library__jest-dom",
+      "node"
+    ]
   },
   "include": ["src/**/*"],
   "exclude": [

@@ -3,8 +3,8 @@ import LightTile, { LightTileProps } from '../LightTile'
 import { getMockedEntityState } from '../../../../utils/testUtils'
 
 const callService = jest.fn()
-jest.mock('../../../../contexts/HomeAssistantContext', () => ({
-  useHomeAssistant: jest.fn(() => ({
+jest.mock('../../../../contexts/BackendContext', () => ({
+  useBackend: jest.fn(() => ({
     callService
   }))
 }))

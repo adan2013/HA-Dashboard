@@ -1,7 +1,7 @@
 {
   "name": "ha-dashboard",
   "private": true,
-  "version": "4.2.0",
+  "version": "5.0.0",
   "description": "Home Assistant dashboard for wall-mounted tablet",
   "repository": {
     "type": "git",
@@ -16,6 +16,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build --emptyOutDir",
+    "typecheck": "tsc --noEmit",
     "serve": "vite preview",
     "lint": "eslint ./src --ext .js,.ts,.tsx",
     "lint-fix": "eslint --fix ./src --ext .js,.ts,.tsx",
@@ -25,7 +26,7 @@
     "coverage": "jest --coverage",
     "coverage-full": "jest --coverage --collectCoverageFrom=src/**/*.{ts,tsx}",
     "docker-build": "docker build -t ha-dashboard .",
-    "docker-run": "docker run -d -p 3000:80 ha-dashboard"
+    "docker-run": "docker run -d -p 3000:8080 ha-dashboard"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",

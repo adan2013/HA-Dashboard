@@ -12,15 +12,12 @@ export const defineWindowWidth = (width: number) => {
   })
 }
 
-export const generateEntityHistory = (values: number[]) => [
-  values.map(value => ({
-    entity_id: 'entityId',
-    state: value.toString(),
-    attributes: {},
-    last_changed: '2023-09-04T14:09:44.397128+00:00',
-    last_updated: '2023-09-04T14:09:44.397128+00:00'
+export const generateEntityHistory = (values: number[]) =>
+  values.map((value, id) => ({
+    id,
+    time: '2023-09-04T14:09:44.397128+00:00',
+    value
   }))
-]
 
 export const getZigbeeEntity = (
   id: string,

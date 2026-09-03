@@ -11,7 +11,7 @@ import AcUnitIcon from '@mui/icons-material/AcUnit'
 import AutoModeIcon from '@mui/icons-material/AutoMode'
 import Tile, { TileProps } from '../basic/Tile'
 import { useHomeAssistantEntity } from '../../api/hooks'
-import { useHomeAssistant } from '../../contexts/HomeAssistantContext'
+import { useBackend } from '../../contexts/BackendContext'
 import useClickHoldLogic from '../../hooks/useClickHoldLogic'
 
 type AcStatusProps = {
@@ -103,7 +103,7 @@ const transformFanMode = (
 
 const AirConditionerTile = ({ title, entityId }: AirConditionerTileProps) => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
-  const ha = useHomeAssistant()
+  const backend = useBackend()
 
   const mode = isUnavailable ? '--' : entityState?.state
   const currentTemp = Math.round(
@@ -123,13 +123,13 @@ const AirConditionerTile = ({ title, entityId }: AirConditionerTileProps) => {
 
   const changeTemp = (step: number) => {
     const newTemp = temp + step
-    ha.callService(entityId, 'climate', 'set_temperature', {
+    backend.callService(entityId, 'climate', 'set_temperature', {
       temperature: newTemp
     })
   }
 
   const changeFanMode = (newFanMode: string) => {
-    ha.callService(entityId, 'climate', 'set_fan_mode', {
+    backend.callService(entityId, 'climate', 'set_fan_mode', {
       fan_mode: newFanMode
     })
   }
@@ -152,7 +152,7 @@ const AirConditionerTile = ({ title, entityId }: AirConditionerTileProps) => {
   }
 
   const changeMode = (newMode: string) => {
-    ha.callService(entityId, 'climate', 'set_hvac_mode', {
+    backend.callService(entityId, 'climate', 'set_hvac_mode', {
       hvac_mode: newMode
     })
   }

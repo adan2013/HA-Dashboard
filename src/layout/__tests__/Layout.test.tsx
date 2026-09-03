@@ -4,6 +4,20 @@ import Layout from '../Layout'
 import { defineWindowWidth } from '../../utils/testUtils'
 
 const closeModalMock = jest.fn()
+const reconnectBackendMock = jest.fn()
+let mockBackendStatus = 'synced'
+
+jest.mock('../../api/hooks', () => ({
+  useBackendStatus: () => mockBackendStatus,
+  useHomeAssistantStatus: () => 'synced'
+}))
+
+jest.mock('../../contexts/BackendContext', () => ({
+  useBackend: () => ({
+    reconnect: reconnectBackendMock
+  })
+}))
+
 jest.mock('../../contexts/ModalContext', () => {
   const originalModule = jest.requireActual('../../contexts/ModalContext')
 
@@ -22,6 +36,10 @@ jest.mock('../DesktopLayout', () => () => <div>DesktopLayout</div>)
 jest.mock('../MobileLayout', () => () => <div>MobileLayout</div>)
 
 describe('Layout', () => {
+  beforeEach(() => {
+    mockBackendStatus = 'synced'
+  })
+
   it('should render DesktopLayout', () => {
     defineWindowWidth(1024)
     render(
@@ -71,5 +89,49 @@ describe('Layout', () => {
     window.onScreenOff()
     expect(window.location.pathname).toBe('/')
     expect(closeModalMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should force a backend reconnect when the PWA is shown again', () => {
+    mockBackendStatus = 'disconnected'
+    render(
+      <MemoryRouter>
+        <Layout />
+      </MemoryRouter>
+    )
+
+    const pageShowEvent = new Event('pageshow')
+    Object.defineProperty(pageShowEvent, 'persisted', { value: true })
+    window.dispatchEvent(pageShowEvent)
+
+    expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should force a backend reconnect when the PWA returns from background', () => {
+    mockBackendStatus = 'disconnected'
+    Object.defineProperty(document, 'hidden', {
+      configurable: true,
+      value: false
+    })
+    render(
+      <MemoryRouter>
+        <Layout />
+      </MemoryRouter>
+    )
+
+    document.dispatchEvent(new Event('visibilitychange'))
+
+    expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should keep the current connection when the backend is synced', () => {
+    render(
+      <MemoryRouter>
+        <Layout />
+      </MemoryRouter>
+    )
+
+    document.dispatchEvent(new Event('visibilitychange'))
+
+    expect(reconnectBackendMock).not.toHaveBeenCalled()
   })
 })

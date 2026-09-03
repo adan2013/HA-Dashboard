@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify'
 import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
-import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
+import { useBackend } from '../../../contexts/BackendContext'
 import DurabilityCircleChart from '../../charts/DurabilityCircleChart'
 import { useModalContext } from '../../../contexts/ModalContext'
 import { ConfirmationModalParams } from '../../../contexts/modalUtils'
@@ -22,7 +22,7 @@ const DateCountdownHelperTile = ({
   criticalThreshold
 }: DateCountdownHelperTileProps) => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
-  const ha = useHomeAssistant()
+  const backend = useBackend()
   const modal = useModalContext()
 
   const today = new Date()
@@ -49,7 +49,7 @@ const DateCountdownHelperTile = ({
     const params: ConfirmationModalParams = {
       isDanger: true,
       onConfirm: () => {
-        ha.callService(entityState.id, 'input_datetime', 'set_datetime', {
+        backend.callService(entityState.id, 'input_datetime', 'set_datetime', {
           datetime: new Date().toISOString()
         })
         toast.success('The countdown has been reset')

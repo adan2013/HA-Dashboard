@@ -5,9 +5,10 @@ const useMountEvent = (effect: EffectCallback) => {
 
   useEffect(() => {
     if (firstRender.current) {
-      effect()
       firstRender.current = false
+      return effect()
     }
+    return undefined
   }, [effect])
 }
 

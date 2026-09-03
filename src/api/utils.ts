@@ -18,12 +18,6 @@ export interface EntityAttributeInterface {
   linkquality?: number
 }
 
-export type MessageOptions = {
-  includeId: boolean
-  resultCallback: (result: any) => void
-  eventCallback: (event: any) => void
-}
-
 export type EntityState = {
   id: string
   state: string
@@ -48,6 +42,18 @@ export type HomeAssistantConnectionState =
 
 export type BackendConnectionState = 'synced' | 'connected' | 'disconnected'
 
+export type BackendAuthenticationState =
+  | 'missingToken'
+  | 'connecting'
+  | 'authenticated'
+  | 'invalidToken'
+
+export type SensorHistoryItem = {
+  id: string | number
+  time: string
+  value: number
+}
+
 export type ListenerRemover = () => void
 
 export type EntityListenerCallback = (
@@ -62,14 +68,6 @@ export type HomeAssistantConnectionStateListenerCallback = (
 export type BackendConnectionStateListenerCallback = (
   state: BackendConnectionState
 ) => void
-
-export const mapEntityState = (haEntity: any): EntityState => ({
-  id: haEntity.entity_id,
-  state: haEntity.state,
-  lastChanged: haEntity.last_changed,
-  lastUpdated: haEntity.last_updated,
-  attributes: haEntity.attributes
-})
 
 export const extractDeviceNameFromFriendlyName = (name: string): string => {
   if (!name) return ''

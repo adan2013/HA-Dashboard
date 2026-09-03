@@ -1,5 +1,6 @@
 import ClearIcon from '@mui/icons-material/Clear'
 import CheckIcon from '@mui/icons-material/Check'
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
 import TileSection from '../components/layout/TileSection'
 import TileGroup from '../components/layout/TileGroup'
 import Tile from '../components/basic/Tile'
@@ -8,9 +9,19 @@ import PlaceholderTile from '../PlaceholderTile'
 import SpeakerTestTile from '../components/devTiles/SpeakerTestTile'
 import { useBackend } from '../contexts/BackendContext'
 import TriggerNotificationTile from '../components/devTiles/TriggerNotificationTile'
+import { useModalContext } from '../contexts/ModalContext'
 
 const More = () => {
   const backend = useBackend()
+  const modal = useModalContext()
+
+  const confirmLogout = () => {
+    modal.openModal('confirmation', {
+      message: 'Remove the saved access token and log out of the dashboard?',
+      isDanger: true,
+      onConfirm: () => backend.logout()
+    })
+  }
 
   return (
     <TileSection waitForConnection={false}>
@@ -30,6 +41,11 @@ const More = () => {
               {backend?.version || '-.-.-'}
             </div>
           }
+        />
+        <Tile
+          title="Log out"
+          icon={<LogoutOutlinedIcon />}
+          onClick={confirmLogout}
         />
         <Tile
           title="Fully Kiosk API"

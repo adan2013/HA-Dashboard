@@ -13,8 +13,8 @@ const defaultAttributes: Partial<EntityAttributeInterface> = {
 }
 
 const callService = jest.fn()
-jest.mock('../../../contexts/HomeAssistantContext', () => ({
-  useHomeAssistant: jest.fn(() => ({
+jest.mock('../../../contexts/BackendContext', () => ({
+  useBackend: jest.fn(() => ({
     callService
   }))
 }))

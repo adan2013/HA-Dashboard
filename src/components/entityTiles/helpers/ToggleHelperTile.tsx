@@ -3,7 +3,7 @@ import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined'
 import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined'
 import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
-import { useHomeAssistant } from '../../../contexts/HomeAssistantContext'
+import { useBackend } from '../../../contexts/BackendContext'
 import { EntityState } from '../../../api/utils'
 
 export type ToggleHelperTileProps = {
@@ -34,14 +34,14 @@ const ToggleHelperTile = ({
   tileProps
 }: ToggleHelperTileProps) => {
   const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
-  const ha = useHomeAssistant()
+  const backend = useBackend()
 
   const entityIsActive = entityState?.state === 'on'
   const isActive = reverseState ? !entityIsActive : entityIsActive
   const toggleEntity = () => {
     if (isUnavailable) return
     const action = entityIsActive ? 'turn_off' : 'turn_on'
-    ha.callService(entityState.id, 'input_boolean', action)
+    backend.callService(entityState.id, 'input_boolean', action)
   }
 
   let subtitle = entityState?.state

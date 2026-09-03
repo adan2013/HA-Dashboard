@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import actionConfig from './actionConfig'
 import { useModalContext } from '../../contexts/ModalContext'
 import { NotificationActionContext } from './types'
-import { useHomeAssistant } from '../../contexts/HomeAssistantContext'
 import { useBackend } from '../../contexts/BackendContext'
 import { ConfirmationModalParams } from '../../contexts/modalUtils'
 
@@ -13,7 +12,6 @@ type NotificationActionButtonProps = {
 
 const NotificationActionButton = ({ id }: NotificationActionButtonProps) => {
   const config = useMemo(() => actionConfig.find(a => a.id === id), [id])
-  const haApi = useHomeAssistant()
   const backendApi = useBackend()
   const navigate = useNavigate()
   const modal = useModalContext()
@@ -24,7 +22,6 @@ const NotificationActionButton = ({ id }: NotificationActionButtonProps) => {
 
   const onClick = () => {
     const actionCtx: NotificationActionContext = {
-      homeAssistant: haApi,
       backend: backendApi,
       navigate
     }
