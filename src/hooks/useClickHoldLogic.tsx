@@ -1,4 +1,5 @@
 import { MouseEvent, PointerEvent, useEffect, useRef } from 'react'
+import { triggerHapticFeedback } from '../utils/haptics'
 
 export type ClickHoldLogicOptions = {
   disableInteractions?: boolean
@@ -52,6 +53,7 @@ const useClickHoldLogic = (
       timeout.current = window.setTimeout(() => {
         holdTriggered.current = true
         suppressClick.current = true
+        triggerHapticFeedback('hold')
         onHold()
       }, delay)
     }
@@ -83,7 +85,10 @@ const useClickHoldLogic = (
       holdTriggered.current = false
       return
     }
-    onClick?.()
+    if (onClick) {
+      triggerHapticFeedback('tap')
+      onClick()
+    }
   }
 
   const onContextMenu = (event: MouseEvent<HTMLElement>) => {
@@ -91,7 +96,10 @@ const useClickHoldLogic = (
     event.preventDefault()
     clearTimer()
     suppressClick.current = true
-    if (!holdTriggered.current) onHold()
+    if (!holdTriggered.current) {
+      triggerHapticFeedback('hold')
+      onHold()
+    }
     holdTriggered.current = true
   }
 

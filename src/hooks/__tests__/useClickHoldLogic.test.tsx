@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import useClickHoldLogic from '../useClickHoldLogic'
 
+const vibrateMock = jest.fn()
+
 const TestButton = ({
   onClick,
   onHold
@@ -25,6 +27,14 @@ describe('useClickHoldLogic', () => {
       value: MouseEvent
     })
     jest.useFakeTimers()
+    Object.defineProperty(navigator, 'vibrate', {
+      configurable: true,
+      value: vibrateMock
+    })
+  })
+
+  beforeEach(() => {
+    vibrateMock.mockClear()
   })
 
   it('should call onClick when the user clicks and releases before the delay', () => {
@@ -40,6 +50,7 @@ describe('useClickHoldLogic', () => {
     fireEvent.click(screen.getByText('BUTTON'))
     expect(onClick).toHaveBeenCalledTimes(1)
     expect(onHold).not.toHaveBeenCalled()
+    expect(vibrateMock).toHaveBeenCalledWith(15)
   })
 
   it('should click when touch pointer leaves after it was released', () => {
@@ -76,6 +87,7 @@ describe('useClickHoldLogic', () => {
     fireEvent.click(screen.getByText('BUTTON'))
     expect(onHold).toHaveBeenCalledTimes(1)
     expect(onClick).not.toHaveBeenCalled()
+    expect(vibrateMock).toHaveBeenCalledWith(35)
   })
 
   it('should not click or hold when a pointer movement becomes a scroll', () => {
@@ -92,6 +104,7 @@ describe('useClickHoldLogic', () => {
 
     expect(onClick).not.toHaveBeenCalled()
     expect(onHold).not.toHaveBeenCalled()
+    expect(vibrateMock).not.toHaveBeenCalled()
   })
 
   it('should cancel the gesture when the browser takes over the pointer', () => {
@@ -107,6 +120,7 @@ describe('useClickHoldLogic', () => {
 
     expect(onClick).not.toHaveBeenCalled()
     expect(onHold).not.toHaveBeenCalled()
+    expect(vibrateMock).not.toHaveBeenCalled()
   })
 
   it('should call onHold immediately if user use right mouse button', async () => {
@@ -116,5 +130,6 @@ describe('useClickHoldLogic', () => {
     fireEvent.contextMenu(screen.getByText('BUTTON'))
     expect(onClick).not.toHaveBeenCalled()
     expect(onHold).toHaveBeenCalledTimes(1)
+    expect(vibrateMock).toHaveBeenCalledWith(35)
   })
 })
