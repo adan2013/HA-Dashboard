@@ -36,6 +36,28 @@ describe('Tile', () => {
     expect(screen.getByText('CUSTOM_BODY')).toBeVisible()
   })
 
+  it('should pin the header to the top and reserve space for a custom body', () => {
+    render(
+      <Tile
+        {...testProps}
+        onClick={jest.fn()}
+        customBody={<div>CUSTOM_BODY</div>}
+      />
+    )
+
+    expect(screen.getByTestId('tile-header')).toHaveClass(
+      'absolute',
+      'left-0',
+      'top-0'
+    )
+    expect(screen.getByTestId('tile-custom-body')).toHaveClass(
+      'h-full',
+      'pt-10',
+      'relative',
+      'z-10'
+    )
+  })
+
   it('should render a tile with an icon instead of value', () => {
     render(
       <Tile
@@ -60,25 +82,41 @@ describe('Tile', () => {
 
   it('should use opacity and special color when tile is unavailable', () => {
     render(<Tile {...testProps} tileColor="bg-red-500" isUnavailable />)
-    expect(screen.getByTestId('tile-bg')).toHaveClass('opacity-50')
-    expect(screen.getByTestId('tile-bg')).toHaveClass('bg-blue-600')
+    expect(screen.getByText('TITLE')).toHaveClass('text-gray-300')
+    expect(screen.getByTestId('tile-background')).toHaveClass(
+      'bg-blue-600',
+      'opacity-50'
+    )
   })
 
   it('should use opacity when tile is turned off', () => {
     render(<Tile {...testProps} tileColor="bg-red-500" isTurnedOff />)
-    expect(screen.getByTestId('tile-bg')).toHaveClass('opacity-50')
-    expect(screen.getByTestId('tile-bg')).toHaveClass('bg-red-500')
+    expect(screen.getByText('TITLE')).toHaveClass('text-gray-300')
+    expect(screen.getByTestId('tile-background')).toHaveClass(
+      'bg-red-500',
+      'opacity-50'
+    )
+  })
+
+  it('should render interactive tiles as buttons and passive tiles as groups', () => {
+    const { rerender } = render(<Tile {...testProps} onClick={jest.fn()} />)
+    expect(screen.getByRole('button', { name: /TITLE/ })).toHaveAttribute(
+      'type',
+      'button'
+    )
+    expect(screen.getByRole('button', { name: /TITLE/ })).toHaveClass('block')
+
+    rerender(<Tile {...testProps} />)
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
 
   it('should trigger onClick event and disable event if tile is unavailable', () => {
     const onClick = jest.fn()
     const { rerender } = render(<Tile {...testProps} onClick={onClick} />)
-    fireEvent.mouseDown(screen.getByTestId('tile-bg'))
-    fireEvent.mouseUp(screen.getByTestId('tile-bg'))
+    fireEvent.click(screen.getByTestId('tile-bg'))
     expect(onClick).toHaveBeenCalledTimes(1)
     rerender(<Tile {...testProps} onClick={onClick} isUnavailable />)
-    fireEvent.mouseDown(screen.getByTestId('tile-bg'))
-    fireEvent.mouseUp(screen.getByTestId('tile-bg'))
+    fireEvent.click(screen.getByTestId('tile-bg'))
     expect(onClick).toHaveBeenCalledTimes(1)
   })
 })

@@ -11,11 +11,19 @@ const TestButton = ({
   const events = useClickHoldLogic(onClick, onHold, {
     delay: 50
   })
-  return <div {...events}>BUTTON</div>
+  return (
+    <button type="button" {...events}>
+      BUTTON
+    </button>
+  )
 }
 
 describe('useClickHoldLogic', () => {
   beforeAll(() => {
+    Object.defineProperty(window, 'PointerEvent', {
+      writable: true,
+      value: MouseEvent
+    })
     jest.useFakeTimers()
   })
 
@@ -23,12 +31,14 @@ describe('useClickHoldLogic', () => {
     const onClick = jest.fn()
     const onHold = jest.fn()
     render(<TestButton onClick={onClick} onHold={onHold} />)
-    fireEvent.mouseDown(screen.getByText('BUTTON'))
-    fireEvent.mouseUp(screen.getByText('BUTTON'))
+    fireEvent.pointerDown(screen.getByText('BUTTON'), {
+      button: 0,
+      clientX: 10,
+      clientY: 10
+    })
+    fireEvent.pointerUp(screen.getByText('BUTTON'))
+    fireEvent.click(screen.getByText('BUTTON'))
     expect(onClick).toHaveBeenCalledTimes(1)
-    fireEvent.touchStart(screen.getByText('BUTTON'))
-    fireEvent.touchEnd(screen.getByText('BUTTON'))
-    expect(onClick).toHaveBeenCalledTimes(2)
     expect(onHold).not.toHaveBeenCalled()
   })
 
@@ -36,15 +46,47 @@ describe('useClickHoldLogic', () => {
     const onClick = jest.fn()
     const onHold = jest.fn()
     render(<TestButton onClick={onClick} onHold={onHold} />)
-    fireEvent.mouseDown(screen.getByText('BUTTON'))
+    fireEvent.pointerDown(screen.getByText('BUTTON'), {
+      button: 0,
+      clientX: 10,
+      clientY: 10
+    })
     jest.advanceTimersByTime(80)
-    fireEvent.mouseUp(screen.getByText('BUTTON'))
+    fireEvent.pointerUp(screen.getByText('BUTTON'))
+    fireEvent.click(screen.getByText('BUTTON'))
     expect(onHold).toHaveBeenCalledTimes(1)
-    fireEvent.touchStart(screen.getByText('BUTTON'))
-    jest.advanceTimersByTime(80)
-    fireEvent.touchEnd(screen.getByText('BUTTON'))
-    expect(onHold).toHaveBeenCalledTimes(2)
     expect(onClick).not.toHaveBeenCalled()
+  })
+
+  it('should not click or hold when a pointer movement becomes a scroll', () => {
+    const onClick = jest.fn()
+    const onHold = jest.fn()
+    render(<TestButton onClick={onClick} onHold={onHold} />)
+    const button = screen.getByText('BUTTON')
+
+    fireEvent.pointerDown(button, { button: 0, clientX: 10, clientY: 10 })
+    fireEvent.pointerMove(button, { clientX: 12, clientY: 35 })
+    jest.advanceTimersByTime(80)
+    fireEvent.pointerUp(button)
+    fireEvent.click(button)
+
+    expect(onClick).not.toHaveBeenCalled()
+    expect(onHold).not.toHaveBeenCalled()
+  })
+
+  it('should cancel the gesture when the browser takes over the pointer', () => {
+    const onClick = jest.fn()
+    const onHold = jest.fn()
+    render(<TestButton onClick={onClick} onHold={onHold} />)
+    const button = screen.getByText('BUTTON')
+
+    fireEvent.pointerDown(button, { button: 0, clientX: 10, clientY: 10 })
+    fireEvent.pointerCancel(button)
+    jest.advanceTimersByTime(80)
+    fireEvent.click(button)
+
+    expect(onClick).not.toHaveBeenCalled()
+    expect(onHold).not.toHaveBeenCalled()
   })
 
   it('should call onHold immediately if user use right mouse button', async () => {
@@ -55,6 +97,4 @@ describe('useClickHoldLogic', () => {
     expect(onClick).not.toHaveBeenCalled()
     expect(onHold).toHaveBeenCalledTimes(1)
   })
-
-  // TODO add tests for the move event
 })

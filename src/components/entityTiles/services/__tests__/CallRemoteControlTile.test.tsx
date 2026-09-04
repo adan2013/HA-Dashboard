@@ -22,8 +22,7 @@ describe('CallRemoteControlTile', () => {
     )
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByTestId('customIcon')).toBeInTheDocument()
-    fireEvent.mouseDown(screen.getByText('title'))
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.click(screen.getByText('title'))
     await waitFor(() =>
       expect(triggerRemoteControl).toHaveBeenCalledWith(
         'remoteEntityId',

@@ -105,8 +105,7 @@ describe('StateDropdownHelperTile', () => {
   it('should call state change service without confirmation', async () => {
     render(<StateDropdownHelperTile {...testProps} />)
     expect(screen.getByText('normal-state')).toBeInTheDocument()
-    fireEvent.mouseDown(screen.getByText('normal-state'))
-    fireEvent.mouseUp(screen.getByText('normal-state'))
+    fireEvent.click(screen.getByText('normal-state'))
     await waitFor(() =>
       expect(callService).toHaveBeenCalledWith(
         'entity',
@@ -122,9 +121,7 @@ describe('StateDropdownHelperTile', () => {
   it('should open the confirmation modal without calling the ha service', async () => {
     render(<StateDropdownHelperTile {...testProps} />)
     expect(screen.getByText('normal-state')).toBeInTheDocument()
-    fireEvent.mouseDown(screen.getByText('normal-state'))
-    jest.advanceTimersByTime(1100)
-    fireEvent.mouseUp(screen.getByText('normal-state'))
+    fireEvent.contextMenu(screen.getByText('normal-state'))
     await waitFor(() =>
       expect(openModalMock).toHaveBeenCalledWith(
         'confirmation',

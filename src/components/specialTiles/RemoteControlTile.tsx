@@ -29,11 +29,14 @@ const SwitchButton = ({
     main = button
   }
   return (
-    <div
+    <button
+      type="button"
+      aria-label={sub ? `${main} ${sub}` : main}
       className={clsx(
-        'flex cursor-pointer items-center justify-center rounded-md border-2',
+        'flex touch-manipulation cursor-pointer items-center justify-center rounded-md border-2',
         'select-none border-gray-400 bg-transparent text-center text-white',
-        'transition-colors hover:border-white hover:bg-white hover:text-black'
+        'transition-colors hover:border-white hover:bg-white hover:text-black',
+        'focus-visible:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white'
       )}
       {...interactionEvents}
     >
@@ -41,7 +44,7 @@ const SwitchButton = ({
         <div>{main}</div>
         {sub && <div className="text-center text-[10px]">{sub}</div>}
       </div>
-    </div>
+    </button>
   )
 }
 

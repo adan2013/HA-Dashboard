@@ -293,8 +293,7 @@ describe('Weather - full version', () => {
   it('should display rain radar tile', () => {
     render(<RainRadarTile openModalOnClick />)
     expect(screen.getByText('Rain radar')).toBeVisible()
-    fireEvent.mouseDown(screen.getByText('Rain radar'))
-    fireEvent.mouseUp(screen.getByText('Rain radar'))
+    fireEvent.click(screen.getByText('Rain radar'))
     expect(openModalMock).toHaveBeenCalledTimes(1)
     expect(openModalMock).toHaveBeenCalledWith('weather', {
       content: 'rain'

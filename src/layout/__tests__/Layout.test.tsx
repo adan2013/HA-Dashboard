@@ -1,10 +1,11 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Layout from '../Layout'
 import { defineWindowWidth } from '../../utils/testUtils'
 
 const closeModalMock = jest.fn()
 const reconnectBackendMock = jest.fn()
+const desktopContentMountMock = jest.fn()
 let mockBackendStatus = 'synced'
 
 jest.mock('../../api/hooks', () => ({
@@ -30,14 +31,30 @@ jest.mock('../../contexts/ModalContext', () => {
   }
 })
 
-// eslint-disable-next-line react/display-name
-jest.mock('../DesktopLayout', () => () => <div>DesktopLayout</div>)
+jest.mock('../DesktopLayout', () => {
+  const React = jest.requireActual('react')
+
+  const MockContent = () => {
+    React.useEffect(() => {
+      desktopContentMountMock()
+    }, [])
+    return <div>DesktopLayout</div>
+  }
+
+  const MockDesktopLayout = ({ contentKey }: { contentKey?: number }) => (
+    <MockContent key={contentKey} />
+  )
+  MockDesktopLayout.displayName = 'MockDesktopLayout'
+
+  return MockDesktopLayout
+})
 // eslint-disable-next-line react/display-name
 jest.mock('../MobileLayout', () => () => <div>MobileLayout</div>)
 
 describe('Layout', () => {
   beforeEach(() => {
     mockBackendStatus = 'synced'
+    desktopContentMountMock.mockClear()
   })
 
   it('should render DesktopLayout', () => {
@@ -86,7 +103,7 @@ describe('Layout', () => {
       </MemoryRouter>
     )
     expect(window.onScreenOff).toBeDefined()
-    window.onScreenOff()
+    act(() => window.onScreenOff())
     expect(window.location.pathname).toBe('/')
     expect(closeModalMock).toHaveBeenCalledTimes(1)
   })
@@ -101,7 +118,7 @@ describe('Layout', () => {
 
     const pageShowEvent = new Event('pageshow')
     Object.defineProperty(pageShowEvent, 'persisted', { value: true })
-    window.dispatchEvent(pageShowEvent)
+    act(() => window.dispatchEvent(pageShowEvent))
 
     expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
   })
@@ -118,7 +135,7 @@ describe('Layout', () => {
       </MemoryRouter>
     )
 
-    document.dispatchEvent(new Event('visibilitychange'))
+    act(() => document.dispatchEvent(new Event('visibilitychange')))
 
     expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
   })
@@ -130,8 +147,36 @@ describe('Layout', () => {
       </MemoryRouter>
     )
 
-    document.dispatchEvent(new Event('visibilitychange'))
+    act(() => document.dispatchEvent(new Event('visibilitychange')))
 
     expect(reconnectBackendMock).not.toHaveBeenCalled()
+  })
+
+  it('should remount home content when the screen turns on', () => {
+    defineWindowWidth(1024)
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <Layout />
+      </MemoryRouter>
+    )
+    expect(desktopContentMountMock).toHaveBeenCalledTimes(1)
+
+    act(() => window.onScreenOn())
+
+    expect(desktopContentMountMock).toHaveBeenCalledTimes(2)
+  })
+
+  it('should not remount non-home content when the screen turns on', () => {
+    defineWindowWidth(1024)
+    render(
+      <MemoryRouter initialEntries={['/weather']}>
+        <Layout />
+      </MemoryRouter>
+    )
+    expect(desktopContentMountMock).toHaveBeenCalledTimes(1)
+
+    act(() => window.onScreenOn())
+
+    expect(desktopContentMountMock).toHaveBeenCalledTimes(1)
   })
 })

@@ -36,8 +36,7 @@ describe('SwitchTile', () => {
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('on')).toBeInTheDocument()
     expect(screen.getByTestId('PowerIcon')).toBeInTheDocument()
-    fireEvent.mouseDown(screen.getByText('title'))
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.click(screen.getByText('title'))
     await waitFor(() =>
       expect(callService).toHaveBeenCalledWith('entity', 'switch', 'turn_off')
     )
@@ -53,8 +52,7 @@ describe('SwitchTile', () => {
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('off')).toBeInTheDocument()
     expect(screen.getByTestId('PowerOffIcon')).toBeInTheDocument()
-    fireEvent.mouseDown(screen.getByText('title'))
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.click(screen.getByText('title'))
     await waitFor(() =>
       expect(callService).toHaveBeenCalledWith('entity', 'switch', 'turn_on')
     )
@@ -90,8 +88,7 @@ describe('SwitchTile', () => {
   it('should disable the toggle option', () => {
     render(<SwitchTile title="title" entityId="entityName" disableToggle />)
     expect(screen.getByText('title')).toBeInTheDocument()
-    fireEvent.mouseDown(screen.getByText('title'))
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.click(screen.getByText('title'))
     jest.advanceTimersByTime(500)
     expect(callService).not.toHaveBeenCalled()
   })
@@ -101,8 +98,7 @@ describe('SwitchTile', () => {
       <SwitchTile title="title" entityId="entityName" confirmationRequired />
     )
     expect(screen.getByText('title')).toBeInTheDocument()
-    fireEvent.mouseDown(screen.getByText('title'))
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.click(screen.getByText('title'))
     await waitFor(() => expect(openModalMock).toHaveBeenCalledTimes(1))
     expect(callService).not.toHaveBeenCalled()
   })

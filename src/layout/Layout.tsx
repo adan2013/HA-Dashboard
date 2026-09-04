@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Flip, ToastContainer } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import MobileLayout from './MobileLayout'
 import DesktopLayout from './DesktopLayout'
 import 'react-toastify/dist/ReactToastify.css'
@@ -17,14 +17,20 @@ const getLayoutType = (): LayoutType =>
 
 const Layout = () => {
   const [layoutMode, setLayoutMode] = useState<LayoutType>(getLayoutType())
+  // Remount Home after tablet wake-up to reset widget scroll positions.
+  const [contentKey, setContentKey] = useState(0)
   const backendStatus = useBackendStatus()
   const backend = useBackend()
   const modal = useModalContext()
   const navigate = useNavigate()
+  const location = useLocation()
   const isMobile = layoutMode === 'mobile'
 
   useEffect(() => {
     window.onScreenOn = () => {
+      if (location.pathname === '/') {
+        setContentKey(currentKey => currentKey + 1)
+      }
       if (backendStatus !== 'synced') {
         console.log('Force reconnecting to the Backend')
         backend.reconnect()
@@ -34,7 +40,7 @@ const Layout = () => {
       modal.closeModal()
       navigate('/')
     }
-  }, [navigate, backendStatus, backend, modal])
+  }, [navigate, location.pathname, backendStatus, backend, modal])
 
   useMountEvent(() => {
     if (Object.hasOwn(window, 'fully')) {
@@ -71,7 +77,11 @@ const Layout = () => {
 
   return (
     <>
-      {isMobile ? <MobileLayout /> : <DesktopLayout />}
+      {isMobile ? (
+        <MobileLayout contentKey={contentKey} />
+      ) : (
+        <DesktopLayout contentKey={contentKey} />
+      )}
       <ToastContainer
         position={isMobile ? 'top-center' : 'top-right'}
         autoClose={isMobile ? 3000 : 5000}

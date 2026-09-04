@@ -7,7 +7,11 @@ import { pageMetadata, sectionTiles } from './menus'
 import { OutletContextType } from '../contexts/OutletContext'
 import NotificationDot from '../components/layout/NotificationDot'
 
-const DesktopLayout = () => {
+type DesktopLayoutProps = {
+  contentKey?: number
+}
+
+const DesktopLayout = ({ contentKey }: DesktopLayoutProps) => {
   const location = useLocation()
   const pageTitle = pageMetadata.find(
     page => page.path === location.pathname
@@ -29,7 +33,7 @@ const DesktopLayout = () => {
         {pageTitle && collapsed && (
           <div className="my-6 text-3xl font-bold lg:pl-5">{pageTitle}</div>
         )}
-        <Outlet context={context} />
+        <Outlet key={contentKey} context={context} />
       </div>
       <div
         className={clsx(

@@ -33,8 +33,7 @@ jest.mock('../../../api/hooks', () => {
 const { useHomeAssistantEntity } = require('../../../api/hooks')
 
 const clickButton = (btn: HTMLElement) => {
-  fireEvent.mouseDown(btn)
-  fireEvent.mouseUp(btn)
+  fireEvent.click(btn)
 }
 
 const renderAirConditionerTile = (

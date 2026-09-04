@@ -76,8 +76,7 @@ describe('ToggleHelperTile', () => {
       )
       render(<ToggleHelperTile {...testProps} reverseState={reversed} />)
       expect(screen.getByText(subtitleWithState)).toBeInTheDocument()
-      fireEvent.mouseDown(screen.getByText('title'))
-      fireEvent.mouseUp(screen.getByText('title'))
+      fireEvent.click(screen.getByText('title'))
       await waitFor(() =>
         expect(callService).toHaveBeenCalledWith(
           'entity',
@@ -91,8 +90,7 @@ describe('ToggleHelperTile', () => {
   it('should not call the ha service if tile is in readonly mode', () => {
     render(<ToggleHelperTile {...testProps} readonly />)
     expect(screen.getByText('on')).toBeInTheDocument()
-    fireEvent.mouseDown(screen.getByText('on'))
-    fireEvent.mouseUp(screen.getByText('on'))
+    fireEvent.click(screen.getByText('on'))
     jest.advanceTimersByTime(500)
     expect(callService).not.toHaveBeenCalled()
   })
@@ -146,8 +144,7 @@ describe('ToggleHelperTile', () => {
     }))
     render(<ToggleHelperTile {...testProps} />)
     expect(screen.getByText('unknown')).toBeInTheDocument()
-    fireEvent.mouseDown(screen.getByText('unknown'))
-    fireEvent.mouseUp(screen.getByText('unknown'))
+    fireEvent.click(screen.getByText('unknown'))
     jest.advanceTimersByTime(500)
     expect(callService).not.toHaveBeenCalled()
   })

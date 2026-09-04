@@ -72,15 +72,13 @@ describe('LightTile', () => {
   it('should toggle light on click', () => {
     mockLightState()
     const { rerender } = render(<LightTile {...testProps} />)
-    fireEvent.mouseDown(screen.getByText('title'))
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.click(screen.getByText('title'))
     expect(callService).toHaveBeenLastCalledWith('entity', 'light', 'turn_off')
     expect(callService).toHaveBeenCalledTimes(1)
 
     mockLightState(false)
     rerender(<LightTile {...testProps} />)
-    fireEvent.mouseDown(screen.getByText('title'))
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.click(screen.getByText('title'))
     expect(callService).toHaveBeenLastCalledWith('entity', 'light', 'turn_on')
     expect(callService).toHaveBeenCalledTimes(2)
   })
@@ -88,9 +86,7 @@ describe('LightTile', () => {
   it('should open light control modal on hold', () => {
     mockLightState()
     render(<LightTile {...testProps} lockColorTemperature />)
-    fireEvent.mouseDown(screen.getByText('title'))
-    jest.advanceTimersByTime(1100)
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.contextMenu(screen.getByText('title'))
     expect(openModalMock).toHaveBeenLastCalledWith('lightControl', {
       title: 'title',
       entityId: 'entity',
@@ -102,8 +98,7 @@ describe('LightTile', () => {
   it('should disallow to toggle the light on click', () => {
     mockLightState()
     render(<LightTile {...testProps} disableToggle />)
-    fireEvent.mouseDown(screen.getByText('title'))
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.click(screen.getByText('title'))
     jest.advanceTimersByTime(500)
     expect(callService).not.toHaveBeenCalled()
   })
@@ -111,9 +106,7 @@ describe('LightTile', () => {
   it('should disallow to open the manual control modal on hold', () => {
     mockLightState()
     render(<LightTile {...testProps} disableManualControl />)
-    fireEvent.mouseDown(screen.getByText('title'))
-    jest.advanceTimersByTime(1100)
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.contextMenu(screen.getByText('title'))
     expect(openModalMock).not.toHaveBeenCalled()
   })
 

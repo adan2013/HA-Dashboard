@@ -1,144 +1,107 @@
-import { useCallback, useRef } from 'react'
-
-const isTouchEvent = event => 'touches' in event
-
-const preventDefault = event => {
-  if (!isTouchEvent(event)) return
-
-  if (event.touches.length < 2 && event.preventDefault) {
-    event.preventDefault()
-  }
-}
+import { MouseEvent, PointerEvent, useEffect, useRef } from 'react'
 
 export type ClickHoldLogicOptions = {
   disableInteractions?: boolean
-  shouldPreventDefault?: boolean
   holdOnRightClick?: boolean
   delay?: number
 }
 
-type MouseCoordinates = {
-  x: number
-  y: number
-}
-
 const MOVEMENT_THRESHOLD = 10
-const touchEvents = ['touchstart', 'touchmove', 'touchend', 'touchcancel']
-const mouseEvents = [
-  'mousedown',
-  'mouseup',
-  'mousemove',
-  'mouseover',
-  'mouseout',
-  'mouseenter',
-  'mouseleave'
-]
 
 const useClickHoldLogic = (
-  onClick: () => void,
-  onHold: () => void,
+  onClick?: () => void,
+  onHold?: () => void,
   options: ClickHoldLogicOptions = {}
 ) => {
-  const holdTriggered = useRef<boolean>(false)
   const timeout = useRef<number>()
-  const target = useRef<HTMLDivElement>()
-  const startCoordinates = useRef<MouseCoordinates>()
+  const startCoordinates = useRef<{ x: number; y: number }>()
+  const suppressClick = useRef(false)
+  const holdTriggered = useRef(false)
 
   const {
     disableInteractions = false,
-    shouldPreventDefault = true,
     holdOnRightClick = true,
     delay = 1000
   } = options
 
-  const start = useCallback(
-    event => {
-      if (disableInteractions) return
-      if (shouldPreventDefault && event.target) {
-        event.target.addEventListener('touchend', preventDefault, {
-          passive: false
-        })
-        target.current = event.target
-      }
+  const clearTimer = () => {
+    if (timeout.current !== undefined) {
+      window.clearTimeout(timeout.current)
+      timeout.current = undefined
+    }
+  }
+
+  const cancelGesture = () => {
+    clearTimer()
+    suppressClick.current = true
+    startCoordinates.current = undefined
+  }
+
+  useEffect(() => () => clearTimer(), [])
+
+  const onPointerDown = (event: PointerEvent<HTMLElement>) => {
+    if (disableInteractions || event.button !== 0) return
+
+    clearTimer()
+    suppressClick.current = false
+    holdTriggered.current = false
+    startCoordinates.current = { x: event.clientX, y: event.clientY }
+
+    if (onHold) {
       timeout.current = window.setTimeout(() => {
-        if (onHold) onHold()
         holdTriggered.current = true
+        suppressClick.current = true
+        onHold()
       }, delay)
-    },
-    [onHold, delay, shouldPreventDefault, disableInteractions]
-  )
+    }
+  }
 
-  const clear = useCallback(
-    (event, shouldTriggerClick = true) => {
-      if (disableInteractions) return
-      if (timeout.current) clearTimeout(timeout.current)
-      if (
-        shouldTriggerClick &&
-        !holdTriggered.current &&
-        target.current &&
-        onClick
-      ) {
-        onClick()
-      }
+  const onPointerMove = (event: PointerEvent<HTMLElement>) => {
+    const start = startCoordinates.current
+    if (!start) return
+
+    const deltaX = Math.abs(event.clientX - start.x)
+    const deltaY = Math.abs(event.clientY - start.y)
+    if (deltaX > MOVEMENT_THRESHOLD || deltaY > MOVEMENT_THRESHOLD) {
+      cancelGesture()
+    }
+  }
+
+  const onPointerUp = () => {
+    clearTimer()
+    startCoordinates.current = undefined
+  }
+
+  const onPointerCancel = () => cancelGesture()
+
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
+    if (disableInteractions || suppressClick.current || holdTriggered.current) {
+      event.preventDefault()
+      event.stopPropagation()
+      suppressClick.current = false
       holdTriggered.current = false
-      if (shouldPreventDefault && target.current) {
-        target.current.removeEventListener('touchend', preventDefault)
-      }
-      target.current = null
-    },
-    [shouldPreventDefault, onClick, holdTriggered, disableInteractions, target]
-  )
+      return
+    }
+    onClick?.()
+  }
 
-  const rightClick = useCallback(
-    event => {
-      if (holdOnRightClick) {
-        event.preventDefault()
-        if (onHold) onHold()
-        holdTriggered.current = true
-      }
-    },
-    [onHold, holdOnRightClick]
-  )
-
-  const watchMovement = useCallback(
-    event => {
-      if (target.current) {
-        let x
-        let y
-        if (touchEvents.includes(event.type)) {
-          const touch = event.touches[0] || event.changedTouches[0]
-          x = touch.pageX
-          y = touch.pageY
-        } else if (mouseEvents.includes(event.type)) {
-          x = event.clientX
-          y = event.clientY
-        }
-        if (x && y) {
-          if (startCoordinates.current) {
-            const { x: startX, y: startY } = startCoordinates.current
-            const deltaX = Math.abs(x - startX)
-            const deltaY = Math.abs(y - startY)
-            if (deltaX > MOVEMENT_THRESHOLD || deltaY > MOVEMENT_THRESHOLD) {
-              clear(event, false)
-            }
-          } else {
-            startCoordinates.current = { x, y }
-          }
-        }
-      }
-    },
-    [startCoordinates, clear]
-  )
+  const onContextMenu = (event: MouseEvent<HTMLElement>) => {
+    if (!holdOnRightClick || disableInteractions || !onHold) return
+    event.preventDefault()
+    clearTimer()
+    suppressClick.current = true
+    if (!holdTriggered.current) onHold()
+    holdTriggered.current = true
+  }
 
   return {
-    onMouseDown: e => start(e),
-    onTouchStart: e => start(e),
-    onMouseMove: e => watchMovement(e),
-    onTouchMove: e => watchMovement(e),
-    onMouseUp: e => clear(e),
-    onTouchEnd: e => clear(e),
-    onMouseLeave: e => clear(e, false),
-    onContextMenu: e => rightClick(e)
+    onClick: handleClick,
+    onPointerDown,
+    onPointerMove,
+    onPointerUp,
+    onPointerCancel,
+    onPointerLeave: onPointerCancel,
+    onContextMenu
   }
 }
 
