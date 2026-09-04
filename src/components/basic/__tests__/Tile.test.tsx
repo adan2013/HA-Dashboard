@@ -106,7 +106,8 @@ describe('Tile', () => {
     )
     expect(screen.getByRole('button', { name: /TITLE/ })).toHaveClass(
       'block',
-      'select-none'
+      'select-none',
+      'press-feedback'
     )
 
     rerender(<Tile {...testProps} />)

@@ -8,6 +8,7 @@
     align-items: center;
     justify-content: center;
   }
+
 }
 
 @layer utilities {
@@ -61,4 +62,24 @@
 
 .ReactModal__Overlay--before-close{
   opacity: 0;
+}
+
+.press-feedback {
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 90ms ease-out, filter 90ms ease-out;
+}
+
+.press-feedback:active {
+  transform: scale(0.97);
+  filter: brightness(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .press-feedback {
+    transition: none;
+  }
+
+  .press-feedback:active {
+    transform: none;
+  }
 }

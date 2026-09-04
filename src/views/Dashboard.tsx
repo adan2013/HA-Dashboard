@@ -78,7 +78,7 @@ const Dashboard = () => {
       <div className="flex flex-row flex-wrap justify-center gap-5">
         {sectionTiles.map(
           ({ name, path, background, iconColor, iconClass, icon }) => (
-            <Link key={name} to={path}>
+            <Link key={name} to={path} className="press-feedback block">
               <div>
                 <div
                   className={clsx(

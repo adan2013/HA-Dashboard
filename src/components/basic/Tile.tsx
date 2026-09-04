@@ -165,7 +165,7 @@ const Tile = (
     tile.size === 'big' && 'col-span-2 row-span-2 aspect-square',
     isInteractive &&
       !tile.isUnavailable &&
-      'touch-manipulation select-none cursor-pointer hover:ring-2 hover:ring-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
+      'press-feedback touch-manipulation select-none cursor-pointer hover:ring-2 hover:ring-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
     textColor
   )
 

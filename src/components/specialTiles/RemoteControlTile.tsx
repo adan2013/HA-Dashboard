@@ -33,7 +33,7 @@ const SwitchButton = ({
       type="button"
       aria-label={sub ? `${main} ${sub}` : main}
       className={clsx(
-        'flex touch-manipulation cursor-pointer items-center justify-center rounded-md border-2',
+        'press-feedback flex touch-manipulation cursor-pointer items-center justify-center rounded-md border-2',
         'select-none border-gray-400 bg-transparent text-center text-white',
         'transition-colors hover:border-white hover:bg-white hover:text-black',
         'focus-visible:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white'

@@ -75,7 +75,10 @@ const MobileLayout = ({ contentKey }: MobileLayoutProps) => {
                   isHighlighted ? '-highlighted' : ''
                 }`}
               >
-                <Link to={path} className="block h-full">
+                <Link
+                  to={path}
+                  className="press-feedback block h-full rounded-[inherit]"
+                >
                   <div
                     className={clsx(
                       'flex h-full cursor-pointer flex-col items-center justify-center',
