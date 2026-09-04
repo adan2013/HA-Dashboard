@@ -32,6 +32,7 @@ const useClickHoldLogic = (
   }
 
   const cancelGesture = () => {
+    if (!startCoordinates.current) return
     clearTimer()
     suppressClick.current = true
     startCoordinates.current = undefined

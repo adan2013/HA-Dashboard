@@ -104,7 +104,10 @@ describe('Tile', () => {
       'type',
       'button'
     )
-    expect(screen.getByRole('button', { name: /TITLE/ })).toHaveClass('block')
+    expect(screen.getByRole('button', { name: /TITLE/ })).toHaveClass(
+      'block',
+      'select-none'
+    )
 
     rerender(<Tile {...testProps} />)
     expect(screen.queryByRole('button')).not.toBeInTheDocument()

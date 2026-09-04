@@ -42,6 +42,26 @@ describe('useClickHoldLogic', () => {
     expect(onHold).not.toHaveBeenCalled()
   })
 
+  it('should click when touch pointer leaves after it was released', () => {
+    const onClick = jest.fn()
+    const onHold = jest.fn()
+    render(<TestButton onClick={onClick} onHold={onHold} />)
+    const button = screen.getByText('BUTTON')
+
+    fireEvent.pointerDown(button, {
+      button: 0,
+      pointerType: 'touch',
+      clientX: 10,
+      clientY: 10
+    })
+    fireEvent.pointerUp(button)
+    fireEvent.pointerLeave(button)
+    fireEvent.click(button)
+
+    expect(onClick).toHaveBeenCalledTimes(1)
+    expect(onHold).not.toHaveBeenCalled()
+  })
+
   it('should call onHold when the user hold the button', () => {
     const onClick = jest.fn()
     const onHold = jest.fn()
