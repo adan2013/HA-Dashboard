@@ -13,7 +13,11 @@ const isIOS = () => {
   )
 }
 
-const MobileLayout = () => {
+type MobileLayoutProps = {
+  contentKey?: number
+}
+
+const MobileLayout = ({ contentKey }: MobileLayoutProps) => {
   const location = useLocation()
   const pageTitle = pageMetadata.find(
     page => page.path === location.pathname
@@ -37,7 +41,7 @@ const MobileLayout = () => {
         {pageTitle && (
           <div className="my-4 text-3xl font-bold">{pageTitle}</div>
         )}
-        <Outlet context={context} />
+        <Outlet key={contentKey} context={context} />
       </div>
       <nav
         aria-label="Mobile navigation"

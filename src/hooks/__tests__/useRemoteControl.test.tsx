@@ -31,8 +31,7 @@ describe('useRemoteControl', () => {
   it('should call mqtt with correct click payloads (single, double, triple)', async () => {
     render(<TestButton />)
     const click = () => {
-      fireEvent.mouseDown(screen.getByText('BUTTON'))
-      fireEvent.mouseUp(screen.getByText('BUTTON'))
+      fireEvent.click(screen.getByText('BUTTON'))
     }
     click()
     await waitFor(() =>
@@ -61,9 +60,7 @@ describe('useRemoteControl', () => {
 
   it('should call mqtt with correct hold payload', async () => {
     render(<TestButton />)
-    fireEvent.mouseDown(screen.getByText('BUTTON'))
-    jest.advanceTimersByTime(1100)
-    fireEvent.mouseUp(screen.getByText('BUTTON'))
+    fireEvent.contextMenu(screen.getByText('BUTTON'))
     await waitFor(() =>
       expect(triggerRemoteControl).toHaveBeenCalledWith('RC-NAME', 10, 'hold')
     )
@@ -80,8 +77,7 @@ describe('useRemoteControl', () => {
       />
     )
     const click = () => {
-      fireEvent.mouseDown(screen.getByText('BUTTON'))
-      fireEvent.mouseUp(screen.getByText('BUTTON'))
+      fireEvent.click(screen.getByText('BUTTON'))
     }
     click()
     jest.advanceTimersByTime(1100)
@@ -105,9 +101,7 @@ describe('useRemoteControl', () => {
         }}
       />
     )
-    fireEvent.mouseDown(screen.getByText('BUTTON'))
-    jest.advanceTimersByTime(1100)
-    fireEvent.mouseUp(screen.getByText('BUTTON'))
+    fireEvent.contextMenu(screen.getByText('BUTTON'))
     await waitFor(() => expect(triggerRemoteControl).not.toHaveBeenCalled())
   })
 })

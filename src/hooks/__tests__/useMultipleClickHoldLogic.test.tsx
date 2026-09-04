@@ -25,8 +25,7 @@ describe('useMultipleClickHoldLogic', () => {
     render(<TestButton onClick={onClick} onHold={onHold} />)
 
     const click = () => {
-      fireEvent.mouseDown(screen.getByText('BUTTON'))
-      fireEvent.mouseUp(screen.getByText('BUTTON'))
+      fireEvent.click(screen.getByText('BUTTON'))
     }
 
     click()
@@ -51,9 +50,7 @@ describe('useMultipleClickHoldLogic', () => {
     const onClick = jest.fn()
     const onHold = jest.fn()
     render(<TestButton onClick={onClick} onHold={onHold} />)
-    fireEvent.mouseDown(screen.getByText('BUTTON'))
-    jest.advanceTimersByTime(110)
-    fireEvent.mouseUp(screen.getByText('BUTTON'))
+    fireEvent.contextMenu(screen.getByText('BUTTON'))
     expect(onClick).not.toHaveBeenCalled()
     expect(onHold).toHaveBeenCalledTimes(1)
   })

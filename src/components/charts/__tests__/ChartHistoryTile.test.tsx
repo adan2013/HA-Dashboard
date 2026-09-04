@@ -113,8 +113,7 @@ describe('ChartHistoryTile', () => {
 
   it('should open history modal after clicking the tile', () => {
     renderTile()
-    fireEvent.mouseDown(screen.getByText('TILE'))
-    fireEvent.mouseUp(screen.getByText('TILE'))
+    fireEvent.click(screen.getByText('TILE'))
     expect(openModalMock).toHaveBeenCalledTimes(1)
   })
 })

@@ -37,8 +37,7 @@ describe('CallServiceTile', () => {
     expect(screen.getByTestId('myIcon')).toBeInTheDocument()
     expect(callService).not.toHaveBeenCalled()
 
-    fireEvent.mouseDown(screen.getByText('title'))
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.click(screen.getByText('title'))
     await waitFor(() =>
       expect(callService).toHaveBeenCalledWith(
         undefined,
@@ -56,8 +55,7 @@ describe('CallServiceTile', () => {
       'animate-spin opacity-30'
     )
 
-    fireEvent.mouseDown(screen.getByText('title'))
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.click(screen.getByText('title'))
     jest.advanceTimersByTime(500)
     expect(callService).toHaveBeenCalledTimes(1)
   })
@@ -72,8 +70,7 @@ describe('CallServiceTile', () => {
       />
     )
     expect(screen.getByText('title')).toBeInTheDocument()
-    fireEvent.mouseDown(screen.getByText('title'))
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.click(screen.getByText('title'))
     await waitFor(() => expect(openModalMock).toHaveBeenCalledTimes(1))
     expect(callService).not.toHaveBeenCalled()
   })

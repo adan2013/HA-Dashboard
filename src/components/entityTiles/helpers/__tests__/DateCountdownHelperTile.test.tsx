@@ -60,8 +60,7 @@ describe('DateCountdownHelperTile', () => {
         <ToastContainer />
       </>
     )
-    fireEvent.mouseDown(screen.getByText('title'))
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.click(screen.getByText('title'))
     await waitFor(() =>
       expect(
         screen.getByText('Hold the tile to reset the countdown value')
@@ -71,9 +70,7 @@ describe('DateCountdownHelperTile', () => {
 
   it('should reset the countdown when the tile is held', async () => {
     render(<DateCountdownHelperTile {...testProps} />)
-    fireEvent.mouseDown(screen.getByText('title'))
-    jest.advanceTimersByTime(1100)
-    fireEvent.mouseUp(screen.getByText('title'))
+    fireEvent.contextMenu(screen.getByText('title'))
     await waitFor(() => expect(openModalMock).toHaveBeenCalledTimes(1))
   })
 
