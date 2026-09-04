@@ -41,9 +41,12 @@ jest.mock('../DesktopLayout', () => {
     return <div>DesktopLayout</div>
   }
 
-  return ({ contentKey }: { contentKey?: number }) => (
+  const MockDesktopLayout = ({ contentKey }: { contentKey?: number }) => (
     <MockContent key={contentKey} />
   )
+  MockDesktopLayout.displayName = 'MockDesktopLayout'
+
+  return MockDesktopLayout
 })
 // eslint-disable-next-line react/display-name
 jest.mock('../MobileLayout', () => () => <div>MobileLayout</div>)
