@@ -6,6 +6,7 @@ ARG VITE_HA_HOST
 ARG VITE_BACKEND_HOST
 
 COPY package.json yarn.lock ./
+COPY scripts/enforce-yarn.js ./scripts/enforce-yarn.js
 RUN yarn install --frozen-lockfile
 
 COPY . .
