@@ -19,7 +19,7 @@ export const PresetButton = ({
   const onClick = () => {
     backend.callService(id, 'light', 'turn_on', {
       brightness,
-      kelvin: colorTemp
+      color_temp_kelvin: colorTemp
     })
   }
 

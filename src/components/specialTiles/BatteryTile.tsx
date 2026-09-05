@@ -1,23 +1,20 @@
 import { Fragment, ReactElement } from 'react'
 import Battery1BarIcon from '@mui/icons-material/Battery1Bar'
-import WifiIcon from '@mui/icons-material/Wifi'
 import Tile, { TileProps } from '../basic/Tile'
-import { useHomeAssistantZigbeeEntities } from '../../api/hooks'
-import { ZigbeeEntityState } from '../../api/utils'
+import { useHomeAssistantBatteries } from '../../api/hooks'
+import { BatteryState } from '../../utils/batteryUtils'
 import { useModalContext } from '../../contexts/ModalContext'
-import { ZigbeeNetworkModalParams } from '../../contexts/modalUtils'
 
 const COUNT_OF_TILE_ENTITIES = 5
-export const BATTERY_WARNING_THRESHOLD = 35
-export const SIGNAL_WARNING_THRESHOLD = 60
+export const BATTERY_WARNING_THRESHOLD = 40
 
 const ListSeparator = () => (
   <div className="mx-2 h-[1px] bg-gray-200 opacity-50" />
 )
 
 const getListOfEntities = (
-  list: ZigbeeEntityState[],
-  valueRenderer: (entity: ZigbeeEntityState) => ReactElement
+  list: BatteryState[],
+  valueRenderer: (entity: BatteryState) => ReactElement
 ): ReactElement => {
   if (!list) return undefined
   const topList = list.slice(0, COUNT_OF_TILE_ENTITIES)
@@ -51,55 +48,23 @@ const getListOfEntities = (
 }
 
 export const BatteryTile = () => {
-  const entities = useHomeAssistantZigbeeEntities('battery')
+  const entities = useHomeAssistantBatteries()
   const modal = useModalContext()
   const tileProps: TileProps = {
     title: 'Batteries',
     size: 'big',
-    customBody: getListOfEntities(entities, ({ battery, friendlyName }) => (
+    customBody: getListOfEntities(entities, ({ level, friendlyName }) => (
       <>
-        {battery < BATTERY_WARNING_THRESHOLD && (
+        {level !== undefined && level < BATTERY_WARNING_THRESHOLD && (
           <Battery1BarIcon
             className="mx-1 mt-[-4px] rotate-90 text-red-500"
             data-testid={`${friendlyName}-low-battery`}
           />
         )}
-        {battery}%
+        {level !== undefined ? `${level}%` : '-'}
       </>
     )),
-    onClick: () => {
-      const params: ZigbeeNetworkModalParams = {
-        tab: 'battery'
-      }
-      modal.openModal('zigbeeNetwork', params)
-    }
-  }
-  return <Tile {...tileProps} />
-}
-
-export const SignalTile = () => {
-  const entities = useHomeAssistantZigbeeEntities('signal')
-  const modal = useModalContext()
-  const tileProps: TileProps = {
-    title: 'Zigbee signals',
-    size: 'big',
-    customBody: getListOfEntities(entities, ({ signal, friendlyName }) => (
-      <>
-        {signal < SIGNAL_WARNING_THRESHOLD && (
-          <WifiIcon
-            className="mx-1 mt-[-6px] text-red-500"
-            data-testid={`${friendlyName}-low-signal`}
-          />
-        )}
-        {signal} LQ
-      </>
-    )),
-    onClick: () => {
-      const params: ZigbeeNetworkModalParams = {
-        tab: 'signal'
-      }
-      modal.openModal('zigbeeNetwork', params)
-    }
+    onClick: () => modal.openModal('batteryList')
   }
   return <Tile {...tileProps} />
 }

@@ -22,7 +22,7 @@ describe('PresetButton', () => {
     fireEvent.click(screen.getByTestId('icon'))
     expect(callService).toHaveBeenCalledWith('entityId', 'light', 'turn_on', {
       brightness: 255,
-      kelvin: 3000
+      color_temp_kelvin: 3000
     })
     expect(callService).toHaveBeenCalledTimes(1)
   })

@@ -138,6 +138,30 @@ describe('BackendWebSocketAPI', () => {
     await expect(failure).rejects.toThrow('HA rejected the command')
   })
 
+  it('should request and receive dedicated battery entities', async () => {
+    const backend = new BackendWebSocketAPI()
+    const socket = authenticate(backend)
+    const batteryEntity = {
+      id: 'sensor.kitchen_remote_battery',
+      state: '64',
+      lastChanged: '',
+      lastUpdated: '',
+      attributes: { friendly_name: 'Kitchen remote Battery' }
+    }
+
+    const request = backend.getBatteryEntities()
+    const requestMessage = socket.sent.at(-1)
+    expect(requestMessage).toMatchObject({ type: 'getBatteryEntities' })
+
+    socket.receive({
+      type: 'batteryEntitiesResult',
+      requestId: requestMessage.requestId,
+      data: [batteryEntity]
+    })
+
+    await expect(request).resolves.toEqual([batteryEntity])
+  })
+
   it('should clear the persisted token on logout', () => {
     const backend = new BackendWebSocketAPI()
     authenticate(backend)

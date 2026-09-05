@@ -18,7 +18,7 @@ export const getIcon = (lightType: LightType, isActive: boolean) => {
     case 'ceiling':
       return isActive ? <LightIcon /> : <LightOutlinedIcon />
     default:
-      return isActive ? <LightbulbOutlinedIcon /> : <LightbulbIcon />
+      return isActive ? <LightbulbIcon /> : <LightbulbOutlinedIcon />
   }
 }
 
