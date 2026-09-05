@@ -10,7 +10,10 @@ import WaterDropIcon from '@mui/icons-material/WaterDrop'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
-import { BatteryTile } from '../../components/specialTiles/ZigbeeTiles'
+import {
+  BatteryTile,
+  SignalTile
+} from '../../components/specialTiles/ZigbeeTiles'
 import ToggleHelperTile, {
   ToggleHelperTileProps
 } from '../../components/entityTiles/helpers/ToggleHelperTile'
@@ -41,78 +44,6 @@ const waterLeakSensorProps: Partial<ToggleHelperTileProps> = {
 
 const Alerts = () => (
   <TileSection>
-    <TileGroup name="Notifications">
-      <ToggleHelperTile
-        title="Tablet lights"
-        entityId="input_boolean.alerttabletlights"
-        onIcon={<HighlightIcon />}
-        offIcon={<HighlightIcon />}
-      />
-      <ToggleHelperTile
-        title="Sound alerts"
-        entityId="input_boolean.alertsounds"
-        onIcon={<VolumeUpIcon />}
-        offIcon={<VolumeUpIcon />}
-      />
-      <ToggleHelperTile
-        title="DND at night"
-        entityId="input_boolean.alertdndatnight"
-        onIcon={<NotificationsPausedIcon />}
-        offIcon={<NotificationsPausedIcon />}
-        metadataRenderer={() => ['22-7']}
-      />
-      <PlaceholderTile title="SMS alerts" size="standard" />
-    </TileGroup>
-    <TileGroup name="System and devices">
-      <BatteryTile />
-      <ToggleHelperTile
-        title="Battery level alerts"
-        entityId="input_boolean.alertbatterylevel"
-        {...alertToggleProps}
-      />
-      <ToggleHelperTile
-        title="Self-diagnostic alerts"
-        entityId="input_boolean.alertselfdiagnostic"
-        {...alertToggleProps}
-      />
-    </TileGroup>
-    <TileGroup name="Security">
-      <ToggleHelperTile
-        title="Door deadbolt sensor"
-        entityId="binary_sensor.maindoordeadboltsensor_contact"
-        onIcon={<LockIcon />}
-        offIcon={<LockOpenIcon />}
-        onColor="text-white"
-        offColor="text-red-600"
-        stateNames={['open', 'closed']}
-        tileProps={{ isTurnedOff: false }}
-        reverseState
-        readonly
-      />
-      <ToggleHelperTile
-        title="Door deadbolt alarm"
-        entityId="input_boolean.alertdeadbolt"
-        {...alertToggleProps}
-      />
-    </TileGroup>
-    <TileGroup name="Water leak monitoring">
-      <ToggleHelperTile
-        title="Filter sensor"
-        entityId="binary_sensor.waterfilterleaksensor_water_leak"
-        {...waterLeakSensorProps}
-      />
-      <ToggleHelperTile
-        title="WM sensor"
-        entityId="binary_sensor.washingmachineleaksensor_water_leak"
-        {...waterLeakSensorProps}
-      />
-      <PlaceholderTile title="Bathroom sensor" size="standard" />
-      <ToggleHelperTile
-        title="Water leak alerts"
-        entityId="input_boolean.alertwaterleak"
-        {...alertToggleProps}
-      />
-    </TileGroup>
     <TileGroup name="Deadlines">
       <DateCountdownHelperTile
         title="Water filter"
@@ -155,6 +86,79 @@ const Alerts = () => (
         interval={10}
         warningThreshold={3}
         criticalThreshold={1}
+      />
+    </TileGroup>
+    <TileGroup name="Water leak monitoring">
+      <ToggleHelperTile
+        title="Filter sensor"
+        entityId="binary_sensor.waterfilterleaksensor_water_leak"
+        {...waterLeakSensorProps}
+      />
+      <ToggleHelperTile
+        title="WM sensor"
+        entityId="binary_sensor.washingmachineleaksensor_water_leak"
+        {...waterLeakSensorProps}
+      />
+      <PlaceholderTile title="Bathroom sensor" size="standard" />
+      <ToggleHelperTile
+        title="Water leak alerts"
+        entityId="input_boolean.alertwaterleak"
+        {...alertToggleProps}
+      />
+    </TileGroup>
+    <TileGroup name="Notifications">
+      <ToggleHelperTile
+        title="Tablet lights"
+        entityId="input_boolean.alerttabletlights"
+        onIcon={<HighlightIcon />}
+        offIcon={<HighlightIcon />}
+      />
+      <ToggleHelperTile
+        title="Sound alerts"
+        entityId="input_boolean.alertsounds"
+        onIcon={<VolumeUpIcon />}
+        offIcon={<VolumeUpIcon />}
+      />
+      <ToggleHelperTile
+        title="DND at night"
+        entityId="input_boolean.alertdndatnight"
+        onIcon={<NotificationsPausedIcon />}
+        offIcon={<NotificationsPausedIcon />}
+        metadataRenderer={() => ['22-7']}
+      />
+      <PlaceholderTile title="SMS alerts" size="standard" />
+    </TileGroup>
+    <TileGroup name="Security">
+      <ToggleHelperTile
+        title="Door deadbolt sensor"
+        entityId="binary_sensor.maindoordeadboltsensor_contact"
+        onIcon={<LockIcon />}
+        offIcon={<LockOpenIcon />}
+        onColor="text-white"
+        offColor="text-red-600"
+        stateNames={['open', 'closed']}
+        tileProps={{ isTurnedOff: false }}
+        reverseState
+        readonly
+      />
+      <ToggleHelperTile
+        title="Door deadbolt alarm"
+        entityId="input_boolean.alertdeadbolt"
+        {...alertToggleProps}
+      />
+    </TileGroup>
+    <TileGroup name="System and devices">
+      <BatteryTile />
+      <SignalTile />
+      <ToggleHelperTile
+        title="Battery level alerts"
+        entityId="input_boolean.alertbatterylevel"
+        {...alertToggleProps}
+      />
+      <ToggleHelperTile
+        title="Self-diagnostic alerts"
+        entityId="input_boolean.alertselfdiagnostic"
+        {...alertToggleProps}
       />
     </TileGroup>
   </TileSection>
