@@ -3,6 +3,7 @@ import { ValueThreshold } from '../components/charts/utils'
 
 export type ModalType =
   | 'confirmation'
+  | 'countdownReset'
   | 'lightControl'
   | 'historyChart'
   | 'serviceStatus'
@@ -15,6 +16,13 @@ export type ConfirmationModalParams = {
   message?: string
   isDanger?: boolean
   onConfirm: () => void
+}
+
+export type CountdownResetModalParams = {
+  title: string
+  currentValue: string
+  daysLeft: number
+  onConfirm: (selectedDate: string) => Promise<void>
 }
 
 export type LightControlModalParams = {
@@ -44,6 +52,7 @@ export type CameraViewModalParams = {
 
 export type ModalParams =
   | ConfirmationModalParams
+  | CountdownResetModalParams
   | LightControlModalParams
   | HistoryChartModalParams
   | ZigbeeNetworkModalParams

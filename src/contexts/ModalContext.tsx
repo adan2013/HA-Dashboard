@@ -20,6 +20,7 @@ import ServiceStatusTableBody from '../components/modals/bodies/ServiceStatusTab
 import WeatherBody from '../components/modals/bodies/WeatherBody'
 import CameraViewBody from '../components/modals/bodies/CameraViewBody'
 import TriggerNotificationBody from '../components/modals/bodies/TriggerNotificationBody'
+import CountdownResetBody from '../components/modals/bodies/CountdownResetBody'
 
 type ProviderProps = {
   children: ReactElement
@@ -64,6 +65,7 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
   const getModalWidth = () => {
     switch (modalState.modalType) {
       case 'confirmation':
+      case 'countdownReset':
       case 'lightControl':
       case 'triggerNotification':
         return '600px'
@@ -78,6 +80,8 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
         return <LightControlBody />
       case 'confirmation':
         return <ConfirmationBody />
+      case 'countdownReset':
+        return <CountdownResetBody />
       case 'historyChart':
         return <HistoryChartBody />
       case 'serviceStatus':

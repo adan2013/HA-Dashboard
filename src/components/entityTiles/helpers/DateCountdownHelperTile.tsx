@@ -4,7 +4,7 @@ import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useBackend } from '../../../contexts/BackendContext'
 import DurabilityCircleChart from '../../charts/DurabilityCircleChart'
 import { useModalContext } from '../../../contexts/ModalContext'
-import { ConfirmationModalParams } from '../../../contexts/modalUtils'
+import { CountdownResetModalParams } from '../../../contexts/modalUtils'
 
 export type DateCountdownHelperTileProps = {
   title: string
@@ -46,16 +46,26 @@ const DateCountdownHelperTile = ({
 
   const resetCountdown = () => {
     if (isUnavailable) return
-    const params: ConfirmationModalParams = {
-      isDanger: true,
-      onConfirm: () => {
-        backend.callService(entityState.id, 'input_datetime', 'set_datetime', {
-          datetime: new Date().toISOString()
-        })
-        toast.success('The countdown has been reset')
+    const params: CountdownResetModalParams = {
+      title,
+      currentValue: entityState.state,
+      daysLeft,
+      onConfirm: async selectedDate => {
+        try {
+          await backend.callService(
+            entityState.id,
+            'input_datetime',
+            'set_datetime',
+            { date: selectedDate }
+          )
+          toast.success('The countdown has been reset')
+        } catch (error) {
+          toast.error('Could not reset the countdown')
+          throw error
+        }
       }
     }
-    modal.openModal('confirmation', params)
+    modal.openModal('countdownReset', params)
   }
 
   const tileData: TileProps = {

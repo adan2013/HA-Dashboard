@@ -6,10 +6,17 @@ import DateCountdownHelperTile, {
 import { getMockedEntityState } from '../../../../utils/testUtils'
 
 const openModalMock = jest.fn()
+const callServiceMock = jest.fn()
 
 jest.mock('../../../../contexts/ModalContext', () => ({
   useModalContext: () => ({
     openModal: openModalMock
+  })
+}))
+
+jest.mock('../../../../contexts/BackendContext', () => ({
+  useBackend: () => ({
+    callService: callServiceMock
   })
 }))
 
@@ -53,6 +60,12 @@ describe('DateCountdownHelperTile', () => {
     jest.useFakeTimers()
   })
 
+  beforeEach(() => {
+    jest.setSystemTime(new Date('2023-04-01'))
+    openModalMock.mockReset()
+    callServiceMock.mockReset()
+  })
+
   it('should show a toast when the tile is clicked', async () => {
     render(
       <>
@@ -72,6 +85,24 @@ describe('DateCountdownHelperTile', () => {
     render(<DateCountdownHelperTile {...testProps} />)
     fireEvent.contextMenu(screen.getByText('title'))
     await waitFor(() => expect(openModalMock).toHaveBeenCalledTimes(1))
+    expect(openModalMock).toHaveBeenCalledWith(
+      'countdownReset',
+      expect.objectContaining({
+        title: 'title',
+        currentValue: '2023-04-01',
+        daysLeft: 120
+      })
+    )
+
+    callServiceMock.mockResolvedValue(undefined)
+    const [, params] = openModalMock.mock.calls[0]
+    await params.onConfirm('2023-04-12')
+    expect(callServiceMock).toHaveBeenCalledWith(
+      'entity',
+      'input_datetime',
+      'set_datetime',
+      { date: '2023-04-12' }
+    )
   })
 
   it.each([
