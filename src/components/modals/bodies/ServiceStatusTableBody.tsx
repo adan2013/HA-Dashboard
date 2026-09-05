@@ -1,7 +1,6 @@
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import { useEffect, useState } from 'react'
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined'
-import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew'
 import clsx from 'clsx'
 import { useModalContext } from '../../../contexts/ModalContext'
 import { ModalBody, ModalButton, ModalFooter } from '../ModalElements'
@@ -44,17 +43,6 @@ const ServiceStatusTableBody = () => {
 
   const getServiceRow = (serviceName: string, service: ServiceStatus) => (
     <tr key={serviceName} className="hover:bg-gray-700">
-      <td className="p-2 text-center hover:cursor-pointer">
-        {service.status.enabled ? (
-          <div onClick={() => backend?.switchService(serviceName, false)}>
-            <PowerSettingsNewIcon className="!text-3xl text-green-500" />
-          </div>
-        ) : (
-          <div onClick={() => backend?.switchService(serviceName, true)}>
-            <PowerSettingsNewIcon className="!text-3xl text-red-500" />
-          </div>
-        )}
-      </td>
       <td className="p-2 text-left">{serviceName}</td>
       <td className="min-w-[300px] p-2 text-left text-sm">
         <div
@@ -70,7 +58,6 @@ const ServiceStatusTableBody = () => {
 
   const getHelperRow = (helperName: string, status: Status) => (
     <tr key={helperName} className="hover:bg-gray-700">
-      <td />
       <td className="p-2 pl-4 text-left">{`→ ${helperName}`}</td>
       <td className="p-2 text-left text-sm">
         <div
@@ -100,7 +87,6 @@ const ServiceStatusTableBody = () => {
               <table className="w-full">
                 <thead className="border-b-[1px] border-white">
                   <tr>
-                    <th className="p-2" />
                     <th className="p-2 text-left">Name</th>
                     <th className="p-2 text-left">Status</th>
                   </tr>

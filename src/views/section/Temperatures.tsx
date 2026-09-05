@@ -4,6 +4,7 @@ import {
   HumidityChartTile,
   TemperatureChartTile
 } from '../../components/entityTiles/climate/ClimateTile'
+import PlaceholderTile from '../../PlaceholderTile'
 
 const Temperatures = () => (
   <TileSection>
@@ -21,6 +22,11 @@ const Temperatures = () => (
         entityId="sensor.aniatempsensor_temperature"
       />
     </TileGroup>
+    <TileGroup name="Thermostat">
+      <PlaceholderTile title="Living room" size="horizontal" />
+      <PlaceholderTile title="Daniel" size="horizontal" />
+      <PlaceholderTile title="Ania" size="horizontal" />
+    </TileGroup>
     <TileGroup name="Humidity">
       <HumidityChartTile
         title="Living room"
@@ -33,23 +39,6 @@ const Temperatures = () => (
       <HumidityChartTile
         title="Ania"
         entityId="sensor.aniatempsensor_humidity"
-      />
-    </TileGroup>
-    <TileGroup name="Server rack">
-      <TemperatureChartTile
-        title="Rack temperature"
-        entityId="sensor.dash_node_server_rack_temperature"
-      />
-      <HumidityChartTile
-        title="Rack humidity"
-        entityId="sensor.dash_node_server_rack_humidity"
-      />
-      <TemperatureChartTile
-        title="NAS temperature"
-        entityId="sensor.synologynas_temperature"
-        customProps={{
-          hideChart: true
-        }}
       />
     </TileGroup>
   </TileSection>

@@ -1,7 +1,8 @@
 {
   "name": "ha-dashboard",
   "private": true,
-  "version": "5.0.4",
+  "version": "5.1.0",
+  "packageManager": "yarn@1.22.22",
   "description": "Home Assistant dashboard for wall-mounted tablet",
   "repository": {
     "type": "git",
@@ -14,6 +15,7 @@
     "smart home"
   ],
   "scripts": {
+    "preinstall": "node ./scripts/enforce-yarn.js",
     "dev": "vite --host",
     "build": "vite build --emptyOutDir",
     "typecheck": "tsc --noEmit",

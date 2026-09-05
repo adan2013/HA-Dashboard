@@ -208,10 +208,6 @@ class BackendWebSocketAPI extends WebSocketConnector {
     })
   }
 
-  public switchService(serviceName: string, enabled: boolean) {
-    this.sendMsg('switchService', { serviceName, enabled })
-  }
-
   public callService(
     entityId: string | string[] | undefined,
     domain: string,

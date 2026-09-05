@@ -2,7 +2,6 @@ import ReplayIcon from '@mui/icons-material/Replay'
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
-import { SignalTile } from '../../components/specialTiles/ZigbeeTiles'
 import {
   CallManualBackup,
   BackupStats,
@@ -20,17 +19,28 @@ import CallServiceTile from '../../components/entityTiles/services/CallServiceTi
 import { getHomeAssistantHost } from '../../utils/viteUtils'
 import ServiceStatusTile from '../../components/backendTiles/ServiceStatusTile'
 import ExternalPageTile from '../../components/specialTiles/ExternalPageTile'
+import {
+  HumidityChartTile,
+  TemperatureChartTile
+} from '../../components/entityTiles/climate/ClimateTile'
 
 const System = () => (
   <TileSection>
     <TileGroup name="Status">
-      <SignalTile />
+      <TemperatureChartTile
+        title="Rack temperature"
+        entityId="sensor.dash_node_server_rack_temperature"
+      />
+      <HumidityChartTile
+        title="Rack humidity"
+        entityId="sensor.dash_node_server_rack_humidity"
+      />
       <ServiceStatusTile />
     </TileGroup>
     <TileGroup name="Backups">
+      <BackupStats />
       <SambaBackupStatus />
       <CallManualBackup />
-      <BackupStats />
     </TileGroup>
     <TileGroup name="NAS server">
       <SynologyDsmUpdate />
