@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react'
 import {
   HomeAssistantConnectionState,
   EntityState,
-  extractDeviceNameFromFriendlyName,
-  ZigbeeEntityState,
   BackendConnectionState,
   BackendAuthenticationState
 } from './utils'
 import { useBackend } from '../contexts/BackendContext'
+import { BatteryState, readBatteryEntity } from '../utils/batteryUtils'
 
 export const useBackendStatus = (): BackendConnectionState => {
   const [status, setStatus] = useState<BackendConnectionState>('disconnected')
@@ -62,69 +61,31 @@ export const useHomeAssistantEntity = (
   return state
 }
 
-export type SortMethod = 'battery' | 'signal' | 'name'
-
-export const useHomeAssistantZigbeeEntities = (
-  sortBy: SortMethod = 'name'
-): ZigbeeEntityState[] => {
-  const [state, setState] = useState<ZigbeeEntityState[]>(null)
+export const useHomeAssistantBatteries = (): BatteryState[] => {
+  const [state, setState] = useState<BatteryState[]>(null)
   const backend = useBackend()
 
   useEffect(() => {
     let active = true
     backend
-      .getEntitiesWithAttribute('linkquality')
+      .getBatteryEntities()
       .then(backendEntities => {
         if (!active) return
-        const entities: ZigbeeEntityState[] = backendEntities
-          .filter(entity => {
-            switch (sortBy) {
-              case 'battery':
-                return (
-                  entity.attributes.battery > 0 &&
-                  entity.attributes.linkquality > 0
-                )
-              case 'signal':
-                return entity.attributes.linkquality > 0
-              default:
-                return entity.attributes.linkquality > 0
-            }
-          })
-          .map(entity => ({
-            entity,
-            friendlyName: extractDeviceNameFromFriendlyName(
-              entity.attributes.friendly_name
-            ),
-            battery: entity.attributes.battery,
-            signal: entity.attributes.linkquality
-          }))
-        const uniqueEntities: ZigbeeEntityState[] = []
-        entities.forEach(entity => {
-          if (
-            !uniqueEntities.some(ue => ue.friendlyName === entity.friendlyName)
-          ) {
-            uniqueEntities.push(entity)
-          }
-        })
-        const sortedEntities = uniqueEntities.sort((a, b) => {
-          switch (sortBy) {
-            case 'battery':
-              return a.battery - b.battery
-            case 'signal':
-              return a.signal - b.signal
-            default:
-              if (a.friendlyName < b.friendlyName) return -1
-              if (a.friendlyName > b.friendlyName) return 1
-              return 0
-          }
-        })
+        const sortedEntities = backendEntities
+          .map(readBatteryEntity)
+          .filter((entity): entity is BatteryState => entity !== undefined)
+          .sort(
+            (a, b) =>
+              (a.level ?? Number.MAX_VALUE) -
+              (b.level ?? Number.MAX_VALUE)
+          )
         setState(sortedEntities)
       })
-      .catch(error => console.error('Failed to load Zigbee entities', error))
+      .catch(error => console.error('Failed to load battery entities', error))
     return () => {
       active = false
     }
-  }, [backend, sortBy])
+  }, [backend])
 
   return state
 }

@@ -7,7 +7,7 @@ export type ModalType =
   | 'lightControl'
   | 'historyChart'
   | 'serviceStatus'
-  | 'zigbeeNetwork'
+  | 'batteryList'
   | 'weather'
   | 'cameraView'
   | 'triggerNotification'
@@ -37,10 +37,6 @@ export type HistoryChartModalParams = {
   graphValueThresholds?: ValueThreshold[]
 }
 
-export type ZigbeeNetworkModalParams = {
-  tab: 'all' | 'battery' | 'signal'
-}
-
 export type WeatherModalParams = {
   content: 'rain'
 }
@@ -55,7 +51,6 @@ export type ModalParams =
   | CountdownResetModalParams
   | LightControlModalParams
   | HistoryChartModalParams
-  | ZigbeeNetworkModalParams
   | WeatherModalParams
   | CameraViewModalParams
 

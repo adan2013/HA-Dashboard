@@ -50,8 +50,8 @@ describe('LightTile', () => {
     render(<LightTile {...testProps} />)
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('on')).toBeInTheDocument()
-    expect(screen.getByTestId('LightbulbOutlinedIcon')).toBeInTheDocument()
-    expect(screen.getByTestId('LightbulbOutlinedIcon')).toHaveClass(
+    expect(screen.getByTestId('LightbulbIcon')).toBeInTheDocument()
+    expect(screen.getByTestId('LightbulbIcon')).toHaveClass(
       'text-yellow-500'
     )
     expect(screen.getByText('50%')).toBeInTheDocument()
@@ -129,7 +129,7 @@ describe('LightTile', () => {
     render(<LightTile {...testProps} />)
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('off')).toBeInTheDocument()
-    expect(screen.getByTestId('LightbulbIcon')).toBeInTheDocument()
+    expect(screen.getByTestId('LightbulbOutlinedIcon')).toBeInTheDocument()
     expect(screen.queryByText('50%')).not.toBeInTheDocument()
     expect(screen.queryByText('3000K')).not.toBeInTheDocument()
   })

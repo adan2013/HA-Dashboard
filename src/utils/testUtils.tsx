@@ -19,25 +19,18 @@ export const generateEntityHistory = (values: number[]) =>
     value
   }))
 
-export const getZigbeeEntity = (
-  id: string,
-  battery: number,
-  signal: number
-) => ({
+export const getBatteryEntity = (id: string, level: number) => ({
   entity: {
-    id,
-    state: 'something',
+    id: `sensor.${id}_battery`,
+    state: level.toString(),
     lastChanged: '',
     lastUpdated: '',
     attributes: {
-      friendly_name: id,
-      battery,
-      linkquality: signal
+      friendly_name: `${id}_name Battery`
     }
   },
   friendlyName: `${id}_name`,
-  battery,
-  signal
+  level
 })
 
 export const getMockedEntityState = (

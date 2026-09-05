@@ -112,7 +112,7 @@ describe('LightControlBody', () => {
     fireEvent.mouseDown(screen.getByTestId('slider-Color temperature'))
     fireEvent.mouseUp(screen.getByTestId('slider-Color temperature'))
     expect(callService).toHaveBeenCalledWith('entity', 'light', 'turn_on', {
-      kelvin: 2000
+      color_temp_kelvin: 2000
     })
   })
 

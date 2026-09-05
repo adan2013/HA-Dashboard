@@ -8,14 +8,12 @@ export interface EntityAttributeInterface {
   color_temp_kelvin?: number
   min_color_temp_kelvin?: number
   max_color_temp_kelvin?: number
-  battery?: number
   current_temperature?: number
   temperature?: number
   fan_mode?: string
   fan_modes?: string[]
   entity_picture?: string
   friendly_name: string
-  linkquality?: number
 }
 
 export type EntityState = {
@@ -24,13 +22,6 @@ export type EntityState = {
   lastChanged: string
   lastUpdated: string
   attributes: EntityAttributeInterface
-}
-
-export type ZigbeeEntityState = {
-  entity: EntityState
-  friendlyName: string
-  battery: number
-  signal: number
 }
 
 export type HomeAssistantConnectionState =
@@ -68,10 +59,3 @@ export type HomeAssistantConnectionStateListenerCallback = (
 export type BackendConnectionStateListenerCallback = (
   state: BackendConnectionState
 ) => void
-
-export const extractDeviceNameFromFriendlyName = (name: string): string => {
-  if (!name) return ''
-  const parts = name.split(' ')
-  if (parts.length > 0) return parts[0]
-  return name
-}

@@ -5,41 +5,21 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import NotificationsPausedIcon from '@mui/icons-material/NotificationsPaused'
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined'
 import AnnouncementIcon from '@mui/icons-material/Announcement'
-import WaterDropOutlinedIcon from '@mui/icons-material/WaterDropOutlined'
-import WaterDropIcon from '@mui/icons-material/WaterDrop'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
-import {
-  BatteryTile,
-  SignalTile
-} from '../../components/specialTiles/ZigbeeTiles'
+import { BatteryTile } from '../../components/specialTiles/BatteryTile'
 import ToggleHelperTile, {
   ToggleHelperTileProps
 } from '../../components/entityTiles/helpers/ToggleHelperTile'
 import DateCountdownHelperTile from '../../components/entityTiles/helpers/DateCountdownHelperTile'
+import WaterLeakSensorTile from '../../components/entityTiles/sensors/WaterLeakSensorTile'
 
 const alertToggleProps: Partial<ToggleHelperTileProps> = {
   stateNames: ['DISABLED', 'enabled'],
   offColor: 'text-red-500',
   onIcon: <ChatOutlinedIcon />,
   offIcon: <AnnouncementIcon />
-}
-
-const waterLeakSensorProps: Partial<ToggleHelperTileProps> = {
-  stateNames: ['ready', 'ALARM'],
-  onColor: 'text-red-600',
-  onIcon: <WaterDropIcon />,
-  offIcon: <WaterDropOutlinedIcon />,
-  readonly: true,
-  tileProps: {
-    isTurnedOff: false
-  },
-  metadataRenderer: entityState => {
-    if (!entityState || !entityState.attributes) return undefined
-    const { battery, linkquality } = entityState.attributes
-    return [`${battery || '--'}%`, `${linkquality || '--'} LQI`]
-  }
 }
 
 const Alerts = () => (
@@ -89,15 +69,15 @@ const Alerts = () => (
       />
     </TileGroup>
     <TileGroup name="Water leak monitoring">
-      <ToggleHelperTile
+      <WaterLeakSensorTile
         title="Filter sensor"
         entityId="binary_sensor.waterfilterleaksensor_water_leak"
-        {...waterLeakSensorProps}
+        batteryEntityId="sensor.waterfilterleaksensor_battery"
       />
-      <ToggleHelperTile
+      <WaterLeakSensorTile
         title="WM sensor"
         entityId="binary_sensor.washingmachineleaksensor_water_leak"
-        {...waterLeakSensorProps}
+        batteryEntityId="sensor.washingmachineleaksensor_battery"
       />
       <PlaceholderTile title="Bathroom sensor" size="standard" />
       <ToggleHelperTile
@@ -149,7 +129,6 @@ const Alerts = () => (
     </TileGroup>
     <TileGroup name="System and devices">
       <BatteryTile />
-      <SignalTile />
       <ToggleHelperTile
         title="Battery level alerts"
         entityId="input_boolean.alertbatterylevel"

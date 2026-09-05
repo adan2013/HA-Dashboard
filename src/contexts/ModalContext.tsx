@@ -15,7 +15,7 @@ import {
 import ConfirmationBody from '../components/modals/bodies/ConfirmationBody'
 import LightControlBody from '../components/modals/bodies/LightControlBody'
 import HistoryChartBody from '../components/modals/bodies/HistoryChartBody'
-import ZigbeeNetworkBody from '../components/modals/bodies/ZigbeeNetworkBody'
+import BatteryListBody from '../components/modals/bodies/BatteryListBody'
 import ServiceStatusTableBody from '../components/modals/bodies/ServiceStatusTableBody'
 import WeatherBody from '../components/modals/bodies/WeatherBody'
 import CameraViewBody from '../components/modals/bodies/CameraViewBody'
@@ -86,8 +86,8 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
         return <HistoryChartBody />
       case 'serviceStatus':
         return <ServiceStatusTableBody />
-      case 'zigbeeNetwork':
-        return <ZigbeeNetworkBody />
+      case 'batteryList':
+        return <BatteryListBody />
       case 'weather':
         return <WeatherBody />
       case 'cameraView':

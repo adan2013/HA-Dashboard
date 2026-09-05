@@ -68,7 +68,7 @@ const LightControlBody = () => {
   const updateColorTemp = () => {
     if (isUnavailable) return
     backend.callService(entityState.id, 'light', 'turn_on', {
-      kelvin: colorTemp
+      color_temp_kelvin: colorTemp
     })
   }
 

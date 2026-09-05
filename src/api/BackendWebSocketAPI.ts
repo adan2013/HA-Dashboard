@@ -227,8 +227,8 @@ class BackendWebSocketAPI extends WebSocketConnector {
     }) as Promise<SensorHistoryItem[]>
   }
 
-  public getEntitiesWithAttribute(attribute: string): Promise<EntityState[]> {
-    return this.request('getEntities', { attribute }) as Promise<EntityState[]>
+  public getBatteryEntities(): Promise<EntityState[]> {
+    return this.request('getBatteryEntities', {}) as Promise<EntityState[]>
   }
 
   private request(type: string, payload: object): Promise<unknown> {
@@ -352,7 +352,7 @@ class BackendWebSocketAPI extends WebSocketConnector {
         break
       case 'commandResult':
       case 'entityHistoryResult':
-      case 'entitiesResult':
+      case 'batteryEntitiesResult':
         this.resolveRequest(msg)
         break
       case 'ping':
