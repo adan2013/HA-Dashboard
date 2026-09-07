@@ -162,6 +162,29 @@ describe('BackendWebSocketAPI', () => {
     await expect(request).resolves.toEqual([batteryEntity])
   })
 
+  it('should request and receive the latest backend logs', async () => {
+    const backend = new BackendWebSocketAPI()
+    const socket = authenticate(backend)
+    const logEntry = {
+      time: '2026-09-07T10:00:00.000Z',
+      level: 'error',
+      scope: 'WeatherService',
+      message: 'Weather refresh failed'
+    }
+
+    const request = backend.getBackendLogs()
+    const requestMessage = socket.sent.at(-1)
+    expect(requestMessage).toMatchObject({ type: 'getBackendLogs' })
+
+    socket.receive({
+      type: 'backendLogsResult',
+      requestId: requestMessage.requestId,
+      data: [logEntry]
+    })
+
+    await expect(request).resolves.toEqual([logEntry])
+  })
+
   it('should clear the persisted token on logout', () => {
     const backend = new BackendWebSocketAPI()
     authenticate(backend)

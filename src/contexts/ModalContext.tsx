@@ -21,6 +21,7 @@ import WeatherBody from '../components/modals/bodies/WeatherBody'
 import CameraViewBody from '../components/modals/bodies/CameraViewBody'
 import TriggerNotificationBody from '../components/modals/bodies/TriggerNotificationBody'
 import CountdownResetBody from '../components/modals/bodies/CountdownResetBody'
+import BackendLogsBody from '../components/modals/bodies/BackendLogsBody'
 
 type ProviderProps = {
   children: ReactElement
@@ -86,6 +87,8 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
         return <HistoryChartBody />
       case 'serviceStatus':
         return <ServiceStatusTableBody />
+      case 'backendLogs':
+        return <BackendLogsBody />
       case 'batteryList':
         return <BatteryListBody />
       case 'weather':

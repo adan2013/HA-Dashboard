@@ -45,6 +45,17 @@ export type SensorHistoryItem = {
   value: number
 }
 
+export type BackendLogLevel = 'info' | 'warn' | 'error' | 'fatal'
+
+export type BackendLogEntry = {
+  time: string
+  level: BackendLogLevel
+  scope: string
+  message: string
+  details?: unknown
+  truncated?: boolean
+}
+
 export type ListenerRemover = () => void
 
 export type EntityListenerCallback = (
