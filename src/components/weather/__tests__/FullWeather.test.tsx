@@ -101,12 +101,12 @@ describe('Weather - full version', () => {
     expect(screen.getByText('Fair')).toBeVisible()
   })
 
-  it('should display wind direction tile', () => {
+  it('should display the direction the wind is blowing towards', () => {
     render(<WindDirectionTile windDirection={currentWeatherMock.windDeg} />)
     expect(screen.getByText('Wind direction')).toBeVisible()
     expect(screen.getByText('N')).toBeVisible()
     expect(screen.getByTestId('wind-direction-arrow')).toHaveStyle(
-      'transform: rotate(90deg)'
+      'transform: rotate(270deg)'
     )
   })
 

@@ -17,7 +17,7 @@ const WindDirectionTile = ({ windDirection }: Props) => (
           className="rounded-full border-2 border-white p-4"
           data-testid="wind-direction-arrow"
           style={{
-            transform: `rotate(${windDirection}deg)`
+            transform: `rotate(${(windDirection + 180) % 360}deg)`
           }}
         >
           <ArrowUpwardIcon className="!text-7xl" />
