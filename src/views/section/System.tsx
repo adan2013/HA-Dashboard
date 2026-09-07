@@ -18,6 +18,7 @@ import {
 import CallServiceTile from '../../components/entityTiles/services/CallServiceTile'
 import { getHomeAssistantHost } from '../../utils/viteUtils'
 import ServiceStatusTile from '../../components/backendTiles/ServiceStatusTile'
+import BackendLogsTile from '../../components/backendTiles/BackendLogsTile'
 import ExternalPageTile from '../../components/specialTiles/ExternalPageTile'
 import {
   HumidityChartTile,
@@ -36,6 +37,7 @@ const System = () => (
         entityId="sensor.dash_node_server_rack_humidity"
       />
       <ServiceStatusTile />
+      <BackendLogsTile />
     </TileGroup>
     <TileGroup name="Backups">
       <BackupStats />

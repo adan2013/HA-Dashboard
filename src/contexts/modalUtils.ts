@@ -7,6 +7,7 @@ export type ModalType =
   | 'lightControl'
   | 'historyChart'
   | 'serviceStatus'
+  | 'backendLogs'
   | 'batteryList'
   | 'weather'
   | 'cameraView'

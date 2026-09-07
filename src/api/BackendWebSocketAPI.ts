@@ -3,6 +3,7 @@ import WebSocketConnector from './WebSocketConnector'
 import { getBackendHost } from '../utils/viteUtils'
 import {
   BackendAuthenticationState,
+  BackendLogEntry,
   BackendConnectionState,
   BackendConnectionStateListenerCallback,
   EntityListenerCallback,
@@ -231,6 +232,10 @@ class BackendWebSocketAPI extends WebSocketConnector {
     return this.request('getBatteryEntities', {}) as Promise<EntityState[]>
   }
 
+  public getBackendLogs(): Promise<BackendLogEntry[]> {
+    return this.request('getBackendLogs', {}) as Promise<BackendLogEntry[]>
+  }
+
   private request(type: string, payload: object): Promise<unknown> {
     if (this.authenticationState !== 'authenticated') {
       const rejected = Promise.reject(
@@ -353,6 +358,7 @@ class BackendWebSocketAPI extends WebSocketConnector {
       case 'commandResult':
       case 'entityHistoryResult':
       case 'batteryEntitiesResult':
+      case 'backendLogsResult':
         this.resolveRequest(msg)
         break
       case 'ping':
