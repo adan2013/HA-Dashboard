@@ -333,6 +333,9 @@ describe('TileSection loading and outages', () => {
     haStatus = 'disconnected'
     renderSection()
     expect(screen.getByText('System')).toBeVisible()
+    expect(screen.getByText('System').nextElementSibling).toHaveStyle({
+      gridAutoColumns: '150px'
+    })
     expect(screen.getByLabelText('Loading Large tile')).toHaveClass(
       'col-span-2',
       'row-span-2'

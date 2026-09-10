@@ -8,6 +8,7 @@ type TilesGroupProps = {
 
 const DEFAULT_ROW_COUNT = 3
 const HEADER_HEIGHT = 30
+const TILE_SIZE = 150
 const TILE_SIZE_WITH_GAP = 175
 const MIN_ROW_COUNT = 2
 
@@ -34,7 +35,8 @@ const TileGroup = ({ name, children }: TilesGroupProps) => {
   const extraStyles = layout?.isMobile
     ? {}
     : {
-        gridTemplateRows: `repeat(${rowCount}, 150px)`
+        gridTemplateRows: `repeat(${rowCount}, ${TILE_SIZE}px)`,
+        gridAutoColumns: `${TILE_SIZE}px`
       }
 
   return (
