@@ -24,7 +24,8 @@ const SwitchTile = ({
   onIcon,
   offIcon
 }: SwitchTileProps) => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
+  const { entityState, isUnavailable, isLoading } =
+    useHomeAssistantEntity(entityId)
   const backend = useBackend()
   const modal = useModalContext()
   const isActive = entityState?.state === 'on'
@@ -56,7 +57,8 @@ const SwitchTile = ({
     isTurnedOff: !isActive,
     iconClassnames: isActive ? 'text-green-500' : undefined,
     onClick: disableToggle ? undefined : onClick,
-    isUnavailable
+    isUnavailable,
+    isLoading
   }
   return <Tile {...tileData} />
 }

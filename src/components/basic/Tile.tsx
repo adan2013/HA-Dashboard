@@ -1,7 +1,15 @@
 import clsx from 'clsx'
-import { cloneElement, forwardRef, ForwardedRef, ReactElement } from 'react'
+import {
+  cloneElement,
+  forwardRef,
+  ForwardedRef,
+  ReactElement,
+  useId,
+  useLayoutEffect
+} from 'react'
 import PowerOffOutlinedIcon from '@mui/icons-material/PowerOffOutlined'
 import useClickHoldLogic from '../../hooks/useClickHoldLogic'
+import { useTileConnection } from '../../contexts/TileConnectionContext'
 
 export type TileSize = 'standard' | 'horizontal' | 'big'
 
@@ -23,6 +31,8 @@ export type TileProps = {
   size?: TileSize
   isTurnedOff?: boolean
   isUnavailable?: boolean
+  isLoading?: boolean
+  requiresHomeAssistant?: boolean
   onClick?: () => void
   onHold?: () => void
   customBody?: ReactElement
@@ -32,12 +42,27 @@ const Tile = (
   propsTile: TileProps,
   ref: ForwardedRef<HTMLButtonElement | HTMLDivElement>
 ) => {
+  const connection = useTileConnection()
+  const tileId = useId()
+  const { setTileLoading } = connection
+  const { isUnavailable, requiresHomeAssistant } = propsTile
   const tile = {
     size: 'standard',
-    ...propsTile
+    ...propsTile,
+    isUnavailable:
+      isUnavailable ||
+      (requiresHomeAssistant && connection.isHomeAssistantUnavailable)
   }
+  // Report only this tile's data readiness; including the shared state would deadlock.
+  // Layout effects keep ready tiles hidden before the browser paints the group.
+  useLayoutEffect(() => {
+    setTileLoading?.(tileId, Boolean(tile.isLoading))
+    return () => setTileLoading?.(tileId, false)
+  }, [setTileLoading, tileId, tile.isLoading])
+
+  const isLoading = connection.isLoading || tile.isLoading
   const holdEvents = useClickHoldLogic(tile.onClick, tile.onHold, {
-    disableInteractions: tile.isUnavailable
+    disableInteractions: tile.isUnavailable || isLoading
   })
   const isInteractive = Boolean(tile.onClick || tile.onHold)
   const isDimmed = tile.isTurnedOff || tile.isUnavailable
@@ -102,12 +127,7 @@ const Tile = (
           {tile.title}
         </div>
         {tile.subtitle && (
-          <div
-            className={clsx(
-              'text-sm font-light',
-              dimmedContentClass
-            )}
-          >
+          <div className={clsx('text-sm font-light', dimmedContentClass)}>
             {tile.subtitle}
           </div>
         )}
@@ -145,15 +165,16 @@ const Tile = (
           )
         })}
       {tile.customBody && (
-        <div
+        <fieldset
+          disabled={tile.isUnavailable}
           className={clsx(
-            'relative z-10 h-full pt-10',
+            'relative z-10 m-0 h-full min-w-0 border-0 p-0 pt-10',
             dimmedContentClass
           )}
           data-testid="tile-custom-body"
         >
           {tile.customBody}
-        </div>
+        </fieldset>
       )}
     </>
   )
@@ -165,9 +186,25 @@ const Tile = (
     tile.size === 'big' && 'col-span-2 row-span-2 aspect-square',
     isInteractive &&
       !tile.isUnavailable &&
+      !isLoading &&
       'press-feedback touch-manipulation select-none cursor-pointer hover:ring-2 hover:ring-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
     textColor
   )
+
+  if (isLoading) {
+    return (
+      <div
+        className={clsx(
+          className,
+          'tile-skeleton overflow-hidden bg-neutral-800'
+        )}
+        ref={ref as ForwardedRef<HTMLDivElement>}
+        aria-label={`Loading ${tile.title}`}
+        aria-busy="true"
+        role="status"
+      />
+    )
+  }
 
   if (!isInteractive) {
     return (
@@ -185,10 +222,7 @@ const Tile = (
     <button
       type="button"
       aria-label={tile.title}
-      className={clsx(
-        className,
-        tile.isUnavailable && 'cursor-not-allowed'
-      )}
+      className={clsx(className, tile.isUnavailable && 'cursor-not-allowed')}
       {...holdEvents}
       disabled={tile.isUnavailable}
       ref={ref as ForwardedRef<HTMLButtonElement>}

@@ -1,3 +1,5 @@
+export const REQUEST_TIMEOUT_MS = 10000
+
 export interface SocketMessageInterface {
   type: string
   id?: number

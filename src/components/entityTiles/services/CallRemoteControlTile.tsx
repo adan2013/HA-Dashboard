@@ -29,6 +29,7 @@ const CallRemoteControlTile = ({
 
   const tileData: TileProps = {
     title,
+    requiresHomeAssistant: true,
     icon: disabled ? <CachedOutlinedIcon /> : icon,
     iconClassnames: disabled ? 'animate-spin opacity-30' : undefined,
     onClick: disabled ? undefined : onClick

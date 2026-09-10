@@ -37,6 +37,7 @@ const BackgroundHistoryChart = ({
           }}
         >
           <Area
+            isAnimationActive={false}
             type="monotone"
             dataKey="value"
             stroke="#ffffff"

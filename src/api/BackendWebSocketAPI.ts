@@ -2,6 +2,7 @@ import EventEmitter from 'eventemitter3'
 import WebSocketConnector from './WebSocketConnector'
 import { getBackendHost } from '../utils/viteUtils'
 import {
+  REQUEST_TIMEOUT_MS,
   BackendAuthenticationState,
   BackendLogEntry,
   BackendConnectionState,
@@ -16,8 +17,6 @@ import {
 import { ServiceDataObject, ServiceManagerStatus } from './backend/backendTypes'
 
 const ACCESS_TOKEN_STORAGE_KEY = 'dashboardAccessToken'
-const REQUEST_TIMEOUT = 15000
-
 type PendingRequest = {
   resolve: (value: unknown) => void
   reject: (reason: Error) => void
@@ -171,7 +170,7 @@ class BackendWebSocketAPI extends WebSocketConnector {
       }
     }
     subscription.listeners.add(callback)
-    if (subscription.state)
+    if (subscription.state !== undefined)
       callback(subscription.state, this.homeAssistantStatus)
 
     return () => {
@@ -233,7 +232,9 @@ class BackendWebSocketAPI extends WebSocketConnector {
   }
 
   public getBackendLogs(): Promise<BackendLogEntry[]> {
-    return this.request('getBackendLogs', {}) as Promise<BackendLogEntry[]>
+    return this.request('getBackendLogs', {}) as Promise<
+      BackendLogEntry[]
+    >
   }
 
   private request(type: string, payload: object): Promise<unknown> {
@@ -249,7 +250,7 @@ class BackendWebSocketAPI extends WebSocketConnector {
       const timeout = window.setTimeout(() => {
         this.pendingRequests.delete(requestId)
         reject(new Error('Backend request timed out'))
-      }, REQUEST_TIMEOUT)
+      }, REQUEST_TIMEOUT_MS)
       this.pendingRequests.set(requestId, { resolve, reject, timeout })
       this.sendMsg(type, { requestId, ...payload })
     })
@@ -274,10 +275,10 @@ class BackendWebSocketAPI extends WebSocketConnector {
     const subscription = [...this.entitySubscriptions.values()].find(
       item => item.subscriptionId === msg.subscriptionId
     )
-    if (!subscription || !msg.data) return
-    subscription.state = msg.data
+    if (!subscription) return
+    subscription.state = msg.data ?? null
     subscription.listeners.forEach(listener =>
-      listener(msg.data, this.homeAssistantStatus)
+      listener(subscription.state, this.homeAssistantStatus)
     )
   }
 
@@ -353,6 +354,7 @@ class BackendWebSocketAPI extends WebSocketConnector {
         this.updateEntitySubscription(msg)
         break
       case 'subscriptionError':
+        this.updateEntitySubscription({ subscriptionId: msg.subscriptionId })
         console.error('Entity subscription failed', msg.error)
         break
       case 'commandResult':

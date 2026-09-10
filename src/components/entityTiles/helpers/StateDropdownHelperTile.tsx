@@ -41,7 +41,8 @@ const StateDropdownHelperTile = ({
   clickAction,
   holdAction
 }: StateDropdownHelperTileProps) => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
+  const { entityState, isUnavailable, isLoading } =
+    useHomeAssistantEntity(entityId)
   const backend = useBackend()
   const modal = useModalContext()
 
@@ -80,7 +81,8 @@ const StateDropdownHelperTile = ({
     onClick: clickAction ? () => onAction(clickAction) : undefined,
     onHold: holdAction ? () => onAction(holdAction) : undefined,
     isUnavailable,
-    ...customTileProps
+    ...customTileProps,
+    isLoading
   }
   return <Tile {...tileData} />
 }

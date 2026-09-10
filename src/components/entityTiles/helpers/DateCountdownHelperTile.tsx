@@ -21,7 +21,8 @@ const DateCountdownHelperTile = ({
   warningThreshold,
   criticalThreshold
 }: DateCountdownHelperTileProps) => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
+  const { entityState, isUnavailable, isLoading } =
+    useHomeAssistantEntity(entityId)
   const backend = useBackend()
   const modal = useModalContext()
 
@@ -85,6 +86,7 @@ const DateCountdownHelperTile = ({
       <DurabilityCircleChart durability={durability || 0} color={chartColor} />
     ),
     isUnavailable,
+    isLoading,
     size: 'horizontal'
   }
   return <Tile {...tileData} />

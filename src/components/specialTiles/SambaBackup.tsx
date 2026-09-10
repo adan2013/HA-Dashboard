@@ -89,7 +89,7 @@ const Statistic = ({ title, value, icon }: StatisticProps) => (
 )
 
 export const BackupStats = () => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(
+  const { entityState, isUnavailable, isLoading } = useHomeAssistantEntity(
     'sensor.samba_backup'
   )
   const data = entityState?.attributes as unknown as SambaBackupAttributes
@@ -128,6 +128,7 @@ export const BackupStats = () => {
     title: 'Backup stats',
     size: 'big',
     isUnavailable,
+    isLoading,
     customBody: body
   }
   return <Tile {...tileProps} />

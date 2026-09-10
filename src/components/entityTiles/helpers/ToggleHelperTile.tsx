@@ -33,7 +33,8 @@ const ToggleHelperTile = ({
   metadataRenderer,
   tileProps
 }: ToggleHelperTileProps) => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
+  const { entityState, isUnavailable, isLoading } =
+    useHomeAssistantEntity(entityId)
   const backend = useBackend()
 
   const entityIsActive = entityState?.state === 'on'
@@ -68,7 +69,8 @@ const ToggleHelperTile = ({
     iconClassnames: !isUnavailable && isActive ? onColor : offColor,
     onClick: readonly ? undefined : toggleEntity,
     isUnavailable,
-    ...tileProps
+    ...tileProps,
+    isLoading: isLoading || tileProps?.isLoading
   }
   return <Tile {...tileData} />
 }

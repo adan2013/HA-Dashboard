@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import { useHomeAssistantEntity } from '../../../api/hooks'
 import { getMockedEntityState } from '../../../utils/testUtils'
 import BambuLabPrinterTile from '../BambuLabPrinterTile'
 
@@ -28,20 +29,163 @@ jest.mock('../../../api/hooks', () => {
   return {
     __esModule: true,
     ...originalModule,
-    useHomeAssistantEntity: jest.fn(entityId => {
-      const mock = mocks.find(m => m[0] === entityId)
-      if (mock) {
-        return getMockedEntityState(mock[0], mock[1])
-      }
-      return {
-        entityState: null,
-        isUnavailable: true
-      }
-    })
+    useHomeAssistantEntity: jest.fn()
   }
 })
 
 describe('BambuLabPrinterTile', () => {
+  beforeEach(() => {
+    jest.mocked(useHomeAssistantEntity).mockImplementation(entityId => {
+      const mock = mocks.find(m => m[0] === entityId)
+      return getMockedEntityState(entityId, mock?.[1] ?? 'unknown')
+    })
+  })
+
+  it('should not render NaN when remaining time is unavailable after HA restarts', () => {
+    jest
+      .mocked(useHomeAssistantEntity)
+      .mockImplementation(entityId =>
+        getMockedEntityState(
+          entityId,
+          entityId.endsWith('_remaining_time')
+            ? 'unavailable'
+            : mocks.find(m => m[0] === entityId)?.[1] ?? 'unknown'
+        )
+      )
+
+    render(<BambuLabPrinterTile title="BambuLab Printer" mainEntityId="ID" />)
+    expect(screen.getByTestId('tile-custom-body')).not.toHaveTextContent('NaN')
+    expect(screen.getByText('--')).toBeVisible()
+    expect(screen.getByText('47 / 530')).toBeVisible()
+  })
+
+  it.each(['unavailable', 'unknown', '', '   '])(
+    'should show missing data instead of fabricated readings for %p states',
+    state => {
+      jest
+        .mocked(useHomeAssistantEntity)
+        .mockImplementation(entityId => getMockedEntityState(entityId, state))
+
+      render(<BambuLabPrinterTile title="BambuLab Printer" mainEntityId="ID" />)
+
+      expect(screen.getByText('Unavailable')).toBeVisible()
+      expect(screen.getByTestId('unavailable-tile')).toBeVisible()
+      expect(screen.getByText('Stage: Unknown')).toBeVisible()
+      expect(screen.getByText('-- / --')).toBeVisible()
+      expect(screen.getAllByText('-- → --°C')).toHaveLength(2)
+      expect(screen.getAllByText('--%')).toHaveLength(3)
+      expect(screen.queryByText('Not selected')).not.toBeInTheDocument()
+      expect(screen.getByTestId('tile-custom-body')).not.toHaveTextContent(
+        /NaN|Infinity|0h 0m|0 \/ 0|unavailable mm/
+      )
+    }
+  )
+
+  it.each(['NaN', 'Infinity', '-Infinity', '-1', '12oops', '0x10', '1e309'])(
+    'should reject invalid numeric telemetry %p',
+    state => {
+      jest.mocked(useHomeAssistantEntity).mockImplementation(entityId => {
+        const mock = mocks.find(m => m[0] === entityId)
+        const isNumeric = mock && Number.isFinite(Number(mock[1]))
+        return getMockedEntityState(entityId, isNumeric ? state : mock?.[1])
+      })
+
+      render(<BambuLabPrinterTile title="BambuLab Printer" mainEntityId="ID" />)
+
+      expect(screen.getByText('Prepare')).toBeVisible()
+      expect(screen.getByText('-- / --')).toBeVisible()
+      expect(screen.getAllByText('-- → --°C')).toHaveLength(2)
+      expect(screen.getAllByText('--%')).toHaveLength(3)
+      expect(screen.getAllByText('--')).toHaveLength(2)
+    }
+  )
+
+  it('should preserve real zero measurements', () => {
+    jest.mocked(useHomeAssistantEntity).mockImplementation(entityId => {
+      const mock = mocks.find(m => m[0] === entityId)
+      const isNumeric = mock && Number.isFinite(Number(mock[1]))
+      return getMockedEntityState(entityId, isNumeric ? '0' : mock?.[1])
+    })
+
+    render(<BambuLabPrinterTile title="BambuLab Printer" mainEntityId="ID" />)
+
+    expect(screen.getByText('0 / 0')).toBeVisible()
+    expect(screen.getByText('0h 0m')).toBeVisible()
+    expect(screen.getAllByText('0 → 0°C')).toHaveLength(2)
+    expect(screen.getAllByText('0%')).toHaveLength(3)
+    expect(screen.queryByText('0 mm')).not.toBeInTheDocument()
+  })
+
+  it('should reject fractional layers and fan percentages outside their range', () => {
+    jest.mocked(useHomeAssistantEntity).mockImplementation(entityId => {
+      const mock = mocks.find(m => m[0] === entityId)
+      let state = mock?.[1]
+      if (entityId.endsWith('_current_layer')) state = '2.5'
+      if (entityId.endsWith('_fan_speed')) state = '101'
+      if (entityId.endsWith('_remaining_time')) state = '128.75'
+      return getMockedEntityState(entityId, state)
+    })
+
+    render(<BambuLabPrinterTile title="BambuLab Printer" mainEntityId="ID" />)
+
+    expect(screen.getByText('-- / 530')).toBeVisible()
+    expect(screen.getAllByText('--%')).toHaveLength(3)
+    expect(screen.getByText('2h 8m')).toBeVisible()
+  })
+
+  it('should clear readings during a restart and restore them after reconnection', () => {
+    const { rerender } = render(
+      <BambuLabPrinterTile title="BambuLab Printer" mainEntityId="ID" />
+    )
+    expect(screen.getByText('2h 8m')).toBeVisible()
+
+    jest.mocked(useHomeAssistantEntity).mockReturnValue({
+      entityState: null,
+      isUnavailable: true,
+      isLoading: false
+    })
+    rerender(<BambuLabPrinterTile title="BambuLab Printer" mainEntityId="ID" />)
+    expect(screen.getByText('-- / --')).toBeVisible()
+    expect(screen.queryByText('2h 8m')).not.toBeInTheDocument()
+
+    jest.mocked(useHomeAssistantEntity).mockImplementation(entityId => ({
+      ...getMockedEntityState(
+        entityId,
+        mocks.find(m => m[0] === entityId)?.[1]
+      ),
+      isLoading: true
+    }))
+    rerender(<BambuLabPrinterTile title="BambuLab Printer" mainEntityId="ID" />)
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true')
+
+    jest
+      .mocked(useHomeAssistantEntity)
+      .mockImplementation(entityId =>
+        getMockedEntityState(entityId, mocks.find(m => m[0] === entityId)?.[1])
+      )
+    rerender(<BambuLabPrinterTile title="BambuLab Printer" mainEntityId="ID" />)
+    expect(screen.getByText('2h 8m')).toBeVisible()
+    expect(screen.queryByTestId('unavailable-tile')).not.toBeInTheDocument()
+  })
+
+  it('should ignore stale values on entities marked unavailable', () => {
+    jest.mocked(useHomeAssistantEntity).mockImplementation(entityId => ({
+      ...getMockedEntityState(
+        entityId,
+        mocks.find(m => m[0] === entityId)?.[1]
+      ),
+      isUnavailable: true
+    }))
+
+    render(<BambuLabPrinterTile title="BambuLab Printer" mainEntityId="ID" />)
+
+    expect(screen.getByText('Unavailable')).toBeVisible()
+    expect(screen.getByText('-- / --')).toBeVisible()
+    expect(screen.getAllByText('-- → --°C')).toHaveLength(2)
+    expect(screen.getAllByText('--%')).toHaveLength(3)
+    expect(screen.queryByText('Bambu PLA Basic')).not.toBeInTheDocument()
+  })
+
   it('should display the correct printer status', () => {
     render(<BambuLabPrinterTile title="BambuLab Printer" mainEntityId="ID" />)
     expect(screen.getByText('BambuLab Printer')).toBeVisible()

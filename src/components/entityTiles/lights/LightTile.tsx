@@ -23,7 +23,8 @@ const LightTile = ({
   disableManualControl,
   lockColorTemperature
 }: LightTileProps) => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
+  const { entityState, isUnavailable, isLoading } =
+    useHomeAssistantEntity(entityId)
   const backend = useBackend()
   const modal = useModalContext()
 
@@ -56,7 +57,8 @@ const LightTile = ({
     ),
     onClick: disableToggle ? undefined : toggleLight,
     onHold: disableManualControl ? undefined : openModal,
-    isUnavailable
+    isUnavailable,
+    isLoading
   }
   return <Tile {...tileData} />
 }

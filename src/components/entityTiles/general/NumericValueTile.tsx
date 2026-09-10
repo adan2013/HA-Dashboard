@@ -29,7 +29,8 @@ const NumericValueTile = ({
   showDecimals = 0,
   customTileProps
 }: NumericValueTileProps) => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
+  const { entityState, isUnavailable, isLoading } =
+    useHomeAssistantEntity(entityId)
 
   const getValue = (): TileValue | string => {
     const value = Number.parseFloat(entityState?.state) || 0
@@ -55,7 +56,8 @@ const NumericValueTile = ({
     title,
     value: getValue(),
     isUnavailable,
-    ...customTileProps
+    ...customTileProps,
+    isLoading: isLoading || customTileProps?.isLoading
   }
 
   return <Tile {...tileData} />

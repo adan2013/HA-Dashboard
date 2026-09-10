@@ -4,6 +4,7 @@ import Tile, { TileProps } from '../basic/Tile'
 import { useHomeAssistantBatteries } from '../../api/hooks'
 import { BatteryState } from '../../utils/batteryUtils'
 import { useModalContext } from '../../contexts/ModalContext'
+import { useTileConnection } from '../../contexts/TileConnectionContext'
 
 const COUNT_OF_TILE_ENTITIES = 5
 export const BATTERY_WARNING_THRESHOLD = 40
@@ -49,10 +50,13 @@ const getListOfEntities = (
 
 export const BatteryTile = () => {
   const entities = useHomeAssistantBatteries()
+  const { isHomeAssistantUnavailable } = useTileConnection()
   const modal = useModalContext()
   const tileProps: TileProps = {
     title: 'Batteries',
     size: 'big',
+    requiresHomeAssistant: true,
+    isLoading: !isHomeAssistantUnavailable && entities === null,
     customBody: getListOfEntities(entities, ({ level, friendlyName }) => (
       <>
         {level !== undefined && level < BATTERY_WARNING_THRESHOLD && (

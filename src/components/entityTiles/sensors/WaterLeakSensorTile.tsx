@@ -15,7 +15,7 @@ const WaterLeakSensorTile = ({
   entityId,
   batteryEntityId
 }: WaterLeakSensorTileProps) => {
-  const { entityState } = useHomeAssistantEntity(batteryEntityId)
+  const { entityState, isLoading } = useHomeAssistantEntity(batteryEntityId)
   const level = entityState && readBatteryEntity(entityState)?.level
 
   return (
@@ -27,7 +27,7 @@ const WaterLeakSensorTile = ({
       onIcon={<WaterDropIcon />}
       offIcon={<WaterDropOutlinedIcon />}
       readonly
-      tileProps={{ isTurnedOff: false }}
+      tileProps={{ isTurnedOff: false, isLoading }}
       metadataRenderer={() => [`${level ?? '--'}%`]}
     />
   )

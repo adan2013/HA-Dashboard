@@ -17,8 +17,9 @@ jest.mock('../../../contexts/ModalContext', () => ({
 const getSensorHistory = jest.fn(() =>
   Promise.resolve(generateEntityHistory([24.98, 26, 22]))
 )
+const backend = { getSensorHistory }
 jest.mock('../../../contexts/BackendContext', () => ({
-  useBackend: () => ({ getSensorHistory })
+  useBackend: () => backend
 }))
 
 jest.mock('../../../api/hooks', () => ({
@@ -50,7 +51,11 @@ const renderTile = (customProps: Partial<ChartHistoryTileProps> = {}) =>
 describe('ChartHistoryTile', () => {
   it('should render chart history tile in standard configuration', async () => {
     renderTile()
-    expect(screen.getByText('TILE')).toBeInTheDocument()
+    expect(screen.getByLabelText('Loading TILE')).toHaveAttribute(
+      'aria-busy',
+      'true'
+    )
+    await screen.findByText('TILE')
     expect(screen.getByText('24')).toBeInTheDocument()
     expect(screen.getByText('%')).toBeInTheDocument()
     await waitFor(() =>
@@ -64,7 +69,11 @@ describe('ChartHistoryTile', () => {
       hideChart: true,
       showDecimals: 1
     })
-    expect(screen.getByText('TILE')).toBeInTheDocument()
+    expect(screen.getByLabelText('Loading TILE')).toHaveAttribute(
+      'aria-busy',
+      'true'
+    )
+    await screen.findByText('TILE')
     expect(screen.getByText('24')).toBeInTheDocument()
     expect(screen.getByText('%')).toBeInTheDocument()
     await waitFor(() =>
@@ -85,35 +94,35 @@ describe('ChartHistoryTile', () => {
     await waitFor(() => expect(screen.getByText('22 / 26')).toBeInTheDocument())
   })
 
-  it('should display the correct decimal value', () => {
+  it('should display the correct decimal value', async () => {
     renderTile()
     expect(screen.queryByTestId('decimal-value')).not.toBeInTheDocument()
     renderTile({ showDecimals: 1 })
-    expect(screen.getByText('.9')).toBeInTheDocument()
+    expect(await screen.findByText('.9')).toBeInTheDocument()
     renderTile({ showDecimals: 2 })
-    expect(screen.getByText('.98')).toBeInTheDocument()
+    expect(await screen.findByText('.98')).toBeInTheDocument()
   })
 
-  it('should pass custom props to tile component', () => {
+  it('should pass custom props to tile component', async () => {
     renderTile({
       customTileProps: {
         isUnavailable: true
       }
     })
-    expect(screen.getByTestId('unavailable-tile')).toBeInTheDocument()
+    expect(await screen.findByTestId('unavailable-tile')).toBeInTheDocument()
   })
 
-  it('should not open history modal when disableModalHistory is true', () => {
+  it('should not open history modal when disableModalHistory is true', async () => {
     renderTile({
       disableModalHistory: true
     })
-    fireEvent.click(screen.getByText('TILE'))
+    fireEvent.click(await screen.findByText('TILE'))
     expect(openModalMock).not.toHaveBeenCalled()
   })
 
-  it('should open history modal after clicking the tile', () => {
+  it('should open history modal after clicking the tile', async () => {
     renderTile()
-    fireEvent.click(screen.getByText('TILE'))
+    fireEvent.click(await screen.findByText('TILE'))
     expect(openModalMock).toHaveBeenCalledTimes(1)
   })
 })

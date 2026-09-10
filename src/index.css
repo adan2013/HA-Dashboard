@@ -74,6 +74,32 @@
   filter: brightness(1.1);
 }
 
+@keyframes tile-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tile-skeleton::after {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 25%,
+      rgb(255 255 255 / 8%) 50%,
+      transparent 75%
+    );
+    content: '';
+    animation: tile-shimmer 1s ease-in-out infinite;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .press-feedback {
     transition: none;

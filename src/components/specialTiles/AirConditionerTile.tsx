@@ -102,7 +102,8 @@ const transformFanMode = (
 }
 
 const AirConditionerTile = ({ title, entityId }: AirConditionerTileProps) => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(entityId)
+  const { entityState, isUnavailable, isLoading } =
+    useHomeAssistantEntity(entityId)
   const backend = useBackend()
 
   const mode = isUnavailable ? '--' : entityState?.state
@@ -160,6 +161,8 @@ const AirConditionerTile = ({ title, entityId }: AirConditionerTileProps) => {
   const tileData: TileProps = {
     title,
     size: 'big',
+    isUnavailable,
+    isLoading,
     customBody: (
       <div className="absolute bottom-0 left-0 flex h-72 w-full flex-col justify-end p-2">
         <AcStatus

@@ -7,7 +7,40 @@ import CycloneIcon from '@mui/icons-material/Cyclone'
 import LineWeightIcon from '@mui/icons-material/LineWeight'
 import SpeedIcon from '@mui/icons-material/Speed'
 import Tile, { TileProps } from '../basic/Tile'
-import { useHomeAssistantEntity } from '../../api/hooks'
+import {
+  HomeAssistantEntityData,
+  useHomeAssistantEntity
+} from '../../api/hooks'
+
+const readState = (entity: HomeAssistantEntityData): string | null => {
+  if (entity.isUnavailable || entity.isLoading) return null
+  const state = entity.entityState?.state
+  if (typeof state !== 'string') return null
+  const value = state.trim()
+  if (!value || ['unknown', 'unavailable'].includes(value.toLowerCase())) {
+    return null
+  }
+  return value
+}
+
+const readNumber = (
+  entity: HomeAssistantEntityData,
+  { integer = false, max = Infinity, min = 0 } = {}
+): number | null => {
+  const state = readState(entity)
+  // Accept decimal sensor values only; Number('') and Number('0x10') are misleading.
+  if (state === null || !/^[+-]?(?:\d+\.?\d*|\.\d+)$/.test(state)) return null
+  const value = Number(state)
+  if (
+    !Number.isFinite(value) ||
+    value < min ||
+    value > max ||
+    (integer && !Number.isSafeInteger(value))
+  ) {
+    return null
+  }
+  return value
+}
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
@@ -23,11 +56,10 @@ type ParamProps = {
   children: ReactNode
 }
 
-const transformRemainingTime = (s: string) => {
-  const time = Number(s)
-  if (time <= 0) return '0h 0m'
+const transformRemainingTime = (time: number | null) => {
+  if (time === null) return '--'
   const hours = Math.floor(time / 60)
-  const minutes = time % 60
+  const minutes = Math.floor(time % 60)
   return `${hours}h ${minutes}m`
 }
 
@@ -93,37 +125,55 @@ const BambuLabPrinterTile = ({
     `sensor.${mainEntityId}_active_tray`
   )
 
-  const printStatus = printStatusEntity.entityState?.state || 'Unknown'
-  const stage = transformStageValue(stageEntity.entityState?.state)
-  const currentLayer = Number(currentLayerEntity.entityState?.state) || 0
-  const totalLayerCount = Number(totalLayerCountEntity.entityState?.state) || 0
-  const remainingTime = transformRemainingTime(
-    remainingTimeEntity.entityState?.state
-  )
-  const speedProfile = speedProfileEntity.entityState?.state || 'Unknown'
-  const nozzleSize = nozzleSizeEntity.entityState?.state
-    ? `${nozzleSizeEntity.entityState?.state} mm`
-    : '--'
-  const nozzleTemp = Number(nozzleTempEntity.entityState?.state) || '--'
-  const nozzleTargetTemp =
-    Number(nozzleTargetTempEntity.entityState?.state) || 0
-  const bedTemp = Number(bedTempEntity.entityState?.state) || '--'
-  const bedTargetTemp = Number(bedTargetTempEntity.entityState?.state) || 0
-  const auxFanSpeed = Number(auxFanEntity.entityState?.state) || 0
-  const chamberFanSpeed = Number(chamberFanEntity.entityState?.state) || 0
-  const partFanSpeed = Number(partFanEntity.entityState?.state) || 0
-  const activeTray = activeTrayEntity.isUnavailable
-    ? 'Not selected'
-    : activeTrayEntity.entityState?.state
+  const printStatus = readState(printStatusEntity)
+  const stage = transformStageValue(readState(stageEntity))
+  const currentLayer = readNumber(currentLayerEntity, { integer: true }) ?? '--'
+  const totalLayerCount =
+    readNumber(totalLayerCountEntity, { integer: true }) ?? '--'
+  const remainingTime = transformRemainingTime(readNumber(remainingTimeEntity))
+  const speedProfile = readState(speedProfileEntity) ?? 'Unknown'
+  const nozzleSizeValue = readNumber(nozzleSizeEntity)
+  const nozzleSize =
+    nozzleSizeValue !== null && nozzleSizeValue > 0
+      ? `${nozzleSizeValue} mm`
+      : '--'
+  const nozzleTemp = readNumber(nozzleTempEntity) ?? '--'
+  const nozzleTargetTemp = readNumber(nozzleTargetTempEntity) ?? '--'
+  const bedTemp = readNumber(bedTempEntity) ?? '--'
+  const bedTargetTemp = readNumber(bedTargetTempEntity) ?? '--'
+  const auxFanSpeed = readNumber(auxFanEntity, { max: 100 }) ?? '--'
+  const chamberFanSpeed = readNumber(chamberFanEntity, { max: 100 }) ?? '--'
+  const partFanSpeed = readNumber(partFanEntity, { max: 100 }) ?? '--'
+  const activeTray = readState(activeTrayEntity) ?? 'Unknown'
 
   const tileData: TileProps = {
     title,
     size: 'big',
+    isUnavailable: printStatus === null,
+    isLoading: [
+      printStatusEntity,
+      stageEntity,
+      currentLayerEntity,
+      totalLayerCountEntity,
+      remainingTimeEntity,
+      speedProfileEntity,
+      nozzleSizeEntity,
+      nozzleTempEntity,
+      nozzleTargetTempEntity,
+      bedTempEntity,
+      bedTargetTempEntity,
+      auxFanEntity,
+      chamberFanEntity,
+      partFanEntity,
+      activeTrayEntity
+    ].some(entity => entity.isLoading),
     customBody: (
       <div className="absolute bottom-0 left-0 h-72 w-full p-2">
         <div className="flex flex-col gap-4">
           <div className="mt-3">
-            <div className="text-2xl font-bold">{capitalize(printStatus)}</div>
+            <div className="text-2xl font-bold">
+              {printStatus === null ? 'Unavailable' : capitalize(printStatus)}
+            </div>
             <div className="text-xs">Stage: {stage}</div>
           </div>
           <div className="grid grid-cols-2 gap-3">

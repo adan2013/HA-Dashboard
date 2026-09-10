@@ -41,7 +41,9 @@ const ConnectionStatusMessage = () => {
   }, [haStatus, backendStatus])
 
   if (!visible) return null
-  const haColor = getHomeAssistantIconStyle(haStatus)
+  const haColor = getHomeAssistantIconStyle(
+    backendStatus === 'disconnected' ? 'disconnected' : haStatus
+  )
   const backendColor = getBackendIconStyle(backendStatus)
 
   return (
