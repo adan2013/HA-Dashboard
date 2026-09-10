@@ -8,6 +8,7 @@ import NumericValueTile, {
   NumericValueTileProps
 } from '../entityTiles/general/NumericValueTile'
 import { useBackend } from '../../contexts/BackendContext'
+import { useTileConnection } from '../../contexts/TileConnectionContext'
 
 export type ChartHistoryTileProps = {
   title: string
@@ -33,8 +34,13 @@ const ChartHistoryTile = ({
   customTileProps
 }: ChartHistoryTileProps) => {
   const [history, setHistory] = useState<ChartData[]>(null)
+  const [historyLoading, setHistoryLoading] = useState(true)
+  const { isHomeAssistantUnavailable } = useTileConnection()
   const modal = useModalContext()
   const backend = useBackend()
+  const historyIsRequired = !hideChart || !hideMinMax
+  const isHistoryLoading =
+    historyIsRequired && !isHomeAssistantUnavailable && historyLoading
 
   const historyStats = useMemo(
     () => getHistoryStats(history, showDecimals),
@@ -42,10 +48,18 @@ const ChartHistoryTile = ({
   )
 
   useEffect(() => {
-    if (!backend?.getSensorHistory) return
+    let isCurrentRequest = true
+    setHistory(null)
+    setHistoryLoading(true)
+    if (!backend?.getSensorHistory) {
+      setHistoryLoading(false)
+      return undefined
+    }
+    if (isHomeAssistantUnavailable) return undefined
     backend
       .getSensorHistory(entityId)
       .then(data => {
+        if (!isCurrentRequest) return
         setHistory(
           data.map(item => ({
             id: item.time,
@@ -55,7 +69,13 @@ const ChartHistoryTile = ({
         )
       })
       .catch(error => console.error('Failed to load entity history', error))
-  }, [backend, entityId])
+      .finally(() => {
+        if (isCurrentRequest) setHistoryLoading(false)
+      })
+    return () => {
+      isCurrentRequest = false
+    }
+  }, [backend, entityId, isHomeAssistantUnavailable])
 
   const openHistoryModal = () => {
     const params: HistoryChartModalParams = {
@@ -82,7 +102,8 @@ const ChartHistoryTile = ({
         !hideMinMax && historyStats
           ? [`${historyStats.min} / ${historyStats.max}`]
           : undefined,
-      ...customTileProps
+      ...customTileProps,
+      isLoading: customTileProps?.isLoading || isHistoryLoading
     }
   }
 

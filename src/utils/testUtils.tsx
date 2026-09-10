@@ -48,7 +48,8 @@ export const getMockedEntityState = (
       ...attributes
     }
   },
-  isUnavailable: false
+  isUnavailable: false,
+  isLoading: false
 })
 
 export const renderModalBody = (

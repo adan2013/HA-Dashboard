@@ -3,8 +3,8 @@ import Tile from '../../basic/Tile'
 import BarHistoryChart from '../../charts/BarHistoryChart'
 import RangeSegmentChart from '../../charts/RangeSegmentChart'
 
-const YELLOW_PRESSURE_DIFF_THRESHOLD = 10
-const ORANGE_PRESSURE_DIFF_THRESHOLD = 20
+const YELLOW_PRESSURE_DIFF_THRESHOLD = 5
+const ORANGE_PRESSURE_DIFF_THRESHOLD = 10
 const PRESSURE_THRESHOLDS: [number, number, number, number] = [
   ORANGE_PRESSURE_DIFF_THRESHOLD * -1,
   YELLOW_PRESSURE_DIFF_THRESHOLD * -1,

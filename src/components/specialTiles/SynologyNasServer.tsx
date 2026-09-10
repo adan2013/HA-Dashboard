@@ -14,7 +14,7 @@ export interface SynologyDsmAttributes {
 }
 
 export const SynologyDsmUpdate = () => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(
+  const { entityState, isUnavailable, isLoading } = useHomeAssistantEntity(
     'update.synologynas_dsm_update'
   )
   const data = entityState?.attributes as unknown as SynologyDsmAttributes
@@ -25,7 +25,8 @@ export const SynologyDsmUpdate = () => {
     subtitle: upToDate ? 'Up to date' : 'Update available',
     icon: upToDate ? <CheckIcon /> : <UpdateIcon />,
     iconClassnames: upToDate ? undefined : 'text-yellow-600',
-    isUnavailable
+    isUnavailable,
+    isLoading
   }
   return <Tile {...tileProps} />
 }
@@ -40,7 +41,7 @@ export interface SynologySecurityStatusAttributes {
 }
 
 export const SynologySecurityStatus = () => {
-  const { entityState, isUnavailable } = useHomeAssistantEntity(
+  const { entityState, isUnavailable, isLoading } = useHomeAssistantEntity(
     'binary_sensor.synologynas_security_status'
   )
 
@@ -76,7 +77,8 @@ export const SynologySecurityStatus = () => {
     subtitle: subtitleText,
     icon: isSafe && !isUnavailable ? <CheckIcon /> : <UpdateIcon />,
     iconClassnames: isSafe ? undefined : 'text-yellow-600',
-    isUnavailable
+    isUnavailable,
+    isLoading
   }
   return <Tile {...tileProps} />
 }

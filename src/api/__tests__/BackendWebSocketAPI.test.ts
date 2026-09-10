@@ -57,6 +57,22 @@ describe('BackendWebSocketAPI', () => {
     Object.assign(global, { WebSocket: MockWebSocket })
   })
 
+  it('should notify entity subscribers when a subscription fails', () => {
+    const backend = new BackendWebSocketAPI()
+    const socket = authenticate(backend)
+    const listener = jest.fn()
+    backend.subscribeToEntity('light.missing', listener)
+    socket.receive({
+      type: 'subscriptionError',
+      subscriptionId: 'entity:light.missing',
+      error: 'Entity not found'
+    })
+    expect(listener).toHaveBeenCalledWith(null, 'disconnected')
+    const secondListener = jest.fn()
+    backend.subscribeToEntity('light.missing', secondListener)
+    expect(secondListener).toHaveBeenCalledWith(null, 'disconnected')
+  })
+
   it('should authenticate with the first protocol message and store a valid token', () => {
     const backend = new BackendWebSocketAPI()
     const socket = authenticate(backend)
@@ -183,6 +199,32 @@ describe('BackendWebSocketAPI', () => {
     })
 
     await expect(request).resolves.toEqual([logEntry])
+  })
+
+  it('should time out requests after ten seconds', async () => {
+    jest.useFakeTimers()
+    try {
+      const backend = new BackendWebSocketAPI()
+      authenticate(backend)
+      const onFailure = jest.fn()
+      const requests = [
+        backend.getSensorHistory('sensor.temperature'),
+        backend.getBatteryEntities(),
+        backend.getBackendLogs()
+      ].map(request => request.catch(onFailure))
+
+      jest.advanceTimersByTime(9999)
+      await Promise.resolve()
+      expect(onFailure).not.toHaveBeenCalled()
+      jest.advanceTimersByTime(1)
+      await Promise.all(requests)
+      expect(onFailure).toHaveBeenCalledTimes(3)
+      expect(onFailure).toHaveBeenCalledWith(
+        new Error('Backend request timed out')
+      )
+    } finally {
+      jest.useRealTimers()
+    }
   })
 
   it('should clear the persisted token on logout', () => {

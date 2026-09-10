@@ -124,3 +124,26 @@ describe('Tile', () => {
     expect(onClick).toHaveBeenCalledTimes(1)
   })
 })
+
+describe('Tile skeleton', () => {
+  it('should reveal the tile immediately when data is ready, including after reloading', () => {
+    const onClick = jest.fn()
+    const { rerender } = render(
+      <Tile title="Light" isLoading onClick={onClick} />
+    )
+    expect(screen.getByLabelText('Loading Light')).toHaveClass('tile-skeleton')
+    fireEvent.click(screen.getByLabelText('Loading Light'))
+    expect(onClick).not.toHaveBeenCalled()
+
+    rerender(<Tile title="Light" onClick={onClick} />)
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Light' }))
+    expect(onClick).toHaveBeenCalledTimes(1)
+
+    rerender(<Tile title="Light" isLoading onClick={onClick} />)
+    expect(screen.getByLabelText('Loading Light')).toBeInTheDocument()
+    rerender(<Tile title="Light" onClick={onClick} />)
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Light' })).toBeEnabled()
+  })
+})
