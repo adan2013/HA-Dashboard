@@ -27,6 +27,12 @@ const Layout = () => {
   const isMobile = layoutMode === 'mobile'
 
   useEffect(() => {
+    const onResize = () => setLayoutMode(getLayoutType())
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  useEffect(() => {
     window.onScreenOn = () => {
       if (location.pathname === '/') {
         setContentKey(currentKey => currentKey + 1)
@@ -50,7 +56,6 @@ const Layout = () => {
     } else {
       console.log('Fully Kiosk not detected')
     }
-    const onResize = () => setLayoutMode(getLayoutType())
     const onVisibilityChange = () => {
       if (document.hidden) {
         console.log('Browser tab is hidden')
@@ -65,11 +70,9 @@ const Layout = () => {
         window.onScreenOn()
       }
     }
-    window.addEventListener('resize', onResize)
     window.addEventListener('pageshow', onPageShow)
     document.addEventListener('visibilitychange', onVisibilityChange)
     return () => {
-      window.removeEventListener('resize', onResize)
       window.removeEventListener('pageshow', onPageShow)
       document.removeEventListener('visibilitychange', onVisibilityChange)
     }
