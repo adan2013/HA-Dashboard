@@ -10,6 +10,7 @@ import SpeakerTestTile from '../components/devTiles/SpeakerTestTile'
 import { useBackend } from '../contexts/BackendContext'
 import TriggerNotificationTile from '../components/devTiles/TriggerNotificationTile'
 import { useModalContext } from '../contexts/ModalContext'
+import LightTile from '../components/entityTiles/lights/LightTile'
 
 const More = () => {
   const backend = useBackend()
@@ -55,6 +56,10 @@ const More = () => {
       <TileGroup name="Testing">
         <SpeakerTestTile />
         <TriggerNotificationTile />
+        <LightTile
+          title="Notification LED"
+          entityId="light.dash_node_tablet_notification_lights"
+        />
         <PlaceholderTile title="Send test SMS" size="standard" />
       </TileGroup>
     </TileSection>

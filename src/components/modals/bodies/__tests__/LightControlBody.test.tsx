@@ -31,6 +31,9 @@ type RenderParams = {
   colorTempSupported?: boolean
   brightnessValue?: number
   colorTempValue?: number
+  colorSupported?: boolean
+  hueValue?: number
+  reportedHueValue?: number
   modalParams?: Partial<LightControlModalParams>
 }
 
@@ -39,15 +42,28 @@ const renderLightControlBody = ({
   colorTempSupported = true,
   brightnessValue = 127,
   colorTempValue = 2000,
+  colorSupported = false,
+  hueValue = 0,
+  reportedHueValue,
   modalParams = {}
 }: RenderParams = {}) => {
+  let hsColor
+  if (reportedHueValue !== undefined) hsColor = [reportedHueValue, 100]
+  else if (colorSupported) hsColor = [hueValue, 100]
+
+  let supportedColorModes = ['brightness']
+  if (colorSupported) supportedColorModes = ['hs']
+  else if (colorTempSupported) supportedColorModes = ['color_temp']
+
   useHomeAssistantEntity.mockImplementation(() =>
     getMockedEntityState('entity', turnedOn ? 'on' : 'off', {
       min_color_temp_kelvin: colorTempSupported ? 1000 : undefined,
       max_color_temp_kelvin: colorTempSupported ? 4000 : undefined,
       brightness: turnedOn ? brightnessValue : undefined,
       color_temp_kelvin:
-        turnedOn && colorTempSupported ? colorTempValue : undefined
+        turnedOn && colorTempSupported ? colorTempValue : undefined,
+      hs_color: hsColor,
+      supported_color_modes: supportedColorModes
     })
   )
   return renderModalBody(<LightControlBody />, 'lightControl', {
@@ -76,6 +92,39 @@ describe('LightControlBody', () => {
       screen.queryByTestId('slider-Color temperature')
     ).not.toBeInTheDocument()
     expect(screen.getByText('50%')).toBeInTheDocument()
+  })
+
+  it('should not render RGB controls for a CCT light with derived color attributes', () => {
+    renderLightControlBody({ reportedHueValue: 55 })
+    expect(screen.queryByTestId('slider-Color')).not.toBeInTheDocument()
+    expect(screen.getByText('50% | 2000K')).toBeInTheDocument()
+  })
+
+  it('should render the RGB color spectrum under brightness', () => {
+    renderLightControlBody({
+      colorTempSupported: false,
+      colorSupported: true,
+      hueValue: 180
+    })
+    const brightness = screen.getByTestId('slider-Brightness')
+    const color = screen.getByTestId('slider-Color')
+    expect(brightness.compareDocumentPosition(color)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    )
+    expect(screen.getByText('50% | #00FFFF')).toBeInTheDocument()
+  })
+
+  it('should call HA service and change the RGB color', () => {
+    renderLightControlBody({
+      colorTempSupported: false,
+      colorSupported: true,
+      hueValue: 180
+    })
+    fireEvent.mouseDown(screen.getByTestId('slider-Color'))
+    fireEvent.mouseUp(screen.getByTestId('slider-Color'))
+    expect(callService).toHaveBeenCalledWith('entity', 'light', 'turn_on', {
+      hs_color: [180, 100]
+    })
   })
 
   it('should disallow to change the color temperature by user', () => {

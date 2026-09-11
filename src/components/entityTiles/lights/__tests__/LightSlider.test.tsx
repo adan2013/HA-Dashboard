@@ -66,6 +66,21 @@ describe('LightSlider', () => {
         )
       }
     )
+
+    it('should render the full color spectrum with the current hue marker', () => {
+      renderSlider({
+        value: 180,
+        min: 0,
+        max: 360,
+        variant: 'spectrum'
+      })
+      expect(screen.getByTestId('value-slider-title')).toHaveStyle(
+        'left: 50%'
+      )
+      expect(screen.getByTestId('slider-title').parentElement).toHaveStyle(
+        'background: linear-gradient(to right, #f00 0%, #ff0 16.67%, #0f0 33.33%, #0ff 50%, #00f 66.67%, #f0f 83.33%, #f00 100%)'
+      )
+    })
   })
 
   describe('mouse onChange interaction', () => {
