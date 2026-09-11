@@ -1,7 +1,6 @@
 import NightsStayIcon from '@mui/icons-material/NightsStay'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import clsx from 'clsx'
+import { Link } from 'react-router-dom'
 import { WeatherServiceData } from '../api/backend/weatherTypes'
 import { useBackend } from '../contexts/BackendContext'
 import ShortForecast from '../components/weather/compact/ShortForecast'
@@ -42,7 +41,6 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
   const [state, setState] = useState<WeatherServiceData>(null)
   const [hasReceivedInitialData, setHasReceivedInitialData] = useState(false)
   const backend = useBackend()
-  const navigate = useNavigate()
   const { isMobile } = useLayoutContext()
 
   useEffect(
@@ -65,7 +63,7 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
 
   if (!state) {
     return (
-      <div className="text-md mt-20 text-center font-extrabold text-gray-400">
+      <div className="content-reveal text-md mt-20 text-center font-extrabold text-gray-400">
         <div className="mb-2">
           <NightsStayIcon className="!text-8xl" />
         </div>
@@ -75,11 +73,8 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
   }
 
   if (isWidget || isMobile) {
-    return (
-      <div
-        className={clsx('flex flex-col gap-2', isWidget && 'cursor-pointer')}
-        onClick={isWidget ? () => navigate('/weather') : undefined}
-      >
+    const content = (
+      <>
         <CurrentWeather
           data={state.current}
           shortForecast={state.shortForecast}
@@ -93,12 +88,24 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
         />
         <Divider />
         <LongForecast data={state.longForecast} />
-      </div>
+      </>
+    )
+
+    return isWidget ? (
+      <Link
+        to="/weather"
+        aria-label="Open full weather view"
+        className="content-reveal press-feedback flex flex-col gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+      >
+        {content}
+      </Link>
+    ) : (
+      <div className="content-reveal flex flex-col gap-2">{content}</div>
     )
   }
 
   return (
-    <div className="mx-auto w-full max-w-[1000px]">
+    <div className="content-reveal mx-auto w-full max-w-[1000px]">
       <div className="mx-6">
         <div className="grid grid-cols-5 gap-4">
           <CurrentWeatherTile current={state.current} />

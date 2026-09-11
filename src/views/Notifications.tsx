@@ -85,13 +85,13 @@ const Notifications = ({
   if (!state || state.active.length === 0) {
     if (isWidget) {
       return (
-        <div className="flex h-full p-3">
+        <div className="content-reveal flex h-full p-3">
           <Calendar />
         </div>
       )
     }
     return (
-      <div className="mt-20 text-center font-extrabold text-gray-400">
+      <div className="content-reveal mt-20 text-center font-extrabold text-gray-400">
         <div className="mb-2">
           <CheckBoxOutlinedIcon className="!text-8xl" />
         </div>
@@ -102,16 +102,17 @@ const Notifications = ({
   }
 
   return (
-    <div className="mx-auto w-full max-w-[1000px] p-2">
+    <div className="content-reveal mx-auto w-full max-w-[1000px] p-2">
       {isWidget && (
         <div className="relative mb-4 text-3xl font-bold">
           {`${state.active.length} ACTIVE ${
             state.active.length > 1 ? 'NOTIFICATIONS' : 'NOTIFICATION'
           }`}
-          <Link to="/notifications">
-            <div className="absolute right-0 top-0 flex h-full cursor-pointer items-center rounded bg-gray-600 px-3 text-sm hover:bg-blue-800">
-              OPEN FULL VIEW
-            </div>
+          <Link
+            to="/notifications"
+            className="press-feedback absolute right-0 top-0 flex h-full items-center rounded bg-gray-600 px-3 text-sm hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
+            OPEN FULL VIEW
           </Link>
         </div>
       )}
@@ -134,11 +135,15 @@ const Notifications = ({
             )}
           </div>
           {n.canBeDismissed && (
-            <CloseIcon
+            <button
+              type="button"
+              aria-label={`Dismiss ${n.title}`}
               onClick={() => backend?.dismissNotification(n.id)}
               data-testid={`notification-close-button-${n.id}`}
-              className="absolute right-3 top-3 cursor-pointer rounded-full p-2 !text-4xl text-gray-400 hover:bg-gray-600 hover:text-white lg:!text-5xl"
-            />
+              className="press-feedback absolute right-2 top-2 flex h-12 w-12 items-center justify-center rounded-full text-gray-400 hover:bg-gray-600 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
+              <CloseIcon className="!text-3xl" />
+            </button>
           )}
           <div className="mt-3 text-right text-sm font-light text-gray-200">
             {formatTime(n.createdAt)}

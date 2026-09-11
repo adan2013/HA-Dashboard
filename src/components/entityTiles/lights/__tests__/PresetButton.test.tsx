@@ -19,6 +19,9 @@ describe('PresetButton', () => {
       />
     )
     expect(screen.getByTestId('icon')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Apply light preset' })
+    ).toHaveClass('press-feedback')
     fireEvent.click(screen.getByTestId('icon'))
     expect(callService).toHaveBeenCalledWith('entityId', 'light', 'turn_on', {
       brightness: 255,

@@ -43,31 +43,33 @@ export const ModalButton = ({
   isDisabled
 }: ButtonProps) => {
   const [isMobile, setIsMobile] = useState<boolean>(false)
-  const divRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     const onResize = () => {
-      setIsMobile(divRef.current?.offsetWidth < 250)
+      setIsMobile(buttonRef.current?.offsetWidth < 250)
     }
     onResize()
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
-  }, [divRef])
+  }, [])
 
   return (
-    <div
-      ref={divRef}
+    <button
+      type="button"
+      ref={buttonRef}
+      disabled={isDisabled}
       className={clsx(
-        'flex-center flex-1 border-r-2 border-t-2 border-gray-600 bg-gray-800 py-4 transition-colors last:border-r-0',
+        'flex-center min-h-14 flex-1 border-r-2 border-t-2 border-gray-600 bg-gray-800 py-4 transition-colors last:border-r-0',
         isDanger && 'bg-red-900 hover:bg-red-700',
         isDisabled
-          ? 'text-gray-600'
-          : 'press-feedback cursor-pointer hover:bg-gray-600'
+          ? 'cursor-not-allowed text-gray-600'
+          : 'press-feedback hover:bg-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white'
       )}
-      onClick={isDisabled ? undefined : onClick}
+      onClick={onClick}
       data-testid={`modal-button-${name}`}
     >
       {isMobile ? icon : name}
-    </div>
+    </button>
   )
 }

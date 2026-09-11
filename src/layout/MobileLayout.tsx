@@ -31,23 +31,36 @@ const MobileLayout = ({ contentKey }: MobileLayoutProps) => {
   const shouldUseGlassEffect = isIOS()
 
   return (
-    <div className="text-white">
+    <div
+      className={clsx(
+        'mobile-layout text-white',
+        shouldUseGlassEffect ? 'mobile-layout-ios' : 'mobile-layout-android'
+      )}
+      data-testid="mobile-layout"
+    >
       <div
         className={clsx(
-          'pb-mobile-navigation min-h-screen overflow-x-hidden p-4',
+          'mobile-content-safe-area pb-mobile-navigation min-h-[100dvh] overflow-x-hidden p-4',
           'bg-black text-white'
         )}
+        data-testid="mobile-content"
       >
-        {pageTitle && (
-          <div className="my-4 text-3xl font-bold">{pageTitle}</div>
-        )}
-        <Outlet key={contentKey} context={context} />
+        <div
+          key={`${location.pathname}-${contentKey ?? 0}`}
+          className="route-transition"
+          data-testid="route-content"
+        >
+          {pageTitle && (
+            <div className="my-4 text-3xl font-bold">{pageTitle}</div>
+          )}
+          <Outlet context={context} />
+        </div>
       </div>
       <nav
         aria-label="Mobile navigation"
         data-testid="mobile-navigation"
         className={clsx(
-          'floating-navigation-offset mobile-navigation fixed z-20 rounded-2xl border shadow-2xl',
+          'floating-navigation-offset mobile-navigation fixed z-20 rounded-2xl border',
           shouldUseGlassEffect
             ? 'mobile-navigation-glass rounded-full p-1.5'
             : 'p-1'
@@ -77,7 +90,7 @@ const MobileLayout = ({ contentKey }: MobileLayoutProps) => {
               >
                 <Link
                   to={path}
-                  className="press-feedback block h-full rounded-[inherit]"
+                  className="press-feedback block h-full rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                 >
                   <div
                     className={clsx(

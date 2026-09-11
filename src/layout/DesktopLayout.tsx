@@ -34,7 +34,7 @@ const SectionLinks = ({
         to={tile.path}
         aria-label={tile.name}
         tabIndex={hidden ? -1 : undefined}
-        className="tap-highlight-none"
+        className="press-feedback block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
       >
         <div>
           <div
@@ -80,10 +80,16 @@ const DesktopLayout = ({ contentKey }: DesktopLayoutProps) => {
           'bg-black text-white'
         )}
       >
-        {pageTitle && collapsed && (
-          <div className="my-6 text-3xl font-bold lg:pl-5">{pageTitle}</div>
-        )}
-        <Outlet key={contentKey} context={context} />
+        <div
+          key={`${location.pathname}-${contentKey ?? 0}`}
+          className="route-transition"
+          data-testid="route-content"
+        >
+          {pageTitle && collapsed && (
+            <div className="my-6 text-3xl font-bold lg:pl-5">{pageTitle}</div>
+          )}
+          <Outlet context={context} />
+        </div>
       </div>
       <div
         data-testid="desktop-navigation-panel"
@@ -113,13 +119,14 @@ const DesktopLayout = ({ contentKey }: DesktopLayoutProps) => {
           )}
         >
           <div
-            className="absolute left-5 top-5 text-gray-300"
+            className="absolute inset-y-0 left-5 flex items-center text-gray-300"
             data-testid="back-button"
           >
             <Link
               to="/"
               aria-label="Back to dashboard"
               tabIndex={collapsed ? undefined : -1}
+              className="press-feedback flex h-12 w-12 items-center justify-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <ArrowBackOutlinedIcon className="!text-4xl" />
             </Link>
@@ -131,13 +138,14 @@ const DesktopLayout = ({ contentKey }: DesktopLayoutProps) => {
           />
           {!onNotificationView && (
             <div
-              className="absolute right-5 top-5 text-gray-300"
+              className="absolute inset-y-0 right-5 flex items-center text-gray-300"
               data-testid="notification-button"
             >
               <Link
                 to="/notifications"
                 aria-label="Notifications"
                 tabIndex={collapsed ? undefined : -1}
+                className="press-feedback relative flex h-12 w-12 items-center justify-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
                 <NotificationDot />
                 <NotificationsNoneOutlinedIcon className="!text-4xl" />

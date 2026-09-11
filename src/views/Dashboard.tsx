@@ -78,7 +78,11 @@ const Dashboard = () => {
       <div className="flex flex-row flex-wrap justify-center gap-5">
         {sectionTiles.map(
           ({ name, path, background, iconColor, iconClass, icon }) => (
-            <Link key={name} to={path} className="press-feedback block">
+            <Link
+              key={name}
+              to={path}
+              className="press-feedback block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
               <div>
                 <div
                   className={clsx(
@@ -102,22 +106,27 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="relative grid grid-cols-2">
+    <div
+      className="relative grid min-h-screen content-start grid-cols-2"
+      data-testid="desktop-dashboard"
+    >
       <div
         className={clsx(
           'col-span-2 flex h-20 flex-row justify-center gap-4 border-b-2 border-blue-600 p-3'
         )}
       >
         <TimeAndDate />
-        <div className="absolute right-5 top-4 flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg border-2 border-transparent transition-colors hover:border-gray-500">
-          <Link to="/more">
-            <MoreHorizOutlinedIcon className="!text-[2rem]" />
-          </Link>
-        </div>
+        <Link
+          to="/more"
+          aria-label="More"
+          className="press-feedback absolute right-5 top-4 flex h-12 w-12 items-center justify-center rounded-lg border-2 border-transparent transition-colors hover:border-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        >
+          <MoreHorizOutlinedIcon className="!text-[2rem]" />
+        </Link>
       </div>
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed bottom-0 left-1/2 top-20 border-l-2 border-blue-600"
+        className="pointer-events-none absolute bottom-0 left-1/2 top-20 border-l-2 border-blue-600"
         data-testid="dashboard-column-divider"
       />
       <div className="h-[calc(100vh-19rem)] overflow-auto p-3">
