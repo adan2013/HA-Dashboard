@@ -8,7 +8,9 @@ import { addLeadingZero } from '../../../utils/numberUtils'
 import { removePastHours } from '../utils'
 
 const ItemContainer = ({ children }: { children: ReactElement[] }) => (
-  <div className="flex flex-col gap-1 rounded bg-gray-800 py-2">{children}</div>
+  <div className="flex shrink-0 snap-start flex-col gap-1 rounded-lg bg-gray-800 py-2">
+    {children}
+  </div>
 )
 
 type SunPositionItemProps = {
@@ -75,7 +77,7 @@ const ShortForecast = ({
   const sunsetTime = useMemo(() => new Date(sunset), [sunset])
 
   return (
-    <div className="flex flex-row gap-2 overflow-auto py-1 text-center text-lg">
+    <div className="section-scroll flex snap-x snap-mandatory flex-row gap-2 overflow-x-auto overscroll-x-contain py-1 text-center text-lg">
       {forecast.map(f => {
         const time = new Date(f.timestamp)
         return (

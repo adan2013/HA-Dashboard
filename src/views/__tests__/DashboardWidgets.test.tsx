@@ -5,12 +5,14 @@ import { useBackend } from '../../contexts/BackendContext'
 import Notifications from '../Notifications'
 import Weather from '../Weather'
 
+let mockIsMobileLayout = false
+
 jest.mock('../../contexts/BackendContext', () => ({
   useBackend: jest.fn()
 }))
 
 jest.mock('../../contexts/OutletContext', () => ({
-  useLayoutContext: () => ({ isMobile: false })
+  useLayoutContext: () => ({ isMobile: mockIsMobileLayout })
 }))
 
 const useBackendMock = useBackend as jest.Mock
@@ -19,6 +21,7 @@ describe('dashboard widgets loading state', () => {
   let serviceDataListener: (data: ServiceDataObject) => void
 
   beforeEach(() => {
+    mockIsMobileLayout = false
     useBackendMock.mockReturnValue({
       subscribeToServiceData: jest.fn(callback => {
         serviceDataListener = callback
@@ -64,6 +67,19 @@ describe('dashboard widgets loading state', () => {
       screen.queryByLabelText('Loading weather details')
     ).not.toBeInTheDocument()
     expect(screen.getByText('NO FORECAST AVAILABLE')).toBeVisible()
+  })
+
+  it('should use the full mobile weather skeleton outside the dashboard widget', () => {
+    mockIsMobileLayout = true
+
+    render(
+      <BrowserRouter>
+        <Weather />
+      </BrowserRouter>
+    )
+
+    expect(screen.getByTestId('mobile-weather-skeleton')).toBeVisible()
+    expect(screen.queryByLabelText('Loading weather')).not.toBeInTheDocument()
   })
 
   it('should keep the calendar hidden until notification data arrives', () => {

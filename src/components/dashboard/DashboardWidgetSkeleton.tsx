@@ -2,6 +2,7 @@ import clsx from 'clsx'
 
 type DashboardWidgetSkeletonProps = {
   type: 'weather' | 'notifications'
+  isDecorative?: boolean
 }
 
 const SkeletonBlock = ({
@@ -95,12 +96,16 @@ const NotificationsSkeleton = () => (
   </div>
 )
 
-const DashboardWidgetSkeleton = ({ type }: DashboardWidgetSkeletonProps) => (
+const DashboardWidgetSkeleton = ({
+  type,
+  isDecorative = false
+}: DashboardWidgetSkeletonProps) => (
   <div
-    className="tile-skeleton relative h-full min-h-80 overflow-hidden"
-    aria-label={`Loading ${type}`}
-    aria-busy="true"
-    role="status"
+    className="tile-skeleton min-h-80 relative h-full overflow-hidden"
+    aria-label={isDecorative ? undefined : `Loading ${type}`}
+    aria-busy={isDecorative ? undefined : true}
+    aria-hidden={isDecorative || undefined}
+    role={isDecorative ? undefined : 'status'}
   >
     {type === 'weather' ? <WeatherSkeleton /> : <NotificationsSkeleton />}
   </div>

@@ -107,7 +107,7 @@ const Dashboard = () => {
 
   return (
     <div
-      className="relative grid min-h-screen content-start grid-cols-2"
+      className="relative grid h-[calc(100dvh-14rem)] grid-cols-2 content-start overflow-hidden"
       data-testid="desktop-dashboard"
     >
       <div
@@ -129,10 +129,16 @@ const Dashboard = () => {
         className="pointer-events-none absolute bottom-0 left-1/2 top-20 border-l-2 border-blue-600"
         data-testid="dashboard-column-divider"
       />
-      <div className="h-[calc(100vh-19rem)] overflow-auto p-3">
+      <div
+        className="h-[calc(100dvh-19rem)] min-h-0 overflow-y-auto overscroll-contain p-3"
+        data-testid="dashboard-scroll-panel"
+      >
         <Weather isWidget />
       </div>
-      <div className="h-[calc(100vh-19rem)] overflow-auto p-3">
+      <div
+        className="h-[calc(100dvh-19rem)] min-h-0 overflow-y-auto overscroll-contain p-3"
+        data-testid="dashboard-scroll-panel"
+      >
         <Notifications isWidget />
       </div>
     </div>

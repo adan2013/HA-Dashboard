@@ -30,6 +30,8 @@ import AqIndexHistoryTile from '../components/weather/full/AqIndexHistoryTile'
 import MetadataFooter from '../components/weather/full/MetadataFooter'
 import DashboardWidgetSkeleton from '../components/dashboard/DashboardWidgetSkeleton'
 import FullWeatherSkeleton from '../components/weather/full/FullWeatherSkeleton'
+import MobileWeatherDetails from '../components/weather/mobile/MobileWeatherDetails'
+import MobileWeatherSkeleton from '../components/weather/mobile/MobileWeatherSkeleton'
 
 const Divider = () => <div className="mx-1 border-b-[1px] border-gray-400" />
 
@@ -54,11 +56,11 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
   )
 
   if (!hasReceivedInitialData) {
-    return isWidget || isMobile ? (
-      <DashboardWidgetSkeleton type="weather" />
-    ) : (
-      <FullWeatherSkeleton />
-    )
+    if (isWidget) {
+      return <DashboardWidgetSkeleton type="weather" />
+    }
+
+    return isMobile ? <MobileWeatherSkeleton /> : <FullWeatherSkeleton />
   }
 
   if (!state) {
@@ -72,7 +74,7 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
     )
   }
 
-  if (isWidget || isMobile) {
+  if (isWidget) {
     const content = (
       <>
         <CurrentWeather
@@ -91,7 +93,7 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
       </>
     )
 
-    return isWidget ? (
+    return (
       <Link
         to="/weather"
         aria-label="Open full weather view"
@@ -99,8 +101,14 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
       >
         {content}
       </Link>
-    ) : (
-      <div className="content-reveal flex flex-col gap-2">{content}</div>
+    )
+  }
+
+  if (isMobile) {
+    return (
+      <div className="content-reveal">
+        <MobileWeatherDetails state={state} />
+      </div>
     )
   }
 
