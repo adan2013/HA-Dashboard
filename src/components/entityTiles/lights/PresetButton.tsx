@@ -24,11 +24,13 @@ export const PresetButton = ({
   }
 
   return (
-    <div
-      className="flex-center aspect-square w-12 cursor-pointer rounded-full border-2 border-white p-1 hover:bg-gray-600"
+    <button
+      type="button"
+      aria-label="Apply light preset"
+      className="press-feedback flex-center aspect-square w-12 rounded-full border-2 border-white p-1 hover:bg-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
       onClick={onClick}
     >
       {cloneElement(icon, { className: '!text-2xl' })}
-    </div>
+    </button>
   )
 }

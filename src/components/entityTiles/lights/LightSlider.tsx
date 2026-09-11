@@ -13,7 +13,11 @@ export type LightSliderProps = {
   max: number
   onChange: (value: number) => void
   onConfirm: () => void
+  variant?: 'value' | 'spectrum'
 }
+
+const COLOR_SPECTRUM =
+  'linear-gradient(to right, #f00 0%, #ff0 16.67%, #0f0 33.33%, #0ff 50%, #00f 66.67%, #f0f 83.33%, #f00 100%)'
 
 export const LightSlider = ({
   title,
@@ -21,7 +25,8 @@ export const LightSlider = ({
   min,
   max,
   onChange,
-  onConfirm
+  onConfirm,
+  variant = 'value'
 }: LightSliderProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const percentage = value
@@ -69,12 +74,21 @@ export const LightSlider = ({
       <div
         className="relative h-14 w-full overflow-hidden rounded-lg bg-black"
         ref={containerRef}
+        style={variant === 'spectrum' ? { background: COLOR_SPECTRUM } : {}}
       >
-        <div
-          className="absolute z-10 h-full bg-yellow-400"
-          data-testid={`value-slider-${title}`}
-          style={{ width: `${percentage}%` }}
-        />
+        {variant === 'value' ? (
+          <div
+            className="absolute z-10 h-full bg-yellow-400"
+            data-testid={`value-slider-${title}`}
+            style={{ width: `${percentage}%` }}
+          />
+        ) : (
+          <div
+            className="absolute z-10 h-full w-1 -translate-x-1/2 bg-white shadow-[0_0_3px_1px_rgba(0,0,0,0.8)]"
+            data-testid={`value-slider-${title}`}
+            style={{ left: `${percentage}%` }}
+          />
+        )}
         <div
           className="absolute z-20 h-full w-full cursor-pointer"
           data-testid={`slider-${title}`}

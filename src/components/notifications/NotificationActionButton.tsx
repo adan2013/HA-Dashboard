@@ -38,13 +38,14 @@ const NotificationActionButton = ({ id }: NotificationActionButtonProps) => {
   }
 
   return (
-    <div
-      className="mt-1 inline-block cursor-pointer rounded bg-gray-600 px-4 py-2 text-sm font-bold hover:bg-blue-800"
+    <button
+      type="button"
+      className="press-feedback mt-1 min-h-11 rounded bg-gray-600 px-4 py-2 text-sm font-bold hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
       onClick={onClick}
       data-testid={`action-${id}`}
     >
       {config.text.toUpperCase()}
-    </div>
+    </button>
   )
 }
 

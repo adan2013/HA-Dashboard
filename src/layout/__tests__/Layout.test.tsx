@@ -77,6 +77,28 @@ describe('Layout', () => {
     expect(screen.getByText('MobileLayout')).toBeInTheDocument()
   })
 
+  it('should switch layouts on every viewport resize', () => {
+    defineWindowWidth(1024)
+    render(
+      <MemoryRouter>
+        <Layout />
+      </MemoryRouter>
+    )
+    expect(screen.getByText('DesktopLayout')).toBeInTheDocument()
+
+    act(() => {
+      defineWindowWidth(1023)
+      window.dispatchEvent(new Event('resize'))
+    })
+    expect(screen.getByText('MobileLayout')).toBeInTheDocument()
+
+    act(() => {
+      defineWindowWidth(1024)
+      window.dispatchEvent(new Event('resize'))
+    })
+    expect(screen.getByText('DesktopLayout')).toBeInTheDocument()
+  })
+
   it('should detect Fully Kiosk integration', () => {
     const bindMock = jest.fn()
     Object.defineProperty(window, 'fully', {

@@ -1,7 +1,6 @@
 import NightsStayIcon from '@mui/icons-material/NightsStay'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import clsx from 'clsx'
+import { Link } from 'react-router-dom'
 import { WeatherServiceData } from '../api/backend/weatherTypes'
 import { useBackend } from '../contexts/BackendContext'
 import ShortForecast from '../components/weather/compact/ShortForecast'
@@ -29,6 +28,10 @@ import DewPointTile from '../components/weather/full/DewPointTile'
 import UvIndexHistoryTile from '../components/weather/full/UvIndexHistoryTile'
 import AqIndexHistoryTile from '../components/weather/full/AqIndexHistoryTile'
 import MetadataFooter from '../components/weather/full/MetadataFooter'
+import DashboardWidgetSkeleton from '../components/dashboard/DashboardWidgetSkeleton'
+import FullWeatherSkeleton from '../components/weather/full/FullWeatherSkeleton'
+import MobileWeatherDetails from '../components/weather/mobile/MobileWeatherDetails'
+import MobileWeatherSkeleton from '../components/weather/mobile/MobileWeatherSkeleton'
 
 const Divider = () => <div className="mx-1 border-b-[1px] border-gray-400" />
 
@@ -38,23 +41,31 @@ type WeatherViewProps = {
 
 const Weather = ({ isWidget }: WeatherViewProps) => {
   const [state, setState] = useState<WeatherServiceData>(null)
+  const [hasReceivedInitialData, setHasReceivedInitialData] = useState(false)
   const backend = useBackend()
-  const navigate = useNavigate()
   const { isMobile } = useLayoutContext()
 
   useEffect(
     () =>
       backend?.subscribeToServiceData(data => {
-        if (data?.weather) {
-          setState(data.weather)
-        }
+        if (!data) return
+        setHasReceivedInitialData(true)
+        setState(data.weather ?? null)
       }),
     [backend]
   )
 
+  if (!hasReceivedInitialData) {
+    if (isWidget) {
+      return <DashboardWidgetSkeleton type="weather" />
+    }
+
+    return isMobile ? <MobileWeatherSkeleton /> : <FullWeatherSkeleton />
+  }
+
   if (!state) {
     return (
-      <div className="text-md mt-20 text-center font-extrabold text-gray-400">
+      <div className="content-reveal text-md mt-20 text-center font-extrabold text-gray-400">
         <div className="mb-2">
           <NightsStayIcon className="!text-8xl" />
         </div>
@@ -63,12 +74,9 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
     )
   }
 
-  if (isWidget || isMobile) {
-    return (
-      <div
-        className={clsx('flex flex-col gap-2', isWidget && 'cursor-pointer')}
-        onClick={isWidget ? () => navigate('/weather') : undefined}
-      >
+  if (isWidget) {
+    const content = (
+      <>
         <CurrentWeather
           data={state.current}
           shortForecast={state.shortForecast}
@@ -82,12 +90,30 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
         />
         <Divider />
         <LongForecast data={state.longForecast} />
+      </>
+    )
+
+    return (
+      <Link
+        to="/weather"
+        aria-label="Open full weather view"
+        className="content-reveal press-feedback flex flex-col gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+      >
+        {content}
+      </Link>
+    )
+  }
+
+  if (isMobile) {
+    return (
+      <div className="content-reveal">
+        <MobileWeatherDetails state={state} />
       </div>
     )
   }
 
   return (
-    <div className="mx-auto w-full max-w-[1000px]">
+    <div className="content-reveal mx-auto w-full max-w-[1000px]">
       <div className="mx-6">
         <div className="grid grid-cols-5 gap-4">
           <CurrentWeatherTile current={state.current} />

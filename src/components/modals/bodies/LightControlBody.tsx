@@ -19,10 +19,16 @@ import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useBackend } from '../../../contexts/BackendContext'
 import { PresetButton } from '../../entityTiles/lights/PresetButton'
 import { LightSlider } from '../../entityTiles/lights/LightSlider'
+import {
+  getHue,
+  hsToHex,
+  supportsColor
+} from '../../entityTiles/lights/lightUtils'
 
 const LightControlBody = () => {
   const [brightness, setBrightness] = useState<number>(0)
   const [colorTemp, setColorTemp] = useState<number>(0)
+  const [hue, setHue] = useState<number>(0)
   const modal = useModalContext()
   const backend = useBackend()
   const params = modal.state.params as LightControlModalParams
@@ -33,6 +39,7 @@ const LightControlBody = () => {
   const isTurnedOn = entityState?.state === 'on'
   const colorTempAvailable =
     !params.lockColorTemperature && colorTempRangeExists
+  const colorAvailable = supportsColor(entityState?.attributes)
 
   let status = 'Off'
   if (isUnavailable) {
@@ -43,11 +50,13 @@ const LightControlBody = () => {
     if (colorTempAvailable) {
       status += ` | ${colorTemp}K`
     }
+    if (colorAvailable) status += ` | ${hsToHex(hue)}`
   }
 
   useEffect(() => {
     setBrightness(entityState?.attributes?.brightness || 0)
     setColorTemp(entityState?.attributes?.color_temp_kelvin || null)
+    setHue(getHue(entityState?.attributes))
   }, [entityState])
 
   const toggleLight = () => {
@@ -72,6 +81,13 @@ const LightControlBody = () => {
     })
   }
 
+  const updateColor = () => {
+    if (isUnavailable) return
+    backend.callService(entityState.id, 'light', 'turn_on', {
+      hs_color: [hue, 100]
+    })
+  }
+
   return (
     <ModalBody>
       <ModalTitle>{params.title}</ModalTitle>
@@ -84,6 +100,17 @@ const LightControlBody = () => {
           onChange={setBrightness}
           onConfirm={updateBrightness}
         />
+        {colorAvailable && (
+          <LightSlider
+            title="Color"
+            value={hue}
+            min={0}
+            max={360}
+            onChange={setHue}
+            onConfirm={updateColor}
+            variant="spectrum"
+          />
+        )}
         {colorTempAvailable && (
           <LightSlider
             title="Color temperature"

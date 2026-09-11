@@ -49,10 +49,13 @@ type AcButtonProps = {
 const AcButton = ({ icon, text, id, onClick, selected }: AcButtonProps) => {
   const events = useClickHoldLogic(onClick, undefined)
   return (
-    <div
+    <button
+      type="button"
+      aria-label={text || id?.replaceAll('-', ' ')}
       className={clsx(
-        'flex cursor-pointer select-none flex-col items-center justify-center rounded-md border-2',
+        'press-feedback flex select-none flex-col items-center justify-center rounded-md border-2',
         'transition-colors hover:border-white hover:bg-white hover:text-black',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
         selected
           ? 'border-white bg-white text-black'
           : 'border-gray-400 bg-transparent text-white'
@@ -62,7 +65,7 @@ const AcButton = ({ icon, text, id, onClick, selected }: AcButtonProps) => {
     >
       <div>{icon}</div>
       <div className="mt-1 text-xs">{text}</div>
-    </div>
+    </button>
   )
 }
 

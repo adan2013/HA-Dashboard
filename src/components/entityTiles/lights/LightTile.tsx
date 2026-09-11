@@ -2,7 +2,12 @@ import Tile, { TileProps } from '../../basic/Tile'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useBackend } from '../../../contexts/BackendContext'
 import { LightType } from './lightTypes'
-import { getIcon, getMetadata, getStatusSubtitle } from './lightUtils'
+import {
+  getIcon,
+  getLightColor,
+  getMetadata,
+  getStatusSubtitle
+} from './lightUtils'
 import { useModalContext } from '../../../contexts/ModalContext'
 import { LightControlModalParams } from '../../../contexts/modalUtils'
 
@@ -29,6 +34,9 @@ const LightTile = ({
   const modal = useModalContext()
 
   const isActive = entityState?.state === 'on'
+  const lightColor = isActive
+    ? getLightColor(entityState?.attributes)
+    : undefined
 
   const toggleLight = () => {
     if (isUnavailable) return
@@ -47,9 +55,9 @@ const LightTile = ({
   const tileData: TileProps = {
     title,
     subtitle: getStatusSubtitle(isUnavailable, isActive),
-    icon: getIcon(lightType, isActive),
+    icon: getIcon(lightType, isActive, lightColor),
     isTurnedOff: !isActive,
-    iconClassnames: isActive ? 'text-yellow-500' : undefined,
+    iconClassnames: isActive && !lightColor ? 'text-yellow-500' : undefined,
     metadata: getMetadata(
       isActive,
       lockColorTemperature,
