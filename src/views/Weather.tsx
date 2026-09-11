@@ -29,6 +29,8 @@ import DewPointTile from '../components/weather/full/DewPointTile'
 import UvIndexHistoryTile from '../components/weather/full/UvIndexHistoryTile'
 import AqIndexHistoryTile from '../components/weather/full/AqIndexHistoryTile'
 import MetadataFooter from '../components/weather/full/MetadataFooter'
+import DashboardWidgetSkeleton from '../components/dashboard/DashboardWidgetSkeleton'
+import FullWeatherSkeleton from '../components/weather/full/FullWeatherSkeleton'
 
 const Divider = () => <div className="mx-1 border-b-[1px] border-gray-400" />
 
@@ -38,6 +40,7 @@ type WeatherViewProps = {
 
 const Weather = ({ isWidget }: WeatherViewProps) => {
   const [state, setState] = useState<WeatherServiceData>(null)
+  const [hasReceivedInitialData, setHasReceivedInitialData] = useState(false)
   const backend = useBackend()
   const navigate = useNavigate()
   const { isMobile } = useLayoutContext()
@@ -45,12 +48,20 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
   useEffect(
     () =>
       backend?.subscribeToServiceData(data => {
-        if (data?.weather) {
-          setState(data.weather)
-        }
+        if (!data) return
+        setHasReceivedInitialData(true)
+        setState(data.weather ?? null)
       }),
     [backend]
   )
+
+  if (!hasReceivedInitialData) {
+    return isWidget || isMobile ? (
+      <DashboardWidgetSkeleton type="weather" />
+    ) : (
+      <FullWeatherSkeleton />
+    )
+  }
 
   if (!state) {
     return (

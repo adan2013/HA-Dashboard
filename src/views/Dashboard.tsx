@@ -115,10 +115,15 @@ const Dashboard = () => {
           </Link>
         </div>
       </div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed bottom-0 left-1/2 top-20 border-l-2 border-blue-600"
+        data-testid="dashboard-column-divider"
+      />
       <div className="h-[calc(100vh-19rem)] overflow-auto p-3">
         <Weather isWidget />
       </div>
-      <div className="h-[calc(100vh-19rem)] overflow-auto border-l-2 border-blue-600 p-3">
+      <div className="h-[calc(100vh-19rem)] overflow-auto p-3">
         <Notifications isWidget />
       </div>
     </div>

@@ -11,6 +11,8 @@ import {
 import { addLeadingZero } from '../utils/numberUtils'
 import NotificationActionButton from '../components/notifications/NotificationActionButton'
 import Calendar from '../components/basic/Calendar'
+import DashboardWidgetSkeleton from '../components/dashboard/DashboardWidgetSkeleton'
+import FullNotificationsSkeleton from '../components/notifications/FullNotificationsSkeleton'
 
 const getBorderColor = (lightType: NotificationLight) => {
   switch (lightType) {
@@ -57,17 +59,28 @@ const Notifications = ({
   initialData = null
 }: NotificationsViewProps) => {
   const [state, setState] = useState<NotificationsServiceData>(initialData)
+  const [hasReceivedInitialData, setHasReceivedInitialData] = useState(
+    initialData !== null
+  )
   const backend = useBackend()
 
   useEffect(
     () =>
       backend?.subscribeToServiceData(data => {
-        if (data?.notifications) {
-          setState(data.notifications)
-        }
+        if (!data) return
+        setHasReceivedInitialData(true)
+        setState(data.notifications ?? null)
       }),
     [backend]
   )
+
+  if (!hasReceivedInitialData) {
+    return isWidget ? (
+      <DashboardWidgetSkeleton type="notifications" />
+    ) : (
+      <FullNotificationsSkeleton />
+    )
+  }
 
   if (!state || state.active.length === 0) {
     if (isWidget) {

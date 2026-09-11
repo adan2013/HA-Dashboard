@@ -64,8 +64,12 @@
   opacity: 0;
 }
 
+.tap-highlight-none,
 .press-feedback {
   -webkit-tap-highlight-color: transparent;
+}
+
+.press-feedback {
   transition: transform 90ms ease-out, filter 90ms ease-out;
 }
 

@@ -11,6 +11,56 @@ type DesktopLayoutProps = {
   contentKey?: number
 }
 
+type SectionLinksProps = {
+  compact?: boolean
+  currentPath: string
+  hidden: boolean
+}
+
+const SectionLinks = ({
+  compact = false,
+  currentPath,
+  hidden
+}: SectionLinksProps) => (
+  <div
+    className={clsx(
+      'mx-auto flex h-full flex-row justify-between gap-5',
+      compact ? 'max-w-lg p-3' : 'max-w-6xl p-5'
+    )}
+  >
+    {sectionTiles.map(tile => (
+      <Link
+        key={tile.name}
+        to={tile.path}
+        aria-label={tile.name}
+        tabIndex={hidden ? -1 : undefined}
+        className="tap-highlight-none"
+      >
+        <div>
+          <div
+            className={clsx(
+              'relative flex aspect-square items-center justify-center rounded-lg border-4 border-transparent transition-colors duration-200 hover:border-white',
+              tile.background,
+              tile.path === currentPath && 'border-white',
+              compact ? 'w-14' : 'w-36'
+            )}
+          >
+            <div className={clsx('aspect-square', tile.iconColor)}>
+              {cloneElement(tile.icon, {
+                className: clsx(
+                  compact ? '!text-[2rem]' : '!text-[7rem]',
+                  tile.iconClass
+                )
+              })}
+            </div>
+          </div>
+          {!compact && <div className="mt-2 text-center">{tile.name}</div>}
+        </div>
+      </Link>
+    ))}
+  </div>
+)
+
 const DesktopLayout = ({ contentKey }: DesktopLayoutProps) => {
   const location = useLocation()
   const pageTitle = pageMetadata.find(
@@ -36,65 +86,65 @@ const DesktopLayout = ({ contentKey }: DesktopLayoutProps) => {
         <Outlet key={contentKey} context={context} />
       </div>
       <div
+        data-testid="desktop-navigation-panel"
         className={clsx(
-          'fixed bottom-0 z-20 w-full border-t-2 border-blue-600 bg-gray-900 transition-all duration-500',
-          collapsed ? 'h-20' : 'h-56'
+          'fixed bottom-0 z-20 h-56 w-full transform-gpu border-t-2 border-blue-600 bg-gray-900 transition-transform duration-300 ease-out motion-reduce:transition-none',
+          collapsed ? 'translate-y-36' : 'translate-y-0'
         )}
       >
-        {collapsed && (
+        <nav
+          aria-label="Expanded section navigation"
+          aria-hidden={collapsed}
+          data-testid="desktop-navigation-expanded"
+          className={clsx(
+            'absolute inset-0 transition-opacity duration-200 ease-out motion-reduce:transition-none',
+            collapsed ? 'pointer-events-none opacity-0' : 'opacity-100'
+          )}
+        >
+          <SectionLinks currentPath={location.pathname} hidden={collapsed} />
+        </nav>
+        <nav
+          aria-label="Compact section navigation"
+          aria-hidden={!collapsed}
+          data-testid="desktop-navigation-compact"
+          className={clsx(
+            'absolute inset-x-0 top-0 h-20 transition-opacity duration-200 ease-out motion-reduce:transition-none',
+            collapsed ? 'opacity-100' : 'pointer-events-none opacity-0'
+          )}
+        >
           <div
-            className="fixed bottom-5 left-5 text-gray-300"
+            className="absolute left-5 top-5 text-gray-300"
             data-testid="back-button"
           >
-            <Link to="/">
+            <Link
+              to="/"
+              aria-label="Back to dashboard"
+              tabIndex={collapsed ? undefined : -1}
+            >
               <ArrowBackOutlinedIcon className="!text-4xl" />
             </Link>
           </div>
-        )}
-        <div
-          className={clsx(
-            'mx-auto flex h-full flex-row justify-between gap-5',
-            collapsed ? 'max-w-lg p-3' : 'max-w-6xl p-5'
+          <SectionLinks
+            compact
+            currentPath={location.pathname}
+            hidden={!collapsed}
+          />
+          {!onNotificationView && (
+            <div
+              className="absolute right-5 top-5 text-gray-300"
+              data-testid="notification-button"
+            >
+              <Link
+                to="/notifications"
+                aria-label="Notifications"
+                tabIndex={collapsed ? undefined : -1}
+              >
+                <NotificationDot />
+                <NotificationsNoneOutlinedIcon className="!text-4xl" />
+              </Link>
+            </div>
           )}
-        >
-          {sectionTiles.map(tile => (
-            <Link key={tile.name} to={tile.path}>
-              <div>
-                <div
-                  className={clsx(
-                    'relative flex aspect-square items-center justify-center rounded-lg border-4 border-transparent hover:border-white',
-                    tile.background,
-                    tile.path === location.pathname && 'border-white',
-                    collapsed ? 'w-14' : 'w-36'
-                  )}
-                >
-                  <div className={clsx('aspect-square', tile.iconColor)}>
-                    {cloneElement(tile.icon, {
-                      className: clsx(
-                        collapsed ? '!text-[2rem]' : '!text-[7rem]',
-                        tile.iconClass
-                      )
-                    })}
-                  </div>
-                </div>
-                {!collapsed && (
-                  <div className="mt-2 text-center">{tile.name}</div>
-                )}
-              </div>
-            </Link>
-          ))}
-        </div>
-        {collapsed && !onNotificationView && (
-          <div
-            className="fixed bottom-5 right-5 text-gray-300"
-            data-testid="notification-button"
-          >
-            <Link to="/notifications">
-              <NotificationDot />
-              <NotificationsNoneOutlinedIcon className="!text-4xl" />
-            </Link>
-          </div>
-        )}
+        </nav>
       </div>
     </div>
   )
