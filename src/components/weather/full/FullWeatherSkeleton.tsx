@@ -37,7 +37,7 @@ const ForecastTableSkeleton = ({ rows }: { rows: number }) => (
         <div className="flex w-48 shrink-0 items-center bg-neutral-800 px-4">
           <div className="h-3 w-28 rounded bg-neutral-700" />
         </div>
-        {Array.from({ length: 7 }, (_, columnIndex) => (
+        {Array.from({ length: 7 }, (_column, columnIndex) => (
           <div
             key={columnIndex}
             className="flex w-32 shrink-0 items-center justify-center border-l border-neutral-800"
