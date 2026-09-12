@@ -4,6 +4,7 @@ import { ServiceDataObject } from '../../api/backend/backendTypes'
 import { useBackend } from '../../contexts/BackendContext'
 import Notifications from '../Notifications'
 import Weather from '../Weather'
+import { weatherServiceDataMock } from '../../api/backend/weatherMocks'
 
 let mockIsMobileLayout = false
 
@@ -47,6 +48,22 @@ describe('dashboard widgets loading state', () => {
 
     expect(screen.queryByLabelText('Loading weather')).not.toBeInTheDocument()
     expect(screen.getByText('NO FORECAST AVAILABLE')).toBeVisible()
+  })
+
+  it('should not animate weather content when the dashboard widget remounts', () => {
+    const { container } = render(
+      <BrowserRouter>
+        <Weather isWidget />
+      </BrowserRouter>
+    )
+
+    act(() => {
+      serviceDataListener({
+        weather: weatherServiceDataMock
+      } as ServiceDataObject)
+    })
+
+    expect(container.querySelector('.content-reveal')).not.toBeInTheDocument()
   })
 
   it('should keep the full weather empty state hidden until the initial snapshot arrives', () => {
@@ -102,6 +119,22 @@ describe('dashboard widgets loading state', () => {
       screen.queryByLabelText('Loading notifications')
     ).not.toBeInTheDocument()
     expect(screen.getByText('Mon')).toBeVisible()
+  })
+
+  it('should not animate notification content when the dashboard widget remounts', () => {
+    const { container } = render(
+      <BrowserRouter>
+        <Notifications isWidget />
+      </BrowserRouter>
+    )
+
+    act(() => {
+      serviceDataListener({
+        notifications: { active: [], availableIds: [], dndMode: false }
+      } as ServiceDataObject)
+    })
+
+    expect(container.querySelector('.content-reveal')).not.toBeInTheDocument()
   })
 
   it('should keep the full notifications empty state hidden until the initial snapshot arrives', () => {

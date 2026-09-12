@@ -81,14 +81,16 @@ const DesktopLayout = ({ contentKey }: DesktopLayoutProps) => {
         )}
       >
         <div
-          key={`${location.pathname}-${contentKey ?? 0}`}
+          key={location.pathname}
           className="route-transition"
           data-testid="route-content"
         >
-          {pageTitle && collapsed && (
-            <div className="my-6 text-3xl font-bold lg:pl-5">{pageTitle}</div>
-          )}
-          <Outlet context={context} />
+          <div key={contentKey ?? 0} data-testid="refreshed-route-content">
+            {pageTitle && collapsed && (
+              <div className="my-6 text-3xl font-bold lg:pl-5">{pageTitle}</div>
+            )}
+            <Outlet context={context} />
+          </div>
         </div>
       </div>
       <div

@@ -58,6 +58,12 @@ describe('Notifications', () => {
     ).toContain('border-red-600')
   })
 
+  it('should not animate active notifications inside the dashboard widget', () => {
+    const { container } = renderView(true, false, [mockNotification('test1')])
+
+    expect(container.querySelector('.content-reveal')).not.toBeInTheDocument()
+  })
+
   it('should display the header only in widget mode', () => {
     renderView(true, false, [
       mockNotification('test1'),

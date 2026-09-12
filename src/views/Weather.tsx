@@ -1,4 +1,5 @@
 import NightsStayIcon from '@mui/icons-material/NightsStay'
+import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { WeatherServiceData } from '../api/backend/weatherTypes'
@@ -65,7 +66,12 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
 
   if (!state) {
     return (
-      <div className="content-reveal text-md mt-20 text-center font-extrabold text-gray-400">
+      <div
+        className={clsx(
+          'text-md mt-20 text-center font-extrabold text-gray-400',
+          !isWidget && 'content-reveal'
+        )}
+      >
         <div className="mb-2">
           <NightsStayIcon className="!text-8xl" />
         </div>
@@ -97,7 +103,7 @@ const Weather = ({ isWidget }: WeatherViewProps) => {
       <Link
         to="/weather"
         aria-label="Open full weather view"
-        className="content-reveal press-feedback flex flex-col gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        className="press-feedback flex flex-col gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
       >
         {content}
       </Link>

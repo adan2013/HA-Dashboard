@@ -1,7 +1,7 @@
 {
   "name": "ha-dashboard",
   "private": true,
-  "version": "6.3.0",
+  "version": "6.3.1",
   "packageManager": "yarn@1.22.22",
   "description": "Home Assistant dashboard for wall-mounted tablet",
   "repository": {

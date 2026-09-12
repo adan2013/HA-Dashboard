@@ -4,6 +4,27 @@ import DesktopLayout from '../DesktopLayout'
 import { sectionTiles } from '../menus'
 
 describe('DesktopLayout', () => {
+  it('should remount content without replaying the route transition', () => {
+    const { rerender } = render(
+      <MemoryRouter initialEntries={['/']}>
+        <DesktopLayout contentKey={0} />
+      </MemoryRouter>
+    )
+    const routeContent = screen.getByTestId('route-content')
+    const refreshedContent = screen.getByTestId('refreshed-route-content')
+
+    rerender(
+      <MemoryRouter initialEntries={['/']}>
+        <DesktopLayout contentKey={1} />
+      </MemoryRouter>
+    )
+
+    expect(screen.getByTestId('route-content')).toBe(routeContent)
+    expect(screen.getByTestId('refreshed-route-content')).not.toBe(
+      refreshedContent
+    )
+  })
+
   it('should show the names of the section', () => {
     render(
       <MemoryRouter initialEntries={['/']}>

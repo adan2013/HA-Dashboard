@@ -3,6 +3,27 @@ import { MemoryRouter } from 'react-router-dom'
 import MobileLayout from '../MobileLayout'
 
 describe('MobileLayout', () => {
+  it('should remount content without replaying the route transition', () => {
+    const { rerender } = render(
+      <MemoryRouter initialEntries={['/']}>
+        <MobileLayout contentKey={0} />
+      </MemoryRouter>
+    )
+    const routeContent = screen.getByTestId('route-content')
+    const refreshedContent = screen.getByTestId('refreshed-route-content')
+
+    rerender(
+      <MemoryRouter initialEntries={['/']}>
+        <MobileLayout contentKey={1} />
+      </MemoryRouter>
+    )
+
+    expect(screen.getByTestId('route-content')).toBe(routeContent)
+    expect(screen.getByTestId('refreshed-route-content')).not.toBe(
+      refreshedContent
+    )
+  })
+
   it('should show all the tabs', () => {
     render(
       <MemoryRouter initialEntries={['/weather']}>

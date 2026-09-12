@@ -85,7 +85,7 @@ const Notifications = ({
   if (!state || state.active.length === 0) {
     if (isWidget) {
       return (
-        <div className="content-reveal flex h-full p-3">
+        <div className="flex h-full p-3">
           <Calendar />
         </div>
       )
@@ -102,7 +102,12 @@ const Notifications = ({
   }
 
   return (
-    <div className="content-reveal mx-auto w-full max-w-[1000px] p-2">
+    <div
+      className={clsx(
+        'mx-auto w-full max-w-[1000px] p-2',
+        !isWidget && 'content-reveal'
+      )}
+    >
       {isWidget && (
         <div className="relative mb-4 text-3xl font-bold">
           {`${state.active.length} ACTIVE ${

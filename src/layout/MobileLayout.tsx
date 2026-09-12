@@ -46,14 +46,16 @@ const MobileLayout = ({ contentKey }: MobileLayoutProps) => {
         data-testid="mobile-content"
       >
         <div
-          key={`${location.pathname}-${contentKey ?? 0}`}
+          key={location.pathname}
           className="route-transition"
           data-testid="route-content"
         >
-          {pageTitle && (
-            <div className="my-4 text-3xl font-bold">{pageTitle}</div>
-          )}
-          <Outlet context={context} />
+          <div key={contentKey ?? 0} data-testid="refreshed-route-content">
+            {pageTitle && (
+              <div className="my-4 text-3xl font-bold">{pageTitle}</div>
+            )}
+            <Outlet context={context} />
+          </div>
         </div>
       </div>
       <nav
