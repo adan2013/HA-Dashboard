@@ -12,6 +12,7 @@ export type ModalType =
   | 'weather'
   | 'cameraView'
   | 'triggerNotification'
+  | 'timeRangeSchedule'
 
 export type ConfirmationModalParams = {
   message?: string
@@ -47,6 +48,12 @@ export type CameraViewModalParams = {
   imageHost: string
 }
 
+export type TimeRangeScheduleModalParams = {
+  title: string
+  currentValue: string
+  onConfirm: (value: string) => Promise<void>
+}
+
 export type ModalParams =
   | ConfirmationModalParams
   | CountdownResetModalParams
@@ -54,6 +61,7 @@ export type ModalParams =
   | HistoryChartModalParams
   | WeatherModalParams
   | CameraViewModalParams
+  | TimeRangeScheduleModalParams
 
 export type ModalState = {
   isOpen: boolean

@@ -16,16 +16,20 @@ type DateControlButtonProps = {
   label: string
   isDisabled: boolean
   onClick: () => void
+  className?: string
 }
 
 const DateControlButton = ({
   label,
   isDisabled,
-  onClick
+  onClick,
+  className
 }: DateControlButtonProps) => (
   <button
     type="button"
-    className="press-feedback min-h-[64px] rounded-lg bg-gray-700 px-2 text-lg font-semibold transition-colors hover:bg-gray-600 disabled:cursor-default disabled:text-gray-500 disabled:hover:bg-gray-700"
+    className={`press-feedback min-h-[64px] rounded-lg bg-gray-700 px-2 text-lg font-semibold transition-colors hover:bg-gray-600 disabled:cursor-default disabled:text-gray-500 disabled:hover:bg-gray-700 ${
+      className || ''
+    }`}
     disabled={isDisabled}
     onClick={onClick}
   >
@@ -123,7 +127,7 @@ const CountdownResetBody = () => {
             <div className="font-semibold">{countdownStatus}</div>
           </div>
         </div>
-        <div className="mb-6 grid grid-cols-5 gap-2">
+        <div className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-5">
           {[-7, -1].map(days => (
             <DateControlButton
               key={days}
@@ -134,6 +138,7 @@ const CountdownResetBody = () => {
           ))}
           <DateControlButton
             label="Today"
+            className="col-span-2 sm:col-span-1"
             isDisabled={selectedDate === dateBounds.initial}
             onClick={() => setSelectedDate(dateBounds.initial)}
           />

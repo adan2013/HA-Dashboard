@@ -22,6 +22,7 @@ import CameraViewBody from '../components/modals/bodies/CameraViewBody'
 import TriggerNotificationBody from '../components/modals/bodies/TriggerNotificationBody'
 import CountdownResetBody from '../components/modals/bodies/CountdownResetBody'
 import BackendLogsBody from '../components/modals/bodies/BackendLogsBody'
+import TimeRangeScheduleBody from '../components/modals/bodies/TimeRangeScheduleBody'
 
 type ProviderProps = {
   children: ReactElement
@@ -69,6 +70,7 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
       case 'countdownReset':
       case 'lightControl':
       case 'triggerNotification':
+      case 'timeRangeSchedule':
         return '600px'
       default:
         return '90vw'
@@ -97,6 +99,8 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
         return <CameraViewBody />
       case 'triggerNotification':
         return <TriggerNotificationBody />
+      case 'timeRangeSchedule':
+        return <TimeRangeScheduleBody />
       default:
         return null
     }
