@@ -14,6 +14,7 @@ import ToggleHelperTile, {
 } from '../../components/entityTiles/helpers/ToggleHelperTile'
 import DateCountdownHelperTile from '../../components/entityTiles/helpers/DateCountdownHelperTile'
 import WaterLeakSensorTile from '../../components/entityTiles/sensors/WaterLeakSensorTile'
+import TimeRangeScheduleTile from '../../components/entityTiles/helpers/TimeRangeScheduleTile'
 
 const alertToggleProps: Partial<ToggleHelperTileProps> = {
   stateNames: ['DISABLED', 'enabled'],
@@ -99,14 +100,17 @@ const Alerts = () => (
         onIcon={<VolumeUpIcon />}
         offIcon={<VolumeUpIcon />}
       />
+      <PlaceholderTile title="SMS alerts" size="standard" />
       <ToggleHelperTile
         title="DND at night"
         entityId="input_boolean.alertdndatnight"
         onIcon={<NotificationsPausedIcon />}
         offIcon={<NotificationsPausedIcon />}
-        metadataRenderer={() => ['22-7']}
       />
-      <PlaceholderTile title="SMS alerts" size="standard" />
+      <TimeRangeScheduleTile
+        title="DND schedule"
+        entityId="input_text.alertdndschedule"
+      />
     </TileGroup>
     <TileGroup name="Security">
       <ToggleHelperTile

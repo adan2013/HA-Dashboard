@@ -7,6 +7,7 @@ import FlashOffIcon from '@mui/icons-material/FlashOff'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import ToggleHelperTile from '../../components/entityTiles/helpers/ToggleHelperTile'
+import TimeRangeScheduleTile from '../../components/entityTiles/helpers/TimeRangeScheduleTile'
 import SwitchTile from '../../components/entityTiles/switch/SwitchTile'
 import { PowerChartTile } from '../../components/entityTiles/switch/PlugTile'
 import NumericValueTile from '../../components/entityTiles/general/NumericValueTile'
@@ -38,7 +39,10 @@ const Automations = () => {
         <ToggleHelperTile
           title="Circuit auto switch"
           entityId="input_boolean.balconycircuitautoswitch"
-          metadataRenderer={() => ['16-22']}
+        />
+        <TimeRangeScheduleTile
+          title="Circuit schedule"
+          entityId="input_text.balconycircuitschedule"
         />
       </TileGroup>
       <TileGroup name="Kitchen">
