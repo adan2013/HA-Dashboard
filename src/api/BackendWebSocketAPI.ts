@@ -197,6 +197,10 @@ class BackendWebSocketAPI extends WebSocketConnector {
     this.sendMsg('dismissNotification', { notificationId: id })
   }
 
+  public sendTestSms() {
+    this.sendMsg('testSms')
+  }
+
   public triggerRemoteControl(
     id: string,
     buttonNumber: number,

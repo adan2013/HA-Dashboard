@@ -5,6 +5,7 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import NotificationsPausedIcon from '@mui/icons-material/NotificationsPaused'
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined'
 import AnnouncementIcon from '@mui/icons-material/Announcement'
+import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import PlaceholderTile from '../../PlaceholderTile'
@@ -100,7 +101,12 @@ const Alerts = () => (
         onIcon={<VolumeUpIcon />}
         offIcon={<VolumeUpIcon />}
       />
-      <PlaceholderTile title="SMS alerts" size="standard" />
+      <ToggleHelperTile
+        title="SMS alerts"
+        entityId="input_boolean.alertsms"
+        onIcon={<SmsOutlinedIcon />}
+        offIcon={<SmsOutlinedIcon />}
+      />
       <ToggleHelperTile
         title="DND at night"
         entityId="input_boolean.alertdndatnight"

@@ -201,6 +201,14 @@ describe('BackendWebSocketAPI', () => {
     await expect(request).resolves.toEqual([logEntry])
   })
 
+  it('should send the test SMS command without waiting for a response', () => {
+    const backend = new BackendWebSocketAPI()
+    const socket = authenticate(backend)
+
+    backend.sendTestSms()
+    expect(socket.sent.at(-1)).toEqual({ type: 'testSms' })
+  })
+
   it('should time out requests after ten seconds', async () => {
     jest.useFakeTimers()
     try {
