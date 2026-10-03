@@ -12,6 +12,15 @@ export interface EntityAttributeInterface {
   max_color_temp_kelvin?: number
   current_temperature?: number
   temperature?: number
+  min_temp?: number
+  max_temp?: number
+  target_temp_step?: number
+  hvac_action?: string
+  hvac_modes?: string[]
+  preset_mode?: string
+  preset_modes?: string[]
+  battery?: number
+  battery_level?: number
   fan_mode?: string
   fan_modes?: string[]
   entity_picture?: string
