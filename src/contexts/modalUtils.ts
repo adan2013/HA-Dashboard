@@ -5,6 +5,7 @@ export type ModalType =
   | 'confirmation'
   | 'countdownReset'
   | 'lightControl'
+  | 'radiatorControl'
   | 'historyChart'
   | 'serviceStatus'
   | 'backendLogs'
@@ -33,6 +34,12 @@ export type LightControlModalParams = {
   lockColorTemperature?: boolean
 }
 
+export type RadiatorControlModalParams = {
+  title: string
+  entityId: string
+  batteryEntityId: string
+}
+
 export type HistoryChartModalParams = {
   title: string
   entityId: string
@@ -58,6 +65,7 @@ export type ModalParams =
   | ConfirmationModalParams
   | CountdownResetModalParams
   | LightControlModalParams
+  | RadiatorControlModalParams
   | HistoryChartModalParams
   | WeatherModalParams
   | CameraViewModalParams

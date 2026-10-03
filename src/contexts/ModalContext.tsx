@@ -14,6 +14,7 @@ import {
 } from './modalUtils'
 import ConfirmationBody from '../components/modals/bodies/ConfirmationBody'
 import LightControlBody from '../components/modals/bodies/LightControlBody'
+import RadiatorControlBody from '../components/modals/bodies/RadiatorControlBody'
 import HistoryChartBody from '../components/modals/bodies/HistoryChartBody'
 import BatteryListBody from '../components/modals/bodies/BatteryListBody'
 import ServiceStatusTableBody from '../components/modals/bodies/ServiceStatusTableBody'
@@ -69,6 +70,7 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
       case 'confirmation':
       case 'countdownReset':
       case 'lightControl':
+      case 'radiatorControl':
       case 'triggerNotification':
       case 'timeRangeSchedule':
         return '600px'
@@ -81,6 +83,8 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
     switch (modalState.modalType) {
       case 'lightControl':
         return <LightControlBody />
+      case 'radiatorControl':
+        return <RadiatorControlBody />
       case 'confirmation':
         return <ConfirmationBody />
       case 'countdownReset':

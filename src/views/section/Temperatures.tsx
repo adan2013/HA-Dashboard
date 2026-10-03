@@ -4,7 +4,7 @@ import {
   HumidityChartTile,
   TemperatureChartTile
 } from '../../components/entityTiles/climate/ClimateTile'
-import PlaceholderTile from '../../PlaceholderTile'
+import RadiatorTile from '../../components/entityTiles/climate/RadiatorTile'
 
 const Temperatures = () => (
   <TileSection>
@@ -23,9 +23,21 @@ const Temperatures = () => (
       />
     </TileGroup>
     <TileGroup name="Thermostat">
-      <PlaceholderTile title="Living room" size="horizontal" />
-      <PlaceholderTile title="Daniel" size="horizontal" />
-      <PlaceholderTile title="Ania" size="horizontal" />
+      <RadiatorTile
+        title="Living Room"
+        entityId="climate.livingroomradiatorvalve"
+        batteryEntityId="sensor.livingroomradiatorvalve_battery"
+      />
+      <RadiatorTile
+        title="Daniel"
+        entityId="climate.danielradiatorvalve"
+        batteryEntityId="sensor.danielradiatorvalve_battery"
+      />
+      <RadiatorTile
+        title="Ania"
+        entityId="climate.aniaradiatorvalve"
+        batteryEntityId="sensor.aniaradiatorvalve_battery"
+      />
     </TileGroup>
     <TileGroup name="Humidity">
       <HumidityChartTile
