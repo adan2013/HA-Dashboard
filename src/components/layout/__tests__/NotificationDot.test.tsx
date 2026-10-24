@@ -22,7 +22,6 @@ const notification = (
 ): NotificationPayload => ({
   id,
   title: id,
-  description: id,
   priorityOrder: 'medium',
   canBeDismissed: true,
   createdAt: '2023-05-05T12:00:00Z',

@@ -1,5 +1,7 @@
 // Shared wire contract. Keep this file identical in HA-Backend and HA-Dashboard.
 // Payload is optional for notifications triggered manually without sensor data.
+export type OfflineReason = 'unavailable' | 'unknown' | 'pingFailed'
+
 export type NotificationPayloadMap = {
   test1: undefined
   test2: undefined
@@ -17,7 +19,13 @@ export type NotificationPayloadMap = {
     remainingMinutes: number | null
     autoOffEnabled: boolean
   }
-  deadlineWarning: { deadlines: string[] }
+  deadlineWarning: {
+    deadlines: {
+      label: string
+      // Positive: days remaining; zero: due today; negative: days overdue.
+      daysLeft: number
+    }[]
+  }
   mainDoorOpen: undefined
   mainDoorOpenAlert: undefined
   waterLeak: { sensors: string[] }
@@ -26,9 +34,9 @@ export type NotificationPayloadMap = {
     errors: string[]
     delivery?: { sent: number; total: number }
   }
-  lowBattery: { devices: string[] }
-  offlineSensor: { devices: string[] }
-  noSensorUpdate: { devices: string[] }
+  lowBattery: { devices: { name: string; batteryPercentage: number | null }[] }
+  offlineSensor: { devices: { name: string; reason: OfflineReason }[] }
+  noSensorUpdate: { devices: { name: string; hoursSinceLastReport: number | null }[] }
   manualKitchenLights: undefined
   broadcastDeviceCamera: { devices: string[] }
   broadcastDeviceMicrophone: { devices: string[] }
@@ -50,9 +58,30 @@ export type NotificationLight =
   | 'redFlashing'
   | 'blueFlashing'
 
+export type NotificationIconName =
+  | 'ScienceOutlined'
+  | 'RestartAlt'
+  | 'LocalLaundryServiceOutlined'
+  | 'CheckCircleOutline'
+  | 'PauseCircleOutline'
+  | 'ErrorOutline'
+  | 'ViewInArOutlined'
+  | 'EventOutlined'
+  | 'MeetingRoomOutlined'
+  | 'NotificationImportantOutlined'
+  | 'WaterDropOutlined'
+  | 'SmsFailedOutlined'
+  | 'BatteryAlertOutlined'
+  | 'WifiOffOutlined'
+  | 'SensorsOffOutlined'
+  | 'LightbulbOutlined'
+  | 'VideocamOutlined'
+  | 'MicOutlined'
+
 export type NotificationPayload = NotificationDetails & {
   title: string
-  description: string
+  // Optional on the wire so dashboards can also render older backend messages.
+  icon?: NotificationIconName
   priorityOrder: 'low' | 'medium' | 'high'
   light?: NotificationLight
   canBeDismissed?: boolean

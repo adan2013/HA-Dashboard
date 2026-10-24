@@ -1,12 +1,7 @@
 import { ReactNode } from 'react'
+import clsx from 'clsx'
 import CircularProgress from '@mui/material/CircularProgress'
-import EventOutlinedIcon from '@mui/icons-material/EventOutlined'
-import DevicesOutlinedIcon from '@mui/icons-material/DevicesOutlined'
-import WaterDropOutlinedIcon from '@mui/icons-material/WaterDropOutlined'
-import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined'
-import MicOutlinedIcon from '@mui/icons-material/MicOutlined'
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew'
-import SmsFailedOutlinedIcon from '@mui/icons-material/SmsFailedOutlined'
 import {
   NotificationPayload,
   NotificationPayloadMap
@@ -14,22 +9,20 @@ import {
 
 type DetailListProps = {
   title: string
-  items: string[]
-  icon: ReactNode
+  items: ReactNode[]
 }
 
-const DetailList = ({ title, items, icon }: DetailListProps) => {
+const DetailList = ({ title, items }: DetailListProps) => {
   if (!items.length) return null
   return (
     <section aria-label={title} className="mt-4 rounded-xl bg-gray-900/50 p-4">
       <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-300">
-        {icon}
         <span>{title}</span>
         <span className="ml-auto rounded-full bg-gray-700 px-2 py-0.5 text-xs text-white">
           {items.length}
         </span>
       </div>
-      <ul className="list-disc space-y-2 break-words pl-5 marker:text-blue-400">
+      <ul className="list-disc space-y-2 pl-5 [overflow-wrap:anywhere] marker:text-blue-400">
         {items.map((item, index) => (
           // Different sensors may have the same display name.
           // eslint-disable-next-line react/no-array-index-key
@@ -40,6 +33,47 @@ const DetailList = ({ title, items, icon }: DetailListProps) => {
       </ul>
     </section>
   )
+}
+
+const DetailTag = ({
+  children,
+  tone = 'neutral'
+}: {
+  children: ReactNode
+  tone?: 'neutral' | 'warning' | 'danger'
+}) => (
+  <span
+    className={clsx(
+      'inline-block whitespace-nowrap rounded px-2 py-0.5 align-middle text-xs font-medium tabular-nums',
+      {
+        'bg-gray-700 text-gray-200': tone === 'neutral',
+        'bg-amber-400/10 text-amber-300': tone === 'warning',
+        'bg-red-400/10 text-red-300': tone === 'danger'
+      }
+    )}
+  >
+    {children}
+  </span>
+)
+
+const DeadlineTag = ({ daysLeft }: { daysLeft: number }) => {
+  const days = Math.abs(daysLeft)
+  const unit = days === 1 ? 'day' : 'days'
+  const label =
+    daysLeft === 0
+      ? 'Due today'
+      : `${days} ${unit} ${daysLeft < 0 ? 'overdue' : 'left'}`
+  let tone: 'neutral' | 'warning' | 'danger' = 'neutral'
+  if (daysLeft === 0) tone = 'warning'
+  if (daysLeft < 0) tone = 'danger'
+  return <DetailTag tone={tone}>{label}</DetailTag>
+}
+
+const formatReportAge = (hours: number) => {
+  const days = Math.floor(hours / 24)
+  const rest = hours % 24
+  if (!days) return `${hours}h without report`
+  return `${days}d${rest ? ` ${rest}h` : ''} without report`
 }
 
 const AutoOffStatus = () => (
@@ -125,18 +159,89 @@ const NotificationDetails = ({
       return notification.payload ? (
         <DetailList
           title="Detected deadlines"
-          items={notification.payload.deadlines}
-          icon={<EventOutlinedIcon fontSize="small" />}
+          items={notification.payload.deadlines.map(deadline =>
+            // Older backend versions send labels without day counts.
+            typeof deadline === 'string' ? (
+              deadline
+            ) : (
+              <>
+                {deadline.label} <DeadlineTag daysLeft={deadline.daysLeft} />
+              </>
+            )
+          )}
         />
       ) : null
     case 'lowBattery':
+      return notification.payload ? (
+        <DetailList
+          title="Affected devices"
+          items={notification.payload.devices.map(device =>
+            typeof device === 'string' ? (
+              device
+            ) : (
+              <>
+                {device.name}{' '}
+                {device.batteryPercentage !== null &&
+                  Number.isFinite(device.batteryPercentage) &&
+                  device.batteryPercentage >= 0 &&
+                  device.batteryPercentage <= 100 && (
+                    <DetailTag
+                      tone={
+                        device.batteryPercentage <= 10 ? 'danger' : 'warning'
+                      }
+                    >
+                      {device.batteryPercentage}%
+                    </DetailTag>
+                  )}
+              </>
+            )
+          )}
+        />
+      ) : null
     case 'offlineSensor':
+      return notification.payload ? (
+        <DetailList
+          title="Affected devices"
+          items={notification.payload.devices.map(device =>
+            typeof device === 'string' ? (
+              device
+            ) : (
+              <>
+                {device.name}{' '}
+                <DetailTag tone="danger">
+                  {
+                    {
+                      pingFailed: 'No ping response',
+                      unavailable: 'Unavailable',
+                      unknown: 'Unknown state'
+                    }[device.reason]
+                  }
+                </DetailTag>
+              </>
+            )
+          )}
+        />
+      ) : null
     case 'noSensorUpdate':
       return notification.payload ? (
         <DetailList
           title="Affected devices"
-          items={notification.payload.devices}
-          icon={<DevicesOutlinedIcon fontSize="small" />}
+          items={notification.payload.devices.map(device =>
+            typeof device === 'string' ? (
+              device
+            ) : (
+              <>
+                {device.name}{' '}
+                {device.hoursSinceLastReport !== null &&
+                  Number.isFinite(device.hoursSinceLastReport) &&
+                  device.hoursSinceLastReport >= 0 && (
+                    <DetailTag tone="warning">
+                      {formatReportAge(device.hoursSinceLastReport)}
+                    </DetailTag>
+                  )}
+              </>
+            )
+          )}
         />
       ) : null
     case 'waterLeak':
@@ -144,7 +249,6 @@ const NotificationDetails = ({
         <DetailList
           title="Triggered sensors"
           items={notification.payload.sensors}
-          icon={<WaterDropOutlinedIcon fontSize="small" />}
         />
       ) : null
     case 'broadcastDeviceCamera':
@@ -152,7 +256,6 @@ const NotificationDetails = ({
         <DetailList
           title="Active devices"
           items={notification.payload.devices}
-          icon={<VideocamOutlinedIcon fontSize="small" />}
         />
       ) : null
     case 'broadcastDeviceMicrophone':
@@ -160,7 +263,6 @@ const NotificationDetails = ({
         <DetailList
           title="Active devices"
           items={notification.payload.devices}
-          icon={<MicOutlinedIcon fontSize="small" />}
         />
       ) : null
     case '3dPrintStatus':
@@ -179,11 +281,10 @@ const NotificationDetails = ({
           aria-label="SMS delivery failure"
           className="mt-4 rounded-xl border border-red-400/30 bg-red-950/30 p-4"
         >
-          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-red-200">
-            <SmsFailedOutlinedIcon fontSize="small" />
+          <div className="mb-2 text-sm font-semibold text-red-200">
             Delivery details
           </div>
-          <dl className="space-y-2 break-words text-sm">
+          <dl className="space-y-2 text-sm [overflow-wrap:anywhere]">
             <div>
               <dt className="text-gray-400">Alert source</dt>
               <dd>

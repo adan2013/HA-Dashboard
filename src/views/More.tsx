@@ -1,3 +1,5 @@
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
+import { useNavigate } from 'react-router-dom'
 import ClearIcon from '@mui/icons-material/Clear'
 import CheckIcon from '@mui/icons-material/Check'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
@@ -16,6 +18,7 @@ import LightTile from '../components/entityTiles/lights/LightTile'
 import { useBackendStatus } from '../api/hooks'
 
 const More = () => {
+  const navigate = useNavigate()
   const backend = useBackend()
   const modal = useModalContext()
   const backendStatus = useBackendStatus()
@@ -67,6 +70,11 @@ const More = () => {
       <TileGroup name="Testing">
         <SpeakerTestTile />
         <TriggerNotificationTile />
+        <Tile
+          title="Notification gallery"
+          icon={<NotificationsNoneOutlinedIcon />}
+          onClick={() => navigate('/diagnostics/notifications')}
+        />
         <LightTile
           title="Notification LED"
           entityId="light.dash_node_tablet_notification_lights"
