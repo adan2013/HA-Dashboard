@@ -31,6 +31,15 @@ describe('NotificationActionButton', () => {
     expect(screen.queryByTestId('action-test1')).not.toBeInTheDocument()
   })
 
+  it('opens Alerts from a deadline notification without calling the backend', () => {
+    window.history.replaceState({}, '', '/notifications')
+    renderButton('deadlineWarning')
+    fireEvent.click(screen.getByRole('button', { name: 'OPEN ALERTS' }))
+    expect(window.location.pathname).toBe('/section/alerts')
+    expect(callService).not.toHaveBeenCalled()
+    window.history.replaceState({}, '', '/')
+  })
+
   it('should render action button, open modal and show toast message', async () => {
     renderButton('test3')
     expect(screen.getByTestId('action-test3')).toBeInTheDocument()
@@ -44,7 +53,9 @@ describe('NotificationActionButton', () => {
   })
   it('requires confirmation before disabling water leak alerts', async () => {
     renderButton('waterLeak')
-    fireEvent.click(screen.getByRole('button', { name: 'DISABLE ALERTS' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'DISABLE LEAK MONITORING' })
+    )
     expect(
       screen.getByText(/leaves water leak monitoring disabled/)
     ).toBeVisible()
@@ -56,13 +67,15 @@ describe('NotificationActionButton', () => {
       'turn_off'
     )
     await waitFor(() =>
-      expect(screen.getByText('Water leak alerts disabled.')).toBeVisible()
+      expect(screen.getByText('Water leak monitoring disabled.')).toBeVisible()
     )
   })
 
   it('does not disable alerts when confirmation is cancelled', () => {
     renderButton('waterLeak')
-    fireEvent.click(screen.getByRole('button', { name: 'DISABLE ALERTS' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'DISABLE LEAK MONITORING' })
+    )
     fireEvent.click(screen.getByTestId('modal-button-Cancel'))
     expect(callService).not.toHaveBeenCalled()
   })
@@ -70,13 +83,15 @@ describe('NotificationActionButton', () => {
   it('reports a failed service call', async () => {
     callService.mockRejectedValue(new Error('Home Assistant is not connected'))
     renderButton('waterLeak')
-    fireEvent.click(screen.getByRole('button', { name: 'DISABLE ALERTS' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'DISABLE LEAK MONITORING' })
+    )
     fireEvent.click(screen.getByTestId('modal-button-Confirm'))
     await waitFor(() =>
       expect(screen.getByText('Home Assistant is not connected')).toBeVisible()
     )
     expect(
-      screen.queryByText('Water leak alerts disabled.')
+      screen.queryByText('Water leak monitoring disabled.')
     ).not.toBeInTheDocument()
   })
 })

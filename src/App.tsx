@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Dashboard from './views/Dashboard'
 import Notifications from './views/Notifications'
+import NotificationDiagnostics from './views/NotificationDiagnostics'
 import Weather from './views/Weather'
 import More from './views/More'
 import Error404 from './views/Error404'
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: '/notifications',
         element: <Notifications />
+      },
+      {
+        path: '/diagnostics/notifications',
+        element: <NotificationDiagnostics />
       },
       {
         path: '/more',

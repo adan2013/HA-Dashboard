@@ -76,3 +76,26 @@ unprivileged `nginx` user. For example, publish it locally on port `3000` with
 - react-modal
 - Jest + React Testing Library
 - ESlint + Prettier
+
+## Notification diagnostics
+
+Open **More → Testing → Notification gallery** (`/diagnostics/notifications`).
+The gallery uses the same cards as the dashboard and includes all notification
+IDs, realistic sample payloads, additional printer states and long text cases.
+Enable **Narrow preview (360 px)** to check title/list wrapping and clearance
+around the dismiss button. Preview actions are disabled.
+
+Titles, icons and presentation metadata in
+`src/components/notifications/notificationExamples.ts` are copied from the
+backend's `src/configs/notification.config.ts`; update them together. The
+exhaustive fixture type requires an example whenever the shared contract gains
+a notification ID. Payloads and timestamps are simulated. Notification descriptions
+are removed from both the backend configuration and the shared contract. Both repositories must keep
+`notificationContract.ts` identical; icon names use an explicit MUI registry on
+the dashboard, with a generic fallback for older backend messages.
+
+Device notification payloads include numeric battery percentages, elapsed hours
+without a report, and an offline reason (`unavailable`, `unknown`, or
+`pingFailed`). The cards render these as compact tags; missing measurements are
+not displayed as zero. The backend refreshes report ages during its hourly
+monitoring check. Legacy label-only payloads still render without tags.

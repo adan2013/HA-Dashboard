@@ -3,11 +3,16 @@ import { NotificationAction } from './types'
 
 const actionConfig: NotificationAction[] = [
   {
+    id: 'deadlineWarning',
+    text: 'Open alerts',
+    action: ({ navigate }) => navigate('/section/alerts')
+  },
+  {
     id: 'waterLeak',
-    text: 'Disable alerts',
+    text: 'Disable leak monitoring',
     confirmationRequired: true,
     confirmationMessage:
-      'Disable water leak alerts? This clears the current alarm and leaves water leak monitoring disabled until you turn it back on.',
+      'Disable water leak monitoring? This clears the current alarm and leaves water leak monitoring disabled until you turn it back on.',
     actionIsDanger: true,
     action: ({ backend }) => {
       backend
@@ -17,13 +22,13 @@ const actionConfig: NotificationAction[] = [
           'turn_off'
         )
         .then(() => {
-          toast.success('Water leak alerts disabled.')
+          toast.success('Water leak monitoring disabled.')
         })
         .catch(error => {
           toast.error(
             error instanceof Error
               ? error.message
-              : 'Unable to disable water leak alerts.'
+              : 'Unable to disable water leak monitoring.'
           )
         })
     }

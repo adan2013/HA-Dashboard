@@ -9,7 +9,6 @@ import {
 const notification = (details: Details): NotificationPayload => ({
   ...details,
   title: 'Notification',
-  description: '',
   priorityOrder: 'low',
   createdAt: '2026-10-24T12:00:00Z'
 })
@@ -30,7 +29,12 @@ describe('NotificationDetails', () => {
   it('renders deadlines as separate bullet points, preserving commas inside names', () => {
     renderDetails({
       id: 'deadlineWarning',
-      payload: { deadlines: ['Filter, kitchen', 'Water plants'] }
+      payload: {
+        deadlines: [
+          { label: 'Filter, kitchen', daysLeft: 3 },
+          { label: 'Water plants', daysLeft: -2 }
+        ]
+      }
     })
     expect(
       screen.getByRole('region', { name: 'Detected deadlines' })
@@ -43,20 +47,118 @@ describe('NotificationDetails', () => {
   })
 
   it.each([
-    'lowBattery',
-    'offlineSensor',
-    'noSensorUpdate',
-    'broadcastDeviceCamera',
-    'broadcastDeviceMicrophone'
-  ] as const)('renders devices for %s', id => {
+    [5, '5 days left'],
+    [1, '1 day left'],
+    [0, 'Due today'],
+    [-1, '1 day overdue'],
+    [-3, '3 days overdue']
+  ] as const)('labels a deadline with %s days remaining', (daysLeft, label) => {
     renderDetails({
-      id,
-      payload: { devices: ['Kitchen sensor', 'Bathroom sensor'] }
+      id: 'deadlineWarning',
+      payload: { deadlines: [{ label: 'Water filter', daysLeft }] }
     })
-    expect(screen.getAllByRole('listitem')).toHaveLength(2)
-    expect(screen.getByText('Kitchen sensor')).toBeVisible()
-    expect(screen.getByText('Bathroom sensor')).toBeVisible()
+    expect(within(screen.getByRole('listitem')).getByText(label)).toBeVisible()
   })
+
+  it('still renders deadline labels sent by an older backend', () => {
+    renderDetails(
+      JSON.parse(
+        '{"id":"deadlineWarning","payload":{"deadlines":["Water filter"]}}'
+      )
+    )
+    expect(screen.getByRole('listitem')).toHaveTextContent('Water filter')
+    expect(
+      screen.queryByText(/days left|overdue|Due today/)
+    ).not.toBeInTheDocument()
+  })
+
+  it.each(['broadcastDeviceCamera', 'broadcastDeviceMicrophone'] as const)(
+    'renders devices for %s',
+    id => {
+      renderDetails({
+        id,
+        payload: { devices: ['Kitchen sensor', 'Bathroom sensor'] }
+      })
+      expect(screen.getAllByRole('listitem')).toHaveLength(2)
+      expect(screen.getByText('Kitchen sensor')).toBeVisible()
+      expect(screen.getByText('Bathroom sensor')).toBeVisible()
+    }
+  )
+
+  it.each([0, 8, 24])(
+    'shows the actual battery level including zero: %s',
+    batteryPercentage => {
+      renderDetails({
+        id: 'lowBattery',
+        payload: { devices: [{ name: 'Remote', batteryPercentage }] }
+      })
+      expect(screen.getByRole('listitem')).toHaveTextContent(
+        `Remote ${batteryPercentage}%`
+      )
+    }
+  )
+
+  it.each([null, -1, 101])(
+    'does not invent a percentage for missing or invalid data: %s',
+    batteryPercentage => {
+      renderDetails({
+        id: 'lowBattery',
+        payload: { devices: [{ name: 'Remote', batteryPercentage }] }
+      })
+      expect(screen.getByRole('listitem')).toHaveTextContent(/^Remote$/)
+    }
+  )
+
+  it.each([
+    [3, '3h without report'],
+    [24, '1d without report'],
+    [38, '1d 14h without report']
+  ] as const)(
+    'shows elapsed time without a report: %s hours',
+    (hoursSinceLastReport, label) => {
+      renderDetails({
+        id: 'noSensorUpdate',
+        payload: { devices: [{ name: 'Garden sensor', hoursSinceLastReport }] }
+      })
+      expect(
+        within(screen.getByRole('listitem')).getByText(label)
+      ).toBeVisible()
+    }
+  )
+
+  it('omits the report-age tag when elapsed time is unknown', () => {
+    renderDetails({
+      id: 'noSensorUpdate',
+      payload: {
+        devices: [{ name: 'Garden sensor', hoursSinceLastReport: null }]
+      }
+    })
+    expect(screen.getByRole('listitem')).toHaveTextContent(/^Garden sensor$/)
+  })
+
+  it.each([
+    ['pingFailed', 'No ping response'],
+    ['unavailable', 'Unavailable'],
+    ['unknown', 'Unknown state']
+  ] as const)('explains offline detection: %s', (reason, label) => {
+    renderDetails({
+      id: 'offlineSensor',
+      payload: { devices: [{ name: 'Sensor', reason }] }
+    })
+    expect(within(screen.getByRole('listitem')).getByText(label)).toBeVisible()
+  })
+
+  it.each(['lowBattery', 'offlineSensor', 'noSensorUpdate'])(
+    'preserves legacy device names without inventing tags: %s',
+    id => {
+      renderDetails(
+        JSON.parse(
+          JSON.stringify({ id, payload: { devices: ['Legacy sensor'] } })
+        )
+      )
+      expect(screen.getByRole('listitem')).toHaveTextContent(/^Legacy sensor$/)
+    }
+  )
 
   it('renders leak locations', () => {
     renderDetails({ id: 'waterLeak', payload: { sensors: ['Under sink'] } })

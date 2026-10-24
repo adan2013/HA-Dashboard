@@ -9,7 +9,6 @@ const mockNotification = (
 ): NotificationPayload => ({
   id,
   title: `${id}_title`,
-  description: `${id}_description`,
   priorityOrder: 'medium',
   light: 'red',
   canBeDismissed: true,
@@ -45,7 +44,6 @@ describe('Notifications', () => {
   it('should display list of active notifications', () => {
     renderView(true, false, [mockNotification('test1')])
     expect(screen.getByText('test1_title')).toBeVisible()
-    expect(screen.getByText('test1_description')).toBeVisible()
     expect(screen.getByText('12:00 05-05-2023')).toBeVisible()
     expect(screen.queryByTestId('action-test1')).not.toBeInTheDocument()
     expect(screen.getByTestId('notification-close-button-test1')).toBeVisible()
@@ -63,7 +61,12 @@ describe('Notifications', () => {
         {
           ...mockNotification('test1'),
           id: 'deadlineWarning',
-          payload: { deadlines: ['Replace filter', 'Water plants'] }
+          payload: {
+            deadlines: [
+              { label: 'Replace filter', daysLeft: 3 },
+              { label: 'Water plants', daysLeft: -2 }
+            ]
+          }
         }
       ])
       expect(screen.getAllByRole('listitem')).toHaveLength(2)

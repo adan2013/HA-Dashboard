@@ -8,9 +8,13 @@ import { ConfirmationModalParams } from '../../contexts/modalUtils'
 
 type NotificationActionButtonProps = {
   id: string
+  preview?: boolean
 }
 
-const NotificationActionButton = ({ id }: NotificationActionButtonProps) => {
+const NotificationActionButton = ({
+  id,
+  preview = false
+}: NotificationActionButtonProps) => {
   const config = useMemo(() => actionConfig.find(a => a.id === id), [id])
   const backendApi = useBackend()
   const navigate = useNavigate()
@@ -21,6 +25,7 @@ const NotificationActionButton = ({ id }: NotificationActionButtonProps) => {
   }
 
   const onClick = () => {
+    if (preview) return
     const actionCtx: NotificationActionContext = {
       backend: backendApi,
       navigate
@@ -40,8 +45,9 @@ const NotificationActionButton = ({ id }: NotificationActionButtonProps) => {
   return (
     <button
       type="button"
-      className="press-feedback mt-1 min-h-11 rounded bg-gray-600 px-4 py-2 text-sm font-bold hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+      className="press-feedback min-h-11 rounded bg-gray-600 px-4 py-2 text-sm font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white enabled:hover:bg-blue-800 disabled:cursor-default"
       onClick={onClick}
+      disabled={preview}
       data-testid={`action-${id}`}
     >
       {config.text.toUpperCase()}
