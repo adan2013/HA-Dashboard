@@ -4,13 +4,12 @@ import Notifications from '../Notifications'
 import { NotificationPayload } from '../../api/backend/notificationTypes'
 
 const mockNotification = (
-  id: string,
-  custom: Partial<NotificationPayload> = {}
+  id: 'test1' | 'test2' | 'test3',
+  custom: Partial<Omit<NotificationPayload, 'id' | 'payload'>> = {}
 ): NotificationPayload => ({
   id,
   title: `${id}_title`,
   description: `${id}_description`,
-  extraInfo: `${id}_extraInfo`,
   priorityOrder: 'medium',
   light: 'red',
   canBeDismissed: true,
@@ -47,7 +46,6 @@ describe('Notifications', () => {
     renderView(true, false, [mockNotification('test1')])
     expect(screen.getByText('test1_title')).toBeVisible()
     expect(screen.getByText('test1_description')).toBeVisible()
-    expect(screen.getByText('test1_extraInfo')).toBeVisible()
     expect(screen.getByText('12:00 05-05-2023')).toBeVisible()
     expect(screen.queryByTestId('action-test1')).not.toBeInTheDocument()
     expect(screen.getByTestId('notification-close-button-test1')).toBeVisible()
@@ -57,6 +55,22 @@ describe('Notifications', () => {
         .getAttribute('class')
     ).toContain('border-red-600')
   })
+
+  it.each([true, false])(
+    'renders structured details in widget mode: %s',
+    isWidget => {
+      renderView(isWidget, false, [
+        {
+          ...mockNotification('test1'),
+          id: 'deadlineWarning',
+          payload: { deadlines: ['Replace filter', 'Water plants'] }
+        }
+      ])
+      expect(screen.getAllByRole('listitem')).toHaveLength(2)
+      expect(screen.getByText('Replace filter')).toBeVisible()
+      expect(screen.getByText('Water plants')).toBeVisible()
+    }
+  )
 
   it('should not animate active notifications inside the dashboard widget', () => {
     const { container } = renderView(true, false, [mockNotification('test1')])
