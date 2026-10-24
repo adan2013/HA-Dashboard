@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import clsx from 'clsx'
 import { Link } from 'react-router-dom'
+import NotificationDetails from '../components/notifications/NotificationDetails'
 import { useBackend } from '../contexts/BackendContext'
 import {
   NotificationLight,
@@ -133,11 +134,7 @@ const Notifications = ({
           <div className="pr-14">
             <div className="text-lg font-bold">{n.title}</div>
             <div className="my-2">{n.description}</div>
-            {n.extraInfo && (
-              <div className="mt-4 font-light">
-                <i>{n.extraInfo}</i>
-              </div>
-            )}
+            <NotificationDetails notification={n} />
           </div>
           {n.canBeDismissed && (
             <button

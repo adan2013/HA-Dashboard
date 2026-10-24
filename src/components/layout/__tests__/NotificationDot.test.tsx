@@ -17,8 +17,8 @@ jest.mock('../../../contexts/BackendContext', () => ({
 }))
 
 const notification = (
-  id: string,
-  custom: Partial<NotificationPayload> = {}
+  id: 'test1' | 'test2' | 'test3',
+  custom: Partial<Omit<NotificationPayload, 'id' | 'payload'>> = {}
 ): NotificationPayload => ({
   id,
   title: id,
@@ -60,16 +60,16 @@ describe('NotificationDot', () => {
     ['purple', 'bg-purple-600']
   ] as const)('uses the %s notification color', (light, expectedClass) => {
     render(<NotificationDot />)
-    publishNotifications([notification('important', { light })])
+    publishNotifications([notification('test1', { light })])
     expect(screen.getByTestId('notification-dot')).toHaveClass(expectedClass)
   })
 
   it('uses the first colored notification from the priority-sorted list', () => {
     render(<NotificationDot />)
     publishNotifications([
-      notification('without-color'),
-      notification('blue', { light: 'blue' }),
-      notification('red', { light: 'red' })
+      notification('test1'),
+      notification('test2', { light: 'blue' }),
+      notification('test3', { light: 'red' })
     ])
     expect(screen.getByTestId('notification-dot')).toHaveClass('bg-blue-600')
   })
@@ -77,8 +77,8 @@ describe('NotificationDot', () => {
   it('uses white when all active notifications have no color', () => {
     render(<NotificationDot />)
     publishNotifications([
-      notification('first'),
-      notification('second', { priorityOrder: 'low' })
+      notification('test1'),
+      notification('test2', { priorityOrder: 'low' })
     ])
     expect(screen.getByTestId('notification-dot')).toHaveClass('bg-white')
   })
