@@ -17,7 +17,7 @@ const getValueCell = (
   warningThreshold: number
 ): ReactElement => (
   <td className="p-2 text-right">
-    {value !== undefined && value < warningThreshold && (
+    {value !== undefined && value <= warningThreshold && (
       <WarningAmberIcon className="mr-2 text-yellow-500" />
     )}
     {value !== undefined ? `${value}${unit}` : '-'}

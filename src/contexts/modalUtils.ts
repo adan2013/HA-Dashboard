@@ -6,6 +6,7 @@ export type ModalType =
   | 'countdownReset'
   | 'lightControl'
   | 'radiatorControl'
+  | 'radiatorSchedule'
   | 'historyChart'
   | 'serviceStatus'
   | 'backendLogs'
@@ -38,6 +39,7 @@ export type RadiatorControlModalParams = {
   title: string
   entityId: string
   batteryEntityId: string
+  scheduleEntityPrefix?: string
 }
 
 export type HistoryChartModalParams = {

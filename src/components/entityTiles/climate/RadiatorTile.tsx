@@ -15,7 +15,8 @@ export type RadiatorTileProps = RadiatorControlModalParams
 const RadiatorTile = ({
   title,
   entityId,
-  batteryEntityId
+  batteryEntityId,
+  scheduleEntityPrefix
 }: RadiatorTileProps) => {
   const climate = useHomeAssistantEntity(entityId)
   const battery = useHomeAssistantEntity(batteryEntityId)
@@ -58,7 +59,8 @@ const RadiatorTile = ({
         modal.openModal('radiatorControl', {
           title,
           entityId,
-          batteryEntityId
+          batteryEntityId,
+          ...(scheduleEntityPrefix ? { scheduleEntityPrefix } : {})
         })
       }
     />

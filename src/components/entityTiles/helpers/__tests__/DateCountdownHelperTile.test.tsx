@@ -123,7 +123,7 @@ describe('DateCountdownHelperTile', () => {
       expect(
         screen.getByText(
           daysLeft < 0
-            ? `${daysLeft * -1} days after deadline`
+            ? `${daysLeft * -1} days overdue`
             : `${daysLeft} days left`
         )
       ).toBeInTheDocument()
