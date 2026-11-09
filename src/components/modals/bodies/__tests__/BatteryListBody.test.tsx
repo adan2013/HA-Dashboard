@@ -1,15 +1,13 @@
-import { fireEvent, screen } from '@testing-library/react'
-import {
-  getBatteryEntity,
-  renderModalBody
-} from '../../../../utils/testUtils'
+import { fireEvent, screen, within } from '@testing-library/react'
+import { getBatteryEntity, renderModalBody } from '../../../../utils/testUtils'
 import BatteryListBody from '../BatteryListBody'
 import { BatteryState } from '../../../../utils/batteryUtils'
 
 const testEntities: BatteryState[] = [
   getBatteryEntity('device1', 10),
   getBatteryEntity('device2', 20),
-  getBatteryEntity('device3', 30)
+  getBatteryEntity('device3', 30),
+  getBatteryEntity('device4', 31)
 ]
 
 jest.mock('../../../../api/hooks', () => ({
@@ -23,6 +21,12 @@ describe('BatteryListBody', () => {
     expect(screen.getByText('device1_name')).toBeInTheDocument()
     expect(screen.getByText('10%')).toBeInTheDocument()
     expect(screen.queryByText('Signal')).not.toBeInTheDocument()
+    expect(
+      within(screen.getByText('30%')).getByTestId('WarningAmberIcon')
+    ).toBeInTheDocument()
+    expect(
+      within(screen.getByText('31%')).queryByTestId('WarningAmberIcon')
+    ).not.toBeInTheDocument()
   })
 
   it('should close the modal after clicking the close button', () => {

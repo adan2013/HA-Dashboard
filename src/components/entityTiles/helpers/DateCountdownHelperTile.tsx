@@ -73,7 +73,7 @@ const DateCountdownHelperTile = ({
     title,
     subtitle:
       daysLeft < 0
-        ? `${Math.abs(daysLeft)} days after deadline`
+        ? `${Math.abs(daysLeft)} days overdue`
         : `${daysLeft} days left`,
     metadata: [
       `${deadline.getDate()}-${

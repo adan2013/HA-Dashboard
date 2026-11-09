@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import { useHomeAssistantEntity } from '../../../api/hooks'
 import { useBackend } from '../../../contexts/BackendContext'
 import { useModalContext } from '../../../contexts/ModalContext'
@@ -199,6 +200,16 @@ const RadiatorControlBody = () => {
         </div>
       </div>
       <ModalFooter>
+        {params.scheduleEntityPrefix && (
+          <ModalButton
+            name="Change schedule"
+            icon={<CalendarMonthOutlinedIcon />}
+            onClick={() => {
+              sendPendingTarget()
+              modal.openModal('radiatorSchedule', params)
+            }}
+          />
+        )}
         <ModalButton
           name="Close"
           icon={<CloseOutlinedIcon />}

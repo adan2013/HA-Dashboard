@@ -20,7 +20,8 @@ const { useHomeAssistantEntity } = require('../../../../api/hooks')
 const params = {
   title: 'Daniel',
   entityId: 'climate.danielradiatorvalve',
-  batteryEntityId: 'sensor.danielradiatorvalve_battery'
+  batteryEntityId: 'sensor.danielradiatorvalve_battery',
+  scheduleEntityPrefix: 'text.danielradiatorvalve_weekly_schedule'
 }
 
 const renderBody = (state = 'heat', action = 'heating') => {
@@ -121,6 +122,23 @@ describe('RadiatorControlBody', () => {
     expect(screen.getByTestId('radiator-temperature-fill')).toHaveClass(
       'bg-blue-500'
     )
+  })
+
+  it('opens the schedule with the same device and flushes a pending target', () => {
+    const { openModalMock } = renderBody()
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Increase target temperature' })
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Change schedule' }))
+    expect(openModalMock).toHaveBeenCalledWith('radiatorSchedule', params)
+    expect(callService).toHaveBeenCalledWith(
+      params.entityId,
+      'climate',
+      'set_temperature',
+      { temperature: 26.5 }
+    )
+    act(() => jest.advanceTimersByTime(700))
+    expect(callService).toHaveBeenCalledTimes(1)
   })
 
   it('maps Manual to heat and Off to off for these valves', () => {

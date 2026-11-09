@@ -5,10 +5,10 @@ import { getBatteryEntity } from '../../../utils/testUtils'
 
 const testEntities: BatteryState[] = [
   getBatteryEntity('device1', 10),
-  getBatteryEntity('device2', 45),
+  getBatteryEntity('device2', 31),
   getBatteryEntity('device3', 70),
   getBatteryEntity('device4', 15),
-  getBatteryEntity('device5', 40),
+  getBatteryEntity('device5', 30),
   getBatteryEntity('device6', 100)
 ]
 
@@ -27,5 +27,9 @@ describe('BatteryTile', () => {
     expect(screen.getByText('See more (1)')).toBeInTheDocument()
     expect(screen.getByTestId('device1_name-low-battery')).toBeInTheDocument()
     expect(screen.getByTestId('device4_name-low-battery')).toBeInTheDocument()
+    expect(screen.getByTestId('device5_name-low-battery')).toBeInTheDocument()
+    expect(
+      screen.queryByTestId('device2_name-low-battery')
+    ).not.toBeInTheDocument()
   })
 })

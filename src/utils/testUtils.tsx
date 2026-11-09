@@ -59,6 +59,7 @@ export const renderModalBody = (
 ) => {
   const openModalMock = jest.fn()
   const closeModalMock = jest.fn()
+  const setDismissHandlerMock = jest.fn()
   const contextState: ModalContextType = {
     state: {
       isOpen: true,
@@ -66,7 +67,8 @@ export const renderModalBody = (
       params
     },
     openModal: openModalMock,
-    closeModal: closeModalMock
+    closeModal: closeModalMock,
+    setDismissHandler: setDismissHandlerMock
   }
   const renderMethod = render(
     <modalContext.Provider value={contextState}>
@@ -76,6 +78,7 @@ export const renderModalBody = (
   return {
     renderMethod,
     openModalMock,
-    closeModalMock
+    closeModalMock,
+    dismissModal: () => setDismissHandlerMock.mock.calls.at(-1)?.[0]?.()
   }
 }

@@ -3,7 +3,10 @@ import {
   ReactElement,
   useContext,
   useState,
-  useMemo
+  useMemo,
+  useRef,
+  useCallback,
+  useEffect
 } from 'react'
 import Modal from 'react-modal'
 import {
@@ -24,6 +27,7 @@ import TriggerNotificationBody from '../components/modals/bodies/TriggerNotifica
 import CountdownResetBody from '../components/modals/bodies/CountdownResetBody'
 import BackendLogsBody from '../components/modals/bodies/BackendLogsBody'
 import TimeRangeScheduleBody from '../components/modals/bodies/TimeRangeScheduleBody'
+import RadiatorScheduleBody from '../components/modals/bodies/RadiatorScheduleBody'
 
 type ProviderProps = {
   children: ReactElement
@@ -33,6 +37,7 @@ export type ModalContextType = {
   state: ModalState
   openModal: (modalType: ModalType, params?: ModalParams) => void
   closeModal: () => void
+  setDismissHandler: (handler: (() => void) | null) => void
 }
 
 // Modal.setAppElement('#root')
@@ -41,7 +46,35 @@ export const modalContext = createContext<ModalContextType>(null)
 
 export const useModalContext = () => useContext(modalContext)
 
+// Nested modal views can treat Escape/backdrop as Back or Discard.
+export const useModalDismiss = (handler: () => void) => {
+  const { setDismissHandler, state } = useModalContext()
+  const latestHandler = useRef(handler)
+  latestHandler.current = handler
+  useEffect(() => {
+    if (!state.isOpen) return undefined
+    // A control becoming disabled can leave focus on <body>. Capture Escape
+    // there as well, and prevent react-modal from dismissing the next view too.
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      event.preventDefault()
+      event.stopPropagation()
+      latestHandler.current()
+    }
+    setDismissHandler(() => latestHandler.current())
+    document.addEventListener('keydown', onKeyDown, true)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown, true)
+      setDismissHandler(null)
+    }
+  }, [setDismissHandler, state.isOpen])
+}
+
 export const ModalContextProvider = ({ children }: ProviderProps) => {
+  const dismissHandler = useRef<(() => void) | null>(null)
+  const setDismissHandler = useCallback((handler: (() => void) | null) => {
+    dismissHandler.current = handler
+  }, [])
   const [modalState, setModalState] = useState<ModalState>({
     isOpen: false,
     modalType: null,
@@ -60,13 +93,16 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
       },
       closeModal: () => {
         setModalState(c => ({ ...c, isOpen: false }))
-      }
+      },
+      setDismissHandler
     }),
-    [modalState]
+    [modalState, setDismissHandler]
   )
 
   const getModalWidth = () => {
     switch (modalState.modalType) {
+      case 'radiatorSchedule':
+        return '1100px'
       case 'confirmation':
       case 'countdownReset':
       case 'lightControl':
@@ -85,6 +121,8 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
         return <LightControlBody />
       case 'radiatorControl':
         return <RadiatorControlBody />
+      case 'radiatorSchedule':
+        return <RadiatorScheduleBody />
       case 'confirmation':
         return <ConfirmationBody />
       case 'countdownReset':
@@ -116,7 +154,10 @@ export const ModalContextProvider = ({ children }: ProviderProps) => {
         {children}
         <Modal
           isOpen={modalState.isOpen}
-          onRequestClose={value.closeModal}
+          onRequestClose={() => {
+            if (dismissHandler.current) dismissHandler.current()
+            else value.closeModal()
+          }}
           style={getModalStyles(getModalWidth())}
           closeTimeoutMS={300}
         >

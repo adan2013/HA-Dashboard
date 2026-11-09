@@ -162,7 +162,7 @@ describe('Layout', () => {
     expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
   })
 
-  it('should keep the current connection when the backend is synced', () => {
+  it('should immediately reconnect on resume even when the backend still reports synced', () => {
     render(
       <MemoryRouter>
         <Layout />
@@ -171,7 +171,57 @@ describe('Layout', () => {
 
     act(() => document.dispatchEvent(new Event('visibilitychange')))
 
-    expect(reconnectBackendMock).not.toHaveBeenCalled()
+    expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('should keep resume listeners registered after the backend status changes', () => {
+    const layout = (
+      <MemoryRouter>
+        <Layout />
+      </MemoryRouter>
+    )
+    const { rerender, unmount } = render(layout)
+
+    mockBackendStatus = 'disconnected'
+    rerender(
+      <MemoryRouter>
+        <Layout />
+      </MemoryRouter>
+    )
+
+    Object.defineProperty(document, 'hidden', {
+      configurable: true,
+      value: false
+    })
+    act(() => document.dispatchEvent(new Event('visibilitychange')))
+    expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
+
+    // A new background/foreground cycle must reconnect even if it is very short.
+    act(() => window.dispatchEvent(new Event('pagehide')))
+    const pageShowEvent = new Event('pageshow')
+    Object.defineProperty(pageShowEvent, 'persisted', { value: true })
+    act(() => window.dispatchEvent(pageShowEvent))
+    expect(reconnectBackendMock).toHaveBeenCalledTimes(2)
+
+    unmount()
+    act(() => document.dispatchEvent(new Event('visibilitychange')))
+    act(() => window.dispatchEvent(pageShowEvent))
+    expect(reconnectBackendMock).toHaveBeenCalledTimes(2)
+  })
+
+  it('should reconnect only once when visibilitychange and pageshow arrive together', () => {
+    render(
+      <MemoryRouter>
+        <Layout />
+      </MemoryRouter>
+    )
+    const pageShowEvent = new Event('pageshow')
+    Object.defineProperty(pageShowEvent, 'persisted', { value: true })
+
+    act(() => document.dispatchEvent(new Event('visibilitychange')))
+    act(() => window.dispatchEvent(pageShowEvent))
+
+    expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
   })
 
   it('should remount home content when the screen turns on', () => {

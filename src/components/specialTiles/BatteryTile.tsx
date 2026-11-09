@@ -7,7 +7,7 @@ import { useModalContext } from '../../contexts/ModalContext'
 import { useTileConnection } from '../../contexts/TileConnectionContext'
 
 const COUNT_OF_TILE_ENTITIES = 5
-export const BATTERY_WARNING_THRESHOLD = 40
+export const BATTERY_WARNING_THRESHOLD = 30
 
 const ListSeparator = () => (
   <div className="mx-2 h-[1px] bg-gray-200 opacity-50" />
@@ -59,7 +59,7 @@ export const BatteryTile = () => {
     isLoading: !isHomeAssistantUnavailable && entities === null,
     customBody: getListOfEntities(entities, ({ level, friendlyName }) => (
       <>
-        {level !== undefined && level < BATTERY_WARNING_THRESHOLD && (
+        {level !== undefined && level <= BATTERY_WARNING_THRESHOLD && (
           <Battery1BarIcon
             className="mx-1 mt-[-4px] rotate-90 text-red-500"
             data-testid={`${friendlyName}-low-battery`}
