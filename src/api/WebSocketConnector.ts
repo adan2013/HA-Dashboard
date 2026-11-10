@@ -14,6 +14,7 @@ class WebSocketConnector {
   private reconnectTimeout: number
   private socket?: WebSocket
   private reconnectEnabled = false
+  private suspended = false
 
   readonly options: WebSocketConnectionOptions
   readonly host: string
@@ -30,19 +31,40 @@ class WebSocketConnector {
   }
 
   sendPingMessage() {
-    this.socket?.send(JSON.stringify({ type: 'ping' }))
+    this.send({ type: 'ping' })
   }
 
   disconnect() {
     this.reconnectEnabled = false
+    this._connected = false
     if (this.socket) {
-      this.socket.onclose = null
-      this.socket.close()
+      const { socket } = this
       this.socket = undefined
+      socket.onopen = null
+      socket.onmessage = null
+      socket.onclose = null
+      socket.onerror = null
+      socket.close()
     }
     window.clearInterval(this.pingInterval)
     window.clearTimeout(this.pongTimeout)
     window.clearTimeout(this.reconnectTimeout)
+  }
+
+  suspend() {
+    if (this.suspended) return
+    // Do not trust Safari's cached OPEN/synced state after background suspension.
+    this.suspended = true
+    this.disconnect()
+    this.onConnectionStateChange(false)
+  }
+
+  // Returns true only for the first wake event in a sleep/wake cycle.
+  resume(): boolean {
+    if (!this.suspended) return false
+    this.suspended = false
+    this.connect()
+    return true
   }
 
   reconnect() {
@@ -52,6 +74,7 @@ class WebSocketConnector {
   }
 
   connect() {
+    if (this.suspended) return
     if (
       this.socket?.readyState === WebSocket.OPEN ||
       this.socket?.readyState === WebSocket.CONNECTING
@@ -60,29 +83,42 @@ class WebSocketConnector {
     }
     this.disconnect()
     this.reconnectEnabled = true
-    this.socket = new WebSocket(this.host)
-    this.socket.onmessage = e => this.onReceive(e)
-    this.socket.onopen = () => this.onConnectionStateChange(true)
-    this.socket.onclose = () => this.onConnectionStateChange(false)
-    this.socket.onerror = err => {
+    const socket = new WebSocket(this.host)
+    this.socket = socket
+    // A retired socket may still have callbacks queued when the page resumes.
+    socket.onmessage = e => {
+      if (this.socket === socket) this.onReceive(e)
+    }
+    socket.onopen = () => {
+      if (this.socket === socket) this.onConnectionStateChange(true)
+    }
+    socket.onclose = () => {
+      if (this.socket === socket) this.onConnectionStateChange(false)
+    }
+    socket.onerror = err => {
+      if (this.socket !== socket) return
       console.error('websocket error', err)
     }
   }
 
   onConnectionStateChange(state: boolean) {
+    window.clearInterval(this.pingInterval)
+    window.clearTimeout(this.pongTimeout)
     window.clearTimeout(this.reconnectTimeout)
     this._connected = state
+    const { socket } = this
     if (state) {
       if (this.options.pingInterval && this.options.pongTimeout) {
         console.log(
           `PING interval set to ${this.options.pingInterval}ms | PONG timeout set to ${this.options.pongTimeout}ms`
         )
         this.pingInterval = window.setInterval(() => {
-          if (!this._connected) return
+          if (!this._connected || this.socket !== socket) return
           this.sendPingMessage()
           this.pongTimeout = window.setTimeout(() => {
+            if (this.socket !== socket) return
             console.warn('websocket PONG timeout!')
-            this.socket?.close()
+            socket?.close()
           }, this.options.pongTimeout)
         }, this.options.pingInterval)
       }
@@ -92,6 +128,7 @@ class WebSocketConnector {
         `websocket connection lost! Reconnecting in ${this.options.reconnectInterval}ms`
       )
       this.reconnectTimeout = window.setTimeout(() => {
+        if (!this.reconnectEnabled || this.socket !== socket) return
         console.log('trying to reconnect...')
         this.connect()
       }, this.options.reconnectInterval)
@@ -104,7 +141,7 @@ class WebSocketConnector {
       console.log('[WS]', msg)
     }
     if (msg.type === 'ping') {
-      this.socket?.send(JSON.stringify({ type: 'pong' }))
+      this.send({ type: 'pong' })
     }
     if (msg.type === 'pong') {
       window.clearTimeout(this.pongTimeout)
@@ -113,7 +150,7 @@ class WebSocketConnector {
   }
 
   send(msg: object) {
-    if (!this._connected) {
+    if (!this._connected || this.socket?.readyState !== WebSocket.OPEN) {
       return
     }
     if (isDevEnv()) {

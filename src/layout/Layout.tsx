@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Flip, ToastContainer } from 'react-toastify'
 import { useLocation, useNavigate } from 'react-router-dom'
 import MobileLayout from './MobileLayout'
@@ -10,7 +10,6 @@ import { useBackend } from '../contexts/BackendContext'
 
 type LayoutType = 'mobile' | 'desktop'
 const MOBILE_LAYOUT_BREAKPOINT = 1024
-const RESUME_DEDUPLICATION_MS = 500
 const getLayoutType = (): LayoutType =>
   window.innerWidth < MOBILE_LAYOUT_BREAKPOINT ? 'mobile' : 'desktop'
 
@@ -18,7 +17,6 @@ const Layout = () => {
   const [layoutMode, setLayoutMode] = useState<LayoutType>(getLayoutType())
   // Remount Home after tablet wake-up to reset widget scroll positions.
   const [contentKey, setContentKey] = useState(0)
-  const lastResumeAt = useRef<number | null>(null)
   const backend = useBackend()
   const modal = useModalContext()
   const navigate = useNavigate()
@@ -33,25 +31,19 @@ const Layout = () => {
 
   useEffect(() => {
     window.onScreenOn = () => {
-      const now = performance.now()
-      if (
-        lastResumeAt.current !== null &&
-        now - lastResumeAt.current < RESUME_DEDUPLICATION_MS
-      ) {
-        return
-      }
-      lastResumeAt.current = now
+      if (document.hidden || !backend.resume()) return
       if (location.pathname === '/') {
         setContentKey(currentKey => currentKey + 1)
       }
-      // Safari can report the old socket as synced until after the resume event.
-      console.log('Force reconnecting to the Backend')
-      backend.reconnect()
     }
     window.onScreenOff = () => {
-      lastResumeAt.current = null
+      backend.suspend()
       modal.closeModal()
       navigate('/')
+    }
+    return () => {
+      window.onScreenOn = () => undefined
+      window.onScreenOff = () => undefined
     }
   }, [navigate, location.pathname, backend, modal])
 
@@ -65,7 +57,7 @@ const Layout = () => {
     }
     const onVisibilityChange = () => {
       if (document.hidden) {
-        lastResumeAt.current = null
+        backend.suspend()
         console.log('Browser tab is hidden')
       } else {
         console.log('Browser tab is visible')
@@ -79,17 +71,20 @@ const Layout = () => {
       }
     }
     const onPageHide = () => {
-      lastResumeAt.current = null
+      backend.suspend()
     }
     window.addEventListener('pageshow', onPageShow)
     window.addEventListener('pagehide', onPageHide)
     document.addEventListener('visibilitychange', onVisibilityChange)
+    // Also handle a dashboard mounted while its tab is already hidden.
+    if (document.hidden) backend.suspend()
+    else backend.resume()
     return () => {
       window.removeEventListener('pageshow', onPageShow)
       window.removeEventListener('pagehide', onPageHide)
       document.removeEventListener('visibilitychange', onVisibilityChange)
     }
-  }, [])
+  }, [backend])
 
   return (
     <>
