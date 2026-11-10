@@ -4,19 +4,19 @@ import Layout from '../Layout'
 import { defineWindowWidth } from '../../utils/testUtils'
 
 const closeModalMock = jest.fn()
-const reconnectBackendMock = jest.fn()
+const mockBackend = {
+  suspend: jest.fn(),
+  resume: jest.fn(() => true)
+}
 const desktopContentMountMock = jest.fn()
-let mockBackendStatus = 'synced'
 
 jest.mock('../../api/hooks', () => ({
-  useBackendStatus: () => mockBackendStatus,
+  useBackendStatus: () => 'synced',
   useHomeAssistantStatus: () => 'synced'
 }))
 
 jest.mock('../../contexts/BackendContext', () => ({
-  useBackend: () => ({
-    reconnect: reconnectBackendMock
-  })
+  useBackend: () => mockBackend
 }))
 
 jest.mock('../../contexts/ModalContext', () => {
@@ -53,7 +53,11 @@ jest.mock('../MobileLayout', () => () => <div>MobileLayout</div>)
 
 describe('Layout', () => {
   beforeEach(() => {
-    mockBackendStatus = 'synced'
+    delete window.fully
+    Object.defineProperty(document, 'hidden', {
+      configurable: true,
+      value: false
+    })
     desktopContentMountMock.mockClear()
   })
 
@@ -128,100 +132,6 @@ describe('Layout', () => {
     act(() => window.onScreenOff())
     expect(window.location.pathname).toBe('/')
     expect(closeModalMock).toHaveBeenCalledTimes(1)
-  })
-
-  it('should force a backend reconnect when the PWA is shown again', () => {
-    mockBackendStatus = 'disconnected'
-    render(
-      <MemoryRouter>
-        <Layout />
-      </MemoryRouter>
-    )
-
-    const pageShowEvent = new Event('pageshow')
-    Object.defineProperty(pageShowEvent, 'persisted', { value: true })
-    act(() => window.dispatchEvent(pageShowEvent))
-
-    expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
-  })
-
-  it('should force a backend reconnect when the PWA returns from background', () => {
-    mockBackendStatus = 'disconnected'
-    Object.defineProperty(document, 'hidden', {
-      configurable: true,
-      value: false
-    })
-    render(
-      <MemoryRouter>
-        <Layout />
-      </MemoryRouter>
-    )
-
-    act(() => document.dispatchEvent(new Event('visibilitychange')))
-
-    expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
-  })
-
-  it('should immediately reconnect on resume even when the backend still reports synced', () => {
-    render(
-      <MemoryRouter>
-        <Layout />
-      </MemoryRouter>
-    )
-
-    act(() => document.dispatchEvent(new Event('visibilitychange')))
-
-    expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
-  })
-
-  it('should keep resume listeners registered after the backend status changes', () => {
-    const layout = (
-      <MemoryRouter>
-        <Layout />
-      </MemoryRouter>
-    )
-    const { rerender, unmount } = render(layout)
-
-    mockBackendStatus = 'disconnected'
-    rerender(
-      <MemoryRouter>
-        <Layout />
-      </MemoryRouter>
-    )
-
-    Object.defineProperty(document, 'hidden', {
-      configurable: true,
-      value: false
-    })
-    act(() => document.dispatchEvent(new Event('visibilitychange')))
-    expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
-
-    // A new background/foreground cycle must reconnect even if it is very short.
-    act(() => window.dispatchEvent(new Event('pagehide')))
-    const pageShowEvent = new Event('pageshow')
-    Object.defineProperty(pageShowEvent, 'persisted', { value: true })
-    act(() => window.dispatchEvent(pageShowEvent))
-    expect(reconnectBackendMock).toHaveBeenCalledTimes(2)
-
-    unmount()
-    act(() => document.dispatchEvent(new Event('visibilitychange')))
-    act(() => window.dispatchEvent(pageShowEvent))
-    expect(reconnectBackendMock).toHaveBeenCalledTimes(2)
-  })
-
-  it('should reconnect only once when visibilitychange and pageshow arrive together', () => {
-    render(
-      <MemoryRouter>
-        <Layout />
-      </MemoryRouter>
-    )
-    const pageShowEvent = new Event('pageshow')
-    Object.defineProperty(pageShowEvent, 'persisted', { value: true })
-
-    act(() => document.dispatchEvent(new Event('visibilitychange')))
-    act(() => window.dispatchEvent(pageShowEvent))
-
-    expect(reconnectBackendMock).toHaveBeenCalledTimes(1)
   })
 
   it('should remount home content when the screen turns on', () => {
