@@ -72,12 +72,9 @@
 }
 
 .ReactModal__Overlay {
-  opacity: 0;
-  transition: opacity 300ms ease-in-out;
-}
-
-.ReactModal__Overlay--after-open{
+  /* Opening must not depend on react-modal's after-open animation frame. */
   opacity: 1;
+  transition: opacity 300ms ease-in-out;
 }
 
 .ReactModal__Overlay--before-close{

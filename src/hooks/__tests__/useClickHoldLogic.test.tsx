@@ -5,13 +5,16 @@ const vibrateMock = jest.fn()
 
 const TestButton = ({
   onClick,
-  onHold
+  onHold,
+  disabled = false
 }: {
   onClick: () => void
   onHold: () => void
+  disabled?: boolean
 }) => {
   const events = useClickHoldLogic(onClick, onHold, {
-    delay: 50
+    delay: 50,
+    disableInteractions: disabled
   })
   return (
     <button type="button" {...events}>
@@ -35,6 +38,59 @@ describe('useClickHoldLogic', () => {
 
   beforeEach(() => {
     vibrateMock.mockClear()
+  })
+
+  afterAll(() => {
+    jest.useRealTimers()
+  })
+
+  it('should cancel a pending hold when interactions become disabled', () => {
+    const onClick = jest.fn()
+    const onHold = jest.fn()
+    const { rerender } = render(
+      <TestButton onClick={onClick} onHold={onHold} />
+    )
+    fireEvent.pointerDown(screen.getByText('BUTTON'), { button: 0 })
+    rerender(<TestButton onClick={onClick} onHold={onHold} disabled />)
+    jest.advanceTimersByTime(80)
+    expect(onHold).not.toHaveBeenCalled()
+    rerender(<TestButton onClick={onClick} onHold={onHold} />)
+    fireEvent.pointerDown(screen.getByText('BUTTON'), { button: 0 })
+    jest.advanceTimersByTime(80)
+    expect(onHold).toHaveBeenCalledTimes(1)
+  })
+
+  it.each(['pagehide', 'blur'])(
+    'should cancel a pending hold on %s',
+    eventType => {
+      const onClick = jest.fn()
+      const onHold = jest.fn()
+      render(<TestButton onClick={onClick} onHold={onHold} />)
+      fireEvent.pointerDown(screen.getByText('BUTTON'), { button: 0 })
+      fireEvent(window, new Event(eventType))
+      jest.advanceTimersByTime(80)
+      expect(onHold).not.toHaveBeenCalled()
+    }
+  )
+
+  it('should cancel a hold when the PWA goes into the background', () => {
+    const hidden = jest.spyOn(document, 'hidden', 'get')
+    const onHold = jest.fn()
+    render(<TestButton onClick={jest.fn()} onHold={onHold} />)
+    try {
+      fireEvent.pointerDown(screen.getByText('BUTTON'), { button: 0 })
+      hidden.mockReturnValue(true)
+      fireEvent(document, new Event('visibilitychange'))
+      hidden.mockReturnValue(false)
+      fireEvent(document, new Event('visibilitychange'))
+      jest.advanceTimersByTime(80)
+      expect(onHold).not.toHaveBeenCalled()
+      fireEvent.pointerDown(screen.getByText('BUTTON'), { button: 0 })
+      jest.advanceTimersByTime(80)
+      expect(onHold).toHaveBeenCalledTimes(1)
+    } finally {
+      hidden.mockRestore()
+    }
   })
 
   it('should call onClick when the user clicks and releases before the delay', () => {

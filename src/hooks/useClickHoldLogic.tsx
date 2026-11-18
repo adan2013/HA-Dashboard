@@ -1,4 +1,4 @@
-import { MouseEvent, PointerEvent, useEffect, useRef } from 'react'
+import { MouseEvent, PointerEvent, useCallback, useEffect, useRef } from 'react'
 import { triggerHapticFeedback } from '../utils/haptics'
 
 export type ClickHoldLogicOptions = {
@@ -25,21 +25,40 @@ const useClickHoldLogic = (
     delay = 1000
   } = options
 
-  const clearTimer = () => {
+  const clearTimer = useCallback(() => {
     if (timeout.current !== undefined) {
       window.clearTimeout(timeout.current)
       timeout.current = undefined
     }
-  }
+  }, [])
 
-  const cancelGesture = () => {
+  const cancelGesture = useCallback(() => {
     if (!startCoordinates.current) return
     clearTimer()
     suppressClick.current = true
     startCoordinates.current = undefined
-  }
+  }, [clearTimer])
 
-  useEffect(() => () => clearTimer(), [])
+  useEffect(() => {
+    if (disableInteractions) cancelGesture()
+  }, [disableInteractions, cancelGesture])
+
+  useEffect(() => {
+    // Leaving a PWA need not deliver pointerup/pointercancel to the tile.
+    // Do not let a suspended hold timer open a modal when the page resumes.
+    const onVisibilityChange = () => {
+      if (document.hidden) cancelGesture()
+    }
+    window.addEventListener('blur', cancelGesture)
+    window.addEventListener('pagehide', cancelGesture)
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    return () => {
+      clearTimer()
+      window.removeEventListener('blur', cancelGesture)
+      window.removeEventListener('pagehide', cancelGesture)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
+    }
+  }, [cancelGesture, clearTimer])
 
   const onPointerDown = (event: PointerEvent<HTMLElement>) => {
     if (disableInteractions || event.button !== 0) return
@@ -51,6 +70,7 @@ const useClickHoldLogic = (
 
     if (onHold) {
       timeout.current = window.setTimeout(() => {
+        timeout.current = undefined
         holdTriggered.current = true
         suppressClick.current = true
         triggerHapticFeedback('hold')
