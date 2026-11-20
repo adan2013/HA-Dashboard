@@ -18,7 +18,9 @@ jest.mock('../../../components/specialTiles/RemoteControlTile', () =>
 jest.mock('../../../components/specialTiles/AirConditionerTile', () =>
   mockTile()
 )
-jest.mock('../../../components/entityTiles/switch/SwitchTile', () => mockTile())
+jest.mock('../../../components/entityTiles/switch/SwitchGroupTile', () =>
+  mockTile()
+)
 jest.mock('../../../components/specialTiles/irRemote/PhilipsTvRemoteTile', () =>
   mockTile()
 )
@@ -46,6 +48,7 @@ describe('RemoteControl', () => {
     )
     expect(screen.getByText('Living room')).toBeVisible()
     expect(screen.getByText('Gree air conditioner')).toBeVisible()
+    expect(screen.getByText('Air conditioner options')).toBeVisible()
     expect(screen.getByText('Philips TV')).toBeVisible()
     expect(screen.getByText('Kitchen')).toBeVisible()
     expect(

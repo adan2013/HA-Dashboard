@@ -1,6 +1,4 @@
 import { ReactNode, useState } from 'react'
-import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined'
-import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import RemoteCategorySwitcher, {
@@ -11,18 +9,11 @@ import AirConditionerTile from '../../components/specialTiles/AirConditionerTile
 import PhilipsTvRemoteTile from '../../components/specialTiles/irRemote/PhilipsTvRemoteTile'
 import JblSoundbarRemoteTile from '../../components/specialTiles/irRemote/JblSoundbarRemoteTile'
 import HtpcRemoteTile from '../../components/specialTiles/irRemote/HtpcRemoteTile'
-import SwitchTile, {
-  SwitchTileProps
-} from '../../components/entityTiles/switch/SwitchTile'
+import SwitchGroupTile from '../../components/entityTiles/switch/SwitchGroupTile'
 import { SupportedActions } from '../../hooks/useRemoteControl'
 import { useLayoutContext } from '../../contexts/OutletContext'
 
 export const REMOTE_CATEGORY_STORAGE_KEY = 'remoteControlCategory'
-
-const acSwitchIcons: Partial<SwitchTileProps> = {
-  onIcon: <ToggleOnOutlinedIcon />,
-  offIcon: <ToggleOffOutlinedIcon />
-}
 
 const aqaraOppleActions: SupportedActions = {
   double: true,
@@ -69,20 +60,19 @@ const categories: RemoteCategoryContent[] = [
           title="Gree air conditioner"
           entityId="climate.airconditioner"
         />
-        <SwitchTile
-          title="X-Fan"
-          entityId="switch.airconditioner_xfan"
-          {...acSwitchIcons}
-        />
-        <SwitchTile
-          title="Panel light"
-          entityId="switch.airconditioner_panel_light"
-          {...acSwitchIcons}
-        />
-        <SwitchTile
-          title="Health mode"
-          entityId="switch.airconditioner_health_mode"
-          {...acSwitchIcons}
+        <SwitchGroupTile
+          title="Air conditioner options"
+          switches={[
+            { title: 'X-Fan', entityId: 'switch.airconditioner_xfan' },
+            {
+              title: 'Panel light',
+              entityId: 'switch.airconditioner_panel_light'
+            },
+            {
+              title: 'Health mode',
+              entityId: 'switch.airconditioner_health_mode'
+            }
+          ]}
         />
       </>
     )
