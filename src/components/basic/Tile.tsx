@@ -36,6 +36,7 @@ export type TileProps = {
   onClick?: () => void
   onHold?: () => void
   customBody?: ReactElement
+  hideHeader?: boolean
 }
 
 const Tile = (
@@ -119,19 +120,21 @@ const Tile = (
         )}
         data-testid="tile-background"
       />
-      <div
-        className="absolute left-0 top-0 z-20 w-full px-3 py-2 text-left text-base"
-        data-testid="tile-header"
-      >
-        <div className={clsx('font-bold', isDimmed && 'text-gray-300')}>
-          {tile.title}
-        </div>
-        {tile.subtitle && (
-          <div className={clsx('text-sm font-light', dimmedContentClass)}>
-            {tile.subtitle}
+      {!tile.hideHeader && (
+        <div
+          className="absolute left-0 top-0 z-20 w-full px-3 py-2 text-left text-base"
+          data-testid="tile-header"
+        >
+          <div className={clsx('font-bold', isDimmed && 'text-gray-300')}>
+            {tile.title}
           </div>
-        )}
-      </div>
+          {tile.subtitle && (
+            <div className={clsx('text-sm font-light', dimmedContentClass)}>
+              {tile.subtitle}
+            </div>
+          )}
+        </div>
+      )}
       {tile.metadata && !tile.isUnavailable && (
         <div
           className={clsx(
@@ -168,7 +171,8 @@ const Tile = (
         <fieldset
           disabled={tile.isUnavailable}
           className={clsx(
-            'relative z-10 m-0 h-full min-w-0 border-0 p-0 pt-10',
+            'relative z-10 m-0 h-full min-w-0 border-0 p-0',
+            !tile.hideHeader && 'pt-10',
             dimmedContentClass
           )}
           data-testid="tile-custom-body"

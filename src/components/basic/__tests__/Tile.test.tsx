@@ -58,6 +58,16 @@ describe('Tile', () => {
     )
   })
 
+  it('should give the whole tile to a custom body when the header is hidden', () => {
+    render(
+      <Tile {...testProps} hideHeader customBody={<div>CUSTOM_BODY</div>} />
+    )
+
+    expect(screen.queryByTestId('tile-header')).not.toBeInTheDocument()
+    expect(screen.getByTestId('tile-custom-body')).not.toHaveClass('pt-10')
+    expect(screen.getByText('CUSTOM_BODY')).toBeVisible()
+  })
+
   it('should render a tile with an icon instead of value', () => {
     render(
       <Tile

@@ -3,15 +3,7 @@ import { useLocation, Link, Outlet } from 'react-router-dom'
 import { mobileMenu, pageMetadata } from './menus'
 import { OutletContextType } from '../contexts/OutletContext'
 import NotificationDot from '../components/layout/NotificationDot'
-
-const isIOS = () => {
-  if (typeof navigator === 'undefined') return false
-
-  return (
-    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
-  )
-}
+import isIOS from '../utils/platform'
 
 type MobileLayoutProps = {
   contentKey?: number
