@@ -19,6 +19,7 @@ export type IrRemoteItem = {
 
 const buttonClassName = clsx(
   'press-feedback flex min-h-0 min-w-0 cursor-pointer touch-manipulation select-none items-center justify-center',
+  '[container-type:size] [&_svg]:!text-[clamp(1.5rem,45cqmin,2.75rem)]',
   'bg-transparent text-center text-white transition-colors hover:bg-white hover:text-black',
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white'
 )
@@ -47,7 +48,9 @@ const RemoteButton = ({
   >
     <div className="flex flex-col items-center">
       {typeof button.content === 'string' ? (
-        <div className="text-sm font-bold">{button.content}</div>
+        <div className="text-[clamp(0.875rem,26cqmin,1.625rem)] font-bold leading-tight">
+          {button.content}
+        </div>
       ) : (
         button.content
       )}
