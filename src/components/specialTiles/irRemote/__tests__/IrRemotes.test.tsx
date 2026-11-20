@@ -80,8 +80,8 @@ describe('IR remotes', () => {
       ['Apps', htpcCodes.apps],
       ['Fullscreen', htpcCodes.fullscreen],
       ['Enter OK', htpcCodes.enter],
-      ['Volume up ▲', htpcCodes.vol_up],
-      ['Volume down ▼', htpcCodes.vol_down]
+      ['Volume up Up', htpcCodes.vol_up],
+      ['Volume down Down', htpcCodes.vol_down]
     ])
   })
 })

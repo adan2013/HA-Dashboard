@@ -86,14 +86,14 @@ const items: IrRemoteItem[] = [
         label: 'Volume up',
         code: codes.vol_up,
         content: <VolumeUpOutlinedIcon />,
-        sub: '▲'
+        sub: 'Up'
       },
       {
         id: 'vol_down',
         label: 'Volume down',
         code: codes.vol_down,
         content: <VolumeDownOutlinedIcon />,
-        sub: '▼'
+        sub: 'Down'
       }
     ]
   }
