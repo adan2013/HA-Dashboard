@@ -8,16 +8,12 @@
     align-items: center;
     justify-content: center;
   }
-
 }
 
 @layer utilities {
   .mobile-layout {
     --mobile-navigation-height: 4.625rem;
-    --mobile-navigation-offset: max(
-      0.75rem,
-      env(safe-area-inset-bottom, 0px)
-    );
+    --mobile-navigation-offset: max(0.75rem, env(safe-area-inset-bottom, 0px));
     --mobile-navigation-horizontal-offset: max(
       var(--mobile-navigation-offset),
       env(safe-area-inset-left, 0px),
@@ -32,32 +28,47 @@
   .mobile-navigation {
     background-color: rgb(17 24 39);
     border-color: rgb(55 65 81);
-    box-shadow: 0 -14px 32px rgb(0 0 0 / 58%),
-      0 14px 32px rgb(0 0 0 / 38%);
+    box-shadow: 0 -14px 32px rgb(0 0 0 / 58%), 0 14px 32px rgb(0 0 0 / 38%);
   }
 
   .mobile-navigation-glass {
     background-color: rgb(17 24 39 / 72%);
     border-color: rgb(255 255 255 / 18%);
-    box-shadow: 0 -12px 30px rgb(0 0 0 / 38%),
-      0 16px 40px rgb(0 0 0 / 45%);
+    box-shadow: 0 -12px 30px rgb(0 0 0 / 38%), 0 16px 40px rgb(0 0 0 / 45%);
     -webkit-backdrop-filter: blur(20px) saturate(140%);
     backdrop-filter: blur(20px) saturate(140%);
   }
 
   .floating-navigation-offset {
+    right: var(--mobile-navigation-horizontal-offset);
     bottom: var(--mobile-navigation-offset);
     left: var(--mobile-navigation-horizontal-offset);
+  }
+
+  .floating-category-switcher-offset {
     right: var(--mobile-navigation-horizontal-offset);
+    bottom: calc(
+      var(--mobile-navigation-offset) + var(--mobile-navigation-height) + 0.5rem
+    );
+    left: var(--mobile-navigation-horizontal-offset);
+  }
+
+  /* The navigation below already casts the shadow between both bars. */
+  .category-switcher-shadow {
+    box-shadow: 0 -10px 24px rgb(0 0 0 / 40%);
+  }
+
+  .mobile-navigation-glass.category-switcher-shadow {
+    box-shadow: 0 -8px 20px rgb(0 0 0 / 26%);
   }
 
   .mobile-content-safe-area {
     padding-top: 1rem;
     padding-top: max(1rem, env(safe-area-inset-top, 0px));
-    padding-left: 1rem;
-    padding-left: max(1rem, env(safe-area-inset-left, 0px));
     padding-right: 1rem;
     padding-right: max(1rem, env(safe-area-inset-right, 0px));
+    padding-left: 1rem;
+    padding-left: max(1rem, env(safe-area-inset-left, 0px));
   }
 
   .pb-mobile-navigation {
@@ -77,7 +88,7 @@
   transition: opacity 300ms ease-in-out;
 }
 
-.ReactModal__Overlay--before-close{
+.ReactModal__Overlay--before-close {
   opacity: 0;
 }
 
@@ -87,9 +98,9 @@
 }
 
 .press-feedback {
-  touch-action: manipulation;
-  user-select: none;
   transition: transform 110ms ease-out, filter 110ms ease-out;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 .press-feedback:active {
@@ -127,25 +138,25 @@
 
 @keyframes route-enter {
   from {
-    opacity: 0;
     transform: translate3d(0, 6px, 0);
+    opacity: 0;
   }
 
   to {
-    opacity: 1;
     transform: translate3d(0, 0, 0);
+    opacity: 1;
   }
 }
 
 @keyframes content-reveal {
   from {
-    opacity: 0;
     transform: translate3d(0, 4px, 0);
+    opacity: 0;
   }
 
   to {
-    opacity: 1;
     transform: translate3d(0, 0, 0);
+    opacity: 1;
   }
 }
 
@@ -170,16 +181,16 @@
 
   .tile-skeleton::after {
     position: absolute;
-    inset: 0;
-    pointer-events: none;
     background: linear-gradient(
       105deg,
       transparent 25%,
       rgb(255 255 255 / 8%) 50%,
       transparent 75%
     );
-    content: '';
     animation: tile-shimmer 1s ease-in-out infinite;
+    content: '';
+    pointer-events: none;
+    inset: 0;
   }
 }
 
