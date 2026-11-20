@@ -1,10 +1,24 @@
 import { ReactNode, useState } from 'react'
+import ChairOutlinedIcon from '@mui/icons-material/ChairOutlined'
+import LightOutlinedIcon from '@mui/icons-material/LightOutlined'
+import TvOutlinedIcon from '@mui/icons-material/TvOutlined'
+import TableRestaurantOutlinedIcon from '@mui/icons-material/TableRestaurantOutlined'
+import DoorSlidingOutlinedIcon from '@mui/icons-material/DoorSlidingOutlined'
+import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined'
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
+import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined'
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined'
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined'
+import BedtimeOutlinedIcon from '@mui/icons-material/BedtimeOutlined'
 import TileSection from '../../components/layout/TileSection'
 import TileGroup from '../../components/layout/TileGroup'
 import RemoteCategorySwitcher, {
   RemoteCategory
 } from '../../components/layout/RemoteCategorySwitcher'
-import RemoteControlTile from '../../components/specialTiles/RemoteControlTile'
+import RemoteControlTile, {
+  Button
+} from '../../components/specialTiles/RemoteControlTile'
 import AirConditionerTile from '../../components/specialTiles/AirConditionerTile'
 import PhilipsTvRemoteTile from '../../components/specialTiles/irRemote/PhilipsTvRemoteTile'
 import JblSoundbarRemoteTile from '../../components/specialTiles/irRemote/JblSoundbarRemoteTile'
@@ -27,6 +41,12 @@ const tuyaActions: SupportedActions = {
   hold: true
 }
 
+const turnOffButton: Button = {
+  icon: <PowerSettingsNewOutlinedIcon />,
+  label: 'Turn off',
+  iconOnly: true
+}
+
 type RemoteCategoryContent = RemoteCategory & {
   tiles: ReactNode
 }
@@ -41,12 +61,12 @@ const categories: RemoteCategoryContent[] = [
         entityId="sensor.livingroomremote_action"
         supportedActions={aqaraOppleActions}
         buttons={[
-          'Back section',
-          'Full main light',
-          'TV light',
-          'Table light',
-          'Cabinet light',
-          'Turn off'
+          { icon: <ChairOutlinedIcon />, label: 'Back section' },
+          { icon: <LightOutlinedIcon />, label: 'Full main light' },
+          { icon: <TvOutlinedIcon />, label: 'TV light' },
+          { icon: <TableRestaurantOutlinedIcon />, label: 'Table light' },
+          { icon: <DoorSlidingOutlinedIcon />, label: 'Cabinet light' },
+          turnOffButton
         ]}
       />
     )
@@ -98,10 +118,22 @@ const categories: RemoteCategoryContent[] = [
           entityId="sensor.danielbedremote_action"
           supportedActions={tuyaActions}
           buttons={[
-            ['Reading mode', 'Minimal mode'],
-            ['Ambient mode', 'Max light'],
-            'Turn off',
-            ['Double: All rooms', '(HOLD) Turn off all']
+            {
+              icon: <MenuBookOutlinedIcon />,
+              label: 'Reading mode',
+              sub: '2×: Minimal mode'
+            },
+            {
+              icon: <WbSunnyOutlinedIcon />,
+              label: 'Daily mode',
+              sub: '2×: Max light'
+            },
+            turnOffButton,
+            {
+              icon: <NotificationsOutlinedIcon />,
+              label: '2×: All rooms',
+              sub: 'Hold: Turn off all'
+            }
           ]}
         />
         <RemoteControlTile
@@ -109,10 +141,14 @@ const categories: RemoteCategoryContent[] = [
           entityId="sensor.kitchenremote_action"
           supportedActions={aqaraOppleActions}
           buttons={[
-            'Right side',
-            'Left side',
-            'Turn off',
-            ['Light sensor', 'on/off auto (hold)']
+            { icon: <ArrowBackOutlinedIcon />, label: 'Right side' },
+            { icon: <ArrowForwardOutlinedIcon />, label: 'Left side' },
+            turnOffButton,
+            {
+              icon: <BedtimeOutlinedIcon />,
+              label: 'Light sensor',
+              sub: 'Hold: Auto on/off'
+            }
           ]}
         />
       </>

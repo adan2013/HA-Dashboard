@@ -1,10 +1,16 @@
 import clsx from 'clsx'
+import { ReactElement } from 'react'
 import Tile, { TileProps } from '../basic/Tile'
 import useRemoteControl, {
   SupportedActions
 } from '../../hooks/useRemoteControl'
 
-export type Button = string | [string, string]
+export type Button = {
+  icon: ReactElement
+  label: string
+  sub?: string
+  iconOnly?: boolean
+}
 
 type SwitchButtonProps = {
   button: Button
@@ -20,29 +26,27 @@ const SwitchButton = ({
   supportedActions
 }: SwitchButtonProps) => {
   const interactionEvents = useRemoteControl(entityId, num, supportedActions)
+  const { icon, label, sub, iconOnly } = button
 
-  let main: string
-  let sub: string
-  if (Array.isArray(button)) {
-    ;[main, sub] = button
-  } else {
-    main = button
-  }
   return (
     <button
       type="button"
-      aria-label={sub ? `${main} ${sub}` : main}
+      aria-label={sub ? `${label} ${sub}` : label}
       className={clsx(
-        'press-feedback flex cursor-pointer touch-manipulation items-center justify-center rounded-md border-2',
+        'press-feedback flex min-h-0 min-w-0 cursor-pointer touch-manipulation items-center justify-center rounded-md border-2',
         'select-none border-gray-400 bg-transparent text-center text-white',
         'transition-colors hover:border-white hover:bg-white hover:text-black',
-        'focus-visible:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white'
+        'focus-visible:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
+        '[container-type:size] [&_svg]:!text-[clamp(1.5rem,40cqmin,2.75rem)]'
       )}
       {...interactionEvents}
     >
-      <div>
-        <div>{main}</div>
-        {sub && <div className="text-center text-[10px]">{sub}</div>}
+      <div className="flex flex-col items-center gap-0.5 px-1">
+        {icon}
+        {!iconOnly && (
+          <div className="text-[11px] font-bold leading-tight">{label}</div>
+        )}
+        {sub && <div className="text-[10px] leading-tight">{sub}</div>}
       </div>
     </button>
   )
@@ -62,10 +66,9 @@ const Switcher = ({ entityId, buttons, supportedActions }: SwitcherProps) => (
           // eslint-disable-next-line react/no-array-index-key
           return <div key={`disabled-btn-${idx}`} />
         }
-        const key = Array.isArray(btn) ? btn[0] : btn
         return (
           <SwitchButton
-            key={key}
+            key={btn.label}
             entityId={entityId}
             num={idx + 1}
             button={btn}
