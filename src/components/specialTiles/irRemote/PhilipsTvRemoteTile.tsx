@@ -12,9 +12,16 @@ import VolumeUpOutlinedIcon from '@mui/icons-material/VolumeUpOutlined'
 import IrRemoteTile, { IrRemoteItem } from './IrRemoteTile'
 import { philipsTvCodes as codes } from './irRemoteCodes'
 
+// D-pad cells match the row height: three 1fr rows, a 0.75fr volume row and
+// three gaps fill the container. Side buttons end halfway into the d-pad cells.
+const toHalfCell = 'mr-[calc((100cqh_-_1.125rem)/7.5_+_0.1875rem)]'
+const fromHalfCell = 'ml-[calc((100cqh_-_1.125rem)/7.5_+_0.1875rem)]'
+const cornerToLeft = `h-3/4 ${toHalfCell}`
+const cornerToRight = `h-3/4 ${fromHalfCell}`
+
 const items: IrRemoteItem[] = [
   {
-    placement: 'col-start-1 row-start-1',
+    placement: `col-span-3 col-start-1 row-start-1 ${cornerToLeft} self-start`,
     buttons: [
       {
         id: 'power',
@@ -36,7 +43,7 @@ const items: IrRemoteItem[] = [
     ]
   },
   {
-    placement: 'col-start-7 row-start-1',
+    placement: `col-span-3 col-start-5 row-start-1 ${cornerToRight} self-start`,
     buttons: [
       {
         id: 'input',
@@ -75,7 +82,7 @@ const items: IrRemoteItem[] = [
     ]
   },
   {
-    placement: 'col-start-1 row-start-3',
+    placement: `col-span-3 col-start-1 row-start-3 ${cornerToLeft} self-end`,
     buttons: [
       {
         id: 'back',
@@ -97,7 +104,7 @@ const items: IrRemoteItem[] = [
     ]
   },
   {
-    placement: 'col-start-7 row-start-3',
+    placement: `col-span-3 col-start-5 row-start-3 ${cornerToRight} self-end`,
     buttons: [
       {
         id: 'home',
@@ -108,7 +115,7 @@ const items: IrRemoteItem[] = [
     ]
   },
   {
-    placement: 'col-start-1 row-start-4',
+    placement: `col-span-3 col-start-1 row-start-4 ${toHalfCell}`,
     buttons: [
       {
         id: 'vol_mute',
@@ -119,7 +126,7 @@ const items: IrRemoteItem[] = [
     ]
   },
   {
-    placement: 'col-span-6 col-start-2 row-start-4',
+    placement: `col-span-5 col-start-3 row-start-4 ${fromHalfCell}`,
     buttons: [
       {
         id: 'vol_down',
@@ -144,7 +151,7 @@ type PhilipsTvRemoteTileProps = {
 const PhilipsTvRemoteTile = ({ title }: PhilipsTvRemoteTileProps) => (
   <IrRemoteTile
     title={title}
-    gridClassName="grid-cols-[1fr_0.25rem_repeat(3,3.25rem)_0.25rem_1fr] grid-rows-[repeat(4,3.25rem)] content-end"
+    gridClassName="grid-cols-[1fr_0.25rem_repeat(3,calc((100cqh_-_1.125rem)/3.75))_0.25rem_1fr] grid-rows-[1fr_1fr_1fr_0.75fr]"
     items={items}
   />
 )
