@@ -55,7 +55,7 @@ type SwitcherProps = {
 }
 
 const Switcher = ({ entityId, buttons, supportedActions }: SwitcherProps) => (
-  <div className="absolute bottom-0 left-0 h-64 w-full p-2">
+  <div className="h-full w-full px-2 pb-2 pt-1">
     <div className={clsx('grid h-full auto-rows-fr grid-cols-2 gap-2')}>
       {buttons.map((btn, idx) => {
         if (!btn) {

@@ -121,7 +121,7 @@ const IrRemoteTile = ({ title, gridClassName, items }: IrRemoteTileProps) => {
     size: 'big',
     requiresHomeAssistant: true,
     customBody: (
-      <div className="absolute bottom-0 left-0 h-64 w-full p-2">
+      <div className="h-full w-full px-2 pb-2 pt-1 [container-type:size]">
         <div className={clsx('grid h-full gap-1.5', gridClassName)}>
           {items.map(renderItem)}
         </div>
