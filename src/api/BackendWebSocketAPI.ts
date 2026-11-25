@@ -34,6 +34,7 @@ class BackendWebSocketAPI extends WebSocketConnector {
   private readonly pendingRequests = new Map<string, PendingRequest>()
   private readonly entitySubscriptions = new Map<string, EntitySubscription>()
   private requestId = 1
+  private statusRequestTimeout?: number
   private accessToken: string
   private status: BackendConnectionState = 'disconnected'
   private authenticationState: BackendAuthenticationState
@@ -98,6 +99,8 @@ class BackendWebSocketAPI extends WebSocketConnector {
   }
 
   public logout() {
+    window.clearTimeout(this.statusRequestTimeout)
+    this.statusRequestTimeout = undefined
     BackendWebSocketAPI.removeStoredToken()
     this.accessToken = ''
     this.pendingRequests.forEach(({ reject, timeout }) => {
@@ -186,6 +189,14 @@ class BackendWebSocketAPI extends WebSocketConnector {
   }
 
   public requestServiceStatus() {
+    if (
+      this.authenticationState !== 'authenticated' ||
+      this.statusRequestTimeout !== undefined
+    )
+      return
+    this.statusRequestTimeout = window.setTimeout(() => {
+      this.statusRequestTimeout = undefined
+    }, REQUEST_TIMEOUT_MS)
     this.sendMsg('getStatus')
   }
 
@@ -236,9 +247,7 @@ class BackendWebSocketAPI extends WebSocketConnector {
   }
 
   public getBackendLogs(): Promise<BackendLogEntry[]> {
-    return this.request('getBackendLogs', {}) as Promise<
-      BackendLogEntry[]
-    >
+    return this.request('getBackendLogs', {}) as Promise<BackendLogEntry[]>
   }
 
   private request(type: string, payload: object): Promise<unknown> {
@@ -313,7 +322,13 @@ class BackendWebSocketAPI extends WebSocketConnector {
   override onConnectionStateChange(state: boolean) {
     super.onConnectionStateChange(state)
     this.changeConnectionState(state ? 'connected' : 'disconnected')
-    if (!state && this.accessToken) this.changeAuthenticationState('connecting')
+    if (!state) {
+      window.clearTimeout(this.statusRequestTimeout)
+      this.statusRequestTimeout = undefined
+      this.statusData = null
+      this.events.emit('backend/statusData', null)
+      if (this.accessToken) this.changeAuthenticationState('connecting')
+    }
   }
 
   override onReceive(event: MessageEvent) {
@@ -347,6 +362,8 @@ class BackendWebSocketAPI extends WebSocketConnector {
         this.events.emit('backend/serviceData', this.serviceData)
         break
       case 'statusUpdate':
+        window.clearTimeout(this.statusRequestTimeout)
+        this.statusRequestTimeout = undefined
         this.statusData = msg.data
         this.events.emit('backend/statusData', this.statusData)
         break

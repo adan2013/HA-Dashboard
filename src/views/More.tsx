@@ -16,6 +16,11 @@ import TriggerNotificationTile from '../components/devTiles/TriggerNotificationT
 import { useModalContext } from '../contexts/ModalContext'
 import LightTile from '../components/entityTiles/lights/LightTile'
 import { useBackendStatus } from '../api/hooks'
+import ServiceValueTile from '../components/backendTiles/ServiceValueTile'
+import TileValueBody from '../components/backendTiles/TileValueBody'
+
+const formatBalance = (value: number | string) =>
+  typeof value === 'number' ? value.toFixed(2) : value
 
 const More = () => {
   const navigate = useNavigate()
@@ -43,19 +48,24 @@ const More = () => {
       <TileGroup name="Info">
         <Tile
           title="Dashboard version"
-          customBody={
-            <div className="absolute bottom-1 right-2 text-4xl">
-              {getPackageVersion()}
-            </div>
-          }
+          customBody={<TileValueBody>{getPackageVersion()}</TileValueBody>}
         />
-        <Tile
+        <ServiceValueTile
           title="Backend version"
-          customBody={
-            <div className="absolute bottom-1 right-2 text-4xl">
-              {backend?.version || '-.-.-'}
-            </div>
-          }
+          serviceName="backend"
+          helperName="version"
+        />
+        <ServiceValueTile
+          title="Synced entities"
+          serviceName="backend"
+          helperName="entitiesCount"
+        />
+        <ServiceValueTile
+          title="SMS service balance"
+          subtitle="PLN"
+          serviceName="sms"
+          helperName="balance"
+          formatValue={formatBalance}
         />
         <Tile
           title="Log out"

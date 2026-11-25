@@ -209,6 +209,40 @@ describe('BackendWebSocketAPI', () => {
     expect(socket.sent.at(-1)).toEqual({ type: 'testSms' })
   })
 
+  it('should share an in-flight service status request between value consumers', () => {
+    const backend = new BackendWebSocketAPI()
+    const socket = authenticate(backend)
+    backend.requestServiceStatus()
+    backend.requestServiceStatus()
+    backend.requestServiceStatus()
+    expect(
+      socket.sent.filter(message => message.type === 'getStatus')
+    ).toHaveLength(1)
+
+    socket.receive({ type: 'statusUpdate', data: { services: {} } })
+    backend.requestServiceStatus()
+    expect(
+      socket.sent.filter(message => message.type === 'getStatus')
+    ).toHaveLength(2)
+    backend.logout()
+  })
+
+  it('should clear helper snapshots and allow a fresh request after reconnecting', () => {
+    const backend = new BackendWebSocketAPI()
+    const firstSocket = authenticate(backend)
+    firstSocket.receive({ type: 'statusUpdate', data: { services: {} } })
+    const listener = jest.fn()
+    backend.subscribeToStatusData(listener)
+    backend.reconnect()
+    expect(listener).toHaveBeenLastCalledWith(null)
+    expect(backend.statusData).toBeNull()
+
+    const socket = authenticate(backend)
+    backend.requestServiceStatus()
+    expect(socket.sent).toContainEqual({ type: 'getStatus' })
+    backend.logout()
+  })
+
   it('should time out requests after ten seconds', async () => {
     jest.useFakeTimers()
     try {

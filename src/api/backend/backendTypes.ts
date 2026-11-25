@@ -9,10 +9,18 @@ export type Status = {
   message: string
 }
 
+export type ValueHelperStatus = Status & {
+  value: number | string | null
+  updatedAt: string | null
+  error: string | null
+}
+
+export type HelperStatus = Status | ValueHelperStatus
+
 export type ServiceStatus = {
   status: Status
   helpers: {
-    [name: string]: Status
+    [name: string]: HelperStatus
   }
 }
 
