@@ -8,6 +8,7 @@ import {
 } from './utils'
 import { useBackend } from '../contexts/BackendContext'
 import { BatteryState, readBatteryEntity } from '../utils/batteryUtils'
+import { ServiceManagerStatus } from './backend/backendTypes'
 
 export const useBackendStatus = (): BackendConnectionState => {
   const [status, setStatus] = useState<BackendConnectionState>('disconnected')
@@ -31,6 +32,54 @@ export const useBackendAuthenticationState = (): BackendAuthenticationState => {
   const [state, setState] = useState<BackendAuthenticationState>('missingToken')
   useEffect(() => backend?.subscribeToAuthenticationState(setState), [backend])
   return state
+}
+
+export const useServiceValue = <T extends number | string>(
+  serviceName: string,
+  helperName: string
+) => {
+  const backend = useBackend()
+  const ready = useBackendStatus() === 'synced'
+  const [snapshot, setSnapshot] = useState<ServiceManagerStatus>(null)
+  const [timedOut, setTimedOut] = useState(false)
+
+  useEffect(() => {
+    setSnapshot(null)
+    setTimedOut(false)
+    if (!ready) return undefined
+    const timeout = window.setTimeout(
+      () => setTimedOut(true),
+      REQUEST_TIMEOUT_MS
+    )
+    const unsubscribe = backend.subscribeToStatusData(data => {
+      setSnapshot(data)
+      if (data) window.clearTimeout(timeout)
+    })
+    backend.requestServiceStatus()
+    return () => {
+      window.clearTimeout(timeout)
+      unsubscribe()
+    }
+  }, [backend, ready])
+
+  const helper = ready
+    ? snapshot?.services[serviceName]?.helpers[`value/${helperName}`]
+    : null
+  const status = helper && 'value' in helper ? helper : null
+  const rawValue = status?.value
+  const validValue =
+    typeof rawValue === 'string' ||
+    (typeof rawValue === 'number' && Number.isFinite(rawValue))
+  const value = validValue ? (rawValue as T) : null
+
+  return {
+    value,
+    updatedAt: status?.updatedAt ?? null,
+    error:
+      status?.error ?? (ready && timedOut ? 'Backend request timed out' : null),
+    isLoading: ready && !snapshot && !timedOut,
+    isUnavailable: value === null
+  }
 }
 
 export type HomeAssistantEntityData = {
