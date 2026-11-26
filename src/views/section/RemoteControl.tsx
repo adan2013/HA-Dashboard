@@ -7,7 +7,7 @@ import DoorSlidingOutlinedIcon from '@mui/icons-material/DoorSlidingOutlined'
 import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined'
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined'
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
+import WbTwilightIcon from '@mui/icons-material/WbTwilight'
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined'
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined'
 import BedtimeOutlinedIcon from '@mui/icons-material/BedtimeOutlined'
@@ -128,11 +128,16 @@ const categories: RemoteCategoryContent[] = [
               label: 'Daily mode',
               sub: '2×: Max light'
             },
-            turnOffButton,
             {
-              icon: <NotificationsOutlinedIcon />,
+              ...turnOffButton,
               label: '2×: All rooms',
-              sub: 'Hold: Turn off all'
+              sub: 'Hold: Turn off all',
+              iconOnly: false
+            },
+            {
+              icon: <WbTwilightIcon />,
+              label: 'Shelves: 40%',
+              sub: '2×: 70% · Hold: Off'
             }
           ]}
         />
